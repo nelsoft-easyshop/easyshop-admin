@@ -41,7 +41,7 @@
 	      
 	      </li>
 	      <li>	
-		  <a>
+		  <a href="/transactions">
 		      <img src="{{{ asset('images/icon_list.png') }}}"/> 
 		      <span>Transactions List</span>
 		  </a>
@@ -49,7 +49,7 @@
 	      </li>
 	      
 	      <li>	
-		  <a>
+		  <a href="/items">
 		      <img src="{{{ asset('images/icon_product.png') }}}"/> 
 		      <span>Product Listings</span>
 		  </a>
@@ -57,7 +57,7 @@
 	      </li>
 	      
 	         <li>	
-		  <a>
+		  <a href="/category">
 		      <img src="{{{ asset('images/icon_category.png') }}}"/> 
 		      <span>Category Listing</span>
 		  </a>
