@@ -11,7 +11,15 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
+
+#LOGIN
+Route::get('login', array('uses' => 'AccountController@showLogin'));
+Route::post('login', array('uses' => 'AccountController@loginFormSubmit'));
+
+#LOGOUT
+Route::get('logout', array('uses' => 'AccountController@logout'));
+
+Route::group(array('before' => 'auth'), function(){
+    Route::get('/', array('uses' => 'HomeController@index'));
+    Route::get('users', array('uses' => 'HomeController@getAllUsers'));
 });
