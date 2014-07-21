@@ -1,3 +1,16 @@
+@extends('layouts.default')
+
+@section('description', 'Login for Easyshop.ph Administrator Page')
+@section('keywords', '')
+@section('title', 'Login | Easyshop Admin')
+
+
+@section('page_header')
+	<!-- no page header -->
+@stop
+
+
+
 @section('content')
 
 	<div class = "login_container">

@@ -2,8 +2,6 @@
 
 class HomeController extends BaseController {
 
-	public $layout = 'layouts.default';
-	
 	/*
 	|--------------------------------------------------------------------------
 	| Default Home Controller
@@ -19,20 +17,13 @@ class HomeController extends BaseController {
 
 	public function index()
 	{
-	    $this->layout =  View::make('layouts.noheader');
-	    $this->layout->title = "Dashboard | Easyshop Admin";
-	    $this->layout->metadescription = "Administrator Dashboard";
-	    $this->layout->content = View::make('pages.dashboard')
-	      ->with('username', Auth::user()->username);
+	    return View::make('pages.dashboard')->with('username', Auth::user()->username);
 	}
 	
 	
 	public function getAllUsers(){
-		$this->layout->headerTitle = 'Registered Users';
-	      	$this->layout->title = "Registered Users| Easyshop Admin";
-		$this->layout->content = View::make('pages.userlist');
+		return View::make('pages.userlist');
 	}
 
 	
-
 }

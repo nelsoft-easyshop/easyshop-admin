@@ -14,10 +14,10 @@
 
 #LOGIN
 Route::get('login', array('uses' => 'AccountController@showLogin'));
-Route::post('login', array('uses' => 'AccountController@loginFormSubmit'));
+Route::post('login', array('uses' => 'AccountController@doLogin'));
 
 #LOGOUT
-Route::get('logout', array('uses' => 'AccountController@logout'));
+Route::get('logout', array('uses' => 'AccountController@doLogout'));
 
 Route::group(array('before' => 'auth'), function(){
     Route::get('/', array('uses' => 'HomeController@index'));
