@@ -1,4 +1,4 @@
-<?php namespace Composers;
+<?php namespace Easyshop\Composers;
 
 use Illuminate\Support\Facades\Auth;
 

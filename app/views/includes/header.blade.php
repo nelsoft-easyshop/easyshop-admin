@@ -1,7 +1,11 @@
     <div id="header_banner">
+	
 	<div>
-	    <h1 class='tagline'> {{{ isset($headerTitle)?$headerTitle:'EASYSHOP' }}}.</h1>
+	    <h1 class='tagline'> 
+			@yield('header_tagline')
+	    </h1>
 	</div>
+	
     </div>
     
     <div id="nav">

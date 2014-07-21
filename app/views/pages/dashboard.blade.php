@@ -1,3 +1,17 @@
+@extends('layouts.default')
+
+@section('description', 'Administrator Dashboard')
+@section('keywords', '')
+@section('title', 'Dashboard | Easyshop Admin')
+
+
+
+@section('page_header')
+	<!-- no page header -->
+@stop
+
+
+
 @section('content')
 
     <link type="text/css" href="{{{ asset('css/dashboard.css') }}}" rel="stylesheet"  media="screen"/>
