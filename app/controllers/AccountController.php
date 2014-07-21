@@ -13,8 +13,8 @@ class AccountController extends BaseController
 	public function doLogin()
 	{
 		$rules = array(
-			'username' => 'required', // username
-			'password' => 'required'                                     // password can only be alphanumeric and has to be greater than 3 characters
+			'username' => 'required',
+			'password' => 'required', 
 		);
 		
 		$validator = Validator::make(Input::all(), $rules);
@@ -22,8 +22,8 @@ class AccountController extends BaseController
 		if ($validator->fails()) {
 			Input::flash();
 		    return View::make('pages.login')
-				->withErrors($validator)
-				->withInput(Input::except('password')); 
+				->withErrors($validator);
+			//	->withInput(Input::except('password')); 
 		}
 		
 		// create our user data for the authentication
@@ -40,11 +40,8 @@ class AccountController extends BaseController
 		$errors = new MessageBag(['login_error' => ['Username and/or password is invalid.']]); 
 		Input::flash();
 		return View::make('pages.login')
-			->withErrors($errors)
-			->withInput(Input::except('password')); 
-
-		
-		
+			->withErrors($errors);
+		//	->withInput(Input::except('password')); 
 	}
 	
 	public function doLogout()

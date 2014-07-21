@@ -15,6 +15,4 @@
   <div id="mainsection">
   
   </div>
-    
-
 @stop
