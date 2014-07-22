@@ -14,8 +14,7 @@ class CreateAdminMemberTable extends Migration {
 	{
 		Schema::create('es_admin_member', function(Blueprint $table)
 		{
-			$table->increments('id_admin');
-
+			$table->increments('id_admin_member');
 			$table->string('username', 255);
 			$table->string('password', 255);
 			$table->string('fullname', 255);

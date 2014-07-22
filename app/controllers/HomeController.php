@@ -24,6 +24,15 @@ class HomeController extends BaseController {
 	public function getAllUsers(){
 		return View::make('pages.userlist');
 	}
+	
+	public function getUsersToPay(){
+		$order =  Order::find(1);
+		print('<pre>');
+		print_r($order->id_order);
+		exit();
+	}
+	
+
 
 	
 }

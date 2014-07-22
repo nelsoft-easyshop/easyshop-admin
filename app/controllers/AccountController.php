@@ -22,8 +22,8 @@ class AccountController extends BaseController
 		if ($validator->fails()) {
 			Input::flash();
 		    return View::make('pages.login')
-				->withErrors($validator);
-			//	->withInput(Input::except('password')); 
+				->withErrors($validator)
+				->withInput(Input::except('password')); 
 		}
 		
 		// create our user data for the authentication
@@ -40,8 +40,8 @@ class AccountController extends BaseController
 		$errors = new MessageBag(['login_error' => ['Username and/or password is invalid.']]); 
 		Input::flash();
 		return View::make('pages.login')
-			->withErrors($errors);
-		//	->withInput(Input::except('password')); 
+			->withErrors($errors)
+			->withInput(Input::except('password')); 
 	}
 	
 	public function doLogout()

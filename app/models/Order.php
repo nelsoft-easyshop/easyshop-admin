@@ -8,10 +8,17 @@ class Order extends Eloquent {
 	* @var string
 	*/
 	protected $table = 'es_order';
+	
+	/*
+	* The primary key of the table
+	*
+	*/
+	
+	protected $primaryKey = 'id_order';
 
 
 	public function buyer() {
-		return $this->hasOne('Member')
+		return $this->hasOne('Member');
 	}
 
 	public function shippingAddress() {
