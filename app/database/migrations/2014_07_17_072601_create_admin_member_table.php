@@ -14,14 +14,13 @@ class CreateAdminMemberTable extends Migration {
 	{
 		Schema::create('es_admin_member', function(Blueprint $table)
 		{
-			$table->increments('id');
-
+			$table->increments('id_admin_member');
 			$table->string('username', 255);
 			$table->string('password', 255);
 			$table->string('fullname', 255);
 			$table->timestamps();
 			// required for Laravel 4.1.26
-                        $table->string('remember_token', 100)->nullable();
+			$table->string('remember_token', 100)->nullable();
 		});
 	}
 

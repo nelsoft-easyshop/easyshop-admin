@@ -13,8 +13,8 @@ class AccountController extends BaseController
 	public function doLogin()
 	{
 		$rules = array(
-			'username' => 'required', // username
-			'password' => 'required'                                     // password can only be alphanumeric and has to be greater than 3 characters
+			'username' => 'required',
+			'password' => 'required', 
 		);
 		
 		$validator = Validator::make(Input::all(), $rules);
@@ -42,9 +42,6 @@ class AccountController extends BaseController
 		return View::make('pages.login')
 			->withErrors($errors)
 			->withInput(Input::except('password')); 
-
-		
-		
 	}
 	
 	public function doLogout()

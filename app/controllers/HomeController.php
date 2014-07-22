@@ -24,6 +24,6 @@ class HomeController extends BaseController {
 	public function getAllUsers(){
 		return View::make('pages.userlist');
 	}
-
 	
+
 }
