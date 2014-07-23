@@ -7,7 +7,7 @@ use Easyshop\Repositories\Order\OrderInterface;
 */
 class OrderService
 {
-    // Containing our pokemonRepository to make all our database calls to
+
     protected $orderRepository;
     
     /**
@@ -29,19 +29,14 @@ class OrderService
     */
     public function getOrder($orderId)
     {
-		$order = $this->orderRepository->getOrderById($orderId);
+        $order = $this->orderRepository->getOrderById($orderId);
 
-        // If Eloquent Object returned (rather than null) return the name of the pokemon
         if ($order != null)
         {
             return $order->invoice_no;
         }
 
-        // If nothing found, return this simple string
         return 'Order not found';
     }
-    
-    
-    
     
 }
