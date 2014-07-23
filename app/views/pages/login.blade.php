@@ -5,11 +5,6 @@
 @section('title', 'Login | Easyshop Admin')
 
 
-@section('page_header')
-	<!-- no page header -->
-@stop
-
-
 
 @section('content')
 
