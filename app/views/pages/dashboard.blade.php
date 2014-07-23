@@ -6,12 +6,6 @@
 
 
 
-@section('page_header')
-	<!-- no page header -->
-@stop
-
-
-
 @section('content')
 
     <link type="text/css" href="{{{ asset('css/dashboard.css') }}}" rel="stylesheet"  media="screen"/>

@@ -23,7 +23,7 @@ class AdminMember extends Eloquent implements UserInterface, RemindableInterface
 	 */
 	protected $hidden = array('password', 'remember_token');
 	
-	/*
+	/**
 	* The primary key of the table
 	*
 	*/
