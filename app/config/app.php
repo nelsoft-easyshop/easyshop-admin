@@ -122,7 +122,8 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Easyshop\Composers\ComposerServiceProvider',
-
+		'Easyshop\Services\Order\OrderServiceServiceProvider',
+		'Easyshop\Repositories\Order\OrderRepositoryServiceProvider'
 	),
 
 	/*
