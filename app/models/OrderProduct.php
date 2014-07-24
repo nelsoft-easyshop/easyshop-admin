@@ -2,14 +2,14 @@
 
 class OrderProduct extends Eloquent {
 
-    /**
+   /**
     * The database table used by the model.
     *
     * @var string
     */
     protected $table = 'es_order_product';
 
-    /*
+   /*
     * The primary key of the table
     *
     */
