@@ -13,7 +13,20 @@
 
 @section('content')
   <div id="mainsection">
-        <p>Invoice Number: {{{ $order->invoice_no }}}</p>
+        
+        <table style='align:center'>
+            <tr>
+                <td>Username</td>
+                <td>Bank</td>
+                <td>Account Name</td>
+                <td>Account No.</td>
+                <td>Email</td>
+                <td>Contact No.</td>
+                <td>NET</td>
+            </tr>
+
+        </table>
+
 
   </div>
 @stop

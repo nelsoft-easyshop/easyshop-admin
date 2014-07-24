@@ -23,6 +23,7 @@ class CreateEsOrderProduct extends Migration
 			$table->decimal('price', 15, 4);
 			$table->decimal('handling_fee', 15, 4);
 			$table->decimal('total', 15, 4);
+			$table->integer('product_item_id');
 			$table->integer('status');
 			$table->integer('buyer_billing_id');
 			$table->tinyInteger('is_reject');

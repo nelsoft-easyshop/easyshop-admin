@@ -18,7 +18,7 @@ class OrderProduct extends Eloquent {
 
 
 	public function seller() {
-		return $this->hasOne('Member');
+		return $this->hasOne('Member', 'id_member', 'seller_id');
 	}
 
 	public function order() {
