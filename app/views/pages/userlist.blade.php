@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('description', 'List of registered ssers')
+@section('description', 'List of registered users')
 @section('keywords', '')
 @section('title', 'Users List | Easyshop Admin')
 @section('header_tagline', 'Registered Users.')
