@@ -7,7 +7,7 @@
 
 
 @section('page_header')
-	@include('includes.header')
+    @include('includes.header')
 @stop
 
 
