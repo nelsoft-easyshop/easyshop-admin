@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateEsOrderProduct extends Migration 
 {
 
+
     /**
     * Run the migrations.
     *
@@ -33,6 +34,7 @@ class CreateEsOrderProduct extends Migration
             $table->timestamps();
         });
     }
+
 
     /**
     * Reverse the migrations.

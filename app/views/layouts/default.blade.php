@@ -4,8 +4,9 @@
     <head>
         <meta charset="utf-8" />
         <link rel="shortcut icon" href="{{{ asset('images/favicon.ico') }}}" type="image/x-icon">
-        <link type="text/css" href="{{{ asset('css/style.css')  }}}" rel="stylesheet"  media="screen"/>
         <link type="text/css" href="{{{ asset('css/src/bootstrap.min.css')  }}}" rel="stylesheet"  media="screen"/>
+        <link type="text/css" href="{{{ asset('css/style.css')  }}}" rel="stylesheet"  media="screen"/>
+
         
 
         <meta name="description" content = "@yield('description')" />
@@ -32,4 +33,8 @@
         </div>
         
     </body>
+    
+    {{ HTML::script('js/src/jquery-2.0.0.min.js') }}
+    {{ HTML::script('js/src/bootstrap.min.js') }}
+    
 </html>

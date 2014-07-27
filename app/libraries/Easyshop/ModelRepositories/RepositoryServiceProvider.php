@@ -1,7 +1,6 @@
 <?php namespace Easyshop\ModelRepositories;
 
 use Illuminate\Support\ServiceProvider;
-
 /**
  * Register Model Repositories with Laravel
  */
