@@ -16,5 +16,6 @@ class Member extends Eloquent {
 
     protected $primaryKey = 'id_member';
 
+    
 
 }

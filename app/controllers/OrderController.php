@@ -10,8 +10,10 @@ class OrderController extends BaseController
      */
     public function getUsersToPay()
     {
-        $orderEntity = App::make('OrderProductRepository');
-        return View::make('pages.paymentlist')->with('orders', $orderEntity->getCompletedOrders());
+        $userdata = Input::get();
+        $orderProductEntity = App::make('OrderProductRepository');
+        return View::make('pages.paymentlist')->with('accountsToPay', $orderProductEntity->getUserAccountsToPay($userdata))
+                    ->with('input', Input::all());
     }
 
 
