@@ -2,21 +2,42 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="260ed7d9-78e2-4994-bf7b-f18ab9dd70c7" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/controllers/OrderController.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libraries/Easyshop/ModelRepositories/OrderProductRepository.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libraries/Easyshop/ModelRepositories/OrderRepository.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libraries/Easyshop/ModelRepositories/RepositoryServiceProvider.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/pages/paymentlist.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/migrations/2014_07_17_072601_create_admin_member_table.php" afterPath="$PROJECT_DIR$/app/database/migrations/2014_07_17_072601_create_admin_member_table.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/migrations/2014_07_21_093051_create_es_order_table.php" afterPath="$PROJECT_DIR$/app/database/migrations/2014_07_21_093051_create_es_order_table.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/migrations/2014_07_22_043733_create_es_order_product.php" afterPath="$PROJECT_DIR$/app/database/migrations/2014_07_22_043733_create_es_order_product.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/migrations/2014_07_22_081524_create_address_table.php" afterPath="$PROJECT_DIR$/app/database/migrations/2014_07_22_081524_create_address_table.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/migrations/2014_07_22_082140_create_member_table.php" afterPath="$PROJECT_DIR$/app/database/migrations/2014_07_22_082140_create_member_table.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/migrations/2014_07_22_083328_create_payment_method_table.php" afterPath="$PROJECT_DIR$/app/database/migrations/2014_07_22_083328_create_payment_method_table.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/migrations/2014_07_22_083524_create_order_status_table.php" afterPath="$PROJECT_DIR$/app/database/migrations/2014_07_22_083524_create_order_status_table.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/migrations/2014_07_22_083702_create_order_product_status_table.php" afterPath="$PROJECT_DIR$/app/database/migrations/2014_07_22_083702_create_order_product_status_table.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/AccountController.php" afterPath="$PROJECT_DIR$/app/controllers/AccountController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/Address.php" afterPath="$PROJECT_DIR$/app/models/Address.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/AdminMember.php" afterPath="$PROJECT_DIR$/app/models/AdminMember.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/seeds/AdminMemberTableSeeder.php" afterPath="$PROJECT_DIR$/app/database/seeds/AdminMemberTableSeeder.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/BaseController.php" afterPath="$PROJECT_DIR$/app/controllers/BaseController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/libraries/Easyshop/Composers/ComposerServiceProvider.php" afterPath="$PROJECT_DIR$/app/libraries/Easyshop/Composers/ComposerServiceProvider.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/seeds/DatabaseSeeder.php" afterPath="$PROJECT_DIR$/app/database/seeds/DatabaseSeeder.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/libraries/Easyshop/Composers/HeaderComposer.php" afterPath="$PROJECT_DIR$/app/libraries/Easyshop/Composers/HeaderComposer.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/HomeController.php" afterPath="$PROJECT_DIR$/app/controllers/HomeController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/Member.php" afterPath="$PROJECT_DIR$/app/models/Member.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.json" afterPath="$PROJECT_DIR$/composer.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/Order.php" afterPath="$PROJECT_DIR$/app/models/Order.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/OrderProduct.php" afterPath="$PROJECT_DIR$/app/models/OrderProduct.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/OrderProductStatus.php" afterPath="$PROJECT_DIR$/app/models/OrderProductStatus.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/OrderStatus.php" afterPath="$PROJECT_DIR$/app/models/OrderStatus.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/PaymentMethod.php" afterPath="$PROJECT_DIR$/app/models/PaymentMethod.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/app.php" afterPath="$PROJECT_DIR$/app/config/app.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/pages/dashboard.blade.php" afterPath="$PROJECT_DIR$/app/views/pages/dashboard.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/layouts/default.blade.php" afterPath="$PROJECT_DIR$/app/views/layouts/default.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/filters.php" afterPath="$PROJECT_DIR$/app/filters.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/start/global.php" afterPath="$PROJECT_DIR$/app/start/global.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/includes/header.blade.php" afterPath="$PROJECT_DIR$/app/views/includes/header.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/pages/login.blade.php" afterPath="$PROJECT_DIR$/app/views/pages/login.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/routes.php" afterPath="$PROJECT_DIR$/app/routes.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/style.css" afterPath="$PROJECT_DIR$/public/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/pages/userlist.blade.php" afterPath="$PROJECT_DIR$/app/views/pages/userlist.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/view.php" afterPath="$PROJECT_DIR$/app/config/view.php" />
     </list>
     <ignored path="easyshop-admin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,16 +63,16 @@
       <file leaf-file-name="Member.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/Member.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="17" selection-start="103" selection-end="103" vertical-scroll-proportion="-3.1538463" vertical-offset="54" max-vertical-offset="680">
+            <state line="9" column="35" selection-start="139" selection-end="139" vertical-scroll-proportion="-5.6153846" vertical-offset="7" max-vertical-offset="663">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HomeController.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="HomeController.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/HomeController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="71" column="48" selection-start="2309" selection-end="2309" vertical-scroll-proportion="0.29392973" vertical-offset="1023" max-vertical-offset="1751">
+            <state line="37" column="52" selection-start="1119" selection-end="1119" vertical-scroll-proportion="-12.423077" vertical-offset="306" max-vertical-offset="1530">
               <folding />
             </state>
           </provider>
@@ -60,7 +81,16 @@
       <file leaf-file-name="Address.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/Address.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="73" selection-start="302" selection-end="302" vertical-scroll-proportion="-4.4615383" vertical-offset="190" max-vertical-offset="816">
+            <state line="22" column="5" selection-start="347" selection-end="347" vertical-scroll-proportion="-14.384615" vertical-offset="0" max-vertical-offset="816">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AdminMemberTableSeeder.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/database/seeds/AdminMemberTableSeeder.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="5" selection-start="480" selection-end="480" vertical-scroll-proportion="0.47768596" vertical-offset="0" max-vertical-offset="605">
               <folding />
             </state>
           </provider>
@@ -69,29 +99,52 @@
       <file leaf-file-name="routes.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/routes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="51" selection-start="725" selection-end="725" vertical-scroll-proportion="-13.730769" vertical-offset="0" max-vertical-offset="561">
-              <folding>
-                <element signature="e#7#392#0" expanded="true" />
-              </folding>
+            <state line="10" column="1" selection-start="389" selection-end="389" vertical-scroll-proportion="-6.5384617" vertical-offset="0" max-vertical-offset="561">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="userlist.blade.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/pages/userlist.blade.php">
+      <file leaf-file-name="default.blade.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/layouts/default.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="208" column="65" selection-start="11606" selection-end="11606" vertical-scroll-proportion="-4.8461537" vertical-offset="3410" max-vertical-offset="4352">
-              <folding>
-                <element signature="n#style#0;n#option#1;n#select#1;n#div#4;n#div#1;n#div#0;n#div#0;n#div#3;n#div#1;n#div#0;n#!!top" expanded="true" />
-              </folding>
+            <state line="27" column="0" selection-start="1008" selection-end="1008" vertical-scroll-proportion="-16.076923" vertical-offset="41" max-vertical-offset="680">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/css/style.css">
+      <file leaf-file-name="2014_07_17_072601_create_admin_member_table.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_07_17_072601_create_admin_member_table.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3400" column="14" selection-start="55791" selection-end="55791" vertical-scroll-proportion="0.0" vertical-offset="57433" max-vertical-offset="58072">
+            <state line="23" column="62" selection-start="548" selection-end="548" vertical-scroll-proportion="-14.384615" vertical-offset="0" max-vertical-offset="731">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="header.blade.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/includes/header.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="0" selection-start="304" selection-end="304" vertical-scroll-proportion="-9.153846" vertical-offset="102" max-vertical-offset="765">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="2014_07_22_081524_create_address_table.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_07_22_081524_create_address_table.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="9" selection-start="283" selection-end="283" vertical-scroll-proportion="-9.153846" vertical-offset="0" max-vertical-offset="816">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="2014_07_22_082140_create_member_table.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_07_22_082140_create_member_table.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="41" column="5" selection-start="1509" selection-end="1509" vertical-scroll-proportion="-10.846154" vertical-offset="398" max-vertical-offset="1003">
               <folding />
             </state>
           </provider>
@@ -110,30 +163,30 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/database/seeds/AdminMemberTableSeeder.php" />
         <option value="$PROJECT_DIR$/app/models/LocationLookup.php" />
-        <option value="$PROJECT_DIR$/app/database/migrations/2014_07_22_082140_create_member_table.php" />
         <option value="$PROJECT_DIR$/app/database/migrations/2014_07_23_013846_create_location_lookup_table.php" />
-        <option value="$PROJECT_DIR$/app/database/migrations/2014_07_17_072601_create_admin_member_table.php" />
         <option value="$PROJECT_DIR$/app/config/view.php" />
         <option value="$PROJECT_DIR$/app/database/migrations/2014_07_23_061225_create_product_table.php" />
         <option value="$PROJECT_DIR$/app/models/Product.php" />
         <option value="$PROJECT_DIR$/composer.json" />
         <option value="$PROJECT_DIR$/app/views/pagination/slider.php" />
-        <option value="$PROJECT_DIR$/app/views/includes/header.blade.php" />
         <option value="$PROJECT_DIR$/public/css/src/bootstrap.min.css" />
         <option value="$PROJECT_DIR$/public/js/src/jquery-1.11.0.min.js" />
         <option value="$PROJECT_DIR$/public/css/style.css" />
         <option value="$PROJECT_DIR$/app/filters.php" />
         <option value="$PROJECT_DIR$/app/views/includes/js.blade.php" />
-        <option value="$PROJECT_DIR$/app/views/layouts/default.blade.php" />
-        <option value="$PROJECT_DIR$/app/models/Member.php" />
         <option value="$PROJECT_DIR$/app/models/LocationLookUp.php" />
-        <option value="$PROJECT_DIR$/app/routes.php" />
-        <option value="$PROJECT_DIR$/app/database/migrations/2014_07_22_081524_create_address_table.php" />
-        <option value="$PROJECT_DIR$/app/models/Address.php" />
         <option value="$PROJECT_DIR$/app/views/pages/userlist.blade.php" />
+        <option value="$PROJECT_DIR$/app/models/Address.php" />
         <option value="$PROJECT_DIR$/app/controllers/HomeController.php" />
+        <option value="$PROJECT_DIR$/app/routes.php" />
+        <option value="$PROJECT_DIR$/app/models/Member.php" />
+        <option value="$PROJECT_DIR$/app/database/migrations/2014_07_17_072601_create_admin_member_table.php" />
+        <option value="$PROJECT_DIR$/app/database/migrations/2014_07_22_081524_create_address_table.php" />
+        <option value="$PROJECT_DIR$/app/database/migrations/2014_07_22_082140_create_member_table.php" />
+        <option value="$PROJECT_DIR$/app/views/layouts/default.blade.php" />
+        <option value="$PROJECT_DIR$/app/views/includes/header.blade.php" />
+        <option value="$PROJECT_DIR$/app/database/seeds/AdminMemberTableSeeder.php" />
       </list>
     </option>
   </component>
@@ -217,6 +270,46 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="models" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="easyshop-admin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="easyshop-admin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Easyshop" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="easyshop-admin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="easyshop-admin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="database" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -239,7 +332,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="migrations" />
+              <option name="myItemId" value="seeds" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -353,9 +446,7 @@
     <entry file="file://$PROJECT_DIR$/app/routes.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="21" column="51" selection-start="726" selection-end="726" vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="561">
-          <folding>
-            <element signature="e#7#392#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -438,11 +529,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/database/seeds/AdminMemberTableSeeder.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="53" selection-end="53" vertical-scroll-proportion="0.1086262" vertical-offset="0" max-vertical-offset="626" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_07_22_083328_create_payment_method_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646" />
@@ -461,11 +547,6 @@
     <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_07_22_043733_create_es_order_product.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="867" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_07_17_072601_create_admin_member_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="39" selection-start="403" selection-end="403" vertical-scroll-proportion="0.46166134" vertical-offset="0" max-vertical-offset="714" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/Order.php">
@@ -544,11 +625,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_07_22_082140_create_member_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="39" selection-start="468" selection-end="468" vertical-scroll-proportion="0.29392973" vertical-offset="122" max-vertical-offset="1003" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/models/Product.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="43" selection-start="92" selection-end="92" vertical-scroll-proportion="0.1629393" vertical-offset="0" max-vertical-offset="626" />
@@ -562,23 +638,6 @@
     <entry file="file://$PROJECT_DIR$/app/filters.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="71" column="0" selection-start="1645" selection-end="1645" vertical-scroll-proportion="0.456869" vertical-offset="768" max-vertical-offset="1428" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/includes/header.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="16" selection-start="539" selection-end="539" vertical-scroll-proportion="0.5702875" vertical-offset="0" max-vertical-offset="626" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/layouts/default.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="24" selection-start="1045" selection-end="1045" vertical-scroll-proportion="0.6517572" vertical-offset="0" max-vertical-offset="626" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3400" column="14" selection-start="55791" selection-end="55791" vertical-scroll-proportion="0.0" vertical-offset="57433" max-vertical-offset="58072">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/includes/js.blade.php">
@@ -596,48 +655,88 @@
         <state line="9" column="44" selection-start="179" selection-end="179" vertical-scroll-proportion="-5.8846154" vertical-offset="0" max-vertical-offset="391" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/Member.php">
+    <entry file="file://$PROJECT_DIR$/public/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="17" selection-start="103" selection-end="103" vertical-scroll-proportion="-3.1538463" vertical-offset="54" max-vertical-offset="680">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="51" selection-start="725" selection-end="725" vertical-scroll-proportion="-13.730769" vertical-offset="0" max-vertical-offset="561">
-          <folding>
-            <element signature="e#7#392#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_07_22_081524_create_address_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="63" selection-start="519" selection-end="519" vertical-scroll-proportion="-12.423077" vertical-offset="0" max-vertical-offset="816">
+        <state line="3400" column="14" selection-start="55791" selection-end="55791" vertical-scroll-proportion="0.5743349" vertical-offset="57433" max-vertical-offset="58072">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/pages/userlist.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="208" column="65" selection-start="11606" selection-end="11606" vertical-scroll-proportion="-4.8461537" vertical-offset="3410" max-vertical-offset="4352">
+        <state line="208" column="65" selection-start="11609" selection-end="11609" vertical-scroll-proportion="0.2055465" vertical-offset="3410" max-vertical-offset="4352">
           <folding>
             <element signature="n#style#0;n#option#1;n#select#1;n#div#4;n#div#1;n#div#0;n#div#0;n#div#3;n#div#1;n#div#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/Address.php">
+    <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_07_22_081524_create_address_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="73" selection-start="302" selection-end="302" vertical-scroll-proportion="-4.4615383" vertical-offset="190" max-vertical-offset="816">
+        <state line="15" column="9" selection-start="283" selection-end="283" vertical-scroll-proportion="-9.153846" vertical-offset="0" max-vertical-offset="816">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_07_22_082140_create_member_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="5" selection-start="1509" selection-end="1509" vertical-scroll-proportion="-10.846154" vertical-offset="398" max-vertical-offset="1003">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/HomeController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="48" selection-start="2309" selection-end="2309" vertical-scroll-proportion="0.29392973" vertical-offset="1023" max-vertical-offset="1751">
+        <state line="37" column="52" selection-start="1119" selection-end="1119" vertical-scroll-proportion="-12.423077" vertical-offset="306" max-vertical-offset="1530">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="1" selection-start="389" selection-end="389" vertical-scroll-proportion="-6.5384617" vertical-offset="0" max-vertical-offset="561">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/layouts/default.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="0" selection-start="1008" selection-end="1008" vertical-scroll-proportion="-16.076923" vertical-offset="41" max-vertical-offset="680">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_07_17_072601_create_admin_member_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="62" selection-start="548" selection-end="548" vertical-scroll-proportion="-14.384615" vertical-offset="0" max-vertical-offset="731">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/includes/header.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="0" selection-start="304" selection-end="304" vertical-scroll-proportion="-9.153846" vertical-offset="102" max-vertical-offset="765">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/Member.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="35" selection-start="139" selection-end="139" vertical-scroll-proportion="-5.6153846" vertical-offset="7" max-vertical-offset="663">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/Address.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="5" selection-start="347" selection-end="347" vertical-scroll-proportion="-14.384615" vertical-offset="0" max-vertical-offset="816">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/database/seeds/AdminMemberTableSeeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="5" selection-start="480" selection-end="480" vertical-scroll-proportion="0.47768596" vertical-offset="0" max-vertical-offset="605">
           <folding />
         </state>
       </provider>

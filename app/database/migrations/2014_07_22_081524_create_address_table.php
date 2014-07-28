@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAddressTable extends Migration {
-
+class CreateAddressTable extends Migration 
+{
 	/**
 	 * Run the migrations.
 	 *
@@ -30,14 +30,14 @@ class CreateAddressTable extends Migration {
 		});
 	}
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::drop('es_address');
-	}
+    /**
+    * Reverse the migrations.
+    *
+    * @return void
+    */
+    public function down()
+    {
+        Schema::drop('es_address');
+    }
 
 }

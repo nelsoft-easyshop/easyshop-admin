@@ -2,7 +2,6 @@
 
 class AdminMemberTableSeeder extends Seeder
 {
-
 	public function run()
 	{
         DB::table('es_admin_member')->delete();
@@ -17,5 +16,4 @@ class AdminMemberTableSeeder extends Seeder
             'password' => Hash::make('kurt123'),
         ]);
 	}
-
 }

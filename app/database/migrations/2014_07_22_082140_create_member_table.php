@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMemberTable extends Migration {
-
+class CreateMemberTable extends Migration 
+{
 	/**
 	 * Run the migrations.
 	 *
@@ -41,14 +41,14 @@ class CreateMemberTable extends Migration {
 		});
 	}
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::drop('es_member');
-	}
+    /**
+    * Reverse the migrations.
+    *
+    * @return void
+    */
+    public function down()
+    {
+        Schema::drop('es_member');
+    }
 
 }

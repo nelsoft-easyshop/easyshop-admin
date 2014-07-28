@@ -3,7 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAdminMemberTable extends Migration {
+class CreateAdminMemberTable extends Migration 
+{
 
 	/**
 	 * Run the migrations.
@@ -24,14 +25,14 @@ class CreateAdminMemberTable extends Migration {
 		});
 	}
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::drop('es_admin_member');
-	}
+    /**
+    * Reverse the migrations.
+    *
+    * @return void
+    */
+    public function down()
+    {
+        Schema::drop('es_admin_member');
+    }
 
 }
