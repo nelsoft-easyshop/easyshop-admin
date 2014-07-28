@@ -18,7 +18,7 @@ class Order extends Eloquent {
 
 
     public function buyer() {
-        return $this->hasOne('Member');
+        return $this->hasOne('Member', 'id_member', 'buyer_id');
     }
 
     public function shippingAddress() {

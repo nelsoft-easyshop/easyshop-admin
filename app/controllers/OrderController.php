@@ -5,8 +5,9 @@ class OrderController extends BaseController
 {
 
     /**
-     *  Sample function to test that the order service is accesible
+     *  GET method for displaying list of account to pay
      *
+     *  @return View
      */
     public function getUsersToPay()
     {
@@ -16,5 +17,39 @@ class OrderController extends BaseController
                     ->with('input', Input::all());
     }
 
+    
+   /**
+    *  GET method for displaying specific order products in a payment account
+    *
+    *  @return View
+    */
+    public function getOrderProducts()
+    {
+        $userdata = Input::get();
+        $orderProductEntity = App::make('OrderProductRepository');
+        $orderProducts = $orderProductEntity->getOrderProductByPaymentAccount($userdata['username'], $userdata['accountname'],$userdata['accountno']);      
+        $html = View::make('partials.orderproductlist')
+                    ->with('orderproducts', $orderProducts)
+                    ->render();
+        return Response::json(array('html' => $html));
+    }
 
+   /**
+    *  GET method for displaying order product history
+    *
+    *  @return View
+    */
+    public function getOrderProductDetail()
+    {
+        $userdata = Input::get();
+        $orderProductEntity = App::make('OrderProductRepository');
+        $orderProduct = $orderProductEntity->getOrderProductById($userdata['order_product_id']);
+      
+        $html = View::make('partials.orderproducthistorylist')
+                    ->with('orderproduct', $orderProduct)
+                    ->render();
+        return Response::json(array('html' => $html));
+    }
+    
+    
 }

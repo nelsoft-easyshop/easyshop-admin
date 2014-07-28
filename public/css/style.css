@@ -197,6 +197,21 @@ div#mainsection{
     background-color: #fff8dc;
 }
 
+.table-payment .head td{
+    font-weight:bold;
+}
+
+
+.table-payment .head td{
+    cursor:default;
+    background-color: white !important;
+}
+
+
+.table-payment td.net{
+    font-weight: bold;
+}
+
 .payment_search_filter_container{
     text-align: right;
     margin-bottom: 12px;
@@ -227,6 +242,30 @@ div#mainsection{
     font-size: 13px;
 }
 
+.payment-dialog .modal-header {
+    background-color: #f18200 !important;
+}
 
+.payment-dialog .modal-dialog {
+   width: 1200px;
+}
 
+.payment-dialog .table-payment td{
+    cursor:default;
+}
+
+td span.org_btn{
+    cursor: pointer;
+    background-color: #f18200;
+    font-weight: bold;
+    -webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    padding: 3px 7px 3px 7px;
+    color: white;
+    text-transform: uppercase;
+    font-size: 10px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
 

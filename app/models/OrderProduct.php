@@ -22,19 +22,23 @@ class OrderProduct extends Eloquent {
     }
 
     public function order() {
-        return $this->hasOne('Order');
+        return $this->hasOne('Order', 'id_order', 'order_id');
     }
 
     public function orderProductStatus() {
-        return $this->hasOne('OrderProductStatus');
+        return $this->hasOne('OrderProductStatus', 'id_order_product_status', 'status');
     }
 
     public function product() {
-        return $this->hasOne('Product');
+        return $this->hasOne('Product', 'id_product', 'product_id');
     }
     
     public function billingInfo() {
         return $this->hasOne('OrderProductBillingInfo', 'order_product_id', 'id_order_product');
+    }
+    
+    public function orderProductHistory(){
+        return $this->hasMany('OrderProductHistory', 'order_product_id', 'id_order_product');
     }
 
 }

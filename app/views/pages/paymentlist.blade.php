@@ -55,11 +55,11 @@
                     </tr>
                 </thead>
                 @foreach($accountsToPay as $account)
-                    <tr>
-                        <td>{{{ $account->username }}}</td>
-                        <td>{{{ $account->bank_name }}} </td>
-                        <td>{{{ $account->account_name }}} </td>
-                        <td>{{{ $account->account_number }}} </td>
+                    <tr class="seller_detail">
+                        <td class="td_username">{{{ $account->username }}}</td>
+                        <td class="td_bankname">{{{ $account->bank_name }}} </td>
+                        <td class="td_accountname">{{{ $account->account_name }}} </td>
+                        <td class="td_accountno">{{{ $account->account_number }}} </td>
                         <td>{{{ $account->email }}}</td>
                         <td>{{{ $account->contactno }}}</td>
                         <td><strong>PHP {{  number_format($account->net, 2, '.', ',')  }}</strong></td>
@@ -71,4 +71,15 @@
 
 
   </div>
+  
+    <div class="order_dialog_con" style="display:none;">
+        <div id="order_dialog_content" style=""></div>
+    </div>
+
+  
 @stop
+
+@section('page_js') 
+  {{ HTML::script('js/paymentlist.js') }}
+@stop
+
