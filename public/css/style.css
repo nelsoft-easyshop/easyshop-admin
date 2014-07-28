@@ -59,9 +59,7 @@ p {
   margin-bottom: 5px;
   color: #b70000; 
 }
-	    
-    
-	    
+
 /*
 .bread_crumbs {
 	display: inline-block;
@@ -3359,6 +3357,7 @@ div#mainsection{
     color: #454545;
     background: #f5f5f5;
     min-height: 35.00em;
+    width: 100%;
 }
 
 #header_banner h1.tagline{
@@ -3375,4 +3374,38 @@ div#mainsection{
     margin-left: 13%; 
     text-align:left; 
     padding-top:3em;
+}
+.srch_div{
+    float: right;
+    width: 25%;
+}
+.tbl-title{
+    color: #6f6f6f;
+}
+.filter-container{
+
+}
+.tbl-container{
+    padding: 3%;
+    border: 1px solid #ddd;
+    background: #ffffff;
+}
+.tbl-my-style{
+    margin-top:2%;
+}
+.tbl-div{
+    max-width: 100%;
+    overflow-x: auto;
+}
+.pagination{
+    float:right;
+}
+.glyphicon-center{
+top:0px !important;
+}
+.user_modal textarea {
+    resize:none;
+}
+.data_container{
+    display: none ;
 }
