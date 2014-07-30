@@ -51,5 +51,15 @@ class OrderController extends BaseController
         return Response::json(array('html' => $html));
     }
     
+    public function getOrderProductPaymentDetail(){
+        $userdata = Input::get();
+        $orderProductEntity = App::make('OrderProductRepository');
+        
+        $html = View::make('partials.orderproductbilling')
+                    ->with('accounts', array())
+                    ->render();
+        return Response::json(array('html' => $html));
+    }
+    
     
 }
