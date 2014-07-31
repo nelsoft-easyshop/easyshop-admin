@@ -3,7 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductTable extends Migration {
+class CreateProductTable extends Migration
+{
     /**
      * Run the migrations.
      *

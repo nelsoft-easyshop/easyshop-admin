@@ -5,15 +5,15 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateMemberTable extends Migration 
 {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::create('es_member', function(Blueprint $table)
-		{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('es_member', function(Blueprint $table)
+        {
             $table->integer('id_member',true,true);
             $table->string('username');
             $table->string('usersession')->nullable();
@@ -38,8 +38,8 @@ class CreateMemberTable extends Migration
             $table->text('store_desc')->nullable();
             $table->tinyInteger('is_promo_valid')->default(0);
             $table->timestamps();
-		});
-	}
+        });
+    }
 
     /**
     * Reverse the migrations.
