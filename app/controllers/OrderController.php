@@ -11,9 +11,8 @@ class OrderController extends BaseController
      */
     public function getUsersToPay()
     {
-        $userdata = Input::get();
-        $orderProductEntity = App::make('OrderProductRepository');
-        return View::make('pages.paymentlist')->with('accountsToPay', $orderProductEntity->getUserAccountsToPay($userdata))
+        $memberRepository = App::make('MemberRepository');
+        return View::make('pages.paymentlist')->with('accountsToPay', $memberRepository->getUserAccountsToPay(Input::get('username'), Input::get('year'), Input::get('month'), Input::get('day') ))
                     ->with('input', Input::all());
     }
 
@@ -26,8 +25,8 @@ class OrderController extends BaseController
     public function getOrderProducts()
     {
         $userdata = Input::get();
-        $orderProductEntity = App::make('OrderProductRepository');
-        $orderProducts = $orderProductEntity->getOrderProductByPaymentAccount($userdata['username'], $userdata['accountname'],$userdata['accountno']);      
+        $orderProductRepository = App::make('OrderProductRepository');
+        $orderProducts = $orderProductRepository->getOrderProductByPaymentAccount($userdata['username'], $userdata['accountname'],$userdata['accountno']);      
         $html = View::make('partials.orderproductlist')
                     ->with('orderproducts', $orderProducts)
                     ->render();
@@ -42,8 +41,8 @@ class OrderController extends BaseController
     public function getOrderProductDetail()
     {
         $userdata = Input::get();
-        $orderProductEntity = App::make('OrderProductRepository');
-        $orderProduct = $orderProductEntity->getOrderProductById($userdata['order_product_id']);
+        $orderProductRepository = App::make('OrderProductRepository');
+        $orderProduct = $orderProductRepository->getOrderProductById($userdata['order_product_id']);
       
         $html = View::make('partials.orderproducthistorylist')
                     ->with('orderproduct', $orderProduct)
@@ -53,7 +52,7 @@ class OrderController extends BaseController
     
     public function getOrderProductPaymentDetail(){
         $userdata = Input::get();
-        $orderProductEntity = App::make('OrderProductRepository');
+        $orderProductRepository = App::make('OrderProductRepository');
         
         $html = View::make('partials.orderproductbilling')
                     ->with('accounts', array())
