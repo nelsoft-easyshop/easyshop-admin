@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateAddressTable extends Migration 
 {
 
-    /**
+   /**
     * Run the migrations.
     *
     * @return void
@@ -31,7 +31,7 @@ class CreateAddressTable extends Migration
         });
     }
 
-    /**
+   /**
     * Reverse the migrations.
     *
     * @return void

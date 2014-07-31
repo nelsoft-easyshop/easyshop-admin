@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateAdminMemberTable extends Migration 
 {
 
-    /**
+   /**
     * Run the migrations.
     *
     * @return void
@@ -25,7 +25,7 @@ class CreateAdminMemberTable extends Migration
         });
     }
 
-    /**
+   /**
     * Reverse the migrations.
     *
     * @return void
