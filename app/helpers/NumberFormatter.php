@@ -4,7 +4,8 @@
  * Helper Class for formatting number
  */
 
-class NumberFormatter{
+class NumberFormatter
+{
 
    /**
     *  Adds ordinal suffix to end fo numbers.
