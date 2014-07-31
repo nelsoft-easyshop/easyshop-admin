@@ -33,7 +33,6 @@ class MemberRepository
     */
     public function getUserAccountsToPay($username, $year, $month, $day)
     {
-
         if(!empty($year)  && !empty($month) && !empty($day)){
             $dateFrom =  $this->transactionService->getLastPayoutDate($year.'-'.$month.'-'.$day);
             $dateTo =  $this->transactionService>getNextPayoutDate($year.'-'.$month.'-'.$day);
@@ -45,8 +44,8 @@ class MemberRepository
         $query = DB::table('es_order_product')->join('es_order_product_billing_info', 'es_order_product.id_order_product', '=', 'es_order_product_billing_info.order_product_id');
         $query ->join('es_member','es_order_product.seller_id', '=', 'es_member.id_member');
         $query ->where(function ($query) {
-                    $query->where('status', '=', 1)
-                        ->orWhere('status', '=', 4);
+                    $query->where('status', '=', OrderProductRepository::STATUS_FUND_CLEARED)
+                        ->orWhere('status', '=', OrderProductRepository::STATUS_FUND_MOVED);
                 });
         $query->where('es_order_product.created_at', '>=', $dateFrom);
         $query->where('es_order_product.created_at', '<', $dateTo);
