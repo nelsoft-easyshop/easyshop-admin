@@ -105,10 +105,10 @@
                                     <input type="radio" name="mdl_promo" id="chck_no" value="0"> No
                                 </label>
                             </div>
-                            <span class="help-block">This will set if the user can join the ???? .</span>
+                            <span class="help-block">This will set if the user can join the promo .</span>
                             <div class="form-group">
                                 <label>Address : </label>
-                                <select name="c_stateregion" class="address_dropdown stateregionselect" data-status="<?php #$c_stateregionID?>">
+                                <select name="c_stateregion" class="address_dropdown stateregionselect" data-status="">
                                     <option value="0">--- Select State/Region ---</option>
                                     @foreach($list_of_location['stateregion_lookup'] as $srkey=>$stateregion)
                                     <option class="echo" value="{{{ $srkey }}}" >{{{ $stateregion }}}</option>
@@ -185,8 +185,7 @@
                     mdl_remarks.val(data.remarks);
                     mdl_button.attr('data',data.id);
                     $('#chck_no').prop("checked", true);
-                    if(parseInt(data.is_promote) === 1)
-                    {
+                    if(parseInt(data.is_promote) === 1) {
                         $('#chck_yes').prop("checked", true);
                     }
                     dp1.attr('data_status',data.c_stateregionID);
@@ -198,19 +197,19 @@
                 }
                 else if(data_json)
                 {
-                    var id = data_json.member.id_member;
+                    var id = escapeHtml(data_json.id_member);
                     var obj = '{"id":"' + id +
-                        '","fullname":"' + data_json.member.fullname +
-                        '","contact_number":"' + data_json.member.contactno +
-                        '","remarks":"' + data_json.member.remarks +
-                        '","is_promote":"' + data_json.member.is_promo_valid +
-                        '","c_stateregionID":"' + data_json.address.stateregion +
-                        '","c_cityID":"' + data_json.address.city +
-                        '","address":"' + data_json.address.address + '"}';
-                    $('.tbl-my-style #' + id + '_uname').html(data_json.member.fullname);
-                    $('.tbl-my-style #' + id + '_contact').html(data_json.member.contactno);
-                    $('.tbl-my-style #' + id + '_remarks').html(data_json.member.remarks);
-                    $('.tbl-my-style #' + id + '_address').html(data_json.address.n_city + ' ' + data_json.address.n_stateregion + ' ' + data_json.address.address);
+                        '","fullname":"' + escapeHtml(data_json.fullname) +
+                        '","contact_number":"' + escapeHtml(data_json.contactno) +
+                        '","remarks":"' + escapeHtml(data_json.remarks) +
+                        '","is_promote":"' + escapeHtml(data_json.is_promo_valid) +
+                        '","c_stateregionID":"' + escapeHtml(data_json.address.region.id_location) +
+                        '","c_cityID":"' + escapeHtml(data_json.address.city.id_location) +
+                        '","address":"' + escapeHtml(data_json.address.address) + '"}';
+                    $('.tbl-my-style #' + id + '_uname').html(escapeHtml(data_json.fullname));
+                    $('.tbl-my-style #' + id + '_contact').html(escapeHtml(data_json.contactno));
+                    $('.tbl-my-style #' + id + '_remarks').html(escapeHtml(data_json.remarks));
+                    $('.tbl-my-style #' + id + '_address').html(data_json.address.city.location + ' ' + data_json.address.region.location + ' ' + escapeHtml(data_json.address.address));
                     $('.tbl-my-style #data_' + id ).attr('data',obj);
                 }
             }
@@ -230,21 +229,18 @@
                     return false;
                 }
                 $.ajax({
-                    url:'UpdateUser',
+                    url:'updateUser',
                     dataType:'JSON',
                     type:'POST',
                     data:{id:user_id,fullname:user_fullname,contact:user_contact,remarks:user_remarks,is_promo_valid:user_promo,city:user_cityID,stateregion:user_stateID,address:user_address},
                     success:function(result){
-                        CloseBootstrapModal();
                         PushObjectToFields(false,result);
+                        CloseBootstrapModal();
                     }
                 })
             });
             function CloseBootstrapModal(){
-                $('#myModal').attr('class','modal fade user_modal').attr('aria-hidden','true').hide();
-                $('.modal-backdrop').removeClass('in').remove();
-                $('.modal-open').prop('style','').prop('class','');
-
+                $('.modal.in').modal('hide');
             }
         });
     </script>

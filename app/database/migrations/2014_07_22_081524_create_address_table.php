@@ -10,25 +10,25 @@ class CreateAddressTable extends Migration
 	 *
 	 * @return void
 	 */
-	public function up()
-	{
-		Schema::create('es_address', function(Blueprint $table)
-		{
-			$table->increments('id_address');
-			$table->integer('id_member');
-			$table->integer('stateregion')->nullable()->default(0);
-			$table->integer('city')->nullable()->default(0);
-			$table->integer('country')->nullable()->default(0);
-			$table->string('address')->nullable()->default('');
-			$table->tinyInteger('type')->nullable()->default(0);
-			$table->string('telephone',45)->nullable()->default('');
-			$table->string('mobile',45)->nullable()->default('');
-			$table->string('consignee',45)->nullable()->default('');
-			$table->float('lat')->nullable()->default(0);
-			$table->float('lng')->nullable()->default(0);
-			$table->timestamps();
-		});
-	}
+    public function up()
+    {
+        Schema::create('es_address', function(Blueprint $table)
+        {
+            $table->increments('id_address');
+            $table->integer('id_member');
+            $table->integer('stateregion')->nullable()->default(0);
+            $table->integer('city')->nullable()->default(0);
+            $table->integer('country')->nullable()->default(0);
+            $table->string('address')->nullable()->default('');
+            $table->tinyInteger('type')->nullable()->default(0);
+            $table->string('telephone',45)->nullable()->default('');
+            $table->string('mobile',45)->nullable()->default('');
+            $table->string('consignee',45)->nullable()->default('');
+            $table->float('lat')->nullable()->default(0);
+            $table->float('lng')->nullable()->default(0);
+            $table->timestamps();
+        });
+    }
 
     /**
     * Reverse the migrations.
@@ -39,5 +39,4 @@ class CreateAddressTable extends Migration
     {
         Schema::drop('es_address');
     }
-
 }

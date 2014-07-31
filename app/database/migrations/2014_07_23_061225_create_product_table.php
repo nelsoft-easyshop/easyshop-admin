@@ -4,17 +4,16 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateProductTable extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::create('es_product', function(Blueprint $table)
-		{
-			$table->integer('id_product',true,true);
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('es_product', function(Blueprint $table)
+        {
+            $table->integer('id_product',true,true);
             $table->string('name');
             $table->string('sku');
             $table->string('brief');
@@ -47,17 +46,15 @@ class CreateProductTable extends Migration {
             $table->dateTime('enddate');
             $table->integer('promo_type')->default(0);
             $table->integer('is_sold_out')->default(0);
-		});
-	}
-
+        });
+    }
 	/**
 	 * Reverse the migrations.
 	 *
 	 * @return void
 	 */
-	public function down()
-	{
-		Schema::drop('es_product');
-	}
-
+    public function down()
+    {
+        Schema::drop('es_product');
+    }
 }
