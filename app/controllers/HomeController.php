@@ -17,7 +17,7 @@ class HomeController extends BaseController
         $dataFormatter = App::make('Easyshop\Services\DataFormatterService');
         $data = $dataFormatter->location($listOfLoc->getLocationLookUpByType($type));
 
-        return View::make('pages.userlist')->with('list_of_member', Member::paginate(2))->with('list_of_location', $data);
+        return View::make('pages.userlist')->with('list_of_member', Member::paginate(100))->with('list_of_location', $data);
     }
     public function ajaxUpdateUsers()
     {
@@ -39,5 +39,9 @@ class HomeController extends BaseController
         $address->doAddress(Input::get('id'), $dataAddress);
 
         echo json_encode($member->getMemberById(Input::get('id')));
+    }
+    public function showAllItems()
+    {
+        return View::make('pages.itemlist')->with('list_of_items',App::make('ProductRepository')->showAllProduct(true)->paginate(100));
     }
 }

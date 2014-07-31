@@ -23,5 +23,6 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('/', array('uses' => 'HomeController@index'));
     Route::get('users', array('uses' => 'HomeController@showAllUsers'));
     Route::post('updateUser', array('uses' => 'HomeController@ajaxUpdateUsers'));
+    Route::get('items',array('uses'=>'HomeController@showAllItems'));
     Route::get('pay', array('uses' => 'OrderController@getUsersToPay'));
 });

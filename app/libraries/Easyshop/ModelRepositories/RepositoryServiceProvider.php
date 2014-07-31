@@ -28,6 +28,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('AddressRepository', function($app){
             return new AddressRepository();
         });
+        $this->app->bind('ProductRepository', function($app){
+            return new ProductRepository();
+        });
     }
 }
 
