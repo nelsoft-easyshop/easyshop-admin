@@ -22,6 +22,11 @@ class BillingInfo extends Eloquent
     {
         return $this->belongsTo('Member', 'member_id', 'id_member');
     }
+    
+    public function bankInfo() 
+    {
+        return $this->hasOne('BankInfo', 'id_bank', 'bank_id');
+    }
 
 
 }
