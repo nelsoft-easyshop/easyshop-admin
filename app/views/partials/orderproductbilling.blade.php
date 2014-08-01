@@ -3,11 +3,9 @@
 
     <span> Deposit to: </span>
     <select class="form-control">
-        <!--
         @foreach($accounts as $account)
-        <option>{{{  }}}</option>
+            <option>{{{ $account->bankInfo->bank_name }}} - {{{ $account->bank_account_name }}}</option>
         @endforeach
-        -->
         <option>ADD PAYMENT ACCOUNT</option>
     </select>
 
@@ -16,18 +14,22 @@
     <div class='left'>
         <div class="control-group">
             <p>
-                <label for='form_accnt_name'><strong>Account Name:</strong></label> <span id="accnt_name"> SAM TEST </span>
+                <label for='form_accnt_name'><strong>Account Name:</strong></label> <span id="accnt_name"> {{{ $accounts[0]->bank_account_name or '' }}} </span>
                 <input style='display:none' class='form-control' type='text' name='form_accnt_name' id='form_accnt_name'/>
             </p>
 
             <p>
-                <label for='form_accnt_number'><strong>Account Number:</strong></label> <span id="accnt_number">SAM </span>
+                <label for='form_accnt_number'><strong>Account Number:</strong></label> <span id="accnt_number"> {{{ $accounts[0]->bank_account_number or '' }}} </span>
                 <input style='display:none' class='form-control' type='text' name='form_accnt_number' id='form_accnt_number'/>
             </p>
 
             <p>
-                <label for='form_accnt_bank'><strong>Bank:</strong></label> <span id="accnt_bank">SAM TEST</span>
+                <label for='form_accnt_bank'><strong>Bank:</strong></label> <span id="accnt_bank">{{{ $accounts[0]->bankInfo->bank_name or '' }}}</span>
+                <input type="hidden" id="accnt_bank_id" value="{{{ $accounts[0]->bankInfo->id_bank }}}"/>
                 <select id="form_accnt_bank"  class='form-control' style='display:none' name='form_accnt_bank'>
+                    @foreach($bankList as $bank)
+                        <option value="{{{ $bank->id_bank }}}">{{{ $bank->bank_name }}}</option>
+                    @endforeach
                 </select>
             </p>
         </div>

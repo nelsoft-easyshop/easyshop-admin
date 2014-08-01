@@ -95,7 +95,7 @@ $(document).ready(function(){
         
         $('#form_accnt_name').val($('#accnt_name').html().trim());
         $('#form_accnt_number').val($('#accnt_number').html().trim());
-        $('#form_accnt_bank').val($('#accnt_bank').html().trim());
+        $('#form_accnt_bank').val($('#accnt_bank_id').val());
         
         $('#form_accnt_name').css('display', 'inline');
         $('#form_accnt_number').css('display', 'inline');
