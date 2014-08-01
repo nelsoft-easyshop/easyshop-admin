@@ -16,5 +16,10 @@ class ServiceServiceProvider extends ServiceProvider
         $this->app->bind('TransactionService', function($app){
             return new TransactionService();
         });
+
+        $this->app->bind('NumberFormatter', function(){
+            return new NumberFormatterService();
+        });
+        
     }
 }
