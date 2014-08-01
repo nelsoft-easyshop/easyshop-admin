@@ -324,4 +324,23 @@ div#mainsection{
     margin-left: 10px;
 }
 
+.shipping_details input{
+    width: 250px;
+    display: inline;
+    margin-right: 20px;
+}
+.shipping_details textarea{
+    width: 680px;
+    display: inline;
+}
+
+.shipping_details label{
+    width: 150px;
+    font-weight: normal;
+    
+}
+
+.shipping_details{
+    font-size: 13px;
+}
 

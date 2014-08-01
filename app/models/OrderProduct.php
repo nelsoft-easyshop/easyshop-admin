@@ -40,5 +40,10 @@ class OrderProduct extends Eloquent {
     public function orderProductHistory(){
         return $this->hasMany('OrderProductHistory', 'order_product_id', 'id_order_product');
     }
+    
+    public function orderProductComment(){
+        return $this->hasOne('ProductShippingComment', 'order_product_id', 'id_order_product');
+    }
+
 
 }
