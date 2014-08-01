@@ -32,7 +32,7 @@ class OrderProductRepository
     */
     public function getOrderProductByPaymentAccount($username, $accountname, $accountno)
     {
-        $query = OrderProduct::join('es_order_product_billing_info', 'es_order_product.id_order_product', '=', 'es_order_product_billing_info.order_product_id')
+        $query = OrderProduct::leftJoin('es_order_product_billing_info', 'es_order_product.id_order_product', '=', 'es_order_product_billing_info.order_product_id')
                         ->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member')
                         ->join('es_order', 'es_order.id_order', '=', 'es_order_product.order_id')
                         ->join('es_member as buyer','es_order.buyer_id', '=', 'buyer.id_member')
@@ -41,9 +41,20 @@ class OrderProductRepository
                         ->where(function ($query) {
                             $query->where('status', '=', 1)
                                 ->orWhere('status', '=', 4);
-                        })->where('seller.username', '=', $username)
-                        ->where('es_order_product_billing_info.account_name', '=', $accountname)
-                        ->where('es_order_product_billing_info.account_number', '=', $accountno);
+                        })->where('seller.username', '=', $username);
+                        
+        if(trim($accountname) !== ""){
+            $query->where('es_order_product_billing_info.account_name', '=', $accountname);
+        }else{
+            $query->whereNull('es_order_product_billing_info.account_name');
+        }
+        
+        if(trim($accountno) !== ""){
+            $query->where('es_order_product_billing_info.account_number', '=', $accountno);
+        }else{
+            $query->whereNull('es_order_product_billing_info.account_number');
+        }    
+           
         return $query->get(['es_order_product.*', 'es_order.invoice_no', 'es_order.buyer_id', 'buyer.username as buyer', 'es_product.name as productname', 'es_order_product_status.name as statusname']);
     }
 
@@ -54,7 +65,8 @@ class OrderProductRepository
     * @param integer $orderProductId
     * @return Entity
     */
-    public function getOrderProductHistory($orderProductId){
+    public function getOrderProductHistory($orderProductId)
+    {
 
         $orderProduct = OrderProduct::join('es_order_product_history', 'es_order_product_history.order_product_id', '=', 'es_order_product.id_order_product')
                                     ->join('es_product', 'es_product.id_product', '=', 'es_order_product_history.product_id')
