@@ -56,9 +56,9 @@ class TransactionService
         }
 
         $hasExceededLastCutOff = ($currentDay > max($payOutDays));
-        $month = $currentMonth + (($hasExceededLastCutOff)?1:0);
-        $month = ($month > 12)?1:$month;
-        $year = $currentYear + ((($currentMonth === 12) && ($hasExceededLastCutOff))?1:0); 
+        $month = $currentMonth + ($hasExceededLastCutOff ? 1 : 0);
+        $month = ($month > 12) ? 1 : $month;
+        $year = $currentYear + (($currentMonth === 12 && $hasExceededLastCutOff) ? 1 : 0); 
 
         return Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$day);
     }
@@ -87,9 +87,9 @@ class TransactionService
         }
         
         $hasExceededFirstCutOff = ($currentDay > min($payOutDays));
-        $month = $currentMonth - ((!$hasExceededFirstCutOff)?1:0);
-        $month = ($month < 1)?12:$month;
-        $year = $currentYear - ((($currentMonth === 1) && (!$hasExceededFirstCutOff))?1:0  ); 
+        $month = $currentMonth - (!$hasExceededFirstCutOff ? 1 : 0);
+        $month = ($month < 1) ? 12 : $month;
+        $year = $currentYear - (($currentMonth === 1 && !$hasExceededFirstCutOff)?1:0  ); 
         
         return Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$day);
     }
@@ -115,9 +115,9 @@ class TransactionService
         }
 
         $isPreviousMonth = ($dayFilter < $startDay);
-        $month = $monthFilter - (($isPreviousMonth)?1:0);
-        $month = ($month <= 0)?12:$month;
-        $year = $yearFilter - ((($month === 12) && ($isPreviousMonth)) ? 1 : 0); 
+        $month = $monthFilter - ($isPreviousMonth ? 1 : 0);
+        $month = ($month <= 0) ? 12 : $month;
+        $year = $yearFilter - (($month === 12 && $isPreviousMonth) ? 1 : 0); 
 
         return Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$startDay);
     }
@@ -145,9 +145,9 @@ class TransactionService
         $isEndOfMonth = ($endDay === 'END_OF_MONTH');
         
         $isPreviousMonth = $isEndOfMonth || ($dayFilter < $endDay);
-        $month = $monthFilter - (($isPreviousMonth)?1:0);
-        $month = ($month <= 0)?12:$month;
-        $year = $yearFilter - ((($month === 12) && ($isPreviousMonth)) ? 1 : 0); 
+        $month = $monthFilter - ($isPreviousMonth ? 1 : 0);
+        $month = ($month <= 0) ? 12 : $month;
+        $year = $yearFilter - (($month === 12 && $isPreviousMonth) ? 1 : 0); 
 
         $endDay = ($isEndOfMonth)?Carbon::createFromFormat('Y-m',$year.'-'.$month)->endOfMonth()->format('d'):$endDay;
 
