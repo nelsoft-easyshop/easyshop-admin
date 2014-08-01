@@ -19,8 +19,7 @@ class MemberRepository
     {
         $this->transactionService = $transactionService;
     }
-    
-    
+
    /**
     *  Get users to be paid. Results are grouped by user and banking details
     *  OrderProduct->status = 1 / Payment has been cleared for transfer to seller 
@@ -45,7 +44,7 @@ class MemberRepository
         $dateFrom = $this->transactionService->getStartPayOutRange($dateFilter)->format('Y-m-d');
         $dateTo = $this->transactionService->getEndPayOutRange($dateFilter)->format('Y-m-d');
         
-        $query = DB::table('es_order_product')->join('es_order_product_billing_info', 'es_order_product.id_order_product', '=', 'es_order_product_billing_info.order_product_id');
+        $query = DB::table('es_order_product')->leftJoin('es_order_product_billing_info', 'es_order_product.id_order_product', '=', 'es_order_product_billing_info.order_product_id');
         $query->join('es_member','es_order_product.seller_id', '=', 'es_member.id_member');
         $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
         $query->leftJoin('es_product_shipping_comment','es_product_shipping_comment.order_product_id', '=', 'es_order_product.id_order_product');
