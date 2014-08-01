@@ -1,6 +1,8 @@
 <?php namespace Easyshop\Composers;
 
 use Easyshop\Services\TransactionService as TransactionService;
+use Carbon\Carbon;
+use Config;
 
 class PaymentComposer 
 {
@@ -9,8 +11,9 @@ class PaymentComposer
     private $yearStart;
     private $transactionService;
     
-    public function __construct(TransactionService $transactionService){
-        $this->yearStart = '2013';
+    public function __construct(TransactionService $transactionService)
+    {
+        $this->yearStart = Config::get('transaction.startOfOperation')->format('Y');
         $this->transactionService = $transactionService; 
     }
     
@@ -19,24 +22,21 @@ class PaymentComposer
     *
     *    @param View $view
     */
-    
     public function compose($view)
     {        
         $viewData = $view->getData();
 
         if(isset($viewData['input']['month']) && isset($viewData['input']['year']) && isset($viewData['input']['day'])){
-             $nextPayOutDate = strtotime($viewData['input']['year'].'-'.$viewData['input']['month'].'-'.$viewData['input']['day']) ;
+            $nextPayOutDate = Carbon::createFromFormat('Y-m-d', $viewData['input']['year'].'-'.$viewData['input']['month'].'-'.$viewData['input']['day']);
         }else{
-            $this->transactionService->getLastPayoutDate();
-            $nextPayOutDate = strtotime($this->transactionService->getNextPayoutDate());
+            $nextPayOutDate = $this->transactionService->getNextPayoutDate();
         }
-        
         $yeardiff = date('Y') - $this->yearStart;
         $yearSelection = array();
         do{
             $year = $this->yearStart + $yeardiff;
             array_push($yearSelection, ['year' => $year, 
-                                        'selected' =>  (intval($year) === intval(date('Y',$nextPayOutDate)))]);
+                                        'selected' =>  (intval($year) === intval($nextPayOutDate->format('Y')))]);
             $yeardiff--;
         }while($yeardiff >= 0);
         
@@ -44,12 +44,12 @@ class PaymentComposer
         $daySelection = array();
         foreach($payOutDays as $day){
             array_push($daySelection, ['day' => $day, 
-                                    'selected' => (intval($day) === intval(date('d',$nextPayOutDate)))]);                                      
+                                    'selected' => (intval($day) === intval($nextPayOutDate->format('d')))]);                                      
         }
 
         $view->with('yearSelection',  $yearSelection)
              ->with('dateSelection', $daySelection) 
-             ->with('defaultMonth', date('m', $nextPayOutDate))
+             ->with('defaultMonth', $nextPayOutDate->format('m'))
              ->with('username', isset($viewData['input']['username'])?$viewData['input']['username']:'');
 
     }
