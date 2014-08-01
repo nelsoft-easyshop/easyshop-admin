@@ -6,7 +6,7 @@ use Easyshop\Services\TransactionService as TransactionService;
 
 class OrderProductRepository
 {    
-
+    const STATUS_ON_GOING = 0;
     const STATUS_FUND_CLEARED = 1;
     const STATUS_FUND_MOVED = 4;
 
@@ -22,8 +22,6 @@ class OrderProductRepository
     }
     
     
- 
-
    /**
     * Returns all order products that are tied to a certain payment account_name
     *
@@ -32,7 +30,8 @@ class OrderProductRepository
     * @param string accountno
     * @return Entity[]
     */
-    public function getOrderProductByPaymentAccount($username, $accountname, $accountno){
+    public function getOrderProductByPaymentAccount($username, $accountname, $accountno)
+    {
         $query = OrderProduct::join('es_order_product_billing_info', 'es_order_product.id_order_product', '=', 'es_order_product_billing_info.order_product_id')
                         ->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member')
                         ->join('es_order', 'es_order.id_order', '=', 'es_order_product.order_id')
@@ -47,10 +46,8 @@ class OrderProductRepository
                         ->where('es_order_product_billing_info.account_number', '=', $accountno);
         return $query->get(['es_order_product.*', 'es_order.invoice_no', 'es_order.buyer_id', 'buyer.username as buyer', 'es_product.name as productname', 'es_order_product_status.name as statusname']);
     }
-    
-    
-    
-    
+
+        
    /**
     * Returns history details of an order product
     *
@@ -59,7 +56,6 @@ class OrderProductRepository
     */
     public function getOrderProductHistory($orderProductId){
 
-        
         $orderProduct = OrderProduct::join('es_order_product_history', 'es_order_product_history.order_product_id', '=', 'es_order_product.id_order_product')
                                     ->join('es_product', 'es_product.id_product', '=', 'es_order_product_history.product_id')
                                     ->where('es_order_product.id_order_product_id', '=', $orderProductId)
