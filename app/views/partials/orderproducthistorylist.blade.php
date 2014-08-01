@@ -37,27 +37,31 @@
     <br/><br/>
 
         
-        @if(count($orderproduct->orderProductHistory) > 0)
-            <table class="table table-striped table-hover">
-            <tr class='head'>
-                <td>History ID</td>
-                <td>State</td>
-                <td>Date</td>
+    @if(count($orderproduct->orderProductHistory) > 0)
+        <table class="table table-striped table-hover">
+        <tr class='head'>
+            <td>History ID</td>
+            <td>State</td>
+            <td>Date</td>
 
-            </tr>    
-            @foreach($orderproduct->orderProductHistory as $history)
-            <tr>
-                
-                <td>{{{ $history->id_order_product_history}}}</td>
-                <td>{{{ $history->orderProductStatus->name }}}</td>
-                <td>{{{ $history->created_at }}}</td>
+        </tr>    
+        @foreach($orderproduct->orderProductHistory as $history)
+        <tr>
+            
+            <td>{{{ $history->id_order_product_history}}}</td>
+            <td>{{{ $history->orderProductStatus->name }}}</td>
+            <td>{{{ $history->created_at }}}</td>
+
+            
+        </tr>   
+        @endforeach
     
-                
-            </tr>   
-            @endforeach
-        
-            </table>
-        @endif
+        </table>
+    @endif
     
+    @if($orderproduct->orderProductComment)
+        <h6>* Shipped on {{{ $orderproduct->orderProductComment->delivery_date }}}.</h6>
+    @endif
+    </div>
     
 </div>
