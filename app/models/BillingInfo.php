@@ -14,7 +14,6 @@ class BillingInfo extends Eloquent
     * The primary key of the table
     *
     */
-
     protected $primaryKey = 'id_billing_info';
 
     

@@ -28,7 +28,6 @@ class AdminMember extends Eloquent implements UserInterface, RemindableInterface
     * The primary key of the table
     *
     */
-
     protected $primaryKey = 'id_admin_member';
 
 }

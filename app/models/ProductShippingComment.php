@@ -13,7 +13,6 @@ class ProductShippingComment extends Eloquent {
     * The primary key of the table
     *
     */
-
     protected $primaryKey = 'id_product_shipping_comment';
 
     

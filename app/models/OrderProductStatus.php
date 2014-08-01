@@ -13,7 +13,6 @@ class OrderProductStatus extends Eloquent {
     * The primary key of the table
     *
     */
-
     protected $primaryKey = 'id_order_product_status';
 
 

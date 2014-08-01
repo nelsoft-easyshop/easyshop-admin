@@ -13,7 +13,6 @@ class PaymentMethod extends Eloquent {
     * The primary key of the table
     *
     */
-
     protected $primaryKey = 'id_payment_method';
 
 

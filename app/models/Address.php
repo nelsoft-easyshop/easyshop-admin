@@ -14,7 +14,6 @@ class Address extends Eloquent
     * The primary key of the table
     *
     */
-
     protected $primaryKey = 'id_address';
 
 
