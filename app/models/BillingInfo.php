@@ -1,6 +1,7 @@
 <?php
 
-class BillingInfo extends Eloquent {
+class BillingInfo extends Eloquent 
+{
 
    /**
     * The database table used by the model.
@@ -18,7 +19,8 @@ class BillingInfo extends Eloquent {
 
     
     
-    public function member() {
+    public function member() 
+    {
         return $this->belongsTo('Member', 'member_id', 'id_member');
     }
 

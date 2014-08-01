@@ -1,6 +1,7 @@
 <?php
 
-class Member extends Eloquent {
+class Member extends Eloquent 
+{
 
    /**
     * The database table used by the model.

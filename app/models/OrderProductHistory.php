@@ -17,7 +17,8 @@ class OrderProductHistory extends Eloquent {
 
     protected $primaryKey = 'id_order_product_history';
 
-    public function orderProductStatus() {
+    public function orderProductStatus() 
+    {
         return $this->hasOne('OrderProductStatus', 'id_order_product_status', 'order_product_status');
     }
  

@@ -1,6 +1,7 @@
 <?php
 
-class OrderProduct extends Eloquent {
+class OrderProduct extends Eloquent 
+{
 
 
    /**
@@ -17,31 +18,38 @@ class OrderProduct extends Eloquent {
 
     protected $primaryKey = 'id_order_product';
 
-    public function seller() {
+    public function seller() 
+    {
         return $this->hasOne('Member', 'id_member', 'seller_id');
     }
 
-    public function order() {
+    public function order() 
+    {
         return $this->hasOne('Order', 'id_order', 'order_id');
     }
 
-    public function orderProductStatus() {
+    public function orderProductStatus() 
+    {
         return $this->hasOne('OrderProductStatus', 'id_order_product_status', 'status');
     }
 
-    public function product() {
+    public function product() 
+    {
         return $this->hasOne('Product', 'id_product', 'product_id');
     }
     
-    public function billingInfo() {
+    public function billingInfo() 
+    {
         return $this->hasOne('OrderProductBillingInfo', 'order_product_id', 'id_order_product');
     }
     
-    public function orderProductHistory(){
+    public function orderProductHistory()
+    {
         return $this->hasMany('OrderProductHistory', 'order_product_id', 'id_order_product');
     }
     
-    public function orderProductComment(){
+    public function orderProductComment()
+    {
         return $this->hasOne('ProductShippingComment', 'order_product_id', 'id_order_product');
     }
 
