@@ -15,6 +15,11 @@ class OrderProductBillingInfo extends Eloquent {
     */
     protected $primaryKey = 'id_order_product_billing_info';
 
+    
+    public function bankInfo() 
+    {
+        return $this->hasOne('BankInfo', 'id_bank_info', 'bank_id');
+    }
 
 
 }
