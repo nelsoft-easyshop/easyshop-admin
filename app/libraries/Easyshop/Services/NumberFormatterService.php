@@ -1,6 +1,7 @@
 <?php namespace Easyshop\Services;
 
-class NumberFormatterService {
+class NumberFormatterService 
+{
 
     /**
     *  Adds ordinal suffix to end fo numbers.
@@ -8,7 +9,8 @@ class NumberFormatterService {
     *  @param integer
     *  @return string
     */
-    public static function addOrdinalNumberSuffix($num) {
+    public static function addOrdinalNumberSuffix($num) 
+    {
         if (!in_array(($num % 100),array(11,12,13))){
             switch ($num % 10) {
                 // Handle 1st, 2nd, 3rd
