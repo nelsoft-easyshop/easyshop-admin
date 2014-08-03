@@ -1,6 +1,7 @@
 <?php
 
-class OrderProductBillingInfo extends Eloquent {
+class OrderProductBillingInfo extends Eloquent 
+{
 
    /**
     * The database table used by the model.

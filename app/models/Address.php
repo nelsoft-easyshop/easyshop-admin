@@ -10,7 +10,7 @@ class Address extends Eloquent
     */
     protected $table = 'es_address';
 
-   /*
+   /**
     * The primary key of the table
     *
     */

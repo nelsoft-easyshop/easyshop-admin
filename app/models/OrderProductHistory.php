@@ -1,6 +1,7 @@
 <?php
 
-class OrderProductHistory extends Eloquent {
+class OrderProductHistory extends Eloquent 
+{
 
 
    /**

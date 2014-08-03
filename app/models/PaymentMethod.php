@@ -1,6 +1,7 @@
 <?php
 
-class PaymentMethod extends Eloquent {
+class PaymentMethod extends Eloquent 
+{
 
    /**
     * The database table used by the model.

@@ -1,6 +1,7 @@
 <?php
 
-class ProductShippingComment extends Eloquent {
+class ProductShippingComment extends Eloquent 
+{
 
    /**
     * The database table used by the model.
