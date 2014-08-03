@@ -3,7 +3,7 @@
 class NumberFormatterService 
 {
 
-    /**
+   /**
     *  Adds ordinal suffix to end fo numbers.
     * 
     *  @param integer
