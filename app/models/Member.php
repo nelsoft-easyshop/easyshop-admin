@@ -1,6 +1,7 @@
 <?php
 
-class Member extends Eloquent {
+class Member extends Eloquent 
+{
 
    /**
     * The database table used by the model.
@@ -13,8 +14,9 @@ class Member extends Eloquent {
     * The primary key of the table
     *
     */
-
     protected $primaryKey = 'id_member';
 
+    
 
 }
+

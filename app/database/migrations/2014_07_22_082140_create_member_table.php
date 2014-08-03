@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateMemberTable extends Migration 
 {
 
-    /**
+   /**
     * Run the migrations.
     *
     * @return void
@@ -40,7 +40,7 @@ class CreateMemberTable extends Migration
         });
     }
 
-    /**
+   /**
     * Reverse the migrations.
     *
     * @return void
