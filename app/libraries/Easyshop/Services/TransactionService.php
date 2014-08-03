@@ -142,7 +142,7 @@ class TransactionService
             }
         }
         
-        $isEndOfMonth = ($endDay === 'END_OF_MONTH');
+        $isEndOfMonth = $endDay === 'END_OF_MONTH';
         
         $isPreviousMonth = $isEndOfMonth || ($dayFilter < $endDay);
         $month = $monthFilter - ($isPreviousMonth ? 1 : 0);
