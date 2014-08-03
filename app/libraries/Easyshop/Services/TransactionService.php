@@ -4,8 +4,8 @@ use Config;
 use Carbon\Carbon;
 
 /**
-* TransactionService, containing all useful methods for business logic around transactions
-*/
+ * TransactionService, containing all useful methods for business logic around transactions
+ */
 class TransactionService
 {
     
