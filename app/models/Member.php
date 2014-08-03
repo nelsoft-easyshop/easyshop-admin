@@ -19,3 +19,4 @@ class Member extends Eloquent
     
 
 }
+

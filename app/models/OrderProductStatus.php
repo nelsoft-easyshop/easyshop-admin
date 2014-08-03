@@ -16,5 +16,6 @@ class OrderProductStatus extends Eloquent {
     protected $primaryKey = 'id_order_product_status';
 
 
+    
 
 }
