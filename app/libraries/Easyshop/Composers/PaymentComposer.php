@@ -13,7 +13,8 @@ class PaymentComposer
     
     public function __construct(TransactionService $transactionService)
     {
-        $this->yearStart = Config::get('transaction.startOfOperation')->format('Y');
+        $config_year_start = Config::get('transaction.startOfOperation');
+        $this->yearStart =  Carbon::createFromFormat('Y-m-d H:i:s',$config_year_start)->format('Y');
         $this->transactionService = $transactionService; 
     }
     
