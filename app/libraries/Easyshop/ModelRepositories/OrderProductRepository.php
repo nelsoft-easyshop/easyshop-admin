@@ -6,9 +6,6 @@ use Easyshop\Services\TransactionService as TransactionService;
 
 class OrderProductRepository
 {    
-    const STATUS_ON_GOING = 0;
-    const STATUS_FUND_CLEARED = 1;
-    const STATUS_FUND_MOVED = 4;
 
    /**
     * Get order product by id

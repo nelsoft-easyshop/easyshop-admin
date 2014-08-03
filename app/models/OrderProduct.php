@@ -2,7 +2,10 @@
 
 class OrderProduct extends Eloquent 
 {
-
+    
+    const STATUS_ON_GOING = 0;
+    const STATUS_FUND_CLEARED = 1;
+    const STATUS_FUND_MOVED = 4;
 
    /**
     * The database table used by the model.

@@ -1,7 +1,8 @@
 <?php namespace Easyshop\ModelRepositories;
 
 use Illuminate\Support\Facades\DB;
-use Member;
+use Member, Order, OrderProduct;
+
 use Carbon\Carbon;
 use Easyshop\Services\TransactionService as TransactionService;
 
@@ -52,8 +53,8 @@ class MemberRepository
           
             $query->where(function ($query) {
               
-                            $query->where('status', '=', OrderProductRepository::STATUS_FUND_CLEARED)
-                                ->orWhere('status', '=', OrderProductRepository::STATUS_FUND_MOVED);
+                            $query->where('status', '=', OrderProduct::STATUS_FUND_CLEARED)
+                                ->orWhere('status', '=', OrderProduct::STATUS_FUND_MOVED);
                         });
             $query->where('es_order_product.created_at', '>=', $dateFrom);
             $query->where('es_order_product.created_at', '<', $dateTo);
@@ -61,10 +62,10 @@ class MemberRepository
 
         $query->orWhere(function ($query) use ($dateFrom, $dateTo) {
             $query->where(function ($query) {
-                            $query->where('es_order.order_status', '=', OrderRepository::STATUS_PAID)
-                                ->orWhere('es_order.order_status', '=',  OrderRepository::STATUS_COMPLETED);
+                            $query->where('es_order.order_status', '=', Order::STATUS_PAID)
+                                ->orWhere('es_order.order_status', '=',  Order::STATUS_COMPLETED);
                         });
-            $query->where('es_order_product.status', '=', OrderProductRepository::STATUS_ON_GOING);
+            $query->where('es_order_product.status', '=', OrderProduct::STATUS_ON_GOING);
             $query->where('es_order_product.is_reject', '=', '0');
             $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
             $query->where(DB::raw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15"));
@@ -85,3 +86,4 @@ class MemberRepository
     }
 
 }
+
