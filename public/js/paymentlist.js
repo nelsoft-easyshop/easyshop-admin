@@ -94,9 +94,6 @@
             $('.errors').empty();
         });
         
-        $('#accnt_name').css('display', 'none');
-        $('#accnt_number').css('display', 'none');
-        $('#accnt_bank').css('display', 'none');
         
         var accnt_name = $('#accnt_name').html().trim();
         var accnt_number = $('#accnt_number').html().trim();
@@ -107,64 +104,116 @@
         $('#form_accnt_number').val(accnt_number);
         $('#form_accnt_bank').val(accnt_bank );
         
-        $('#form_accnt_name').css('display', 'inline');
-        $('#form_accnt_number').css('display', 'inline');
-        $('#form_accnt_bank').css('display', 'inline');
-        
-        $('#edit_account').hide();
-        $('#save_account').show();
+        showInputs();
+    });
+    
+    $(document).on('click','#cancel_account',function(){
+        $('.errors').children().fadeOut(500, function() {
+            $('.errors').empty();
+        });
+               
+        hideInputs();
     });
     
     $(document).on('click','#save_account',function(){
+        
+        $('.errors').children().fadeOut(500);
         
         var accnt_name = $('#form_accnt_name').val().trim();
         var accnt_number = $('#form_accnt_number').val().trim();
         var accnt_bank = $('#form_accnt_bank').val();
         var billing_info_id = $('#account_collection').val();
 
+        
+        var spinner = Ladda.create(this);
+        spinner.start();
+                    
         $.ajax({
             url: 'billinginfo',
             data:{_method: 'put', billing_info_id:billing_info_id, account_name:accnt_name, account_number:accnt_number, bank_id:accnt_bank},
             type: 'post',
             dataType: 'JSON',                      
             success: function(result){
+                spinner.stop();
                 if(isEmpty(result.errors)){
                     $('#accnt_name').html(accnt_name);
                     $('#accnt_number').html(accnt_number);
                     $('#accnt_bank_id').val(accnt_bank);
                     $('#accnt_bank').html($('#form_accnt_bank option:selected').html());
-
+                    hideInputs();
                 }else{
-                    
                     $.each(result.errors, function(){
                         var alert_html = 
                             '<div class="alert alert-warning">' +
-                                '<a href="#" class="close" data-dismiss="alert">&times;</a>' +
-                                $(this)[0] +
+                                '<a href="#" class="close" data-dismiss="alert">&times;</a>' + $(this)[0] +
                             '</div>';
-                        $('.errors').append(alert_html);
-                        
-                    });
-                    
-                    
+                        $('.errors').prepend(alert_html);
+                    });  
                 }
-         
-
             }           
         });
-        
-        $('#accnt_name').css('display', 'inline');
-        $('#accnt_number').css('display', 'inline');
-        $('#accnt_bank').css('display', 'inline');
 
-        $('#form_accnt_name').css('display', 'none');
-        $('#form_accnt_number').css('display', 'none');
-        $('#form_accnt_bank').css('display', 'none');
-        
-        $('#edit_account').show();
-        $('#save_account').hide();
     });
         
+    $(document).on('change','#account_collection',function(){
+        var $this = $(this)
+        var billing_info_id = $this.val();
+        
+        var selectedOption = $this.find('option:selected');
+
+        
+        if(billing_info_id == 0){
+
+            $('#form_accnt_name').val('');
+            $('#form_accnt_number').val('');
+            $('#form_accnt_bank').val(1);
+            showInputs();
+            $('#cancel_account').hide();
+   
+        }else{
+            
+            $('#accnt_name').html(selectedOption.data('name'));
+            $('#accnt_number').html(selectedOption.data('number'));
+            $('#accnt_bank').val(selectedOption.data('bank-id')); 
+            hideInputs();
+        }
+            
+
+
+      
+    });
+    
+    function showInputs()
+    {
+            $('#form_accnt_name').css('display', 'inline');
+            $('#form_accnt_number').css('display', 'inline');
+            $('#form_accnt_bank').css('display', 'inline');
+   
+            $('#accnt_name').css('display', 'none');
+            $('#accnt_number').css('display', 'none');
+            $('#accnt_bank').css('display', 'none');      
+                
+            $('#edit_account').hide();
+            $('#save_account').show();
+            $('#cancel_account').show();
+    }
+    
+    function hideInputs()
+    {
+            $('#form_accnt_name').css('display', 'none');
+            $('#form_accnt_number').css('display', 'none');
+            $('#form_accnt_bank').css('display', 'none');
+            
+            $('#accnt_name').css('display', 'inline');
+            $('#accnt_number').css('display', 'inline');
+            $('#accnt_bank').css('display', 'inline');    
+            
+            $('#save_account').hide();
+            $('#cancel_account').hide();
+            $('#edit_account').show();
+    }
+    
+    
 
 })(jQuery);
 
