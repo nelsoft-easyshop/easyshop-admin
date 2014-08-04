@@ -26,7 +26,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('orderproduct', array('uses' => 'OrderProductController@getOrderProducts'));
     Route::get('orderproduct-history', array('uses' => 'OrderProductController@getOrderProductDetail'));
     Route::get('orderproduct-payment', array('uses' => 'OrderProductController@getOrderProductPaymentDetail'));
-    
+
     Route::put('billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
     Route::post('billinginfo', array('uses' => 'BillingInfoController@createOrderProductPaymentAccount'));
     

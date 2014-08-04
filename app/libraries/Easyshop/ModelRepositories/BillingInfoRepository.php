@@ -38,9 +38,16 @@ class BillingInfoRepository
     */
     public function updateBillingAccount($billingInfoId, $accountName, $accountNumber, $bankId)
     {            
+        
+        $data = array('billing_info_id' => $billingInfoId, 
+                      'account_name' => $accountName,
+                      'account_number' => $accountNumber,
+                      'bank_id' => $bankId
+                     );
+                     
         $validator = new BillingInfoUpdateValidator( \App::make('validator') );
         if($validator->with($data)->passes()){
-            $billingInfo = BillingInfo::find($billingInfoId);
+            $billingInfo = BillingInfo::find($billingInfoId);            
             $billingInfo->bank_account_name = $accountName;
             $billingInfo->bank_account_number = $accountNumber;
             $billingInfo->bank_id = $bankId;
