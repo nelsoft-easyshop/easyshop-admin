@@ -58,9 +58,7 @@ abstract class AbstractValidator
     {
         return $this->errors;
     }
-    
 
-
-    
     
 }
+

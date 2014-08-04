@@ -42,3 +42,4 @@ abstract class LaravelValidator extends AbstractValidator
     }
  
 }
+
