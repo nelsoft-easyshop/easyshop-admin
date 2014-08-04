@@ -6,14 +6,16 @@ class Product extends Eloquent
     
     public function brand()
     {
-        return $this->hasOne('Brand','id_brand','brand_id');
+        return $this->hasOne('Brand', 'id_brand', 'brand_id');
     }
+
     public function category()
     {
-        return $this->hasOne('Category','id_cat','cat_id');
+        return $this->hasOne('Category', 'id_cat', 'cat_id');
     }
+
     public function member()
     {
-        return $this->hasOne('Member','id_member','member_id');
+        return $this->hasOne('Member', 'id_member', 'member_id');
     }
 }

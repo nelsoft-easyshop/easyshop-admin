@@ -4,7 +4,7 @@ use Product;
 
 class ProductRepository
 {
-    public function showAllProduct($isViewable=false)
+    public function getAll($isViewable=false)
     {
         $product = new Product();
         if($isViewable){

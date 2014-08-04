@@ -36,8 +36,9 @@ class HomeController extends BaseController
 
         echo json_encode($memberRepository->getById(Input::get('id')));
     }
+
     public function showAllItems()
     {
-        return View::make('pages.itemlist')->with('list_of_items',App::make('ProductRepository')->showAllProduct(true)->paginate(100));
+        return View::make('pages.itemlist')->with('list_of_items', App::make('ProductRepository')->getAll(true)->paginate(100));
     }
 }

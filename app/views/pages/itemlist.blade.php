@@ -146,13 +146,15 @@
     </div>
 </div>
 <script>
-    $(document).ready(function(){
-        $('#btn_advance_search').on('click',function(){
-            $('#srch_container').slideDown();
+    (function ($) {
+        $(document).ready(function(){
+            $('#btn_advance_search').on('click',function(){
+                $('#srch_container').slideDown();
+            });
+            $('#btn_close_search').on('click',function(){
+                $('#srch_container').slideUp();
+            });
         });
-        $('#btn_close_search').on('click',function(){
-            $('#srch_container').slideUp();
-        });
-    });
+    })(jQuery)
 </script>
 @stop
