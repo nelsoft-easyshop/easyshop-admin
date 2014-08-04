@@ -2,11 +2,11 @@
 <div class = "order_product_pay_container" >
 
     <span> Deposit to: </span>
-    <select class="form-control">
+    <select class="form-control" id="account_collection">
         @foreach($accounts as $account)
-            <option>{{{ $account->bankInfo->bank_name }}} - {{{ $account->bank_account_name }}}</option>
+            <option value="{{{ $account->id_billing_info  }}}">{{{ $account->bankInfo->bank_name }}} - {{{ $account->bank_account_name }}}</option>
         @endforeach
-        <option>ADD PAYMENT ACCOUNT</option>
+        <option value="0">ADD PAYMENT ACCOUNT</option>
     </select>
 
     <hr/>
