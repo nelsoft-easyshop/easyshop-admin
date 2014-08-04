@@ -93,26 +93,51 @@
         $('#accnt_number').css('display', 'none');
         $('#accnt_bank').css('display', 'none');
         
-        $('#form_accnt_name').val($('#accnt_name').html().trim());
-        $('#form_accnt_number').val($('#accnt_number').html().trim());
-        $('#form_accnt_bank').val($('#accnt_bank_id').val());
+        var accnt_name = $('#accnt_name').html().trim();
+        var accnt_number = $('#accnt_number').html().trim();
+        var accnt_bank = $('#accnt_bank_id').val();
+        var billing_info_id = $('#account_collection').val();
+        
+        $('#form_accnt_name').val(accnt_name);
+        $('#form_accnt_number').val(accnt_number);
+        $('#form_accnt_bank').val(accnt_bank );
         
         $('#form_accnt_name').css('display', 'inline');
         $('#form_accnt_number').css('display', 'inline');
         $('#form_accnt_bank').css('display', 'inline');
-
         
         $('#edit_account').hide();
         $('#save_account').show();
     });
     
     $(document).on('click','#save_account',function(){
-        //DO AJAX HERE
+        
+        var accnt_name = $('#form_accnt_name').val().trim();
+        var accnt_number = $('#form_accnt_number').val().trim();
+        var accnt_bank = $('#form_accnt_bank').val();
+        var billing_info_id = $('#account_collection').val();
+
+        $.ajax({
+            url: 'billinginfo',
+            data:{_method: 'put', billing_info_id:billing_info_id, account_name:accnt_name, account_number:accnt_number, bank_id:accnt_bank},
+            type: 'post',
+            dataType: 'JSON',                      
+            success: function(result){
+                if(isEmpty(result.errors)){
+                    $('#accnt_name').html(accnt_name);
+                    $('#accnt_number').html(accnt_number);
+                    $('#accnt_bank_id').val(accnt_bank);
+                    $('#accnt_bank').html($('#form_accnt_bank option:selected').html());
+                }
+         
+
+            }           
+        });
+        
         $('#accnt_name').css('display', 'inline');
         $('#accnt_number').css('display', 'inline');
         $('#accnt_bank').css('display', 'inline');
-        
-                
+
         $('#form_accnt_name').css('display', 'none');
         $('#form_accnt_number').css('display', 'none');
         $('#form_accnt_bank').css('display', 'none');
