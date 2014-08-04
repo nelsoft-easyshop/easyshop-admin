@@ -5,6 +5,9 @@ use BillingInfo;
 
 use Order;
 
+use Easyshop\Services\Validation\Laravel\BillingInfoCreateValidator;
+use Easyshop\Services\Validation\Laravel\BillingInfoUpdateValidator;
+
 class BillingInfoRepository
 {    
 
@@ -31,31 +34,45 @@ class BillingInfoRepository
     * @param string $accountName
     * @param string $acountNumber
     * @param int $bankId
-    * @return boolean
+    * @return MessageBag[]
     */
-    public function saveBillingAccount($billingInfoId, $accountName, $accountNumber, $bankId){
-        $billingInfo = BillingInfo::find($billingInfoId);
-        $billingInfo->bank_account_name = $accountName;
-        $billingInfo->bank_account_number = $accountNumber;
-        $billingInfo->bank_id = $bankId;
-        $billingInfo-save();
+    public function updateBillingAccount($billingInfoId, $accountName, $accountNumber, $bankId)
+    {            
+        $validator = new BillingInfoUpdateValidator( \App::make('validator') );
+        if($validator->with($data)->passes()){
+            $billingInfo = BillingInfo::find($billingInfoId);
+            $billingInfo->bank_account_name = $accountName;
+            $billingInfo->bank_account_number = $accountNumber;
+            $billingInfo->bank_id = $bankId;
+            $billingInfo->save();
+        }
         
+        return $validator->errors();
+
     }
     
+
    /**
     * Creates a new billing account
     *
     * @param string $accountName
     * @param string $acountNumber
     * @param int $bankId
-    * @return boolean
+    * @return MessageBag[]
     */
-    public function createBillingAccount($accountName, $accountNumber, $bankId){
-        $billingInfo = new BillingInfo;
-        $billingInfo->bank_account_name = $accountName;
-        $billingInfo->bank_account_number = $accountNumber;
-        $billingInfo->bank_id = $bankId;
-        $billingInfo-save();
+    public function createBillingAccount($accountName, $accountNumber, $bankId)
+    {
+        $validator = new BillingInfoCreateValidator( \App::make('validator') );
+        if($validator->with($data)->passes()){
+            $billingInfo = new BillingInfo;
+            $billingInfo->bank_account_name = $accountName;
+            $billingInfo->bank_account_number = $accountNumber;
+            $billingInfo->bank_id = $bankId;
+            $billingInfo->save();
+        }
+        
+        return $validator->errors();
+
     }
 
 
