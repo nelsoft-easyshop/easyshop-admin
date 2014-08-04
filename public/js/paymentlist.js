@@ -89,6 +89,11 @@
     
     
     $(document).on('click','#edit_account',function(){
+
+        $('.errors').children().fadeOut(500, function() {
+            $('.errors').empty();
+        });
+        
         $('#accnt_name').css('display', 'none');
         $('#accnt_number').css('display', 'none');
         $('#accnt_bank').css('display', 'none');
@@ -128,6 +133,20 @@
                     $('#accnt_number').html(accnt_number);
                     $('#accnt_bank_id').val(accnt_bank);
                     $('#accnt_bank').html($('#form_accnt_bank option:selected').html());
+
+                }else{
+                    
+                    $.each(result.errors, function(){
+                        var alert_html = 
+                            '<div class="alert alert-warning">' +
+                                '<a href="#" class="close" data-dismiss="alert">&times;</a>' +
+                                $(this)[0] +
+                            '</div>';
+                        $('.errors').append(alert_html);
+                        
+                    });
+                    
+                    
                 }
          
 

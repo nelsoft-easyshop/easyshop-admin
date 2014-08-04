@@ -45,6 +45,9 @@
         </button>
     </div>
     
- <div style="clear:both"></div>
+    <div style="clear:both"></div>
+    
+    <div class="errors"></div>
+
 
 </div>
