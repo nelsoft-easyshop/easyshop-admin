@@ -283,13 +283,13 @@ div#mainsection{
 
 
 .order_product_pay_container select{
-    width: 450px;
+    width: 550px;
     display: inline;
 }
 
 .order_product_pay_container .left{
     float:left;
-    width: 75%;
+    width: 85%;
     
 }
 
