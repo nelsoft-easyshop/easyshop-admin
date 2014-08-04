@@ -4,7 +4,7 @@ use Product;
 
 class ProductRepository
 {
-    public function showAllProduct($isViewable=false)
+    public function getAll($isViewable=false)
     {
         $product = new Product();
         if($isViewable){
@@ -13,7 +13,7 @@ class ProductRepository
 
         return $product;
     }
-    public function doSearchProduct($userData)
+    public function search($userData)
     {
         $product = Product::join('es_member', 'es_member.id_member', '=', 'es_product.member_id')
             ->join('es_brand', 'es_brand.id_brand', '=', 'es_product.brand_id')

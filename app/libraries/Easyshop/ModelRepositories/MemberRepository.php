@@ -4,11 +4,12 @@ use Member;
 
 class MemberRepository
 {
-    public function updateMember($id,$data)
+    public function update($id,$data)
     {
         Member::find($id)->update($data);
     }
-    public function getMemberById($id)
+
+    public function getById($id)
     {
         $member = Member::find($id);
         $member->Address;
@@ -17,7 +18,8 @@ class MemberRepository
 
         return $member;
     }
-    public function doSearchMember($userData)
+
+    public function search($userData)
     {
         $member = Member::join('es_product', 'es_member.id_member', '=', 'es_product.member_id')
             ->where('es_product.is_delete', '=', 0)->where('es_product.is_draft', '=', 0, 'AND');

@@ -218,7 +218,9 @@
         </div>
     </div>
 
-    <script>
+<script>
+    var jsonCity = {{ $list_of_location['json_city'] }};
+    (function ($) {
         var mdl_fullname = $('#mdl_fullname');
         var mdl_contact = $('#mdl_contact');
         var mdl_remarks = $('#mdl_remarks');
@@ -227,7 +229,6 @@
         var dp1 = $('[name^=c_stateregion]');
         var dp2 = $('[name^=c_city]');
         var mdl_address = $('#mdl_address');
-        var jsonCity = {{ $list_of_location['json_city'] }};
 
         jQuery(function(){
             jQuery('#date_timepicker_start').datetimepicker({
@@ -257,7 +258,6 @@
                 $('#srch_container').slideUp();
             });
         });
-
         $(document).ready(function()
         {
 ////////////START OF CITY RETRIEVAL
@@ -343,16 +343,26 @@
                     url:'updateUser',
                     dataType:'JSON',
                     type:'POST',
-                    data:{id:user_id,fullname:user_fullname,contact:user_contact,remarks:user_remarks,is_promo_valid:user_promo,city:user_cityID,stateregion:user_stateID,address:user_address},
+                    data:{
+                        id:user_id,
+                        fullname:user_fullname,
+                        contact:user_contact,
+                        remarks:user_remarks,
+                        is_promo_valid:user_promo,
+                        city:user_cityID,
+                        stateregion:user_stateID,
+                        address:user_address},
                     success:function(result){
                         PushObjectToFields(false,result);
                         CloseBootstrapModal();
                     }
                 })
             });
+
             function CloseBootstrapModal(){
                 $('.modal.in').modal('hide');
             }
         });
-    </script>
+    })(jQuery)
+</script>
 @stop

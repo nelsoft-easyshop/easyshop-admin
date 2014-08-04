@@ -4,18 +4,25 @@ use Address;
 
 class AddressRepository
 {
-    public function doAddress($id,$data)
+    public function update($id, $data)
     {
         $address = new Address();
-        $has_result = $address->where('id_member', '=', $id)->first();
-        if($has_result){
-            $has_result->update($data);
+        $hasResult = $address->where('id_member', '=', $id)->first();
+        if($hasResult){
+            $hasResult->update($data);
         }else{
             $data['id_member'] = $id;
-            $address->insert($data);
+            $this->insert($data);
         }
     }
-    public function getAddressByMemberId($id)
+
+    public function insert($data)
+    {
+        $address = new Address();
+        $address->insert($data);
+    }
+
+    public function getByMemberId($id)
     {
         return Address::where('id_member', '=', $id)->first();
     }

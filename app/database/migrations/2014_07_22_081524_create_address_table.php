@@ -5,11 +5,11 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateAddressTable extends Migration 
 {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('es_address', function(Blueprint $table)
