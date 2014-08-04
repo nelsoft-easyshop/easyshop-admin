@@ -1,4 +1,4 @@
-$(document).ready(function(){
+(function ($) {
 
     
     $('.seller_detail').click(function(){
@@ -122,6 +122,6 @@ $(document).ready(function(){
     });
         
 
-})
+})(jQuery);
 
 
