@@ -305,6 +305,16 @@ div#mainsection{
     border-color: #eea236;
 }
 
+.btn-pay-account:hover{
+    color: #fff;
+    background-color: #ff4400;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+
+}
+
 .payment-dialog-pay .bootstrap-dialog-footer-buttons{
     text-align: center;
 }
@@ -344,3 +354,20 @@ div#mainsection{
     font-size: 13px;
 }
 
+.order_product_pay_container .errors{
+    margin-top: 10px;
+}
+
+.order_product_pay_container #save_account.btn{
+    background-color: #f89406;
+    color:white;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+
+}
+
+.order_product_pay_container #save_account.btn:hover{
+    background-color:#ff4400;
+}
