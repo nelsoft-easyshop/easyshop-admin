@@ -22,7 +22,9 @@ Route::get('logout', array('uses' => 'AccountController@doLogout'));
 Route::group(array('before' => 'auth'), function(){
     Route::get('/', array('uses' => 'HomeController@index'));
     Route::get('users', array('uses' => 'HomeController@showAllUsers'));
+    Route::post('users', array('uses' => 'HomeController@doSearchUser'));
     Route::post('updateUser', array('uses' => 'HomeController@ajaxUpdateUsers'));
     Route::get('items',array('uses'=>'HomeController@showAllItems'));
+    Route::post('items', array('uses' => 'HomeController@doSearchItem'));
     Route::get('pay', array('uses' => 'OrderController@getUsersToPay'));
 });

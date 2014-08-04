@@ -6,8 +6,10 @@
 		<link rel="shortcut icon" href="{{{ asset('images/favicon.ico') }}}" type="image/x-icon">
 		<link type="text/css" href="{{{ asset('css/style.css')  }}}" rel="stylesheet"  media="screen"/>
 		<link type="text/css" href="{{{ asset('css/src/bootstrap.min.css')  }}}" rel="stylesheet"  media="screen"/>
+		<link type="text/css" href="{{{ asset('css/src/jquery.datetimepicker.css')  }}}" rel="stylesheet"  media="screen"/>
         <script src="{{{ asset('js/src/jquery-2.0.0.min.js')  }}}"></script>
         <script src="{{{ asset('js/src/bootstrap.min.js')  }}}"></script>
+        <script src="{{{ asset('js/src/jquery.datetimepicker.js')  }}}"></script>
 		<meta name="description" content = "@yield('description')" />
 		<meta name="keywords" content=  "@yield('keywords')"   />
         <meta name="_token" content="{{ csrf_token() }}" />
