@@ -1,24 +1,20 @@
 <?php
 class HomeController extends BaseController
 {
-	public function index()
-	{
-	    return View::make('pages.dashboard')->with('username', Auth::user()->username);
-	}
-
-	public function showAllUsers()
+    public function index()
     {
-        $type = array(
-            '0' => 0,
-            '1' => 3,
-            '2' => 4
-        );
+        return View::make('pages.dashboard')->with('username', Auth::user()->username);
+    }
+
+    public function showAllUsers()
+    {
         $listOfLoc = App::make('LocationLookUpRepository');
         $dataFormatter = App::make('Easyshop\Services\DataFormatterService');
-        $data = $dataFormatter->location($listOfLoc->getLocationLookUpByType($type));
+        $data = $dataFormatter->location($listOfLoc->getLocationByType());
 
-        return View::make('pages.userlist')->with('list_of_member', Member::paginate(2))->with('list_of_location', $data);
+        return View::make('pages.userlist')->with('list_of_member', Member::paginate(100))->with('list_of_location', $data);
     }
+
     public function ajaxUpdateUsers()
     {
         $dataMember = array(
@@ -33,11 +29,11 @@ class HomeController extends BaseController
             'address' => Input::get('address'),
             'country' => 148
         );
-        $member = App::make('MemberRepository');
-        $member->updateMember(Input::get('id'), $dataMember);
-        $address = App::make('AddressRepository');
-        $address->doAddress(Input::get('id'), $dataAddress);
+        $memberRepository = App::make('MemberRepository');
+        $memberRepository->update(Input::get('id'), $dataMember);
+        $addressRepository = App::make('AddressRepository');
+        $addressRepository->update(Input::get('id'), $dataAddress);
 
-        echo json_encode($member->getMemberById(Input::get('id')));
+        echo json_encode($memberRepository->getById(Input::get('id')));
     }
 }

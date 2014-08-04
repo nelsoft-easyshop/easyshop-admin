@@ -4,9 +4,14 @@ use LocationLookUp;
 
 class LocationLookUpRepository
 {
-    public function getLocationLookUpByType($type)
+    public function getLocationByType()
     {
-        return LocationLookUp::whereIn('type',$type)->orderBy('location','ASC')->get();
+        $type = array(
+            '0' => 0,
+            '1' => 3,
+            '2' => 4
+        );
+
+        return LocationLookUp::whereIn('type', $type)->orderBy('location', 'ASC')->get();
     }
 }
-

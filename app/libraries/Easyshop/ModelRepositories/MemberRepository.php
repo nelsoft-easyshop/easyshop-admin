@@ -4,11 +4,12 @@ use Member;
 
 class MemberRepository
 {
-    public function updateMember($id,$data)
+    public function update($id,$data)
     {
         Member::find($id)->update($data);
     }
-    public function getMemberById($id)
+
+    public function getById($id)
     {
         $member = Member::find($id);
         $member->Address;
