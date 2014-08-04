@@ -1,7 +1,7 @@
 <?PHP
 
 
-class OrderController extends BaseController 
+class OrderProductController extends BaseController 
 {
 
     /**
@@ -72,31 +72,7 @@ class OrderController extends BaseController
                     ->render();
         return Response::json(array('html' => $html));
     }
-    
-   /**
-    * PUT method for updating payment account
-    *
-    * @return JSON
-    */
-    public function updateOrderProductPaymentAccount(){
-        $rules = array(
-            'billing_info_id' => 'required|numeric',
-            'account_name' => 'required',
-            'account_no' => 'required',
-            'bank_id' => 'required|numeric'
-        );
-        $validator = Validator::make(Input::all(), $rules);
 
-        if ($validator->fails()) {
-            $isSuccessful = false;
-            $message = $validator->messages();
-        }else{
-            $userdata = Input::get();
-            $billingInfoRepository = App::make('BillingInfoRepository');
-            $billingInfoRepository->saveBillingAccount($userdata['billing_info_id'], $userdata['account_name'], $userdata['account_number'], $userdata['bank_id']);
-        }
-        
-    }
     
     
 }
