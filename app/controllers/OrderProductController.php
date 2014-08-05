@@ -55,7 +55,8 @@ class OrderProductController extends BaseController
     *
     *  @return JSON
     */
-    public function getOrderProductPaymentDetail(){
+    public function getOrderProductPaymentDetail()
+    {
         $userdata = Input::get();
         $orderProductRepository = App::make('OrderProductRepository');
         $billingInfoRepository = App::make('BillingInfoRepository');
@@ -73,6 +74,7 @@ class OrderProductController extends BaseController
                     ->render();
         return Response::json(array('html' => $html));
     }
+
 
     
     
