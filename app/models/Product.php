@@ -17,3 +17,4 @@ class Product extends Eloquent
     protected $primaryKey = 'id_product';
 
 } 
+

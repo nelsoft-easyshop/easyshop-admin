@@ -10,6 +10,21 @@ class MemberRepository
 {    
     
     private $transactionService;
+
+    public function update($id,$data)
+    {
+        Member::find($id)->update($data);
+    }
+
+    public function getById($id)
+    {
+        $member = Member::find($id);
+        $member->Address;
+        $member->Address->City;
+        $member->Address->Region;
+
+        return $member;
+    }
     
    /**
     * Load dependencies through the constructor
@@ -84,6 +99,5 @@ class MemberRepository
         
         return $completedOrders;
     }
-
 }
 

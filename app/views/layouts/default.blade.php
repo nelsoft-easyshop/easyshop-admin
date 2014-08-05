@@ -12,23 +12,25 @@
         <meta name="keywords" content=  "@yield('keywords')"   />
         
         <meta name="_token" content="{{ csrf_token() }}" />
-        
-        <title> @yield('title')  </title>
+		<title> @yield('title')  </title>
+	</head>
+	
+	<body>
+		<div class="container">
+		
+			<header class="row">
+				@yield('page_header')
+			</header>
 
-    </head>
+			<div id="main" class="row">
+				@yield('content')
+			</div>
 
-    <body>
+		</div>
 
-        <div class="container">
-        
-            <header class="row">
-                @yield('page_header')
-            </header>
+	</body>
 
-            <div id="main" class="row">
-                @yield('content')
-            </div>
-
+    @yield('javascript')
 
         </div>
         
