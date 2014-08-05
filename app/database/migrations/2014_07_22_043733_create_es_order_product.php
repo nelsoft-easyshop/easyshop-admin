@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateEsOrderProduct extends Migration 
 {
 
-    /**
+   /**
     * Run the migrations.
     *
     * @return void
@@ -34,7 +34,8 @@ class CreateEsOrderProduct extends Migration
         });
     }
 
-    /**
+
+   /**
     * Reverse the migrations.
     *
     * @return void

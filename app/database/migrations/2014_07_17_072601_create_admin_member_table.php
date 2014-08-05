@@ -24,7 +24,7 @@ class CreateAdminMemberTable extends Migration
         });
     }
 
-    /**
+   /**
     * Reverse the migrations.
     *
     * @return void
