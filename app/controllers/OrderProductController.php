@@ -68,6 +68,7 @@ class OrderProductController extends BaseController
         $html = View::make('partials.orderproductbilling')
                     ->with('accounts', $paymentAccounts)
                     ->with('defaultAccount', $orderProduct->billingInfo)
+                    ->with('seller_id', $orderProduct->seller_id)
                     ->with('bankList', $bankList)
                     ->render();
         return Response::json(array('html' => $html));
