@@ -286,43 +286,40 @@
                 var data_obj = $('#tbl-user-list #data_'+id).attr('data');
                 PushObjectToFields(data_obj);
             });
-            function PushObjectToFields(data_obj=false,data_json=false)
+            function pushJsonToFields(data_json)
             {
-                if(data_obj)
-                {
-                    var data = eval( '(' + data_obj + ')' );
-                    mdl_fullname.val(data.fullname);
-                    mdl_contact.val(data.contact_number);
-                    mdl_remarks.val(data.remarks);
-                    mdl_button.attr('data',data.id);
-                    $('#chck_no').prop("checked", true);
-                    if(parseInt(data.is_promote) === 1) {
-                        $('#chck_yes').prop("checked", true);
-                    }
-                    dp1.attr('data_status',data.c_stateregionID);
-                    dp2.attr('data_status',data.c_cityID);
-                    dp1.val(data.c_stateregionID);
-                    cityFilter( dp1, dp2 );
-                    dp2.val(data.c_cityID);
-                    mdl_address.val(data.address);
+                var id = escapeHtml(data_json.id_member);
+                var obj = '{"id":"' + id +
+                    '","fullname":"' + escapeHtml(data_json.fullname) +
+                    '","contact_number":"' + escapeHtml(data_json.contactno) +
+                    '","remarks":"' + escapeHtml(data_json.remarks) +
+                    '","is_promote":"' + escapeHtml(data_json.is_promo_valid) +
+                    '","c_stateregionID":"' + escapeHtml(data_json.address.region.id_location) +
+                    '","c_cityID":"' + escapeHtml(data_json.address.city.id_location) +
+                    '","address":"' + escapeHtml(data_json.address.address) + '"}';
+                $('.tbl-my-style #' + id + '_uname').html(escapeHtml(data_json.fullname));
+                $('.tbl-my-style #' + id + '_contact').html(escapeHtml(data_json.contactno));
+                $('.tbl-my-style #' + id + '_remarks').html(escapeHtml(data_json.remarks));
+                $('.tbl-my-style #' + id + '_address').html(data_json.address.city.location + ' ' + data_json.address.region.location + ' ' + escapeHtml(data_json.address.address));
+                $('.tbl-my-style #data_' + id ).attr('data',obj);
+            }
+            function PushObjectToFields(data_obj)
+            {
+                var data = $.parseJSON( data_obj);
+                mdl_fullname.val(data.fullname);
+                mdl_contact.val(data.contact_number);
+                mdl_remarks.val(data.remarks);
+                mdl_button.attr('data',data.id);
+                $('#chck_no').prop("checked", true);
+                if(parseInt(data.is_promote) === 1) {
+                    $('#chck_yes').prop("checked", true);
                 }
-                else if(data_json)
-                {
-                    var id = escapeHtml(data_json.id_member);
-                    var obj = '{"id":"' + id +
-                        '","fullname":"' + escapeHtml(data_json.fullname) +
-                        '","contact_number":"' + escapeHtml(data_json.contactno) +
-                        '","remarks":"' + escapeHtml(data_json.remarks) +
-                        '","is_promote":"' + escapeHtml(data_json.is_promo_valid) +
-                        '","c_stateregionID":"' + escapeHtml(data_json.address.region.id_location) +
-                        '","c_cityID":"' + escapeHtml(data_json.address.city.id_location) +
-                        '","address":"' + escapeHtml(data_json.address.address) + '"}';
-                    $('.tbl-my-style #' + id + '_uname').html(escapeHtml(data_json.fullname));
-                    $('.tbl-my-style #' + id + '_contact').html(escapeHtml(data_json.contactno));
-                    $('.tbl-my-style #' + id + '_remarks').html(escapeHtml(data_json.remarks));
-                    $('.tbl-my-style #' + id + '_address').html(data_json.address.city.location + ' ' + data_json.address.region.location + ' ' + escapeHtml(data_json.address.address));
-                    $('.tbl-my-style #data_' + id ).attr('data',obj);
-                }
+                dp1.attr('data_status',data.c_stateregionID);
+                dp2.attr('data_status',data.c_cityID);
+                dp1.val(data.c_stateregionID);
+                cityFilter( dp1, dp2 );
+                dp2.val(data.c_cityID);
+                mdl_address.val(data.address);
             }
             $('#myModal').on('click','#mdl_save',function()
             {
@@ -330,7 +327,7 @@
                 var user_fullname = mdl_fullname.val().trim();
                 var user_contact = mdl_contact.val().trim();
                 var user_remarks = mdl_remarks.val().trim();
-                var user_promo =  $('input:radio[name=mdl_promo]:checked').val();
+                var user_promo =  mdl_promo.filter(':checked').val();
                 var user_cityID = parseInt(dp2.val());
                 var user_stateID = parseInt(dp1.val());
                 var user_address = mdl_address.val();
@@ -353,7 +350,7 @@
                         stateregion:user_stateID,
                         address:user_address},
                     success:function(result){
-                        PushObjectToFields(false,result);
+                        pushJsonToFields(result);
                         CloseBootstrapModal();
                     }
                 })

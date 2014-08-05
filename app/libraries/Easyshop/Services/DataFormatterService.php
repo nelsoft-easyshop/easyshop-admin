@@ -4,21 +4,21 @@ class DataFormatterService
 {
     public function location($listOfLoc)
     {
-        $data = array();
-        foreach($listOfLoc as $r){
-            if($r['type'] == 0){
-                $data['country_name'] = $r['location'];
-                $data['country_id'] = $r['id_location'];
-            }else if($r['type'] == 3) {
-                $data['stateregion_lookup'][$r['id_location']] = $r['location'];
-            }else if($r['type'] == 4) {
-                $data['city_lookup'][$r['parent_id']][$r['id_location']] = $r['location'];
+        $formattedListOfLocation = array();
+        foreach($listOfLoc as $location){
+            if($location['type'] == 0){
+                $formattedListOfLocation['country_name'] = $location['location'];
+                $formattedListOfLocation['country_id'] = $location['id_location'];
+            }else if($location['type'] == 3) {
+                $formattedListOfLocation['stateregion_lookup'][$location['id_location']] = $location['location'];
+            }else if($location['type'] == 4) {
+                $formattedListOfLocation['city_lookup'][$location['parent_id']][$location['id_location']] = $location['location'];
             }
         }
 
-        $data['json_city'] = json_encode($data['city_lookup'], JSON_FORCE_OBJECT);
+        $formattedListOfLocation['json_city'] = json_encode($formattedListOfLocation['city_lookup'], JSON_FORCE_OBJECT);
 
-        return $data;
+        return $formattedListOfLocation;
     }
 
     /**
