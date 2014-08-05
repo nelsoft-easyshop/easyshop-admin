@@ -13,7 +13,8 @@ class BillingInfoUpdateValidator extends LaravelValidator implements ValidatorIn
         'billing_info_id' => 'required|numeric',
         'account_name' => 'required',
         'account_number' => 'required',
-        'bank_id' => 'required|numeric'
+        'bank_id' => 'required|numeric',
+        'member_id' => 'required|numeric',
     );
 
  

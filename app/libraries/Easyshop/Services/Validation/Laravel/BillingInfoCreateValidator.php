@@ -11,8 +11,9 @@ class BillingInfoCreateValidator extends LaravelValidator implements ValidatorIn
     */
     protected $rules = array(
         'account_name' => 'required',
-        'account_no' => 'required',
-        'bank_id' => 'required|numeric'
+        'account_number' => 'required',
+        'bank_id' => 'required|numeric',
+        'member_id' => 'required|numeric',
     );
 
  

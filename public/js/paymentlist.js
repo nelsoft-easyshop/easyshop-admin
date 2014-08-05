@@ -122,15 +122,25 @@
         var accnt_name = $('#form_accnt_name').val().trim();
         var accnt_number = $('#form_accnt_number').val().trim();
         var accnt_bank = $('#form_accnt_bank').val();
+        var accnt_bank_name =  $('#form_accnt_bank').find('option:selected').html();
         var billing_info_id = $('#account_collection').val();
-
+        var seller_id = $('#seller_id').val();
         
         var spinner = Ladda.create(this);
         spinner.start();
-                    
+        
+        var json_data = {};
+        var isCreate = billing_info_id == 0;
+        
+        if(isCreate){
+            json_data = {account_name:accnt_name, account_number:accnt_number, bank_id:accnt_bank, seller_id: seller_id };
+        }else{
+            json_data = {_method: 'put', billing_info_id:billing_info_id, account_name:accnt_name, account_number:accnt_number, bank_id:accnt_bank , seller_id: seller_id};
+        }
+        
         $.ajax({
             url: 'billinginfo',
-            data:{_method: 'put', billing_info_id:billing_info_id, account_name:accnt_name, account_number:accnt_number, bank_id:accnt_bank},
+            data: json_data,
             type: 'post',
             dataType: 'JSON',                      
             success: function(result){
@@ -140,6 +150,10 @@
                     $('#accnt_number').html(accnt_number);
                     $('#accnt_bank_id').val(accnt_bank);
                     $('#accnt_bank').html($('#form_accnt_bank option:selected').html());
+                    if(isCreate){
+                        var option_html = '<option value='+result.new_billing_info_id+' data-bank-id='+accnt_bank+' data-name='+accnt_name+' date-number='+accnt_number+' selected>'+accnt_bank_name+' - '+accnt_name+'</option>';
+                        $(option_html).insertBefore('#account_collection option#add-option');
+                    }
                     hideInputs();
                 }else{
                     $.each(result.errors, function(){
@@ -153,15 +167,14 @@
             }           
         });
 
+
     });
         
     $(document).on('change','#account_collection',function(){
         var $this = $(this)
         var billing_info_id = $this.val();
-        
         var selectedOption = $this.find('option:selected');
 
-        
         if(billing_info_id == 0){
 
             $('#form_accnt_name').val('');
@@ -177,10 +190,7 @@
             $('#accnt_bank').val(selectedOption.data('bank-id')); 
             hideInputs();
         }
-            
 
-
-      
     });
     
     function showInputs()

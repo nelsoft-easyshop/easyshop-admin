@@ -6,7 +6,7 @@
         @foreach($accounts as $account)
             <option value="{{{ $account->id_billing_info  }}}" data-bank-id="{{{ $account->bank_id }}}" data-name="{{{ $account->bank_account_name }}}" data-number="{{{ $account->bank_account_number }}}"  >{{{ $account->bankInfo->bank_name }}} - {{{ $account->bank_account_name }}}</option>
         @endforeach
-        <option value="0">ADD PAYMENT ACCOUNT</option>
+        <option value="0" id="add-option">ADD PAYMENT ACCOUNT</option>
     </select>
 
     <hr/>
@@ -62,6 +62,6 @@
     <div style="clear:both"></div>
     
     <div class="errors"></div>
-
+    <input type="hidden" id="seller_id" value="{{{ $seller_id }}}"/>
 
 </div>
