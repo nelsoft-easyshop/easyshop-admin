@@ -18,7 +18,7 @@
                     <span class="glyphicon glyphicon-zoom-in"></span>
                     ADVANCE SEARCH
                 </h4>
-                {{ Form::open(array('url' => 'users')) }}
+                {{ Form::open(array('url' => 'users', 'id' => 'searchForm')) }}
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
@@ -86,7 +86,7 @@
             <div class="input-group srch_div">
                 <div class="inner-addon left-addon">
                     <i class="glyphicon glyphicon-search"></i>
-                    <input type="text" class="form-control" placeholder="Search all items" />
+                    <input type="text" id="searchBox"  class="form-control" placeholder="Search all items" />
                 </div>
                 <div class="input-group-btn">
                     &nbsp;
@@ -96,10 +96,10 @@
                     </button>
                     <ul class="dropdown-menu dd-right" role="menu">
                         <li role="presentation" class="dropdown-header">Search by :</li>
-                        <li><a href="#">Item</a></li>
-                        <li><a href="#">Seller</a></li>
-                        <li><a href="#">Category</a></li>
-                        <li><a href="#">Brand</a></li>
+                        <li><a class="drct_search" data="src_fullname" href="javascript:void(0)">Fullname</a></li>
+                        <li><a class="drct_search" data="src_username" href="javascript:void(0)">Username</a></li>
+                        <li><a class="drct_search" data="src_number" href="javascript:void(0)">Contact Number</a></li>
+                        <li><a class="drct_search" data="src_email" href="javascript:void(0)">Email</a></li>
                         <li class="divider"></li>
                         <li><a href="javascript:void(0)" id="btn_advance_search"><span class="glyphicon glyphicon-new-window"></span> View advance search</a></li>
                     </ul>
@@ -359,6 +359,13 @@
             function CloseBootstrapModal(){
                 $('.modal.in').modal('hide');
             }
+
+            $('.drct_search').on('click', function(){
+                var id = $(this).attr('data');
+                var text = $('#searchBox').val();
+                $('#' + id).val(text);
+                $('#searchForm').submit();
+            });
         });
     })(jQuery)
 </script>
