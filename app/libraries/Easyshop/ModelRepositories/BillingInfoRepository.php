@@ -29,6 +29,11 @@ class BillingInfoRepository
     }
     
     
+    public function getBillingAccountById($billingInfoId)
+    {
+        return BillingInfo::find($billingInfoId);
+    }
+    
    /**
     * Updates the specified billing account
     *   
@@ -90,7 +95,6 @@ class BillingInfoRepository
             $billingInfo->bank_id = $bankId;
             $billingInfo->save();
             $this->current_billing_info_id = $billingInfo->id_billing_info;
-
         }
 
         return $validator->errors();
