@@ -17,28 +17,36 @@
   
         <br/>
 
-        <div class="payment_search_filter_container">
-        
-            {{ Form::open(array('url' => 'pay', 'method' => 'get')) }}
- 
+        <div>
+            <div class="payment_search_filter_container">
+            
+                {{ Form::open(array('url' => 'pay', 'method' => 'get')) }}
+    
 
-                    {{ Form::text('username', $username, array('id' => 'username', 'placeholder' => 'Username')) }}
-                    
-                    <select id="year" name="year">                     
-                        @foreach($yearSelection as $year)
-                            <option value="{{{ $year['year']  }}}" {{ ($year['selected'])?'selected':'' }}>{{{$year['year']}}}</option> 
-                        @endforeach
-                    </select>
-                    
-                    {{ Form::selectMonth('month', $defaultMonth  , ['class' => 'month', 'name' => 'month']) }}
-                    <select id="day" name="day">
-                        @foreach($dateSelection as $date)
-                            <option value="{{{ $date['day'] }}}"  {{ ($date['selected'])?'selected':'' }}  >{{{ NumberFormatter::addOrdinalNumberSuffix($date['day']) }}}</option>
-                        @endforeach  
-                    </select>
-                    
-                    <button id="search" class="btn">Search</button>    
-            {{ Form::close() }}
+                        {{ Form::text('username', $username, array('id' => 'username', 'placeholder' => 'Username')) }}
+                        
+                        <select id="year" name="year">                     
+                            @foreach($yearSelection as $year)
+                                <option value="{{{ $year['year']  }}}" {{ ($year['selected'])?'selected':'' }}>{{{$year['year']}}}</option> 
+                            @endforeach
+                        </select>
+                        
+                        {{ Form::selectMonth('month', $defaultMonth  , ['class' => 'month', 'name' => 'month']) }}
+                        <select id="day" name="day">
+                            @foreach($dateSelection as $date)
+                                <option value="{{{ $date['day'] }}}"  {{ ($date['selected'])?'selected':'' }}  >{{{ NumberFormatter::addOrdinalNumberSuffix($date['day']) }}}</option>
+                            @endforeach  
+                        </select>
+                        
+                        <button id="search" class="btn">Search</button>    
+                {{ Form::close() }}
+                
+            </div>
+
+            <div class="dateContainer">
+                <input type="text" id="date-from" class="form-control" value="{{{ $dateFrom->format('m-d-Y') }}}" readonly="">
+                <input type="text" id="date-to" class="form-control" value="{{{ $dateTo->format('m-d-Y') }}}" readonly="">
+            </div>
             
         </div>
         
@@ -77,6 +85,7 @@
         <div id="order_dialog_content" style=""></div>
     </div>
 
+    
   
 @stop
 
