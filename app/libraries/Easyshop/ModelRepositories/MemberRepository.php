@@ -21,8 +21,7 @@ class MemberRepository
 
     public function search($userData)
     {
-        $member = Member::join('es_product', 'es_member.id_member', '=', 'es_product.member_id')
-            ->where('es_product.is_delete', '=', 0)->where('es_product.is_draft', '=', 0, 'AND');
+        $member = Member::groupBy('es_member.id_member');
         if($userData['fullname']){
             $member->where('es_member.fullname', 'LIKE', '%' . $userData['fullname'] . '%');
         }
@@ -36,7 +35,7 @@ class MemberRepository
             $member->where('es_member.email', 'LIKE', '%' . $userData['email'] . '%');
         }
         if(($userData['startdate']) && ($userData['enddate'])){
-            $member->where('es_member.datecreated', '>=', str_replace('/', '-', $userData['startdate']) . ' 00:00:00' )->where('es_member.datecreated', '<=', str_replace('/', '-', $userData['enddate']) . ' 12:59:59', 'AND');
+            $member->where('es_member.datecreated', '>=', str_replace('/', '-', $userData['startdate']) . ' 00:00:00' )->where('es_member.datecreated', '<=', str_replace('/', '-', $userData['enddate']) . ' 23:59:59', 'AND');
         }
 
         return $member->paginate(100);

@@ -26,7 +26,7 @@ class ProductRepository
             $product->where('es_product.condition', 'LIKE', '%' . $userData['condition'] . '%');
         }
         if(($userData['startdate']) && ($userData['enddate'])){
-            $product->where('es_product.createddate', '>=', str_replace('/', '-', $userData['startdate']) . ' 00:00:00' )->where('es_product.createddate', '<=', str_replace('/', '-', $userData['enddate']) . ' 12:59:59', 'AND');
+            $product->where('es_product.createddate', '>=', str_replace('/', '-', $userData['startdate']) . ' 00:00:00' )->where('es_product.createddate', '<=', str_replace('/', '-', $userData['enddate']) . ' 23:59:59', 'AND');
         }
         if($userData['seller']){
             $product->where('es_member.username', 'LIKE', '%' . $userData['seller'] . '%');

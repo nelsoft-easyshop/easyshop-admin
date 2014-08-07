@@ -20,7 +20,7 @@
                 <span class="glyphicon glyphicon-zoom-in"></span>
                 ADVANCE SEARCH
             </h4>
-            {{ Form::open(array('url' => 'items')) }}
+            {{ Form::open(array('url' => 'items', 'id' => 'searchForm')) }}
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -94,7 +94,7 @@
         <div class="input-group srch_div">
             <div class="inner-addon left-addon">
                 <i class="glyphicon glyphicon-search"></i>
-                <input type="text" class="form-control" placeholder="Search all items" />
+                <input type="text" class="form-control" id="searchBox" placeholder="Search all items" />
             </div>
             <div class="input-group-btn">
                 &nbsp;
@@ -104,10 +104,10 @@
                 </button>
                 <ul class="dropdown-menu dd-right" role="menu">
                     <li role="presentation" class="dropdown-header">Search by :</li>
-                    <li><a href="#">Item</a></li>
-                    <li><a href="#">Seller</a></li>
-                    <li><a href="#">Category</a></li>
-                    <li><a href="#">Brand</a></li>
+                    <li><a class="drct_search" data="src_item" href="javascript:void(0)">Item</a></li>
+                    <li><a class="drct_search" data="src_seller" href="javascript:void(0)">Seller</a></li>
+                    <li><a class="drct_search" data="src_category" href="javascript:void(0)">Category</a></li>
+                    <li><a class="drct_search" data="src_brand" href="javascript:void(0)">Brand</a></li>
                     <li class="divider"></li>
                     <li><a href="javascript:void(0)" id="btn_advance_search"><span class="glyphicon glyphicon-new-window"></span> View advance search</a></li>
                 </ul>
@@ -182,6 +182,13 @@
             $('#btn_close_search').on('click',function(){
                 $('#srch_container').slideUp();
             });
+        });
+
+        $('.drct_search').on('click', function(){
+            var id = $(this).attr('data');
+            var text = $('#searchBox').val();
+            $('#' + id).val(text);
+            $('#searchForm').submit();
         });
     })(jQuery)
 </script>
