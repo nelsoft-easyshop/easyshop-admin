@@ -103,7 +103,7 @@ class TransactionService
     */
     public function getStartPayOutRange($dateFilter = "")
     {
-        $dateFilter = ($dateFilter !== "")?$dateFilter:Carbon::now();
+        $dateFilter = ($dateFilter !== "")?$dateFilter: $this->getNextPayoutDate();
         $dayFilter = intval($dateFilter->format('d'));
         $monthFilter = intval($dateFilter->format('m'));
         $yearFilter = intval($dateFilter->format('Y'));
@@ -131,7 +131,7 @@ class TransactionService
     */
     public function getEndPayOutRange($dateFilter = "")
     {
-        $dateFilter = ($dateFilter !== "")?$dateFilter:Carbon::now();
+        $dateFilter = ($dateFilter !== "") ? $dateFilter : $this->getNextPayoutDate();
         $dayFilter = intval($dateFilter->format('d'));
         $monthFilter = intval($dateFilter->format('m'));
         $yearFilter = intval($dateFilter->format('Y'));
