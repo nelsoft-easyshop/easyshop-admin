@@ -14,6 +14,6 @@ class OrderProductRepository
     {
         return OrderProduct::find($orderProductId);
     }
-    
+
 }
 

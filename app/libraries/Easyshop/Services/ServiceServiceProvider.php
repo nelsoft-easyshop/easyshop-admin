@@ -16,5 +16,8 @@ class ServiceServiceProvider extends ServiceProvider
         $this->app->bind('DataFormatterService', function($app){
             return new DataFormatterService();
         });
+        $this->app->bind('ExcelService', function($app){
+            return new ExcelService();
+        });
     }
 }

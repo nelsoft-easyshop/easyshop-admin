@@ -11,7 +11,7 @@
 |
 */
 
-Route::when('*', 'csrf', array('post','put', 'delete'));
+Route::when('*', 'csrf', array('post', 'put', 'delete'));
 #LOGIN
 Route::get('login', array('uses' => 'AccountController@showLogin'));
 Route::post('login', array('uses' => 'AccountController@doLogin'));
@@ -24,7 +24,8 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('users', array('uses' => 'HomeController@showAllUsers'));
     Route::post('users', array('uses' => 'HomeController@doSearchUser'));
     Route::post('updateUser', array('uses' => 'HomeController@ajaxUpdateUsers'));
-    Route::get('items',array('uses'=>'HomeController@showAllItems'));
+    Route::get('items', array('uses'=>'HomeController@showAllItems'));
     Route::post('items', array('uses' => 'HomeController@doSearchItem'));
     Route::get('pay', array('uses' => 'OrderController@getUsersToPay'));
+    Route::post('transactionRecord', array('uses' => 'HomeController@transactionRecord'));
 });

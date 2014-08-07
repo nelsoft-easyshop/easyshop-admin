@@ -123,6 +123,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Easyshop\Composers\ComposerServiceProvider',
 		'Easyshop\ModelRepositories\RepositoryServiceProvider',
+        'Maatwebsite\Excel\ExcelServiceProvider',
 	),
 
 	/*

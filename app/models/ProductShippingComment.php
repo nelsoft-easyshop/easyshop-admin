@@ -1,6 +1,6 @@
 <?php
 
-class OrderProductStatus extends Eloquent
+class ProductShippingComment extends Eloquent
 {
 
     /**
@@ -8,12 +8,12 @@ class OrderProductStatus extends Eloquent
      *
      * @var string
      */
-    protected $table = 'es_order_product_status';
+    protected $table = 'es_product_shipping_comment';
 
     /**
      * The primary key of the table
      *
      */
-    protected $primaryKey = 'id_order_product_status';
+    protected $primaryKey = 'id_product_shipping_comment';
 
 }
