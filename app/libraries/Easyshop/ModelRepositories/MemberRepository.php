@@ -1,25 +1,24 @@
 <?php namespace Easyshop\ModelRepositories;
 
 use Illuminate\Support\Facades\DB;
-use Member, Order, OrderProduct;
-
-use Carbon\Carbon;
-use Easyshop\Services\TransactionService as TransactionService;
+use Member, OrderStatus, OrderProductStatus;
 
 class MemberRepository
 {    
     
-    private $transactionService;
-    
+
    /**
-    * Load dependencies through the constructor
+    * Return member by id
     *
-    * @param TransactionService $transactionService
+    * @param int $memberId
+    * @return Entity
     */
-    public function __construct(TransactionService $transactionService)
+    public function getMemberById($memberId)
     {
-        $this->transactionService = $transactionService;
+        return Member::find($memberId);
     }
+    
+    
 
    /**
     *  Get users to be paid. Results are grouped by user and banking details
@@ -27,45 +26,36 @@ class MemberRepository
     *  OrderProduct->status = 4 / Payment has been moved to the seller
     *
     *  @param string $username
-    *  @param string $month
-    *  @param string $year
-    *  @param string $day
+    *  @param Carbon $dateFrom
+    *  @param Carbon $dateTo
     *  @return Entity[] 
     */
-    public function getUserAccountsToPay($username, $year, $month, $day)
+    public function getUserAccountsToPay($username, $dateFrom, $dateTo)
     {
 
-
-        if(!empty($year)  && !empty($month) && !empty($day)){
-             $dateFilter = Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$day);
-        }else{
-             $dateFilter = $this->transactionService->getNextPayoutDate();
-        }
-
-        $dateFrom = $this->transactionService->getStartPayOutRange($dateFilter)->format('Y-m-d');
-        $dateTo = $this->transactionService->getEndPayOutRange($dateFilter)->format('Y-m-d');
+        $dateFrom = $dateFrom->format('Y-m-d');
+        $dateTo = $dateTo->format('Y-m-d');
         
         $query = DB::table('es_order_product')->leftJoin('es_order_product_billing_info', 'es_order_product.id_order_product', '=', 'es_order_product_billing_info.order_product_id');
         $query->join('es_member','es_order_product.seller_id', '=', 'es_member.id_member');
         $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+        $query->join('es_order_product_history', function($join){
+            $join->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
+            $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_FORWARD_SELLER));
+        });
+        
         $query->leftJoin('es_product_shipping_comment','es_product_shipping_comment.order_product_id', '=', 'es_order_product.id_order_product');
         $query->where(function ($query) use ($dateFrom, $dateTo){
-          
-            $query->where(function ($query) {
-              
-                            $query->where('status', '=', OrderProduct::STATUS_FUND_CLEARED)
-                                ->orWhere('status', '=', OrderProduct::STATUS_FUND_MOVED);
-                        });
-            $query->where('es_order_product.created_at', '>=', $dateFrom);
-            $query->where('es_order_product.created_at', '<', $dateTo);
+            $query->where('es_order_product_history.created_at', '>=', $dateFrom);
+            $query->where('es_order_product_history.created_at', '<', $dateTo);
         });
 
         $query->orWhere(function ($query) use ($dateFrom, $dateTo) {
             $query->where(function ($query) {
-                            $query->where('es_order.order_status', '=', Order::STATUS_PAID)
-                                ->orWhere('es_order.order_status', '=',  Order::STATUS_COMPLETED);
+                            $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
+                                ->orWhere('es_order.order_status', '=',  OrderStatus::STATUS_COMPLETED);
                         });
-            $query->where('es_order_product.status', '=', OrderProduct::STATUS_ON_GOING);
+            $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING);
             $query->where('es_order_product.is_reject', '=', '0');
             $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
             $query->where(DB::raw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15"));
