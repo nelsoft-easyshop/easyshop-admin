@@ -1,10 +1,16 @@
 
+(function ($) {
+    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+        }
+    });
 
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-Token': $('meta[name="_token"]').attr('content')
-    }
-});
+})(jQuery);
+
+
+
 
 function isEmpty(obj) {
     for(var key in obj) {
@@ -13,4 +19,25 @@ function isEmpty(obj) {
     }
     return true;
 }
+
+var loader;
+loader = loader || (function () {
+    var pleaseWaitDiv = $('<div style="text-align:center"><hr/> <p><img src = "images/orange_loader.gif" /></p> <p style="font-size:13px;"><strong>One moment please </strong> </p> <hr/></div>');
+    var dialog = new BootstrapDialog({
+            message: pleaseWaitDiv,
+            cssClass: 'loader-dialog',
+    });
+    dialog.realize();
+    dialog.getModalHeader().hide();
+    
+    return {
+        showPleaseWait: function() {
+            dialog.open();
+        },
+        hidePleaseWait: function () {
+            dialog.close();
+        },
+
+    };
+})();
 
