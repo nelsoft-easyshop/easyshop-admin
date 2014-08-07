@@ -23,12 +23,15 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('/', array('uses' => 'HomeController@index'));    
     Route::get('users', array('uses' => 'HomeController@getAllUsers'));
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
+    
     Route::get('orderproduct', array('uses' => 'OrderProductController@getOrderProducts'));
     Route::get('orderproduct-history', array('uses' => 'OrderProductController@getOrderProductDetail'));
     Route::get('orderproduct-payment', array('uses' => 'OrderProductController@getOrderProductPaymentDetail'));
+    Route::put('orderproduct-status/{action}', array('uses' => 'OrderProductController@updateOrderProductStatus'));
 
     Route::put('billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
     Route::post('billinginfo', array('uses' => 'BillingInfoController@createOrderProductPaymentAccount'));
+
     
 });
 
