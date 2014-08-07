@@ -3,6 +3,10 @@
 class OrderStatus extends Eloquent 
 {
 
+    const STATUS_PAID = 0;
+    const STATUS_COMPLETED = 1;
+    const STATUS_DRAFT = 99;
+
    /**
     * The database table used by the model.
     *
