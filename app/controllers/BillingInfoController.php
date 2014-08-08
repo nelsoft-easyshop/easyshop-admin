@@ -9,7 +9,8 @@ class BillingInfoController extends BaseController
     *
     * @return JSON
     */
-    public function updateOrderProductPaymentAccount(){
+    public function updateOrderProductPaymentAccount()
+    {
 
         $billingInfoRepository = App::make('BillingInfoRepository');
         $errors = $billingInfoRepository->updateBillingAccount(Input::get('billing_info_id'), Input::get('account_name'), Input::get('account_number'), Input::get('bank_id'),  Input::get('seller_id') );
@@ -23,7 +24,8 @@ class BillingInfoController extends BaseController
     *
     * @return JSON
     */
-    public function createOrderProductPaymentAccount(){
+    public function createOrderProductPaymentAccount()
+    {
 
         $billingInfoRepository = App::make('BillingInfoRepository');
         $errors = $billingInfoRepository->createBillingAccount(Input::get('account_name'), Input::get('account_number'), Input::get('bank_id'), Input::get('seller_id'));
