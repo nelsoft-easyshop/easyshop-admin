@@ -4,11 +4,11 @@
 class BillingInfoController extends BaseController 
 {
         
-   /**
-    * PUT method for updating payment account
-    *
-    * @return JSON
-    */
+    /**
+     * PUT method for updating payment account
+     *
+     * @return JSON
+     */
     public function updateOrderProductPaymentAccount()
     {
 
@@ -21,12 +21,12 @@ class BillingInfoController extends BaseController
         return Response::json(array('errors' => $errors));
     }
     
-            
-   /**
-    * POST method for creating new payment account
-    *
-    * @return JSON
-    */
+             
+    /**
+     * POST method for creating new payment account
+     *
+     * @return JSON
+     */
     public function createOrderProductPaymentAccount()
     {
 

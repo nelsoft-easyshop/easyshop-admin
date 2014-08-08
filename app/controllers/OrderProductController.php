@@ -40,11 +40,11 @@ class OrderProductController extends BaseController
     }
 
     
-   /**
-    *  GET method for displaying specific order products in a payment account
-    *
-    *  @return JSON
-    */
+    /**
+     *  GET method for displaying specific order products in a payment account
+     *
+     *  @return JSON
+     */
     public function getOrderProducts()
     {
         $userdata = Input::get();
@@ -64,11 +64,11 @@ class OrderProductController extends BaseController
         return Response::json(array('html' => $html));
     }
 
-   /**
-    *  GET method for displaying order product history
-    *
-    *  @return JSON
-    */
+    /**
+     *  GET method for displaying order product history
+     *
+     *  @return JSON
+     */
     public function getOrderProductDetail()
     {
         $userdata = Input::get();
@@ -84,11 +84,11 @@ class OrderProductController extends BaseController
         return Response::json(array('html' => $html));
     }
    
-   /**
-    *  GET method for displaying payment details for an order product
-    *
-    *  @return JSON
-    */
+    /**
+     *  GET method for displaying payment details for an order product
+     *
+     *  @return JSON
+     */
     public function getOrderProductPaymentDetail()
     {
         $userdata = Input::get();
@@ -111,12 +111,12 @@ class OrderProductController extends BaseController
     }
 
     
-   /**
-    * Updates the status of an order product
-    *
-    * @parameter string $action
-    * @return JSON
-    */
+    /**
+     * Updates the status of an order product
+     *
+     * @parameter string $action
+     * @return JSON
+     */
     public function updateOrderProductStatus($action)
     {        
         $memberRepository = App::make('MemberRepository');
