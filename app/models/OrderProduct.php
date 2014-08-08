@@ -36,9 +36,9 @@ class OrderProduct extends Eloquent
         return $this->hasOne('Product', 'id_product', 'product_id');
     }
     
-    public function billingInfo() 
+    public function sellerBillingInfo() 
     {
-        return $this->hasOne('OrderProductBillingInfo', 'order_product_id', 'id_order_product');
+        return $this->hasOne('OrderProductBillingInfo', 'id_order_billing_info', 'seller_billing_id');
     }
     
     public function orderProductHistory()
