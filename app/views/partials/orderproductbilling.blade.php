@@ -1,6 +1,9 @@
 
 <div class = "order_product_pay_container" >
 
+
+    <input type="hidden" id="order-billing-info-id" value="{{{ $defaultAccount->id_order_billing_info  }}}" />
+
     <span> Deposit to: </span>
     <select class="form-control" id="account_collection">
         @foreach($accounts as $account)
@@ -63,6 +66,6 @@
     <div class="payment_message"></div>
     
     <input type="hidden" id="seller_id" value="{{{ $seller_id }}}"/>
-    <input type="hidden" id="order_product_id" value="{{{ $order_product_id }}}"/>
+    <input type="hidden" id="order_product_ids" value="{{{ $order_product_ids }}}"/>
 
 </div>
