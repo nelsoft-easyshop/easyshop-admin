@@ -1,6 +1,6 @@
 <html>
     <body style="color:#494949;">
-            <table cellspacing="0" cellpadding="10" style="width:100%; max-width:780px; margin:0 auto; font-family: Arial, sans-serif;">
+            <table cellspacing="0" cellpadding="10" style="color:black; width:100%; max-width:780px; margin:0 auto; font-family: Arial, sans-serif;">
                 <thead>
                     <tr>
                         <td>
