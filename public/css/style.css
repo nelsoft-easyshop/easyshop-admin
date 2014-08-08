@@ -2,6 +2,9 @@
     width: 300px;
 }
 
+
+
+
 /*LOGIN FORM START*/
 
 .login_container{
@@ -378,12 +381,41 @@ div#mainsection{
     background-color:#ff4400;
 }
 
-.dateContainer{
+.op-pay-btn{
+    background-color: #f18200;
+    color: white;
+    border: none;
+}
 
+.op-pay-btn:hover, .op-pay-btn:focus{
+    background-color: #ff4400;
+    color: white;
+    border: none;
+    outline: 0;
+}
+
+.order-product-account-container input{
+    width: 180px;
+    display: inline;
+    margin-left: 5px;
+    margin-right: 12px;
+    outline: 0;
+    margin-bottom: 20px;
+}
+
+.order-product-account-container input.bankname{
+    width: 320px;
+}
+
+.order-product-account-container{
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 98%;
 }
 
 .dateContainer input{
     width: 140px;
     display: inline;
     margin-left: 12px;
+     outline: 0;
 }
