@@ -13,8 +13,11 @@ class BillingInfoController extends BaseController
     {
 
         $billingInfoRepository = App::make('BillingInfoRepository');
-        $errors = $billingInfoRepository->updateBillingAccount(Input::get('billing_info_id'), Input::get('account_name'), Input::get('account_number'), Input::get('bank_id'),  Input::get('seller_id') );
-
+        $errors = $billingInfoRepository->updateBillingAccount(Input::get('billing_info_id'),
+                                                                Input::get('account_name'), 
+                                                                Input::get('account_number'),
+                                                                Input::get('bank_id'),  
+                                                                Input::get('seller_id') );
         return Response::json(array('errors' => $errors));
     }
     
@@ -28,7 +31,10 @@ class BillingInfoController extends BaseController
     {
 
         $billingInfoRepository = App::make('BillingInfoRepository');
-        $errors = $billingInfoRepository->createBillingAccount(Input::get('account_name'), Input::get('account_number'), Input::get('bank_id'), Input::get('seller_id'));
+        $errors = $billingInfoRepository->createBillingAccount(Input::get('account_name'),
+                                                                Input::get('account_number'),
+                                                                Input::get('bank_id'), 
+                                                                Input::get('seller_id'));
                 
         return Response::json(array('errors' => $errors, 'new_billing_info_id' => $billingInfoRepository->current_billing_info_id));
     }
