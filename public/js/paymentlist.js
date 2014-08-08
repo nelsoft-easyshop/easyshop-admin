@@ -63,11 +63,20 @@
     
     
     
-    $(document).on('click','.pay',function(){
-        var order_product_id =  $(this).closest('.order_product').data('orderproductid');
-         $.ajax({
+    $(document).on('click','.op-pay-btn',function(){
+        
+        var orderProductIdCollection =  [];
+        $('.order_product td.order-product-id').each(function(){
+            orderProductIdCollection.push( parseInt($(this).html().trim(), 10));
+        });
+         
+        if(orderProductIdCollection.length == 0){
+            return false;
+        }
+
+        $.ajax({
                 url: 'orderproduct-payment',
-                data:{order_product_id:order_product_id},
+                data:{order_product_ids:orderProductIdCollection},
                 type: 'get',
                 dataType: 'JSON',                      
                 success: function(result){
@@ -90,8 +99,7 @@
                         },
                         cssClass: 'payment-dialog-pay',
                     });   
-                }
-                    
+                }    
         });
        
        
@@ -114,7 +122,6 @@
         $('#form_accnt_name').val(accnt_name);
         $('#form_accnt_number').val(accnt_number);
         $('#form_accnt_bank').val(accnt_bank );
-        
         showInputs();
     });
     
@@ -163,10 +170,16 @@
                     $('#accnt_name').html(accnt_name);
                     $('#accnt_number').html(accnt_number);
                     $('#accnt_bank_id').val(accnt_bank);
-                    $('#accnt_bank').html($('#form_accnt_bank option:selected').html());
+                    $('#accnt_bank').html(accnt_bank_name);
                     if(isCreate){
-                        var option_html = '<option value='+result.new_billing_info_id+' data-bank-id='+accnt_bank+' data-name='+accnt_name+' date-number='+accnt_number+' selected>'+accnt_bank_name+' - '+accnt_name+'</option>';
+                        var option_html = '<option value="'+result.new_billing_info_id+'" data-bank-id="'+accnt_bank+'" data-name="'+accnt_name+'" data-number="'+accnt_number+'" data-bank-name="'+accnt_bank_name+'" selected>'+accnt_bank_name+' - '+accnt_name+'</option>';
                         $(option_html).insertBefore('#account_collection option#add-option');
+                    }else{
+                        selected_account.data('bank-id', accnt_bank);
+                        selected_account.data('name', accnt_name);
+                        selected_account.data('number', accnt_number);
+                        selected_account.data('bank-name' , accnt_bank_name);
+                        selected_account.html(accnt_bank_name+' - '+ accnt_name);
                     }
                     
                     if($.isNumeric(order_billing_info_id)){
@@ -200,7 +213,6 @@
             $('#form_accnt_number').val('');
             $('#form_accnt_bank').val(1);
             showInputs();
-            $('#cancel_account').hide();
         }else{
             $('#accnt_name').html(selectedOption.data('name'));
             $('#accnt_number').html(selectedOption.data('number'));
@@ -217,17 +229,17 @@
         var account_number = selected_option.data('number');
         var bank_name = selected_option.data('bank-name');
         var seller_id = $('#seller_id').val();
-        var order_product_id = $('#order_product_id').val();
-        
+        var order_product_ids = $('#order_product_ids').val();
+        var order_billing_info_id = $('#order-billing-info-id').val();     
         var dateFrom = $('input#date-from').val();
         var dateTo = $('input#date-to').val();
-        
+
         var spinner =  Ladda.create( document.querySelector( 'button.btn-pay-account' ) );
         spinner.start();
-           
+        
         $.ajax({
             url: 'orderproduct-status/forward',
-            data: {_method: 'put', order_product_id: order_product_id,  account_name: account_name, account_number: account_number, bank_name:bank_name, seller_id:seller_id, dateFrom: dateFrom, dateTo: dateTo},
+            data: {_method: 'put', order_product_ids: order_product_ids,  account_name: account_name, account_number: account_number, bank_name:bank_name, seller_id:seller_id, dateFrom: dateFrom, dateTo: dateTo, order_billing_info_id: order_billing_info_id},
             type: 'post',
             dataType: 'JSON',                      
             success: function(result){
@@ -239,6 +251,7 @@
                                         'The database has been successfully updated.' +
                                      '</div>'
                     $('.payment_message').prepend(success_html);
+                    setTimeout(function(){  location.reload(); }, 1500);    
                 }
                     
             }
@@ -260,6 +273,7 @@
             $('#edit_account').hide();
             $('#save_account').show();
             $('#cancel_account').show();
+            $('.btn-pay-account').hide();
     }
     
     function hideInputs()
@@ -275,6 +289,7 @@
             $('#save_account').hide();
             $('#cancel_account').hide();
             $('#edit_account').show();
+            $('.btn-pay-account').show();
     }
     
 
