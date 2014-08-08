@@ -36,7 +36,7 @@ class MemberRepository
         $dateFrom = $dateFrom->format('Y-m-d');
         $dateTo = $dateTo->format('Y-m-d');
         
-        $query = DB::table('es_order_product')->leftJoin('es_order_product_billing_info', 'es_order_product.id_order_product', '=', 'es_order_product_billing_info.order_product_id');
+        $query = DB::table('es_order_product')->leftJoin('es_order_product_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_product_billing_info.id_order_billing_info');
         $query->join('es_member','es_order_product.seller_id', '=', 'es_member.id_member');
         $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
         $query->join('es_order_product_history', function($join){
@@ -71,6 +71,7 @@ class MemberRepository
                                         
         $completedOrders = $query->groupBy('es_member.id_member', 'es_order_product_billing_info.bank_name',  'es_order_product_billing_info.account_name',  'es_order_product_billing_info.account_number'  )
                                 ->get(['es_member.username', 'es_member.email', 'es_member.contactno', 'es_order_product_billing_info.bank_name', 'es_order_product_billing_info.account_name', 'es_order_product_billing_info.account_number', DB::raw('SUM(es_order_product.net) as net')]);
+
         
         return $completedOrders;
     }
