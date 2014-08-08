@@ -14,7 +14,7 @@ class OrderProductBillingInfo extends Eloquent
     * The primary key of the table
     *
     */
-    protected $primaryKey = 'id_order_product_billing_info';
+    protected $primaryKey = 'id_order_billing_info';
 
     
     public function bankInfo() 
