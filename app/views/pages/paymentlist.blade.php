@@ -3,7 +3,7 @@
 @section('description', 'Payment List')
 @section('keywords', '')
 @section('title', 'Payment List | Easyshop Admin')
-@section('header_tagline', 'Payment List.')
+@section('header_tagline', 'Seller Pay-out.')
 
 
 @section('page_header')
@@ -79,7 +79,7 @@
         </div>
 
 
-  </div>
+    </div>
   
     <div class="order_dialog_con" style="display:none;">
         <div id="order_dialog_content" style=""></div>
