@@ -53,9 +53,13 @@ class OrderProductController extends BaseController
         $dateTo =  Carbon::createFromFormat('m-d-Y',$userdata['dateTo'] );
         
         $orderProductRepository = App::make('OrderProductRepository');
+        
         $orderProducts = $orderProductRepository->getOrderProductByPaymentAccount($userdata['username'], $userdata['accountname'],$userdata['accountno'], $userdata['bankname'],$dateFrom, $dateTo);      
         $html = View::make('partials.orderproductlist')
                     ->with('orderproducts', $orderProducts)
+                    ->with('accountname', $userdata['accountname'])
+                    ->with('accountno', $userdata['accountno'])
+                    ->with('bankname', $userdata['bankname'])
                     ->render();
         return Response::json(array('html' => $html));
     }
@@ -92,15 +96,15 @@ class OrderProductController extends BaseController
         $billingInfoRepository = App::make('BillingInfoRepository');
         $bankInfoRepository = App::make('BankInfoRepository');
         
-        $orderProduct = $orderProductRepository->getOrderProductById($userdata['order_product_id']);
+        $orderProduct = $orderProductRepository->getOrderProductById($userdata['order_product_ids'][0]);
         $paymentAccounts = $billingInfoRepository->getBillingAccountsByMemberId($orderProduct->seller_id);
         $bankList = $bankInfoRepository->getAllBanks();
 
         $html = View::make('partials.orderproductbilling')
                     ->with('accounts', $paymentAccounts)
-                    ->with('defaultAccount', $orderProduct->billingInfo)
+                    ->with('defaultAccount', $orderProduct->sellerBillingInfo)
                     ->with('seller_id', $orderProduct->seller_id)
-                    ->with('order_product_id', $orderProduct->id_order_product)
+                    ->with('order_product_ids', json_encode($userdata['order_product_ids']))
                     ->with('bankList', $bankList)
                     ->render();
         return Response::json(array('html' => $html));
@@ -114,11 +118,12 @@ class OrderProductController extends BaseController
     * @return JSON
     */
     public function updateOrderProductStatus($action)
-    {
-        $orderProductStatusRepository = App::make('OrderProductStatusRepository');
+    {        
         $memberRepository = App::make('MemberRepository');
         $orderProductRepository = App::make('OrderProductRepository');
+        $orderProductStatusRepository = App::make('OrderProductStatusRepository');
         $orderProductHistoryRepository = App::make('OrderProductHistoryRepository');
+        $orderProductBillingInfoRepository = App::make('OrderProductBillingInfoRepository');
         
         $isValidAction = false;
         if($action === 'forward'){
@@ -130,24 +135,29 @@ class OrderProductController extends BaseController
         }
         
         if($isValidAction){
-            $orderProductId = Input::get('order_product_id');
+            
+            $orderProductIds = json_decode(Input::get('order_product_ids'));
             $accountName = Input::get('account_name');
             $accountNumber = Input::get('account_number');
             $bankName = Input::get('bank_name');
             $userId = Input::get('seller_id');
+            $orderProductBillingInfoId = Input::get('order_billing_info_id');
+            
             $dateFrom = Carbon::createFromFormat('m-d-Y',  Input::get('dateFrom'));
             $dateTo = Carbon::createFromFormat('m-d-Y',  Input::get('dateTo'));
             
-            
+            $orderProductBillingInfoRepository->updateOrderProductBillingInfo($orderProductBillingInfoId, $accountName, $accountNumber, $bankName);
+            $orderProductBillingInfo = $orderProductBillingInfoRepository->getOrderProductBillingInfoById($orderProductBillingInfoId);
+           
             $member = $memberRepository->getMemberById($userId);
-            $orderProducts = $orderProductRepository->getOrderProductByPaymentAccount($member->username, $accountName, $accountNumber, $bankName);      
-            $billingAccount = $orderProducts->first()->billingInfo;
-            
-            #$orderProductRepository->updateOrderProductStatus($orderProductId, $billingAccount->id_order_billing_info, $status);
-            #$orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
-        
-            $this->emailService->sendPaymentNotice($member, $orderProducts, $billingAccount, $dateFrom, $dateTo);
- 
+            $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
+            foreach($orderProductIds as $orderProductId){
+                $orderProductRepository->updateOrderProductStatus($orderProductId, $status);
+                $orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
+            }
+
+            $this->emailService->sendPaymentNotice($member, $orderProducts, $orderProductBillingInfo, $dateFrom, $dateTo);
+
             return Response::json(true);
         }
         
