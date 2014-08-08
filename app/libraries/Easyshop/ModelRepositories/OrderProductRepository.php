@@ -19,6 +19,21 @@ class OrderProductRepository
     
     
    /**
+    * Get order products by Id. Accepts integer array.
+    *
+    * @param integer[] $orderProductIds
+    * @return Entity[]
+    */
+    public function getManyOrderProductById($orderProductIds)
+    {
+        $questionmarks = str_repeat("?,", count($orderProductIds)-1) . "?";
+        $query = OrderProduct::whereRaw("id_order_product IN (".$questionmarks.")");
+        $query->setBindings(array_merge($query->getBindings(),$orderProductIds));
+        
+        return $query->get();
+    }
+    
+   /**
     * Returns all order products that are tied to a certain payment account_name
     *
     * @param string username
@@ -31,7 +46,7 @@ class OrderProductRepository
     public function getOrderProductByPaymentAccount($username, $accountname, $accountno, $bankname, $dateFrom = null, $dateTo = null)
     {       
 
-        $query = OrderProduct::leftJoin('es_order_product_billing_info', 'es_order_product.id_order_product', '=', 'es_order_product_billing_info.order_product_id')
+        $query = OrderProduct::leftJoin('es_order_product_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_product_billing_info.id_order_billing_info')
                         ->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member')
                         ->join('es_order', 'es_order.id_order', '=', 'es_order_product.order_id')
                         ->join('es_member as buyer','es_order.buyer_id', '=', 'buyer.id_member')
@@ -100,18 +115,10 @@ class OrderProductRepository
     * @param inetger $status
     * @return Boolean
     */
-    public function updateOrderProductStatus($orderProductId, $billingInfoId,$status)
+    public function updateOrderProductStatus($orderProductId,$status)
     {
-        $status = intval($status);
-        
         $orderProduct = OrderProduct::find($orderProductId);
-        $orderProduct->status = $status;
-        if($status === OrderProductStatus::STATUS_PAID_SELLER){
-            $orderProduct->seller_billing_id = $billingInfoId;
-        }else if($status === OrderProductStatus::STATUS_PAID_BUYER){
-            $orderProduct->buyer_billing_id = $billingInfoId; 
-        }
-        
+        $orderProduct->status = $status;        
         return $orderProduct->save();
     }
     
