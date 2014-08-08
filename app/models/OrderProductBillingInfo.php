@@ -8,7 +8,7 @@ class OrderProductBillingInfo extends Eloquent
     *
     * @var string
     */
-    protected $table = 'es_order_product_billing_info';
+    protected $table = 'es_order_billing_info';
 
    /**
     * The primary key of the table

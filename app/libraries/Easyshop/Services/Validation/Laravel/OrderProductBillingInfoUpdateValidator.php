@@ -10,7 +10,7 @@ class OrderProductBillingInfoUpdateValidator extends LaravelValidator implements
     * @var array
     */
     protected $rules = array(
-        'order_product_billing_info_id' => 'required|numeric',
+        'order_billing_info_id' => 'required|numeric',
         'account_name' => 'required',
         'account_number' => 'required',
         'bank_name' => 'required',

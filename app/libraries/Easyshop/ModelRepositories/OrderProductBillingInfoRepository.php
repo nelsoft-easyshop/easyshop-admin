@@ -29,7 +29,7 @@ class OrderProductBillingInfoRepository
     */
     public function updateOrderProductBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName)
     {
-        $data = array('order_product_billing_info_id' => $orderBillingInfoId, 
+        $data = array('order_billing_info_id' => $orderBillingInfoId, 
                     'account_name' => $accountName,
                     'account_number' => $accountNumber,
                     'bank_name' => $bankName,
