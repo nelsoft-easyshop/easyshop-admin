@@ -150,9 +150,21 @@
         var isCreate = billing_info_id == 0;
         
         if(isCreate){
-            json_data = {account_name:accnt_name, account_number:accnt_number, bank_id:accnt_bank, seller_id: seller_id };
+            json_data = {
+                account_name:accnt_name, 
+                account_number:accnt_number, 
+                bank_id:accnt_bank, 
+                seller_id: seller_id 
+            };
         }else{
-            json_data = {_method: 'put', billing_info_id:billing_info_id, account_name:accnt_name, account_number:accnt_number, bank_id:accnt_bank , seller_id: seller_id};
+            json_data = {
+                _method: 'put', 
+                billing_info_id:billing_info_id, 
+                account_name:accnt_name,
+                account_number:accnt_number,
+                bank_id:accnt_bank , 
+                seller_id: seller_id
+            };
         }
         
         $.ajax({
