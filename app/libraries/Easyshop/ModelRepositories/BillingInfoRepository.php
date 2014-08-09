@@ -11,7 +11,7 @@ use Easyshop\Services\Validation\Laravel\BillingInfoUpdateValidator;
 class BillingInfoRepository
 {    
 
-    public $current_billing_info_id;
+    public $currentBillingInfoId;
 
    /**
     * Returns the payment accounts of a particular seller
@@ -61,7 +61,7 @@ class BillingInfoRepository
             $billingInfo->bank_account_number = $accountNumber;
             $billingInfo->bank_id = $bankId;
             $billingInfo->save();
-            $this->current_billing_info_id = $billingInfo->id_billing_info;
+            $this->currentBillingInfoId = $billingInfo->id_billing_info;
         }
         
         return $validator->errors();
@@ -94,7 +94,7 @@ class BillingInfoRepository
             $billingInfo->member_id = $memberId;
             $billingInfo->bank_id = $bankId;
             $billingInfo->save();
-            $this->current_billing_info_id = $billingInfo->id_billing_info;
+            $this->currentBillingInfoId = $billingInfo->id_billing_info;
         }
 
         return $validator->errors();
