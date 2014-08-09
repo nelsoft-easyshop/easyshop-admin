@@ -36,7 +36,7 @@ class BillingInfoController extends BaseController
                                                                 Input::get('bank_id'), 
                                                                 Input::get('seller_id'));
                 
-        return Response::json(array('errors' => $errors, 'new_billing_info_id' => $billingInfoRepository->current_billing_info_id));
+        return Response::json(array('errors' => $errors, 'new_billing_info_id' => $billingInfoRepository->currentBillingInfoId));
     }
 
 }
