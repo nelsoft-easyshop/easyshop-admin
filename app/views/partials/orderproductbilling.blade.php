@@ -58,7 +58,7 @@
     
     <div style="clear:both"></div>
     
-    <div class="errors"></div>
+    <div id="error-container"></div>
     <div class="payment_message"></div>
     
     <input type="hidden" id="seller_id" value="{{{ $seller_id }}}"/>

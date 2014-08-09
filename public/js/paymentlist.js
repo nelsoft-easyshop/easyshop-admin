@@ -109,10 +109,7 @@
     
     $(document).on('click','#edit_account',function(){
 
-        $('.errors').children().fadeOut(500, function() {
-            $('.errors').empty();
-        });
-        
+        emptyErrors();
         
         var accnt_name = $('#accnt_name').html().trim();
         var accnt_number = $('#accnt_number').html().trim();
@@ -126,16 +123,13 @@
     });
     
     $(document).on('click','#cancel_account',function(){
-        $('.errors').children().fadeOut(500, function() {
-            $('.errors').empty();
-        });
-               
+        emptyErrors(); 
         hideInputs();
     });
     
     $(document).on('click','#save_account',function(){
         
-        $('.errors').children().fadeOut(500);
+        $('#error-container').children().fadeOut(500);        
         
         var accnt_name = $('#form_accnt_name').val().trim();
         var accnt_number = $('#form_accnt_number').val().trim();
@@ -144,6 +138,8 @@
         var billing_info_id = $('#account_collection').val();
         var selected_account = $('#account_collection').find('option:selected');
         var order_billing_info_id = selected_account.data('order-billing-id');
+        
+        accnt_bank ='';
         
         var seller_id = $('#seller_id').val();
         
@@ -193,7 +189,7 @@
                             '<div class="alert alert-warning">' +
                                 '<a href="#" class="close" data-dismiss="alert">&times;</a>' + $(this)[0] +
                             '</div>';
-                        $('.errors').prepend(alert_html);
+                        $('#error-container').prepend(alert_html);
                     });  
                 }
             }           
@@ -203,6 +199,7 @@
     });
         
     $(document).on('change','#account_collection',function(){
+        emptyErrors();
         var $this = $(this)
         var billing_info_id = $this.val();
         var selectedOption = $this.find('option:selected');
@@ -292,6 +289,13 @@
             $('.btn-pay-account').show();
     }
     
+    function emptyErrors()
+    {
+        var errorContainer = $('#error-container');
+        errorContainer.children().fadeOut(500, function() {
+            errorContainer.empty();
+        });
+    }
 
 })(jQuery);
 

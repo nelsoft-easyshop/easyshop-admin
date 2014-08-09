@@ -363,7 +363,7 @@ div#mainsection{
     font-size: 13px;
 }
 
-.order_product_pay_container .errors{
+.order_product_pay_container #error-container{
     margin-top: 10px;
 }
 
