@@ -123,7 +123,7 @@ class OrderProductController extends BaseController
         $orderProductRepository = App::make('OrderProductRepository');
         $orderProductStatusRepository = App::make('OrderProductStatusRepository');
         $orderProductHistoryRepository = App::make('OrderProductHistoryRepository');
-        $orderProductBillingInfoRepository = App::make('OrderProductBillingInfoRepository');
+        $orderProductBillingInfoRepository = App::make('OrderBillingInfoRepository');
         
         $isValidAction = false;
         if($action === 'forward'){
@@ -141,22 +141,21 @@ class OrderProductController extends BaseController
             $accountNumber = Input::get('account_number');
             $bankName = Input::get('bank_name');
             $userId = Input::get('seller_id');
-            $orderProductBillingInfoId = Input::get('order_billing_info_id');
             
             $dateFrom = Carbon::createFromFormat('m-d-Y',  Input::get('dateFrom'));
             $dateTo = Carbon::createFromFormat('m-d-Y',  Input::get('dateTo'));
-            
-            $orderProductBillingInfoRepository->updateOrderProductBillingInfo($orderProductBillingInfoId, $accountName, $accountNumber, $bankName);
-            $orderProductBillingInfo = $orderProductBillingInfoRepository->getOrderProductBillingInfoById($orderProductBillingInfoId);
-           
+
             $member = $memberRepository->getMemberById($userId);
             $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
-            foreach($orderProductIds as $orderProductId){
-                $orderProductRepository->updateOrderProductStatus($orderProductId, $status);
-                $orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
+            foreach($orderProducts as $orderProduct){ 
+              $orderProductId = $orderProduct->id_order_product;
+              $orderBillingInfoId = $orderProduct->sellerBillingInfo->id_order_billing_info;
+              $orderProductBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName);
+              #  $orderProductRepository->updateOrderProductStatus($orderProductId, $status);
+              #  $orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
             }
 
-            $this->emailService->sendPaymentNotice($member, $orderProducts, $orderProductBillingInfo, $dateFrom, $dateTo);
+            $this->emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo);
 
             return Response::json(true);
         }
