@@ -46,8 +46,8 @@ class RepositoryServiceProvider extends ServiceProvider
             return new BankInfoRepository();
         });
         
-        $this->app->bind('OrderProductBillingInfoRepository', function($app){  
-            return new OrderProductBillingInfoRepository();
+        $this->app->bind('OrderBillingInfoRepository', function($app){  
+            return new OrderBillingInfoRepository();
         });
                       
 
