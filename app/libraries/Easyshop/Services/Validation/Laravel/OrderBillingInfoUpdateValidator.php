@@ -2,10 +2,10 @@
  
 use Easyshop\Services\Validation\ValidatorInterface;
  
-class OrderProductBillingInfoUpdateValidator extends LaravelValidator implements ValidatorInterface {
+class OrderBillingInfoUpdateValidator extends LaravelValidator implements ValidatorInterface {
  
    /**
-    * Validation for updating OrderProductBillingInfo
+    * Validation for updating OrderBillingInfo
     *
     * @var array
     */
