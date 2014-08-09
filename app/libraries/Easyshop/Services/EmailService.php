@@ -9,19 +9,23 @@ class EmailService{
     *
     * @param Entity $member
     * @param Entity[] $orderProducts
-    * @param Entity $account
+    * @param string $accountName
+    * @param string $accountNumber
+    * @param string $bankName 
     * @param Carbon $dateFrom
     * @param Carbon $dateTo
     *
     */
-    public function sendPaymentNotice($member, $orderProducts, $account, $dateFrom, $dateTo)
+    public function sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber,$bankName, $dateFrom, $dateTo)
     {    
         $data = array(
             'recipient' => $member->username,
             'startPayOutDate' => $dateFrom,
             'endPayOutDate' => $dateTo,
             'orderProducts' => $orderProducts,
-            'account' => $account,
+            'accountName' => $accountName,
+            'accountNumber' => $accountNumber,
+            'bankName' => $bankName,
         );
 
         Mail::send('emails.sellerpaid', $data, function($message) use ($member)
