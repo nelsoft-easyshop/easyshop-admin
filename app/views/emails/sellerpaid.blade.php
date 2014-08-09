@@ -16,10 +16,10 @@
         <tr>
             <td>
                 <p>
-                    <strong> Account Name: </strong>{{{ $account->bank_name }}} - {{{ $account->account_name }}}
+                    <strong> Account Name: </strong>{{{ $bankName }}} - {{{ $accountName }}}
                 </p>
                 <p>
-                    <strong> Account Number: </strong> {{{ $account->account_number }}}
+                    <strong> Account Number: </strong> {{{ $accountNumber }}}
                 </p>
             </td>
         </tr>  
