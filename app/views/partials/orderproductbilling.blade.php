@@ -1,8 +1,4 @@
-
 <div class = "order_product_pay_container" >
-
-
-    <input type="hidden" id="order-billing-info-id" value="{{{ $defaultAccount->id_order_billing_info  }}}" />
 
     <span> Deposit to: </span>
     <select class="form-control" id="account_collection">

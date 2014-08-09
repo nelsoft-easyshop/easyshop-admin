@@ -230,7 +230,7 @@
         var bank_name = selected_option.data('bank-name');
         var seller_id = $('#seller_id').val();
         var order_product_ids = $('#order_product_ids').val();
-        var order_billing_info_id = $('#order-billing-info-id').val();     
+ 
         var dateFrom = $('input#date-from').val();
         var dateTo = $('input#date-to').val();
 
@@ -239,7 +239,7 @@
         
         $.ajax({
             url: 'orderproduct-status/forward',
-            data: {_method: 'put', order_product_ids: order_product_ids,  account_name: account_name, account_number: account_number, bank_name:bank_name, seller_id:seller_id, dateFrom: dateFrom, dateTo: dateTo, order_billing_info_id: order_billing_info_id},
+            data: {_method: 'put', order_product_ids: order_product_ids,  account_name: account_name, account_number: account_number, bank_name:bank_name, seller_id:seller_id, dateFrom: dateFrom, dateTo: dateTo},
             type: 'post',
             dataType: 'JSON',                      
             success: function(result){
