@@ -1,21 +1,21 @@
 <?php namespace Easyshop\ModelRepositories;
 
 use Illuminate\Support\Facades\DB;
-use OrderProductBillingInfo;
-use Easyshop\Services\Validation\Laravel\OrderProductBillingInfoUpdateValidator;
+use OrderBillingInfo;
+use Easyshop\Services\Validation\Laravel\OrderBillingInfoUpdateValidator;
 
-class OrderProductBillingInfoRepository
+class OrderBillingInfoRepository
 {    
 
    /**
-    * Returns the Order Product Billing Info
+    * Returns the Order Billing Info
     *
-    * @param integer $orderProductBillingInfoId
+    * @param integer $orderBillingInfoId
     * @return Entity 
     */
-    public function getOrderProductBillingInfoById($orderProductBillingInfoId)
+    public function getOrderBillingInfoById($orderProductBillingInfoId)
     {
-        return OrderProductBillingInfo::find($orderProductBillingInfoId);
+        return OrderBillingInfo::find($orderProductBillingInfoId);
     }
 
    /**
@@ -27,7 +27,7 @@ class OrderProductBillingInfoRepository
     * @param string $bankName
     * @return MessageBag[]
     */
-    public function updateOrderProductBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName)
+    public function updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName)
     {
         $data = array('order_billing_info_id' => $orderBillingInfoId, 
                     'account_name' => $accountName,
@@ -35,9 +35,9 @@ class OrderProductBillingInfoRepository
                     'bank_name' => $bankName,
                     );
 
-        $validator = new OrderProductBillingInfoUpdateValidator( \App::make('validator') );
+        $validator = new OrderBillingInfoUpdateValidator( \App::make('validator') );
         if($validator->with($data)->passes()){
-            $orderProductBillingInfo = OrderProductBillingInfo::find($orderBillingInfoId);
+            $orderProductBillingInfo = OrderBillingInfo::find($orderBillingInfoId);
             $orderProductBillingInfo->bank_name =  $bankName;
             $orderProductBillingInfo->account_name =  $accountName;
             $orderProductBillingInfo->account_number =  $accountNumber;
