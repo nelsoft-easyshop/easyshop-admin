@@ -11,17 +11,17 @@ class OrderProductStatus extends Eloquent
     const STATUS_PAID_BUYER = 5;
     const STATUS_CANCEL = 6;
 
-   /**
-    * The database table used by the model.
-    *
-    * @var string
-    */
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
     protected $table = 'es_order_product_status';
 
-   /**
-    * The primary key of the table
-    *
-    */
+    /**
+     * The primary key of the table
+     *
+     */
     protected $primaryKey = 'id_order_product_status';
 
 
