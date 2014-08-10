@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use OrderProductHistory;
 
-class OrderProductHistoryRepository
+class OrderProductHistoryRepository extends BaseRepository
 {    
     public function createOrderProductHistory($orderProductId, $status, $comment = '')
     {

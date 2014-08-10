@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use OrderStatus;
 
-class OrderStatusRepository
+class OrderStatusRepository extends BaseRepository
 {    
     public function getPaidStatus()
     {

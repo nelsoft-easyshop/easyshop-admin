@@ -1,7 +1,25 @@
 <?php
 
-class OrderBillingInfo extends Eloquent 
+use Magniloquent\Magniloquent\Magniloquent;
+
+class OrderBillingInfo extends Magniloquent 
 {
+
+    /**
+     * Validation rules
+     *
+     */
+    public static $rules = array(
+        "save" => array(),
+        "create" => array(
+            'account_name' => 'required',
+            'account_number' => 'required',
+            'bank_name' => 'required',
+        ),
+        "update" => array(
+            'id_order_billing_info' => 'required|numeric',
+        )
+    );
 
     /**
      * The database table used by the model.

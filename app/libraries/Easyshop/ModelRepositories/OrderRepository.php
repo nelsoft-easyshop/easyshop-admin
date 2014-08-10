@@ -1,8 +1,9 @@
 <?php namespace Easyshop\ModelRepositories;
 
+use Illuminate\Support\Facades\DB;
 use Order;
 
-class OrderRepository
+class OrderRepository extends BaseRepository
 {
 
     

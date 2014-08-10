@@ -138,9 +138,7 @@
         var billing_info_id = $('#account_collection').val();
         var selected_account = $('#account_collection').find('option:selected');
         var order_billing_info_id = selected_account.data('order-billing-id');
-        
-        accnt_bank ='';
-        
+                
         var seller_id = $('#seller_id').val();
         
         var spinner = Ladda.create(this);

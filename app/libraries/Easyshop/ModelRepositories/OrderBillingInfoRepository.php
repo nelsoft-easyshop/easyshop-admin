@@ -2,9 +2,8 @@
 
 use Illuminate\Support\Facades\DB;
 use OrderBillingInfo;
-use Easyshop\Services\Validation\Laravel\OrderBillingInfoUpdateValidator;
 
-class OrderBillingInfoRepository
+class OrderBillingInfoRepository extends BaseRepository
 {    
 
    /**
@@ -29,23 +28,18 @@ class OrderBillingInfoRepository
     */
     public function updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName)
     {
-        $data = array('order_billing_info_id' => $orderBillingInfoId, 
-                    'account_name' => $accountName,
-                    'account_number' => $accountNumber,
-                    'bank_name' => $bankName,
-                    );
-
-        $validator = new OrderBillingInfoUpdateValidator( \App::make('validator') );
-        if($validator->with($data)->passes()){
-            $orderProductBillingInfo = OrderBillingInfo::find($orderBillingInfoId);
-            $orderProductBillingInfo->bank_name =  $bankName;
-            $orderProductBillingInfo->account_name =  $accountName;
-            $orderProductBillingInfo->account_number =  $accountNumber;
-            $orderProductBillingInfo->save();
-        }
+        $orderProductBillingInfo = OrderBillingInfo::find($orderBillingInfoId);
+        $orderProductBillingInfo->bank_name =  $bankName;
+        $orderProductBillingInfo->account_name =  $accountName;
+        $orderProductBillingInfo->account_number =  $accountNumber;
+        $isSuccessful = $orderProductBillingInfo->save();
         
-
-        return $validator->errors();
+        $this->errors = $orderProductBillingInfo->errors();
+        if($isSuccessful){
+            $this->lastId = $orderProductBillingInfo->id_order_billing_info;
+            return true;
+        }
+        return false;
 
     }
     
