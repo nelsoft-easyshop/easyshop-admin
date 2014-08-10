@@ -33,7 +33,7 @@
     });
     
 
-    $(document).on('click','.view',function(){
+    $(document.body).on('click','.view',function(){
         var order_product_id =  $(this).closest('.order_product').data('orderproductid');
          $.ajax({
                 url: 'orderproduct-history',
@@ -63,7 +63,7 @@
     
     
     
-    $(document).on('click','.op-pay-btn',function(){
+    $(document.body).on('click','.op-pay-btn',function(){
         
         var orderProductIdCollection =  [];
         $('.order_product td.order-product-id').each(function(){
@@ -107,7 +107,7 @@
     
    
     
-    $(document).on('click','#edit_account',function(){
+    $(document.body).on('click','#edit_account',function(){
 
         emptyErrors();
         
@@ -127,7 +127,7 @@
         hideInputs();
     });
     
-    $(document).on('click','#save_account',function(){
+    $(document.body).on('click','#save_account',function(){
         
         $('#error-container').children().fadeOut(500);        
         
@@ -208,7 +208,7 @@
 
     });
         
-    $(document).on('change','#account_collection',function(){
+    $(document.body).on('change','#account_collection',function(){
         emptyErrors();
         var $this = $(this)
         var billing_info_id = $this.val();
