@@ -35,11 +35,9 @@ class OrderBillingInfoRepository extends BaseRepository
         $isSuccessful = $orderProductBillingInfo->save();
         
         $this->errors = $orderProductBillingInfo->errors();
-        if($isSuccessful){
-            $this->lastId = $orderProductBillingInfo->id_order_billing_info;
-            return true;
-        }
-        return false;
+        $this->currentId = $orderProductBillingInfo->id_order_billing_info;
+        
+        return $isSuccessful;
 
     }
     

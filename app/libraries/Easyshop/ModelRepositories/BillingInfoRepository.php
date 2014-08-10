@@ -47,11 +47,9 @@ class BillingInfoRepository extends BaseRepository
         $isSuccessful = $billingInfo->save();
         
         $this->errors = $billingInfo->errors();
-        if($isSuccessful){
-            $this->currentId = $billingInfo->id_billing_info;
-            return true;
-        }
-        return false;
+        $this->currentId = $billingInfo->id_billing_info;
+        
+        return $isSuccessful;
     }
     
 
@@ -73,11 +71,9 @@ class BillingInfoRepository extends BaseRepository
         $isSuccessful = $billingInfo->save();
         
         $this->errors = $billingInfo->errors();
-        if($isSuccessful){
-            $this->currentId = $billingInfo->id_billing_info;
-            return true;
-        }
-        return false;
+        $this->currentId = $billingInfo->id_billing_info;
+        
+        return $isSuccessful;
 
     }
 
