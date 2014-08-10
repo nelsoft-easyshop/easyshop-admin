@@ -5,6 +5,14 @@ use OrderProductHistory;
 
 class OrderProductHistoryRepository extends BaseRepository
 {    
+
+    /**
+     * Create a new order product history entry
+     *
+     * @param $orderProductId integer
+     * @param $status $integer
+     * @param $comment string
+     */
     public function createOrderProductHistory($orderProductId, $status, $comment = '')
     {
         $orderProductHistory = new OrderProductHistory();

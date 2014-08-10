@@ -6,26 +6,26 @@ use OrderBillingInfo;
 class OrderBillingInfoRepository extends BaseRepository
 {    
 
-   /**
-    * Returns the Order Billing Info
-    *
-    * @param integer $orderBillingInfoId
-    * @return Entity 
-    */
+    /**
+     * Returns the Order Billing Info
+     *
+     * @param integer $orderBillingInfoId
+     * @return Entity 
+     */
     public function getOrderBillingInfoById($orderProductBillingInfoId)
     {
         return OrderBillingInfo::find($orderProductBillingInfoId);
     }
 
-   /**
-    * Updates the Order Product Billing Info
-    *
-    * @param integer $orderBillingInfoId
-    * @param string $accountName
-    * @param string $accountNumber
-    * @param string $bankName
-    * @return MessageBag[]
-    */
+    /**
+     * Updates the Order Product Billing Info
+     *
+     * @param integer $orderBillingInfoId
+     * @param string $accountName
+     * @param string $accountNumber
+     * @param string $bankName
+     * @return MessageBag[]
+     */
     public function updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName)
     {
         $orderProductBillingInfo = OrderBillingInfo::find($orderBillingInfoId);

@@ -6,24 +6,24 @@ use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory;
 class OrderProductRepository extends BaseRepository
 {    
 
-   /**
-    * Get order product by id
-    *
-    * @param integer $orderProductId
-    * @return Entity
-    */
+    /**
+     * Get order product by id
+     *
+     * @param integer $orderProductId
+     * @return Entity
+     */
     public function getOrderProductById($orderProductId)
     {
         return OrderProduct::find($orderProductId);
     }
     
     
-   /**
-    * Get order products by Id. Accepts integer array.
-    *
-    * @param integer[] $orderProductIds
-    * @return Entity[]
-    */
+    /**
+     * Get order products by Id. Accepts integer array.
+     *
+     * @param integer[] $orderProductIds
+     * @return Entity[]
+     */
     public function getManyOrderProductById($orderProductIds)
     {
         $questionmarks = str_repeat("?,", count($orderProductIds)-1) . "?";
@@ -33,16 +33,16 @@ class OrderProductRepository extends BaseRepository
         return $query->get();
     }
     
-   /**
-    * Returns all order products that are tied to a certain payment account_name
-    *
-    * @param string username
-    * @param string accountname
-    * @param string accountno
-    * @param Carbon dateFrom
-    * @param Carbon dateTo
-    * @return Entity[]
-    */
+    /**
+     * Returns all order products that are tied to a certain payment account_name
+     *
+     * @param string username
+     * @param string accountname
+     * @param string accountno
+     * @param Carbon dateFrom
+     * @param Carbon dateTo
+     * @return Entity[]
+     */
     public function getOrderProductByPaymentAccount($username, $accountname, $accountno, $bankname, $dateFrom = null, $dateTo = null)
     {       
 
@@ -108,13 +108,13 @@ class OrderProductRepository extends BaseRepository
 
     }
  
-   /**
-    * Updates the order product status
-    *
-    * @param integer $orderProductId
-    * @param inetger $status
-    * @return Boolean
-    */
+    /**
+     * Updates the order product status
+     *
+     * @param integer $orderProductId
+     * @param inetger $status
+     * @return Boolean
+     */
     public function updateOrderProductStatus($orderProductId,$status)
     {
         $orderProduct = OrderProduct::find($orderProductId);

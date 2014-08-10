@@ -6,13 +6,23 @@ use Member, OrderStatus, OrderProductStatus;
 class MemberRepository extends BaseRepository
 {    
     
-
-   /**
-    * Return member by id
-    *
-    * @param int $memberId
-    * @return Entity
-    */
+    /**
+     * Update the member entity
+     *
+     * @param $id integer
+     * @param $data
+     */
+    public function update($id,$data)
+    {
+        Member::find($id)->update($data);
+    }
+        
+    /**
+     * Return member by id
+     *
+     * @param int $memberId
+     * @return Entity
+     */
     public function getMemberById($memberId)
     {
         return Member::find($memberId);
@@ -20,16 +30,16 @@ class MemberRepository extends BaseRepository
     
     
 
-   /**
-    *  Get users to be paid. Results are grouped by user and banking details
-    *  OrderProduct->status = 1 / Payment has been cleared for transfer to seller 
-    *  OrderProduct->status = 4 / Payment has been moved to the seller
-    *
-    *  @param string $username
-    *  @param Carbon $dateFrom
-    *  @param Carbon $dateTo
-    *  @return Entity[] 
-    */
+    /**
+     *  Get users to be paid. Results are grouped by user and banking details
+     *  OrderProduct->status = 1 / Payment has been cleared for transfer to seller 
+     *  OrderProduct->status = 4 / Payment has been moved to the seller
+     *
+     *  @param string $username
+     *  @param Carbon $dateFrom
+     *  @param Carbon $dateTo
+     *  @return Entity[] 
+     */
     public function getUserAccountsToPay($username, $dateFrom, $dateTo)
     {
 
@@ -75,6 +85,5 @@ class MemberRepository extends BaseRepository
         
         return $completedOrders;
     }
-
 }
 

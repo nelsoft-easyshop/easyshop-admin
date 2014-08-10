@@ -5,11 +5,11 @@ use BankInfo;
 
 class BankInfoRepository extends BaseRepository
 {
-   /**
-    * Get all available banks
-    *
-    * @return Entity[]
-    */
+    /**
+     * Get all available banks
+     *
+     * @return Entity[]
+     */
     public function getAllBanks()
     {
         return BankInfo::all();

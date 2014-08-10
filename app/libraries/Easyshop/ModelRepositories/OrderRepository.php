@@ -7,12 +7,12 @@ class OrderRepository extends BaseRepository
 {
 
     
-   /**
-    * Get order by id
-    *
-    * @param integer $orderProductId
-    * @return Entity
-    */
+    /**
+     * Get order by id
+     *
+     * @param integer $orderProductId
+     * @return Entity
+     */
     public function getOrderById($orderId)
     {
         return Order::find($orderId);

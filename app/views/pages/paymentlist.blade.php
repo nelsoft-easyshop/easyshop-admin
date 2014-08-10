@@ -21,7 +21,6 @@
             <div class="payment_search_filter_container">
             
                 {{ Form::open(array('url' => 'pay', 'method' => 'get')) }}
-    
 
                         {{ Form::text('username', $username, array('id' => 'username', 'placeholder' => 'Username')) }}
                         
