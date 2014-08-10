@@ -3468,3 +3468,7 @@ width: 1200px;
     margin-left: 12px;
     outline: 0;
 }
+
+.order_product_pay_container p{
+    margin-bottom: 10px;
+}
