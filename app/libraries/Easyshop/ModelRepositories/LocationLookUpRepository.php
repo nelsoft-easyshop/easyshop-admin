@@ -4,7 +4,7 @@ use LocationLookUp;
 
 class LocationLookUpRepository
 {
-    public function getLocationByType()
+    public function getByType()
     {
         $type = array(
             '0' => 0,

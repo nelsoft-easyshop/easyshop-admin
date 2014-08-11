@@ -9,9 +9,9 @@ class HomeController extends BaseController
 
     public function showAllUsers()
     {
-        $listOfLoc = App::make('LocationLookUpRepository');
+        $locationLookUpRepository = App::make('LocationLookUpRepository');
         $dataFormatter = App::make('Easyshop\Services\DataFormatterService');
-        $data = $dataFormatter->location($listOfLoc->getLocationByType());
+        $data = $dataFormatter->location($locationLookUpRepository->getByType());
 
         return View::make('pages.userlist')
             ->with('list_of_member', Member::paginate(100))
