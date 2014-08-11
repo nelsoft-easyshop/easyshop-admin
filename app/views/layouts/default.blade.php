@@ -29,12 +29,6 @@
 		</div>
 
 	</body>
-
-    @yield('javascript')
-
-        </div>
-        
-    </body>
     
     {{ HTML::script('js/src/jquery-2.0.0.min.js') }}
     {{ HTML::script('js/src/bootstrap.min.js') }}
