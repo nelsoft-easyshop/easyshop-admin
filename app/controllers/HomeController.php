@@ -3,7 +3,8 @@ class HomeController extends BaseController
 {
     public function index()
     {
-        return View::make('pages.dashboard')->with('username', Auth::user()->username);
+        return View::make('pages.dashboard')
+            ->with('username', Auth::user()->username);
     }
 
     public function showAllUsers()
@@ -12,7 +13,9 @@ class HomeController extends BaseController
         $dataFormatter = App::make('Easyshop\Services\DataFormatterService');
         $data = $dataFormatter->location($listOfLoc->getLocationByType());
 
-        return View::make('pages.userlist')->with('list_of_member', Member::paginate(100))->with('list_of_location', $data);
+        return View::make('pages.userlist')
+            ->with('list_of_member', Member::paginate(100))
+            ->with('list_of_location', $data);
     }
 
     public function ajaxUpdateUsers()
@@ -39,6 +42,7 @@ class HomeController extends BaseController
 
     public function showAllItems()
     {
-        return View::make('pages.itemlist')->with('list_of_items', App::make('ProductRepository')->getAll(true)->paginate(100));
+        return View::make('pages.itemlist')
+            ->with('list_of_items', App::make('ProductRepository')->getAll(true)->paginate(100));
     }
 }
