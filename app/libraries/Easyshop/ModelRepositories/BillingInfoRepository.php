@@ -68,6 +68,7 @@ class BillingInfoRepository extends BaseRepository
         $billingInfo->bank_account_number = $accountNumber;
         $billingInfo->member_id = $memberId;
         $billingInfo->bank_id = $bankId;
+        $billingInfo->is_default = $this->hasDefaultAccount($memberId) ? '0' : '1';
         $isSuccessful = $billingInfo->save();
         
         $this->errors = $billingInfo->errors();
@@ -76,6 +77,22 @@ class BillingInfoRepository extends BaseRepository
         return $isSuccessful;
 
     }
+    
+    
+    /**
+     * Return whether a default account exists for a particular member
+     *
+     * @param integer $userId
+     * @return boolean
+     */
+    public function hasDefaultAccount($userId){
+        $defaultAccount = BillingInfo::where('member_id', '=',$userId)
+                    ->where('is_default', '=', DB::raw('1'))
+                    ->get();
+        return !$defaultAccount->isEmpty();
+        
+    }
+
 
 
 }
