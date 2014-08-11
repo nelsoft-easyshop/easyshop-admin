@@ -38,6 +38,22 @@ class OrderProductController extends BaseController
                     ->with('dateTo', $dateTo)
                     ->with('input', Input::all());
     }
+    
+    /**
+     * GET method for displaying list of accounts for refund
+     *
+     * @return View
+     */
+    public function getUsersToRefund()
+    {   
+        $memberRepository = App::make('MemberRepository');
+
+        $dateFrom = !Input::get('dateFrom') ? Carbon::now()->startOfDay() : Carbon::createFromFormat('Y-m-d', Input::get('dateFrom'))->startOfDay();
+        $dateTo = !Input::get('dateTo') ? Carbon::now()->endOfDay() : Carbon::createFromFormat('Y-m-d', Input::get('dateTo'))->endOfDay();
+        
+        return View::make('pages.refundlist')->with('accountsToRefund', $memberRepository->getUserAccountsToRefund( Input::get('username'), $dateFrom, $dateTo))
+                                            ->with('input', Input::all());
+    }
 
     
     /**
@@ -151,8 +167,8 @@ class OrderProductController extends BaseController
               $orderProductId = $orderProduct->id_order_product;
               $orderBillingInfoId = $orderProduct->sellerBillingInfo->id_order_billing_info;
               $orderProductBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName);
-              #  $orderProductRepository->updateOrderProductStatus($orderProductId, $status);
-              #  $orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
+              $orderProductRepository->updateOrderProductStatus($orderProductId, $status);
+              $orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
             }
 
             $this->emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo);
@@ -162,6 +178,8 @@ class OrderProductController extends BaseController
         
         return Response::json(false);
     }
+    
+
     
     
 }

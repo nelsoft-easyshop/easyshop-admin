@@ -27,6 +27,11 @@ Route::group(array('before' => 'auth'), function(){
     Route::post('updateUser', array('uses' => 'HomeController@ajaxUpdateUsers'));
     
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
+    
+    Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));
+    
+    
+    
     Route::get('orderproduct', array('uses' => 'OrderProductController@getOrderProducts'));
     Route::get('orderproduct-history', array('uses' => 'OrderProductController@getOrderProductDetail'));
     Route::get('orderproduct-payment', array('uses' => 'OrderProductController@getOrderProductPaymentDetail'));
