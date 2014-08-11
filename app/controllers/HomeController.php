@@ -8,11 +8,13 @@ class HomeController extends BaseController
 
     public function showAllUsers()
     {
-        $listOfLoc = App::make('LocationLookUpRepository');
+        $locationLookUpRepository = App::make('LocationLookUpRepository');
         $dataFormatter = App::make('Easyshop\Services\DataFormatterService');
-        $data = $dataFormatter->location($listOfLoc->getLocationByType());
+        $data = $dataFormatter->location($locationLookUpRepository->getByType());
 
-        return View::make('pages.userlist')->with('list_of_member', Member::paginate(100))->with('list_of_location', $data);
+        return View::make('pages.userlist')
+            ->with('list_of_member', Member::paginate(100))
+            ->with('list_of_location', $data);
     }
 
     public function doSearchUser()
@@ -25,11 +27,13 @@ class HomeController extends BaseController
             'startdate' => Input::get('startdate'),
             'enddate' => Input::get('enddate')
         );
-        $listOfLoc = App::make('LocationLookUpRepository');
+        $locationLookUpRepository = App::make('LocationLookUpRepository');
         $dataFormatter = App::make('Easyshop\Services\DataFormatterService');
-        $data = $dataFormatter->location($listOfLoc->getLocationByType());
+        $data = $dataFormatter->location($locationLookUpRepository->getByType());
 
-        return View::make('pages.userlist')->with('list_of_member', App::make('MemberRepository')->search($userData))->with('list_of_location', $data);
+        return View::make('pages.userlist')
+            ->with('list_of_member', App::make('MemberRepository')
+            ->search($userData,100))->with('list_of_location', $data);
     }
 
     public function ajaxUpdateUsers()
@@ -56,7 +60,9 @@ class HomeController extends BaseController
 
     public function showAllItems()
     {
-        return View::make('pages.itemlist')->with('list_of_items', App::make('ProductRepository')->getAll(true)->paginate(100));
+        return View::make('pages.itemlist')
+            ->with('list_of_items', App::make('ProductRepository')
+            ->getAllViewable(100));
     }
 
     public function doSearchItem()
@@ -71,7 +77,9 @@ class HomeController extends BaseController
             'enddate' => Input::get('enddate')
         );
 
-        return View::make('pages.itemlist')->with('list_of_items', App::make('ProductRepository')->search($userData));
+        return View::make('pages.itemlist')
+            ->with('list_of_items', App::make('ProductRepository')
+            ->search($userData,100));
     }
 
     public function transactionRecord()

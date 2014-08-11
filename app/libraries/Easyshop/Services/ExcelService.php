@@ -4,6 +4,14 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ExcelService
 {
+
+    /**
+     * Transfer record from html file to excel file
+     *
+     * @param $filename string
+     * @param $transactionRecord array
+     * export excel file
+     */
     public function transactionRecord($filename, $transactionRecord)
     {
         Excel::create($filename, function($excel) use($transactionRecord) {

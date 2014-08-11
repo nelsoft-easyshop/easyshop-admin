@@ -19,7 +19,7 @@ class MemberRepository
         return $member;
     }
 
-    public function search($userData)
+    public function search($userData,$row=50)
     {
         $member = Member::groupBy('es_member.id_member');
         if($userData['fullname']){
@@ -35,9 +35,10 @@ class MemberRepository
             $member->where('es_member.email', 'LIKE', '%' . $userData['email'] . '%');
         }
         if(($userData['startdate']) && ($userData['enddate'])){
-            $member->where('es_member.datecreated', '>=', str_replace('/', '-', $userData['startdate']) . ' 00:00:00' )->where('es_member.datecreated', '<=', str_replace('/', '-', $userData['enddate']) . ' 23:59:59', 'AND');
+            $member->where('es_member.datecreated', '>=', str_replace('/', '-', $userData['startdate']) . ' 00:00:00' )
+                ->where('es_member.datecreated', '<=', str_replace('/', '-', $userData['enddate']) . ' 23:59:59', 'AND');
         }
 
-        return $member->paginate(100);
+        return $member->paginate($row);
     }
 }

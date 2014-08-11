@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderRepository
 {
+
    /**
     * Get order by id
     *
@@ -16,7 +17,14 @@ class OrderRepository
         return Order::find($orderId);
     }
 
-    public function getTransactionRecord($userData=false)
+    /**
+     * Get transaction record
+     * NOTE : if user doesn't set start and end date it will return ALL the transaction record,
+     *
+     * @param integer $userData
+     * @return Entity
+     */
+    public function getTransactionRecord($userData)
     {
         $record = Order::join('es_member AS buyer', 'buyer.id_member', '=', 'es_order.buyer_id')
             ->join('es_payment_method AS paymentMethod', 'paymentMethod.id_payment_method', '=', 'es_order.payment_method_id')
