@@ -14,6 +14,10 @@ class OrderProductRepository
     {
         return OrderProduct::find($orderProductId);
     }
+     public function getOrderProductById($orderProductId)
+    {
+        return OrderProduct::find($orderProductId);
+    }
     
 }
 
