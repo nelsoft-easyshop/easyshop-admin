@@ -32,14 +32,14 @@ class BillingDetailComposer
                    $account->bankInfo->bank_name === $defaultAccount->bank_name)
                 {
 
-                    $swap_temp = $stdAccount;
+                    $swapTemp = $stdAccount;
                     if(isset($formattedAccounts[0])){
-                        $swap_temp = $formattedAccounts[0];
+                        $swapTemp = $formattedAccounts[0];
                         $formattedAccounts[0] = $stdAccount;
-                        $formattedAccounts[$idx] = $swap_temp;
+                        $formattedAccounts[$idx] = $swapTemp;
                     }
-                    $formattedAccounts[$idx] =  $swap_temp;
-                    $isAccountExist = true;;
+                    $formattedAccounts[$idx] =  $swapTemp;
+                    $isAccountExist = true;
                 }else{
 
                     $formattedAccounts[$idx] = $stdAccount;
