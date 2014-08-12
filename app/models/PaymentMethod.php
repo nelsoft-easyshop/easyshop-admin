@@ -1,6 +1,7 @@
 <?php
 
-class PaymentMethod extends Eloquent {
+class PaymentMethod extends Eloquent 
+{
 
    /**
     * The database table used by the model.
@@ -13,7 +14,6 @@ class PaymentMethod extends Eloquent {
     * The primary key of the table
     *
     */
-
     protected $primaryKey = 'id_payment_method';
 
 

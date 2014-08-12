@@ -4,13 +4,9 @@
 @section('keywords', '')
 @section('title', 'Product List | Easyshop Admin')
 @section('header_tagline', 'List of all products')
-
-
 @section('page_header')
 @include('includes.header')
 @stop
-
-
 @section('content')
 
 <div id="mainsection">
@@ -135,7 +131,7 @@
                 <tbody>
                 @foreach($list_of_items as $item)
                 <tr>
-                    <td>{{{ $item->createddate }}}</td>
+                    <td>{{{ $item->created_at }}}</td>
                     <td>{{{ $item->name }}}</td>
                     <td>{{{ $item->Member->username }}}</td>
                     <td>{{{ $item->Category->name }}}</td>
@@ -153,43 +149,8 @@
         <div class="clear"></div>
     </div>
 </div>
-<script>
-    jQuery(function(){
-        jQuery('#date_timepicker_start').datetimepicker({
-            format:'Y/m/d',
-            onShow:function( ct ){
-                this.setOptions({
-                    maxDate:jQuery('#date_timepicker_end').val()?jQuery('#date_timepicker_end').val():false
-                })
-            },
-            timepicker:false
-        });
-        jQuery('#date_timepicker_end').datetimepicker({
-            format:'Y/m/d',
-            onShow:function( ct ){
-                this.setOptions({
-                    minDate:jQuery('#date_timepicker_start').val()?jQuery('#date_timepicker_start').val():false
-                })
-            },
-            timepicker:false
-        });
-    });
-    (function ($) {
-        $(document).ready(function(){
-            $('#btn_advance_search').on('click',function(){
-                $('#srch_container').slideDown();
-            });
-            $('#btn_close_search').on('click',function(){
-                $('#srch_container').slideUp();
-            });
-        });
+@stop
 
-        $('.drct_search').on('click', function(){
-            var id = $(this).attr('data');
-            var text = $('#searchBox').val();
-            $('#' + id).val(text);
-            $('#searchForm').submit();
-        });
-    })(jQuery)
-</script>
+@section('page_js')
+{{ HTML::script('js/itemlist.js') }}
 @stop
