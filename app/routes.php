@@ -20,11 +20,12 @@ Route::post('login', array('uses' => 'AccountController@doLogin'));
 Route::get('logout', array('uses' => 'AccountController@doLogout'));
 
 Route::group(array('before' => 'auth'), function(){
+<<<<<<< HEAD
 
     Route::get('/', array('uses' => 'HomeController@index'));    
     
-    Route::get('users', array('uses' => 'HomeController@showAllUsers'));
-    Route::post('updateUser', array('uses' => 'HomeController@ajaxUpdateUsers'));
+    Route::get('users', array('uses' => 'MemberController@showAllUsers'));
+    Route::put('user', array('uses' => 'MemberController@ajaxUpdateUsers'));
     
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));    
     Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));
@@ -41,6 +42,8 @@ Route::group(array('before' => 'auth'), function(){
 
     Route::put('billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
     Route::post('billinginfo', array('uses' => 'BillingInfoController@createOrderProductPaymentAccount'));
+
+
 
 
 });
