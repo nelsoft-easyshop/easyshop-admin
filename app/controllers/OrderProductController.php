@@ -55,7 +55,12 @@ class OrderProductController extends BaseController
         
         $orderProductRepository = App::make('OrderProductRepository');
         
-        $orderProducts = $orderProductRepository->getOrderProductByPaymentAccount($userdata['username'], $userdata['accountname'],$userdata['accountno'], $userdata['bankname'],$dateFrom, $dateTo);      
+        $orderProducts = $orderProductRepository->getOrderProductByPaymentAccount($userdata['username'], 
+                                                                                $userdata['accountname'],
+                                                                                $userdata['accountno'], 
+                                                                                $userdata['bankname'],
+                                                                                $dateFrom, 
+                                                                                $dateTo);      
         $html = View::make('partials.orderproductlist')
                     ->with('orderproducts', $orderProducts)
                     ->with('accountname', $userdata['accountname'])
