@@ -8,7 +8,7 @@ class BankInfoRepository extends BaseRepository
     /**
      * Get all available banks
      *
-     * @return Entity[]
+     * @return BankInfo[]
      */
     public function getAllBanks()
     {

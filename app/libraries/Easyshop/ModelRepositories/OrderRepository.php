@@ -11,7 +11,7 @@ class OrderRepository extends BaseRepository
      * Get order by id
      *
      * @param integer $orderProductId
-     * @return Entity
+     * @return Order
      */
     public function getOrderById($orderId)
     {

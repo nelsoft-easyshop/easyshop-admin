@@ -12,7 +12,7 @@ class BillingInfoRepository extends BaseRepository
      * Ordered By is_default
      * 
      * @param int $userId
-     * @return Entity[]
+     * @return BillingInfo[]
      *
      */
     public function getBillingAccountsByMemberId($userId)
@@ -22,7 +22,12 @@ class BillingInfoRepository extends BaseRepository
                             ->get();
     }
     
-    
+    /**
+     * Returns the BillingInfo id
+     *
+     * @param int $billingInfoId
+     * @return BillingInfo[]
+     */
     public function getBillingAccountById($billingInfoId)
     {
         return BillingInfo::find($billingInfoId);

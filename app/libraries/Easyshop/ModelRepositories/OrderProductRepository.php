@@ -10,7 +10,7 @@ class OrderProductRepository extends BaseRepository
      * Get order product by id
      *
      * @param integer $orderProductId
-     * @return Entity
+     * @return OrderProduct
      */
     public function getOrderProductById($orderProductId)
     {
@@ -22,7 +22,7 @@ class OrderProductRepository extends BaseRepository
      * Get order products by Id. Accepts integer array.
      *
      * @param integer[] $orderProductIds
-     * @return Entity[]
+     * @return OrderProduct[]
      */
     public function getManyOrderProductById($orderProductIds)
     {
@@ -41,7 +41,7 @@ class OrderProductRepository extends BaseRepository
      * @param string accountno
      * @param Carbon dateFrom
      * @param Carbon dateTo
-     * @return Entity[]
+     * @return Collection
      */
     public function getOrderProductByPaymentAccount($username, $accountname, $accountno, $bankname, $dateFrom = null, $dateTo = null)
     {       

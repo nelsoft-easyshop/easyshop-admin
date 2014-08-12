@@ -12,6 +12,7 @@ class OrderProductHistoryRepository extends BaseRepository
      * @param $orderProductId integer
      * @param $status $integer
      * @param $comment string
+     * @return Boolean
      */
     public function createOrderProductHistory($orderProductId, $status, $comment = '')
     {
