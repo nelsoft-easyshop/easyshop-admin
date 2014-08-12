@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\DB;
 
 class OrderRepository
 {
-
    /**
     * Get order by id
     *

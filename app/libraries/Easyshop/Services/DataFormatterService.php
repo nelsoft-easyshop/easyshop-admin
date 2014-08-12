@@ -26,7 +26,6 @@ class DataFormatterService
                 $formattedListOfLocation['city_lookup'][$location['parent_id']][$location['id_location']] = $location['location'];
             }
         }
-
         $formattedListOfLocation['json_city'] = json_encode($formattedListOfLocation['city_lookup'], JSON_FORCE_OBJECT);
 
         return $formattedListOfLocation;

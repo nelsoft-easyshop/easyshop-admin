@@ -1,8 +1,7 @@
 <?php
 
-class Order extends Eloquent
+class Order extends Eloquent 
 {
-
     const STATUS_PAID = 0;
     const STATUS_COMPLETED = 1;
 
@@ -17,9 +16,7 @@ class Order extends Eloquent
     * The primary key of the table
     *
     */
-
     protected $primaryKey = 'id_order';
-
 
     public function buyer()
     {

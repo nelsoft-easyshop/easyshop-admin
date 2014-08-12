@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreatePaymentMethodTable extends Migration 
 {
 
-    /**
+   /**
     * Run the migrations.
     *
     * @return void
@@ -21,7 +21,7 @@ class CreatePaymentMethodTable extends Migration
         });
     }
 
-    /**
+   /**
     * Reverse the migrations.
     *
     * @return void
