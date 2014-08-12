@@ -4,13 +4,9 @@
 @section('keywords', '')
 @section('title', 'Product List | Easyshop Admin')
 @section('header_tagline', 'List of all products')
-
-
 @section('page_header')
 @include('includes.header')
 @stop
-
-
 @section('content')
 
 <div id="mainsection">
@@ -127,7 +123,7 @@
                 <tbody>
                 @foreach($list_of_items as $item)
                 <tr>
-                    <td>{{{ $item->createddate }}}</td>
+                    <td>{{{ $item->created_at }}}</td>
                     <td>{{{ $item->name }}}</td>
                     <td>{{{ $item->Member->username }}}</td>
                     <td>{{{ $item->Category->name }}}</td>
@@ -145,16 +141,8 @@
         <div class="clear"></div>
     </div>
 </div>
-<script>
-    (function ($) {
-        $(document).ready(function(){
-            $('#btn_advance_search').on('click',function(){
-                $('#srch_container').slideDown();
-            });
-            $('#btn_close_search').on('click',function(){
-                $('#srch_container').slideUp();
-            });
-        });
-    })(jQuery)
-</script>
+@stop
+
+@section('page_js')
+{{ HTML::script('js/itemlist.js') }}
 @stop

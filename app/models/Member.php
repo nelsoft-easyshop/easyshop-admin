@@ -1,9 +1,16 @@
 <?php
-class Member extends Eloquent
+
+class Member extends Eloquent 
 {
+
+   /**
+    * The database table used by the model.
+    *
+    * @var string
+    */
     protected $table = 'es_member';
     protected $fillable = array('fullname', 'contactno', 'remarks', 'is_promo_valid');
-	protected $primaryKey = 'id_member';
+    protected $primaryKey = 'id_member';
 
     public function address()
     {
@@ -20,3 +27,4 @@ class Member extends Eloquent
         return $this->hasMany('Product', 'member_id');
     }
 }
+

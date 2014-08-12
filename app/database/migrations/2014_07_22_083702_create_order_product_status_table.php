@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateOrderProductStatusTable extends Migration 
 {
 
-    /**
+   /**
     * Run the migrations.
     *
     * @return void
@@ -21,7 +21,7 @@ class CreateOrderProductStatusTable extends Migration
         });
     }
 
-    /**
+   /**
     * Reverse the migrations.
     *
     * @return void
