@@ -10,7 +10,7 @@ class OrderProductRepository extends BaseRepository
      * Get order product by id
      *
      * @param integer $orderProductId
-     * @return Entity
+     * @return OrderProduct
      */
     public function getOrderProductById($orderProductId)
     {
@@ -22,7 +22,7 @@ class OrderProductRepository extends BaseRepository
      * Get order products by Id. Accepts integer array.
      *
      * @param integer[] $orderProductIds
-     * @return Entity[]
+     * @return OrderProduct[]
      */
     public function getManyOrderProductById($orderProductIds)
     {
@@ -34,16 +34,16 @@ class OrderProductRepository extends BaseRepository
     }
     
     /**
-     * Returns all order products that are tied to a certain payment account_name
+     * Returns all order products to be paid that are tied to a certain payment account_name
      *
      * @param string username
      * @param string accountname
      * @param string accountno
      * @param Carbon dateFrom
      * @param Carbon dateTo
-     * @return Entity[]
+     * @return Collection
      */
-    public function getOrderProductByPaymentAccount($username, $accountname, $accountno, $bankname, $dateFrom = null, $dateTo = null)
+    public function getOrderProductsToPay($username, $accountname, $accountno, $bankname, $dateFrom = null, $dateTo = null)
     {       
 
         $query = OrderProduct::leftJoin('es_order_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_billing_info.id_order_billing_info')
@@ -59,8 +59,8 @@ class OrderProductRepository extends BaseRepository
                         ->where('seller.username', '=', $username);
 
         if($dateFrom && $dateTo){
-            $dateFrom = $dateFrom->format('Y-m-d');
-            $dateTo = $dateTo->format('Y-m-d');
+            $dateFrom = $dateFrom->format('Y-m-d H:i:s');
+            $dateTo = $dateTo->format('Y-m-d H:i:s');
             
             $query->where(function ($query) use ($dateFrom, $dateTo){
                 $query->where(function ($query) use ($dateFrom, $dateTo){
@@ -104,9 +104,57 @@ class OrderProductRepository extends BaseRepository
         }    
         
         
-        return $query->get(['es_order_product.*', 'es_order.invoice_no', 'es_order.buyer_id', 'buyer.username as buyer', 'es_product.name as productname', 'es_order_product_status.name as statusname']);
+        return $query->get(['es_order_product.*', 'es_order.invoice_no', 'es_order.buyer_id as buyer_seller_id', 'buyer.username as buyer_seller_username', 'es_product.name as productname', 'es_order_product_status.name as statusname']);
 
     }
+ 
+
+    /**
+     * Returns all order products to be refunded for a particular buyer
+     *
+     * @param string username
+     * @param Carbon dateFrom
+     * @param Carbon dateTo
+     * @return Collection
+     */
+    public function getOrderProductsToRefund($username, $dateFrom = null, $dateTo = null)
+    {               
+        $query = OrderProduct::join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+        $query->join('es_member','es_order.buyer_id', '=', 'es_member.id_member');
+        $query->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member');
+        $query->join('es_order_product_status','es_order_product.status', '=', 'es_order_product_status.id_order_product_status');
+        $query->join('es_product','es_order_product.product_id', '=', 'es_product.id_product');
+        $query->leftJoin('es_billing_info',function($leftJoin){
+            $leftJoin->on('es_billing_info.member_id', '=', 'es_member.id_member');
+            $leftJoin->on('es_billing_info.is_default', '=',  DB::raw('1'));
+        });
+        
+        $query->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=', 'es_bank_info.id_bank');
+        
+        $query->join('es_order_product_history', function($join){
+            $join->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
+            $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_RETURN_BUYER));
+        });
+        
+        if($dateFrom && $dateTo){
+            $dateFrom = $dateFrom->format('Y-m-d H:i:s');
+            $dateTo = $dateTo->format('Y-m-d H:i:s');
+        
+            $query->where(function ($query) use ($dateFrom, $dateTo){
+                $query->where('es_order_product_history.created_at', '>=', $dateFrom);
+                $query->where('es_order_product_history.created_at', '<', $dateTo);
+            });
+        }
+        
+        if(!empty($username)){
+            $query->where('es_member.username', '=', $username);
+        }     
+        
+        $returnedOrders = $query->get(['es_order_product.*', 'es_order.invoice_no', 'es_order_product.seller_id as buyer_seller_id', 'seller.username as buyer_seller_username' , 'es_product.name as productname', 'es_order_product_status.name as statusname']);
+        
+        return $returnedOrders;
+    }
+ 
  
     /**
      * Updates the order product status
@@ -122,6 +170,21 @@ class OrderProductRepository extends BaseRepository
         return $orderProduct->save();
     }
     
+    /**
+     * Updates the buyer billing id
+     *
+     * @param integer $orderProductId
+     * @param inetger $buyerBillingId
+     * @return Boolean
+     */
+    public function updateOrderProductBuyerBillingId($orderProductId,$buyerBillingId)
+    {
+        $orderProduct = OrderProduct::find($orderProductId);
+        $orderProduct->buyer_billing_id = $buyerBillingId;        
+        return $orderProduct->save();
+    }
+    
+
 
     
 }
