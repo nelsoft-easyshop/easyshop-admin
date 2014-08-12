@@ -1,7 +1,19 @@
 <?php
-class Address extends Eloquent
+
+class Address extends Eloquent 
 {
+
+   /**
+    * The database table used by the model.
+    *
+    * @var string
+    */
     protected $table = 'es_address';
+
+   /**
+    * The primary key of the table
+    *
+    */
     protected $primaryKey = 'id_address';
     protected $fillable = array('city', 'stateregion', 'address', 'country', 'id_member');
 
@@ -25,3 +37,4 @@ class Address extends Eloquent
         return $this->hasOne('Member');
     }
 }
+
