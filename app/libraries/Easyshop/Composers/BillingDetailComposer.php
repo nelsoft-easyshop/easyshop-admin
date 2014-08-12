@@ -64,12 +64,7 @@ class BillingDetailComposer
                 $newStdAccount->order_billing_id = $defaultAccount->id_order_billing_info;       
                 array_unshift($formattedAccounts, $newStdAccount);
             }
-            
-            /**
-             * TO DO: ADD CODE TO ADD IF NOT FOUND
-             *        ADD CODE TO ADD IDENTFIER FOR ORDER_PRODUCT_BILLING_INFO [x]
-             *        ORDER_PRODUCT_BILLING_INFO TO ORDER_BILLING_INFO
-             */
+
 
         }
 
