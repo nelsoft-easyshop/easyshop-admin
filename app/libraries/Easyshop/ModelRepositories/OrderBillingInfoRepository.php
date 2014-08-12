@@ -24,7 +24,7 @@ class OrderBillingInfoRepository extends BaseRepository
      * @param string $accountName
      * @param string $accountNumber
      * @param string $bankName
-     * @return MessageBag[]
+     * @return Boolean
      */
     public function updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName)
     {
@@ -40,7 +40,30 @@ class OrderBillingInfoRepository extends BaseRepository
         return $isSuccessful;
 
     }
-    
+        
+        
+    /**
+     * Inserts new Order Product Billing Info
+     *
+     * @param string $accountName
+     * @param string $accountNumber
+     * @param string $bankName
+     * @return Boolean
+     */
+    public function createOrderBillingInfo($accountName, $accountNumber, $bankName)
+    {
+        $orderProductBillingInfo = new OrderBillingInfo;
+        $orderProductBillingInfo->bank_name =  $bankName;
+        $orderProductBillingInfo->account_name =  $accountName;
+        $orderProductBillingInfo->account_number =  $accountNumber;
+        $isSuccessful = $orderProductBillingInfo->save();
+        
+        $this->errors = $orderProductBillingInfo->errors();
+        $this->currentId = $orderProductBillingInfo->id_order_billing_info;
+        
+        return $isSuccessful;
+        
+    }
 
 }
 
