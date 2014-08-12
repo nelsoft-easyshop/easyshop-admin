@@ -13,6 +13,25 @@ class MemberController extends BaseController
             ->with('list_of_location', $data);
     }
 
+    public function doSearchUser()
+    {
+        $userData = array(
+            'fullname' => Input::get('fullname'),
+            'username' => Input::get('username'),
+            'contactno' => Input::get('number'),
+            'email' => Input::get('email'),
+            'startdate' => Input::get('startdate'),
+            'enddate' => Input::get('enddate')
+        );
+        $locationLookUpRepository = App::make('LocationLookUpRepository');
+        $dataFormatter = App::make('Easyshop\Services\DataFormatterService');
+        $data = $dataFormatter->location($locationLookUpRepository->getByType());
+
+        return View::make('pages.userlist')
+            ->with('list_of_member', App::make('MemberRepository')->search($userData))
+            ->with('list_of_location', $data);
+    }
+
     public function ajaxUpdateUsers()
     {
         $dataMember = array(

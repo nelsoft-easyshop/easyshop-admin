@@ -4,7 +4,7 @@ use Address;
 
 class AddressRepository
 {
-    public function update($id,$data)
+    public function update($id, $data)
     {
         $address = new Address();
         $hasResult = $address->where('id_member', '=', $id)->first();
