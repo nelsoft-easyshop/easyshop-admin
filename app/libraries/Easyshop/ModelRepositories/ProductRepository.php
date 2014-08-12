@@ -5,16 +5,13 @@ use Product,ProductImage;
 
 class ProductRepository
 {
-   /**
+
+    /**
     * Get order by id
     *
     * @param string $slug
     * @return Entity
     */
-    public function getAllProducts()
-    {
-        return Product::all();
-    }
     
     public function getProductBySlug($slug)
     {
@@ -24,21 +21,7 @@ class ProductRepository
          ->get();
 
         return $query;
-
-    }                      
-
-
-/*
-    public function getProductImage($id)
-    {
-        return Product::find($id)->imageProduct;
-    }
-
-        public function getProductBySlug($slug)
-    {
-        return Product::where('slug', $slug)->pluck('price');
-    }
-    */
-     
+    }                 
+         
 }
 
