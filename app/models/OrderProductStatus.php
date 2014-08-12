@@ -1,6 +1,7 @@
 <?php
 
-class OrderProductStatus extends Eloquent {
+class OrderProductStatus extends Eloquent 
+{
 
    /**
     * The database table used by the model.
@@ -13,9 +14,9 @@ class OrderProductStatus extends Eloquent {
     * The primary key of the table
     *
     */
-
     protected $primaryKey = 'id_order_product_status';
 
 
+    
 
 }

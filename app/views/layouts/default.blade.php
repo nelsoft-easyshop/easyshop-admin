@@ -4,32 +4,42 @@
     <head>
         <meta charset="utf-8" />
         <link rel="shortcut icon" href="{{{ asset('images/favicon.ico') }}}" type="image/x-icon">
-        <link type="text/css" href="{{{ asset('css/style.css')  }}}" rel="stylesheet"  media="screen"/>
         <link type="text/css" href="{{{ asset('css/src/bootstrap.min.css')  }}}" rel="stylesheet"  media="screen"/>
-        
+        <link type="text/css" href="{{{ asset('css/src/bootstrap-dialog.css')  }}}" rel="stylesheet"  media="screen"/>
 
+        <link type="text/css" href="{{{ asset('css/style.css')  }}}" rel="stylesheet"  media="screen"/>
         <meta name="description" content = "@yield('description')" />
         <meta name="keywords" content=  "@yield('keywords')"   />
 
-        
-        <title> @yield('title')  </title>
+        <meta name="_token" content="{{ csrf_token() }}" />
+		<title> @yield('title')  </title>
+	</head>
 
-    </head>
+	<body>
+		<div class="container">
 
-    <body>
+			<header class="row">
+				@yield('page_header')
+			</header>
 
-        <div class="container">
-        
-            <header class="row">
-                @yield('page_header')
-            </header>
+			<div id="main" class="row">
+				@yield('content')
+			</div>
 
-            <div id="main" class="row">
-                @yield('content')
-            </div>
+		</div>
 
+	</body>
+
+    @yield('javascript')
 
         </div>
-        
+
     </body>
+
+    {{ HTML::script('js/src/jquery-2.0.0.min.js') }}
+    {{ HTML::script('js/src/bootstrap.min.js') }}
+    {{ HTML::script('js/src/bootstrap-dialog.js') }}
+    {{ HTML::script('js/global.js') }}
+     @yield('page_js')
+
 </html>

@@ -49,6 +49,7 @@ class CreateProductTable extends Migration
             $table->integer('is_sold_out')->default(0);
         });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -58,4 +59,6 @@ class CreateProductTable extends Migration
     {
         Schema::drop('es_product');
     }
+
 }
+

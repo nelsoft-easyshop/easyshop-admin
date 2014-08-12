@@ -1,6 +1,9 @@
 <?php
 
-class Product extends Eloquent {
+
+class Product extends Eloquent 
+{
+
 
    /**
     * The database table used by the model.
@@ -15,7 +18,6 @@ class Product extends Eloquent {
     */
 
     protected $primaryKey = 'id_product';
-    
-        
 
-}
+} 
+

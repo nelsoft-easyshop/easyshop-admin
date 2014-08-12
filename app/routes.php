@@ -11,7 +11,7 @@
 |
 */
 
-
+Route::when('*', 'csrf', array('post','put', 'delete'));
 #LOGIN
 Route::get('login', array('uses' => 'AccountController@showLogin'));
 Route::post('login', array('uses' => 'AccountController@doLogin'));
@@ -20,11 +20,15 @@ Route::post('login', array('uses' => 'AccountController@doLogin'));
 Route::get('logout', array('uses' => 'AccountController@doLogout'));
 
 Route::group(array('before' => 'auth'), function(){
-    Route::get('/', array('uses' => 'HomeController@index'));    
-    Route::get('users', array('uses' => 'HomeController@getAllUsers'));
+    Route::get('/', array('uses' => 'HomeController@index'));
+    Route::get('users', array('uses' => 'MemberController@showAllUsers'));
+    Route::put('user', array('uses' => 'MemberController@ajaxUpdateUsers'));
     Route::get('pay', array('uses' => 'OrderController@getUsersToPay'));
-
     Route::get('cms/home', array('uses' => 'ContentManagerController@getHomeContent'));
     Route::get('cms/slides', array('uses' => 'ContentManagerController@getMainSlides'));
     Route::get('cms/productslides', array('uses' => 'ContentManagerController@getProductSlides'));
+    Route::get('orderproduct', array('uses' => 'OrderController@getOrderProducts'));
+    Route::get('orderproduct-history', array('uses' => 'OrderController@getOrderProductDetail'));
+    Route::get('orderproduct-payment', array('uses' => 'OrderController@getOrderProductPaymentDetail'));
+
 });

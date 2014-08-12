@@ -5,33 +5,32 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateAddressTable extends Migration 
 {
-
     /**
-    * Run the migrations.
-    *
-    * @return void
-    */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('es_address', function(Blueprint $table)
         {
             $table->increments('id_address');
             $table->integer('id_member');
-            $table->integer('stateregion');
-            $table->integer('city');
-            $table->integer('country');
-            $table->string('address');
-            $table->tinyInteger('type');
-            $table->string('telephone',45);
-            $table->string('mobile',45);
-            $table->string('consignee',45);
-            $table->float('lat');
-            $table->float('lng');
+            $table->integer('stateregion')->nullable()->default(0);
+            $table->integer('city')->nullable()->default(0);
+            $table->integer('country')->nullable()->default(0);
+            $table->string('address')->nullable()->default('');
+            $table->tinyInteger('type')->nullable()->default(0);
+            $table->string('telephone',45)->nullable()->default('');
+            $table->string('mobile',45)->nullable()->default('');
+            $table->string('consignee',45)->nullable()->default('');
+            $table->float('lat')->nullable()->default(0);
+            $table->float('lng')->nullable()->default(0);
             $table->timestamps();
         });
     }
 
-    /**
+   /**
     * Reverse the migrations.
     *
     * @return void
@@ -40,5 +39,4 @@ class CreateAddressTable extends Migration
     {
         Schema::drop('es_address');
     }
-
 }
