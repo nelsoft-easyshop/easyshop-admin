@@ -23,6 +23,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('/', array('uses' => 'HomeController@index'));
     Route::get('users', array('uses' => 'MemberController@showAllUsers'));
     Route::put('user', array('uses' => 'MemberController@ajaxUpdateUsers'));
+    Route::get('items',array('uses'=>'ProductController@showAllItems'));
     Route::get('pay', array('uses' => 'OrderController@getUsersToPay'));
     Route::get('orderproduct', array('uses' => 'OrderController@getOrderProducts'));
     Route::get('orderproduct-history', array('uses' => 'OrderController@getOrderProductDetail'));
