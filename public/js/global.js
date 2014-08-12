@@ -9,6 +9,14 @@
 
 })(jQuery);
 
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+};
 
 function isEmpty(obj) {
     for(var key in obj) {
@@ -17,6 +25,12 @@ function isEmpty(obj) {
         }
     }
     return true;
+}
+
+function escapeHtml(string) {
+    return String(string).replace(/[<>"'\/]/g, function (s) {
+        return entityMap[s];
+    });
 }
 
 
@@ -40,4 +54,5 @@ loader = loader || (function () {
 
     };
 })();
+
 

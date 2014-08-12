@@ -13,8 +13,8 @@ class ServiceServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('DataFormatterService', function($app){
-            return new DataFormatterService();
+        $this->app->bind('LocationService', function($app){
+            return new LocationService();
         });
 
         $this->app->bind('TransactionService', function($app){

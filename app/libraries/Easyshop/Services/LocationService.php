@@ -1,6 +1,6 @@
 <?php namespace Easyshop\Services;
 
-class DataFormatterService
+class LocationService
 {
 
     /**
@@ -34,6 +34,5 @@ class DataFormatterService
 
         return $formattedListOfLocations;
     }
-
 
 }

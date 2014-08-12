@@ -23,8 +23,8 @@ Route::group(array('before' => 'auth'), function(){
 
     Route::get('/', array('uses' => 'HomeController@index'));    
     
-    Route::get('users', array('uses' => 'HomeController@showAllUsers'));
-    Route::post('updateUser', array('uses' => 'HomeController@ajaxUpdateUsers'));
+    Route::get('users', array('uses' => 'MemberController@showAllUsers'));
+    Route::put('user', array('uses' => 'MemberController@ajaxUpdateUsers'));
     
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
     Route::get('orderproduct', array('uses' => 'OrderProductController@getOrderProducts'));
@@ -34,7 +34,6 @@ Route::group(array('before' => 'auth'), function(){
 
     Route::put('billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
     Route::post('billinginfo', array('uses' => 'BillingInfoController@createOrderProductPaymentAccount'));
-
 
 });
 
