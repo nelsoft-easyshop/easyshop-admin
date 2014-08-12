@@ -22,8 +22,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('ProductRepository', function($app){   
             return new ProductRepository();
         });
-        $this->app->bind('AdminRepository', function($app){   
-            return new AdminRepository();
+        $this->app->bind('AdminMemberRepository', function($app){   
+            return new AdminMemberRepository();
         });
 
     }
