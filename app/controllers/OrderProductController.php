@@ -25,11 +25,12 @@ class OrderProductController extends BaseController
     {        
         $memberRepository = App::make('MemberRepository');
         
-        if(!(Input::get('year') && Input::get('month') && Input::get('day'))){
-            $dateFilter = $this->transactionService->getNextPayOutDate();
-        }else{
+        if(Input::has('year') && Input::has('month') && Input::has('day')) {
             $dateFilter = Carbon::createFromFormat('Y-m-d', Input::get('year').'-'.Input::get('month').'-'.Input::get('day'));
+        } else {
+            $dateFilter = $this->transactionService->getNextPayOutDate();
         }
+            
         $dateFrom = $this->transactionService->getStartPayOutRange($dateFilter);
         $dateTo = $this->transactionService->getEndPayOutRange($dateFilter);
 
