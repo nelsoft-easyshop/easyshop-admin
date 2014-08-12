@@ -26,15 +26,17 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('users', array('uses' => 'HomeController@showAllUsers'));
     Route::post('updateUser', array('uses' => 'HomeController@ajaxUpdateUsers'));
     
-    Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
-    
+    Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));    
     Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));
+
+    Route::get('orderproduct/pay', array('uses' => 'OrderProductController@getOrderProductsToPay'));
+    Route::get('orderproduct/refund', array('uses' => 'OrderProductController@getOrderProductsToRefund'));
+    Route::get('orderproduct-detail', array('uses' => 'OrderProductController@getOrderProductDetail'));
+    
+    Route::get('orderproduct-payment/pay', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToPay'));
+    Route::get('orderproduct-payment/refund', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToRefund'));
     
     
-    
-    Route::get('orderproduct', array('uses' => 'OrderProductController@getOrderProducts'));
-    Route::get('orderproduct-history', array('uses' => 'OrderProductController@getOrderProductDetail'));
-    Route::get('orderproduct-payment', array('uses' => 'OrderProductController@getOrderProductPaymentDetail'));
     Route::put('orderproduct-status/{action}', array('uses' => 'OrderProductController@updateOrderProductStatus'));
 
     Route::put('billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
