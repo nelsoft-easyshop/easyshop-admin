@@ -1,12 +1,8 @@
 <?php
-
-use Easyshop\MyCalculations\Taxes\Tax;
-
   
 class ContentManagerController extends BaseController 
 {
     
-
     public function getHomeContent()
     {
         $id = Auth::id();
@@ -14,7 +10,7 @@ class ContentManagerController extends BaseController
         $map = simplexml_load_string(trim($xmlString));
 
         $productEntity = App::make('ProductRepository');
-        $adminEntity = App::make('AdminRepository');
+        $adminEntity = App::make('AdminMemberRepository');
 
         foreach($map->productSlide as $slides)
         {
@@ -37,7 +33,7 @@ class ContentManagerController extends BaseController
         }
         
         return View::make('pages.cms-home')
-            ->with('adminPassword', $adminEntity->getAdmin($id))
+            ->with('adminPassword', $adminEntity->getAdminMemberById($id))
             ->with('userId', $id)
             ->with('value',$map->text->value)
             ->with('productSlideTitle', $map->productSlide_title->value)
