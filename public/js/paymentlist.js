@@ -1,7 +1,14 @@
 (function ($) {
-
     
-    $('.seller_detail').click(function(){
+    $('.date').each(function() {
+        $(this).datetimepicker({
+            timepicker:false,
+            format:'Y/m/d'
+        });
+    });
+
+
+    $('.seller_detail, .buyer_detail').click(function(){
         var $this = $(this);
         var username = $this.find('.td_username').html();
         var accountname = $this.find('.td_accountname').html();
@@ -11,10 +18,11 @@
         var dateFrom = $('input#date-from').val();
         var dateTo = $('input#date-to').val();
 
+        var url = $this.hasClass('buyer_detail') ? 'orderproduct/refund' : 'orderproduct/pay';
         
         loader.showPleaseWait();        
         $.ajax({
-                url: 'orderproduct',
+                url: url,
                 data:{username:username,accountname:accountname,accountno:accountno, bankname:bankname, dateFrom: dateFrom, dateTo: dateTo},
                 type: 'get',
                 dataType: 'JSON',                      
@@ -36,7 +44,7 @@
     $(document.body).on('click','.view',function(){
         var order_product_id =  $(this).closest('.order_product').data('orderproductid');
          $.ajax({
-                url: 'orderproduct-history',
+                url: 'orderproduct-detail',
                 data:{order_product_id:order_product_id},
                 type: 'get',
                 dataType: 'JSON',                      
@@ -64,7 +72,7 @@
     
     
     $(document.body).on('click','.op-pay-btn',function(){
-        
+        var url =  $(this).hasClass('seller') ? 'orderproduct-payment/refund' : 'orderproduct-payment/pay';
         var orderProductIdCollection =  [];
         $('.order_product td.order-product-id').each(function(){
             orderProductIdCollection.push( parseInt($(this).html().trim(), 10));
@@ -75,7 +83,7 @@
         }
 
         $.ajax({
-                url: 'orderproduct-payment',
+                url: url,
                 data:{order_product_ids:orderProductIdCollection},
                 type: 'get',
                 dataType: 'JSON',                      
@@ -98,7 +106,18 @@
                             return $message; 
                         },
                         cssClass: 'payment-dialog-pay',
+                        onshown: function(dialogRef){
+                            var $account_collection = $('#account_collection');
+                            var optionCount = $account_collection.find('option').length;
+                            var selectedOption = $account_collection.find('option:selected');
+                            if(optionCount == 1 && selectedOption.hasClass('add-option')){
+                                $('#account_collection').change();
+                            }
+                             
+                        },
                     });   
+
+                    
                 }    
         });
        
@@ -122,7 +141,7 @@
         showInputs();
     });
     
-    $(document).on('click','#cancel_account',function(){
+    $(document.body).on('click','#cancel_account',function(){
         emptyErrors(); 
         hideInputs();
     });
@@ -130,7 +149,7 @@
     $(document.body).on('click','#save_account',function(){
         
         $('#error-container').children().fadeOut(500);        
-        
+        var $this = $(this);
         var accnt_name = $('#form_accnt_name').val().trim();
         var accnt_number = $('#form_accnt_number').val().trim();
         var accnt_bank = $('#form_accnt_bank').val();
@@ -139,7 +158,7 @@
         var selected_account = $('#account_collection').find('option:selected');
         var order_billing_info_id = selected_account.data('order-billing-id');
                 
-        var seller_id = $('#seller_id').val();
+        var member_id =  ($('#action').val() == 'pay')  ?  $('#seller_id').val() : $('#buyer_id').val();
         
         var spinner = Ladda.create(this);
         spinner.start();
@@ -152,7 +171,7 @@
                 account_name:accnt_name, 
                 account_number:accnt_number, 
                 bank_id:accnt_bank, 
-                seller_id: seller_id 
+                member_id:  member_id 
             };
         }else{
             json_data = {
@@ -220,6 +239,7 @@
             $('#form_accnt_number').val('');
             $('#form_accnt_bank').val(1);
             showInputs();
+            $('#cancel_account').hide();
         }else{
             $('#accnt_name').html(selectedOption.data('name'));
             $('#accnt_number').html(selectedOption.data('number'));
@@ -231,11 +251,15 @@
     
     function payAccount()
     {
+        var isPayment = ($('#action').val() == 'pay');
+        var member_id =  isPayment  ?  $('#seller_id').val() : $('#buyer_id').val();
+        var url = isPayment ? 'orderproduct-status/pay' : 'orderproduct-status/refund'; 
+        
         var selected_option = $('#account_collection').find('option:selected');
         var account_name = selected_option.data('name');
         var account_number = selected_option.data('number');
         var bank_name = selected_option.data('bank-name');
-        var seller_id = $('#seller_id').val();
+        
         var order_product_ids = $('#order_product_ids').val();
  
         var dateFrom = $('input#date-from').val();
@@ -245,8 +269,8 @@
         spinner.start();
         
         $.ajax({
-            url: 'orderproduct-status/forward',
-            data: {_method: 'put', order_product_ids: order_product_ids,  account_name: account_name, account_number: account_number, bank_name:bank_name, seller_id:seller_id, dateFrom: dateFrom, dateTo: dateTo},
+            url: url,
+            data: {_method: 'put', order_product_ids: order_product_ids,  account_name: account_name, account_number: account_number, bank_name:bank_name, member_id:member_id, dateFrom: dateFrom, dateTo: dateTo},
             type: 'post',
             dataType: 'JSON',                      
             success: function(result){
