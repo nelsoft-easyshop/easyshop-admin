@@ -1,11 +1,18 @@
 <?php
+use Easyshop\Services\LocationService;
 class MemberController extends BaseController
 {
+    private $locationService;
+
+    public function __construct(LocationService $locationService)
+    {
+        $this->locationService = $locationService;
+    }
 
     public function showAllUsers()
     {
         $locationLookUpRepository = App::make('LocationLookUpRepository');
-        $dataFormatter = App::make('Easyshop\Services\DataFormatterService');
+        $dataFormatter = $this->locationService;
         $data = $dataFormatter->location($locationLookUpRepository->getByType());
 
         return View::make('pages.userlist')

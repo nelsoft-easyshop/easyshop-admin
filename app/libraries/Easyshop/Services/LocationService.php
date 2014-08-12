@@ -1,7 +1,14 @@
 <?php namespace Easyshop\Services;
 
-class DataFormatterService
+class LocationService
 {
+
+    /**
+     * Returns format needed for list of location
+     *
+     * @param $listOfLoc array
+     * @return array
+     */
     public function location($listOfLoc)
     {
         $formattedListOfLocations = array();
@@ -20,11 +27,4 @@ class DataFormatterService
 
         return $formattedListOfLocations;
     }
-
-    /**
-     * Returns format needed for list of location
-     *
-     * @param $listOfLoc array
-     * @return array
-     */
 }
