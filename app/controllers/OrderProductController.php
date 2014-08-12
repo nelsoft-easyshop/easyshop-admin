@@ -154,11 +154,11 @@ class OrderProductController extends BaseController
             $member = $memberRepository->getMemberById($userId);
             $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
             foreach($orderProducts as $orderProduct){ 
-              $orderProductId = $orderProduct->id_order_product;
-              $orderBillingInfoId = $orderProduct->sellerBillingInfo->id_order_billing_info;
-              $orderProductBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName);
-              #  $orderProductRepository->updateOrderProductStatus($orderProductId, $status);
-              #  $orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
+                $orderProductId = $orderProduct->id_order_product;
+                $orderBillingInfoId = $orderProduct->sellerBillingInfo->id_order_billing_info;
+                $orderProductBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName);
+                $orderProductRepository->updateOrderProductStatus($orderProductId, $status);
+                $orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
             }
 
             $this->emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo);
