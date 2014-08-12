@@ -48,8 +48,8 @@ class OrderProductController extends BaseController
     {   
         $memberRepository = App::make('MemberRepository');
 
-        $dateFrom = !Input::get('dateFrom') ? Carbon::now()->startOfDay() : Carbon::createFromFormat('Y-m-d', Input::get('dateFrom'))->startOfDay();
-        $dateTo = !Input::get('dateTo') ? Carbon::now()->endOfDay() : Carbon::createFromFormat('Y-m-d', Input::get('dateTo'))->endOfDay();
+        $dateFrom = !Input::get('dateFrom') ? Carbon::now()->startOfDay() : Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay();
+        $dateTo = !Input::get('dateTo') ? Carbon::now()->endOfDay() : Carbon::createFromFormat('Y/m/d', Input::get('dateTo'))->endOfDay();
         
         return View::make('pages.refundlist')->with('accountsToRefund', $memberRepository->getUserAccountsToRefund( Input::get('username'), $dateFrom, $dateTo))
                                             ->with('input', Input::all());
@@ -57,27 +57,59 @@ class OrderProductController extends BaseController
 
     
     /**
-     *  GET method for displaying specific order products in a payment account
+     *  GET method for displaying specific order products in a payment account to be paid
      *
      *  @return JSON
      */
-    public function getOrderProducts()
+    public function getOrderProductsToPay()
     {
         $userdata = Input::get();
         
-        $dateFrom =  Carbon::createFromFormat('m-d-Y',$userdata['dateFrom']);
-        $dateTo =  Carbon::createFromFormat('m-d-Y',$userdata['dateTo'] );
+        $dateFrom =  Carbon::createFromFormat('Y/m/d',$userdata['dateFrom'])->startOfDay();
+        $dateTo =  Carbon::createFromFormat('Y/m/d',$userdata['dateTo'] )->endOfDay();
         
         $orderProductRepository = App::make('OrderProductRepository');
+        $orderProductStatusRepository = App::make('OrderProductStatusRepository');
         
-        $orderProducts = $orderProductRepository->getOrderProductByPaymentAccount($userdata['username'], $userdata['accountname'],$userdata['accountno'], $userdata['bankname'],$dateFrom, $dateTo);      
+        $orderProducts = $orderProductRepository->getOrderProductsToPay($userdata['username'], $userdata['accountname'],$userdata['accountno'], $userdata['bankname'],$dateFrom, $dateTo);      
+        $completedStatus = $orderProductStatusRepository->getSellerPaidStatus();
+        
         $html = View::make('partials.orderproductlist')
                     ->with('orderproducts', $orderProducts)
                     ->with('accountname', $userdata['accountname'])
                     ->with('accountno', $userdata['accountno'])
                     ->with('bankname', $userdata['bankname'])
+                    ->with('memberTitle', 'Buyer')
+                    ->with('completedStatus', $completedStatus)
                     ->render();
         return Response::json(array('html' => $html));
+    }
+    
+    /**
+     *  GET method for displaying specific order products to be refunded for each user
+     *
+     *  @return JSON
+     */
+    public function getOrderProductsToRefund()
+    {
+        $userdata = Input::get();
+        
+        $dateFrom =  Carbon::createFromFormat('Y/m/d',$userdata['dateFrom'])->startOfDay();
+        $dateTo =  Carbon::createFromFormat('Y/m/d',$userdata['dateTo'])->endOfDay();
+        
+        $orderProductRepository = App::make('OrderProductRepository');
+        $orderProductStatusRepository = App::make('OrderProductStatusRepository');
+ 
+        $orderProducts = $orderProductRepository->getOrderProductsToRefund($userdata['username'], $dateFrom, $dateTo);      
+        $completedStatus = $orderProductStatusRepository->getBuyerPaidStatus();
+
+        $html = View::make('partials.orderproductlist')
+                    ->with('orderproducts', $orderProducts)
+                    ->with('memberTitle', 'Seller')
+                    ->with('completedStatus', $completedStatus)
+                    ->render();
+        return Response::json(array('html' => $html));
+       
     }
 
     /**
@@ -88,9 +120,7 @@ class OrderProductController extends BaseController
     public function getOrderProductDetail()
     {
         $userdata = Input::get();
-        
-        
-        
+
         $orderProductRepository = App::make('OrderProductRepository');
         $orderProduct = $orderProductRepository->getOrderProductById($userdata['order_product_id']);
       
@@ -101,11 +131,11 @@ class OrderProductController extends BaseController
     }
    
     /**
-     *  GET method for displaying payment details for an order product
+     *  GET method for displaying payment details for an order product to be paid
      *
      *  @return JSON
      */
-    public function getOrderProductPaymentDetail()
+    public function getOrderProductPaymentDetailToPay()
     {
         $userdata = Input::get();
         $orderProductRepository = App::make('OrderProductRepository');
@@ -122,11 +152,42 @@ class OrderProductController extends BaseController
                     ->with('seller_id', $orderProduct->seller_id)
                     ->with('order_product_ids', json_encode($userdata['order_product_ids']))
                     ->with('bankList', $bankList)
+                    ->with('action', 'pay')
                     ->render();
         return Response::json(array('html' => $html));
     }
 
     
+    /**
+     *  GET method for displaying payment details for an order product to be refunded
+     *
+     *  @return JSON
+     */
+    public function getOrderProductPaymentDetailToRefund()
+    {
+        $userdata = Input::get();
+        $orderProductRepository = App::make('OrderProductRepository');
+        $billingInfoRepository = App::make('BillingInfoRepository');
+        $bankInfoRepository = App::make('BankInfoRepository');
+        
+        $orderProduct = $orderProductRepository->getOrderProductById($userdata['order_product_ids'][0]);
+        
+        $buyerId = $orderProduct->order->buyer_id;
+        
+        $paymentAccounts = $billingInfoRepository->getBillingAccountsByMemberId($buyerId);
+        $bankList = $bankInfoRepository->getAllBanks();
+
+        $html = View::make('partials.orderproductbilling')
+                    ->with('accounts', $paymentAccounts)
+                    ->with('buyer_id', $buyerId)
+                    ->with('order_product_ids', json_encode($userdata['order_product_ids']))
+                    ->with('bankList', $bankList)
+                    ->with('action', 'refund')
+                    ->render();
+        return Response::json(array('html' => $html));
+    }
+
+
     /**
      * Updates the status of an order product
      *
@@ -139,39 +200,44 @@ class OrderProductController extends BaseController
         $orderProductRepository = App::make('OrderProductRepository');
         $orderProductStatusRepository = App::make('OrderProductStatusRepository');
         $orderProductHistoryRepository = App::make('OrderProductHistoryRepository');
-        $orderProductBillingInfoRepository = App::make('OrderBillingInfoRepository');
-        
-        $isValidAction = false;
-        if($action === 'forward'){
-            $status = $orderProductStatusRepository->getSellerPaidStatus();
-            $isValidAction = true;
-        }else if($action === 'return'){
-            $status = $orderProductStatusRepository->getBuyerPaidStatus();
-            $isValidAction = true;
-        }
-        
+        $orderBillingInfoRepository = App::make('OrderBillingInfoRepository');
+                
+        $isPay = $action === 'pay';
+        $isValidAction = $isPay ? true : ($action == 'refund');
+
         if($isValidAction){
             
             $orderProductIds = json_decode(Input::get('order_product_ids'));
             $accountName = Input::get('account_name');
             $accountNumber = Input::get('account_number');
             $bankName = Input::get('bank_name');
-            $userId = Input::get('seller_id');
+            $userId = Input::get('member_id');
             
-            $dateFrom = Carbon::createFromFormat('m-d-Y',  Input::get('dateFrom'));
-            $dateTo = Carbon::createFromFormat('m-d-Y',  Input::get('dateTo'));
+            $dateFrom = Carbon::createFromFormat('Y/m/d',  Input::get('dateFrom'));
+            $dateTo = Carbon::createFromFormat('Y/m/d',  Input::get('dateTo'));
 
             $member = $memberRepository->getMemberById($userId);
             $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
             foreach($orderProducts as $orderProduct){ 
-              $orderProductId = $orderProduct->id_order_product;
-              $orderBillingInfoId = $orderProduct->sellerBillingInfo->id_order_billing_info;
-              $orderProductBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName);
-              $orderProductRepository->updateOrderProductStatus($orderProductId, $status);
-              $orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
+                $orderProductId = $orderProduct->id_order_product;
+
+                if($isPay){
+                    $status = $orderProductStatusRepository->getSellerPaidStatus();
+                    $orderBillingInfoId = $orderProduct->sellerBillingInfo->id_order_billing_info;
+                    $orderBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName);
+                }else{
+                    $status = $orderProductStatusRepository->getBuyerPaidStatus();
+                    $orderBillingInfoRepository->createOrderBillingInfo($accountName, $accountNumber, $bankName);
+                    $orderBillingInfoId = $orderBillingInfoRepository->currentId;
+                    $orderProductRepository->updateOrderProductBuyerBillingId($orderProductId, $orderBillingInfoId);
+                }
+                
+                $orderProductRepository->updateOrderProductStatus($orderProductId, $status);
+                $orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
+              
             }
 
-            $this->emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo);
+            $this->emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo, $action);
 
             return Response::json(true);
         }
