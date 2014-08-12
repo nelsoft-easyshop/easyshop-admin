@@ -7,6 +7,7 @@ $(function() {
     });
 
 });
+
 var entityMap = {
     "&": "&amp;",
     "<": "&lt;",
