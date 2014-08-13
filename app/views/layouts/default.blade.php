@@ -10,7 +10,6 @@
         <link type="text/css" href="{{{ asset('css/style.css')  }}}" rel="stylesheet"  media="screen"/>
         <meta name="description" content = "@yield('description')" />
         <meta name="keywords" content=  "@yield('keywords')"   />
-
         <meta name="_token" content="{{ csrf_token() }}" />
 		<title> @yield('title')  </title>
 	</head>
@@ -34,7 +33,6 @@
 
         </div>
 
-    </body>
 
     {{ HTML::script('js/src/jquery-2.0.0.min.js') }}
     {{ HTML::script('js/src/bootstrap.min.js') }}
