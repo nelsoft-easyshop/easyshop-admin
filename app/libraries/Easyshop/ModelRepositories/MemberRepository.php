@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use Member, OrderStatus, OrderProductStatus;
 
-class MemberRepository extends BaseRepository
+class MemberRepository extends AbstractRepository
 {    
     
     /**

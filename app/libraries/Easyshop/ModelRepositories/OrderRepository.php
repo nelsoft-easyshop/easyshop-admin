@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use Order;
 
-class OrderRepository extends BaseRepository
+class OrderRepository extends AbstractRepository
 {
 
     

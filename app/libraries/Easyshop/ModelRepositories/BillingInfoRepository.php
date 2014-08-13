@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\DB;
 use BillingInfo;
 use Order;
 
-class BillingInfoRepository extends BaseRepository
+class BillingInfoRepository extends AbstractRepository
 {    
     
     /**

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use OrderProductStatus;
 
-class OrderProductStatusRepository extends BaseRepository
+class OrderProductStatusRepository extends AbstractRepository
 {    
     public function getOnGoingStatus()
     {
