@@ -34,7 +34,6 @@ class OrderBillingInfoRepository extends AbstractRepository
         $orderProductBillingInfo->account_number =  $accountNumber;
         $isSuccessful = $orderProductBillingInfo->save();
         
-        $this->errors = $orderProductBillingInfo->errors();
         $this->currentId = $orderProductBillingInfo->id_order_billing_info;
         
         return $isSuccessful;
