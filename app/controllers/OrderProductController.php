@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 use Easyshop\Services\EmailService;
 use Easyshop\Services\TransactionService;
