@@ -46,7 +46,11 @@ class BillingInfoController extends BaseController
                                                 Input::get('member_id'));
         }
         
-        return Response::json(array('errors' =>  $validator->errors(), 'newBillingInfoId' => $billingInfoRepository->getLastId()));
+        return Response::json(
+            array('errors' =>  $validator->errors(), 
+                  'newBillingInfoId' => $billingInfoRepository->getLastId()
+            )
+        );
     }
 
 }
