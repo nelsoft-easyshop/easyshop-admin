@@ -2,7 +2,7 @@
 
 use LocationLookUp;
 
-class LocationLookUpRepository
+class LocationLookUpRepository extends AbstractRepository
 {
     public function getByType()
     {

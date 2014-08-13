@@ -5,11 +5,19 @@ use Illuminate\Support\MessageBag;
 class AccountController extends BaseController
 {
 
+    /** 
+     *  Render Login View
+     *
+     */
     public function showLogin()
     {
         return View::make('pages.login');
     }
-
+    
+    /**
+     * Perform user authentication
+     *
+     */
     public function doLogin()
     {
         $rules = array(
@@ -44,6 +52,10 @@ class AccountController extends BaseController
             ->withInput(Input::except('password')); 
     }
 
+    /**
+     * Logout user
+     *
+     */
     public function doLogout()
     {
         Auth::logout();
