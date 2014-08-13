@@ -1,4 +1,6 @@
-(function ($) {
+(function () {
+
+  
 
     $('#myTab a').click(function (e) {
       e.preventDefault();
@@ -6,8 +8,7 @@
     });
 
 
-
-    $(document).on('click','#moveup',function () { 
+    $("#mainSlide").on('click','#moveup',function () { 
 
         var index = $(this).data('index');
         var userid = $(this).data('userid');
@@ -68,7 +69,7 @@
     });
 
 
-    $(document).on('click','#btnSetSectionMainPanel',function () { 
+    $("#accordion").on('click','#btnSetSectionMainPanel',function () { 
         var index = $(this).data('index');
         var userid = $(this).data('userid');
         var productindex = $(this).data('productindex');
@@ -84,7 +85,7 @@
         setSectionMainPanel(data);
     });
 
-    $(document).on('click','#btnSetSectionPanel',function () { 
+    $("#accordion").on('click','#btnSetSectionPanel',function () { 
         var index = $(this).data('index');
         var userid = $(this).data('userid');
         var productindex = $(this).data('productindex');
@@ -98,7 +99,7 @@
         setSectionPanel(data);
     });
 
-    $(document).on('click','#btnAddType',function () { 
+    $("#nodeTypes").on('click','#btnAddType',function () { 
 
         var userid = $(this).data('userid');
         var type = $(this).closest("form").find("#type").val();
@@ -108,7 +109,7 @@
     });
 
 
-    $(document).on('click','#submitProductSidebanner', function() {
+    $("#productSideBanner").on('click','#submitProductSidebanner', function() {
         $("#loading").modal('show');
         var sidebanner = $("#sidebanner").val();
         var userid = $("#userId").val();
@@ -136,7 +137,7 @@
         });
     });
 
-    $(document).on('click','#submitProductSlideTitle', function() {
+    $("#productSlide").on('click','#submitProductSlideTitle', function() {
         $("#loading").modal('show');
         var slidetitle = $("#slidetitle").val();
         var password = $("#adminPassword").val();
@@ -165,7 +166,8 @@
         });
     });
 
-    $(document).on('click','#submitBannerText', function() {
+    $("#setText").on('click','#submitBannerText', function() {
+
         $("#loading").modal('show');
         var bannertext = $("#bannertext").val();
         var userid = $("#userId").val();
@@ -175,6 +177,7 @@
         data = { value:bannertext , userid:userid, password:password, hash:hashed, callback: '?'};
 
         $.ajax({
+
             type: "POST",
             url: "https://easyshop.ph.feature/webservice/homewebservice/settext",
             data: data,
@@ -195,7 +198,7 @@
         });
     });
 
-    $(document).on('click','#movedown',function () {       
+    $("#mainSlide").on('click','#movedown',function () {       
 
         var index = $(this).data('index');
         var userid = $(this).data('userid');
@@ -235,7 +238,7 @@
 
 
 
-    $(document).on('click','#btnSectionHead',function () {   
+    $("#accordion").on('click','#btnSectionHead',function () {   
 
         var index = $(this).data('index');
         var userid = $(this).data('userid');
@@ -331,7 +334,7 @@
     }
 
 
-    $(document).on('click','#submitProductSlide',function () {     
+    $("#productSlideTitle").on('click','#submitProductSlide',function () {     
         var index = $(this).data('index');
         var userid = $(this).data('userid');
         var order = $(this).data('order');
