@@ -21,7 +21,7 @@ class OrderProductController extends BaseController
         if(Input::has('year') && Input::has('month') && Input::has('day')) {
             $dateFilter = Carbon::createFromFormat('Y-m-d', Input::get('year').'-'.Input::get('month').'-'.Input::get('day'));
         } else {
-            $dateFilter = $this->transactionService->getNextPayOutDate();
+            $dateFilter = $transactionService->getNextPayOutDate();
         }
             
         $dateFrom = $transactionService->getStartPayOutRange($dateFilter);
@@ -60,6 +60,7 @@ class OrderProductController extends BaseController
                     ->with('accountno', $userdata['accountno'])
                     ->with('bankname', $userdata['bankname'])
                     ->render();
+
         return Response::json(array('html' => $html));
     }
 
