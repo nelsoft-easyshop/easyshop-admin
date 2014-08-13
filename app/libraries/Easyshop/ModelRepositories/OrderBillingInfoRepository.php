@@ -24,7 +24,7 @@ class OrderBillingInfoRepository extends BaseRepository
      * @param string $accountName
      * @param string $accountNumber
      * @param string $bankName
-     * @return MessageBag[]
+     * @return Boolean
      */
     public function updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName)
     {
