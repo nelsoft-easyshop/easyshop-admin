@@ -6,7 +6,6 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 		"alexdover/blade-set": "1.*",
-		"magniloquent/magniloquent": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
