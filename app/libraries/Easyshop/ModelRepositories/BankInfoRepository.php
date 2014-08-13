@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use BankInfo;
 
-class BankInfoRepository extends BaseRepository
+class BankInfoRepository extends AbstractRepository
 {
     /**
      * Get all available banks
