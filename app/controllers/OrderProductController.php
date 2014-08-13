@@ -1,21 +1,12 @@
 <?PHP
 
-use Easyshop\Services\EmailService as EmailService;
-use Easyshop\Services\TransactionService as TransactionService;
+use Easyshop\Services\EmailService;
+use Easyshop\Services\TransactionService;
 use Easyshop\Services\Validation\Laravel\OrderBillingInfoUpdateValidator;
 use Carbon\Carbon;
 
 class OrderProductController extends BaseController 
 {
-
-    private $emailService;
-    private $transactionService;
-
-    public function __construct(EmailService $emailService, TransactionService $transactionService)
-    {
-        $this->emailService = $emailService;
-        $this->transactionService = $transactionService;
-    }
 
     /**
      *  GET method for displaying list of account to pay
@@ -25,6 +16,7 @@ class OrderProductController extends BaseController
     public function getUsersToPay()
     {        
         $memberRepository = App::make('MemberRepository');
+        $transactionService = App::make('TransactionService');
         
         if(Input::has('year') && Input::has('month') && Input::has('day')) {
             $dateFilter = Carbon::createFromFormat('Y-m-d', Input::get('year').'-'.Input::get('month').'-'.Input::get('day'));
@@ -32,8 +24,8 @@ class OrderProductController extends BaseController
             $dateFilter = $this->transactionService->getNextPayOutDate();
         }
             
-        $dateFrom = $this->transactionService->getStartPayOutRange($dateFilter);
-        $dateTo = $this->transactionService->getEndPayOutRange($dateFilter);
+        $dateFrom = $transactionService->getStartPayOutRange($dateFilter);
+        $dateTo = $transactionService->getEndPayOutRange($dateFilter);
 
         return View::make('pages.paymentlist')->with('accountsToPay', $memberRepository->getUserAccountsToPay(Input::get('username'), $dateFrom, $dateTo ))
                     ->with('dateFrom',$dateFrom)
@@ -131,6 +123,7 @@ class OrderProductController extends BaseController
         $orderProductStatusRepository = App::make('OrderProductStatusRepository');
         $orderProductHistoryRepository = App::make('OrderProductHistoryRepository');
         $orderProductBillingInfoRepository = App::make('OrderBillingInfoRepository');
+        $emailService = App::make('EmailService');
         $orderBillingInfoUpdateValidator = new OrderBillingInfoUpdateValidator( App::make('validator') );
         
         $isValidAction = false;
@@ -175,7 +168,7 @@ class OrderProductController extends BaseController
                 $orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
             }
 
-            $this->emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo);
+            $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo);
 
             return Response::json(true);
         }
