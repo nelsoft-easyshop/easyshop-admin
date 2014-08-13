@@ -13,12 +13,16 @@ class BillingInfoController extends BaseController
     {
 
         $billingInfoRepository = App::make('BillingInfoRepository');
-        $billingInfoRepository->updateBillingAccount(Input::get('billing_info_id'),
+        $validator = new BillingInfoUpdateValidator( App::make('validator') );
+        if($validator->with(Input::get())->passes()){
+            $billingInfoRepository->updateBillingAccount(Input::get('billing_info_id'),
                                                         Input::get('account_name'), 
                                                         Input::get('account_number'),
                                                         Input::get('bank_id'),  
                                                         Input::get('seller_id') );
-        return Response::json(array('errors' => $billingInfoRepository->getErrors()));
+        }
+        
+        return Response::json(array('errors' => $validator->errors()));
     }
     
              
@@ -29,14 +33,17 @@ class BillingInfoController extends BaseController
      */
     public function createOrderProductPaymentAccount()
     {
-
         $billingInfoRepository = App::make('BillingInfoRepository');
-        $billingInfoRepository->createBillingAccount(Input::get('account_name'),
-                                        Input::get('account_number'),
-                                        Input::get('bank_id'), 
-                                        Input::get('seller_id'));
-            
-        return Response::json(array('errors' => $billingInfoRepository->getErrors(), 'new_billing_info_id' => $billingInfoRepository->getLastId()));
+        $validator = new BillingInfoCreateValidator( App::make('validator') );
+        
+        if($validator->with(Input::get())->passes()){
+            $billingInfoRepository->createBillingAccount(Input::get('account_name'),
+                                                Input::get('account_number'),
+                                                Input::get('bank_id'), 
+                                                Input::get('seller_id'));
+        }
+        
+        return Response::json(array('errors' =>  $validator->errors(), 'newBillingInfoId' => $billingInfoRepository->getLastId()));
     }
 
 }
