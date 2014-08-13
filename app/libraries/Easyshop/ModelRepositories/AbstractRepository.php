@@ -9,15 +9,7 @@ abstract class AbstractRepository
      * @var integer
      */
     public $currentId;
-    
-    
-    /**
-     * Error for Model Validation
-     *
-     * @var MessageBag[]
-     */
-    public $errors;
-    
+
     
     /**
      * Returns ID of last modified database row
