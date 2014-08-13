@@ -2,6 +2,7 @@
 
 use Easyshop\Services\EmailService as EmailService;
 use Easyshop\Services\TransactionService as TransactionService;
+use Easyshop\Services\Validation\Laravel\OrderBillingInfoUpdateValidator;
 use Carbon\Carbon;
 
 class OrderProductController extends BaseController 
@@ -130,6 +131,7 @@ class OrderProductController extends BaseController
         $orderProductStatusRepository = App::make('OrderProductStatusRepository');
         $orderProductHistoryRepository = App::make('OrderProductHistoryRepository');
         $orderProductBillingInfoRepository = App::make('OrderBillingInfoRepository');
+        $orderBillingInfoUpdateValidator = new OrderBillingInfoUpdateValidator( App::make('validator') );
         
         $isValidAction = false;
         if($action === 'forward'){
@@ -156,7 +158,19 @@ class OrderProductController extends BaseController
             foreach($orderProducts as $orderProduct){ 
                 $orderProductId = $orderProduct->id_order_product;
                 $orderBillingInfoId = $orderProduct->sellerBillingInfo->id_order_billing_info;
-                $orderProductBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName);
+                
+ 
+                $orderBillingInfoUpdateValidator->with(
+                    array('order_billing_info_id' => $orderBillingInfoId,
+                          'account_name' => $accountName,
+                          'account_number' => $accountNumber,
+                          'bank_name' => $bankName)
+                );
+
+                if($orderBillingInfoUpdateValidator->passes()){
+                    $orderProductBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName);
+                }
+
                 $orderProductRepository->updateOrderProductStatus($orderProductId, $status);
                 $orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
             }
