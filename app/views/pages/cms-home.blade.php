@@ -641,16 +641,20 @@
 					</div>
 					<div id="addProductSlide" class="panel-collapse collapse in">
 						<div class="panel-body">
-							<form action="https://easyshop.ph.feature/webservice/homewebservice/addproductslide" class="form-horizontal" method="post" enctype="multipart/form-data">
+							<form action="https://easyshop.ph.feature/webservice/homewebservice/addproductslide" id="addProductForm" class="form-horizontal" method="post" enctype="multipart/form-data">
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Value</label>
 									<div class="col-xs-10">
-										<input type="text" id="value" class="form-control" name='value'  placeholder="Value" >
+
+										<input type="text" id="valueProductSlide" class="form-control" name='value'  placeholder="Value" >
+										<input type="hidden" id="userIdProductSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >
+										<input type="hidden" id="adminPasswordProductSlide" class="form-control" name="password" value='{{$adminPassword}}'  placeholder="Value" >
+										<input type="hidden" id="hashProductSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="col-xs-offset-2 col-xs-10">
-										<button type="submit" class="btn btn-default">Submit</button>
+										<button type="submit" id='submitAddProduct' class="btn btn-default">Submit</button>
 									</div>
 								</div>
 							 </form>
