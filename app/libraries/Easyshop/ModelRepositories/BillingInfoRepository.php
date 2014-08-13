@@ -51,7 +51,6 @@ class BillingInfoRepository extends AbstractRepository
         $billingInfo->bank_id = $bankId;
         $isSuccessful = $billingInfo->save();
         
-        $this->errors = $billingInfo->errors();
         $this->currentId = $billingInfo->id_billing_info;
         
         return $isSuccessful;
@@ -68,6 +67,7 @@ class BillingInfoRepository extends AbstractRepository
      */
     public function createBillingAccount($accountName, $accountNumber, $bankId, $memberId)
     {
+    
         $billingInfo = new BillingInfo;
         $billingInfo->bank_account_name = $accountName;
         $billingInfo->bank_account_number = $accountNumber;
@@ -75,7 +75,6 @@ class BillingInfoRepository extends AbstractRepository
         $billingInfo->bank_id = $bankId;
         $isSuccessful = $billingInfo->save();
         
-        $this->errors = $billingInfo->errors();
         $this->currentId = $billingInfo->id_billing_info;
         
         return $isSuccessful;
