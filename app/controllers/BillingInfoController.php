@@ -1,5 +1,7 @@
 <?PHP
 
+use Easyshop\Services\Validation\Laravel\BillingInfoUpdateValidator;
+use Easyshop\Services\Validation\Laravel\BillingInfoCreateValidator;
 
 class BillingInfoController extends BaseController 
 {
@@ -14,12 +16,13 @@ class BillingInfoController extends BaseController
 
         $billingInfoRepository = App::make('BillingInfoRepository');
         $validator = new BillingInfoUpdateValidator( App::make('validator') );
+
         if($validator->with(Input::get())->passes()){
             $billingInfoRepository->updateBillingAccount(Input::get('billing_info_id'),
                                                         Input::get('account_name'), 
                                                         Input::get('account_number'),
                                                         Input::get('bank_id'),  
-                                                        Input::get('seller_id') );
+                                                        Input::get('member_id') );
         }
         
         return Response::json(array('errors' => $validator->errors()));
@@ -40,7 +43,7 @@ class BillingInfoController extends BaseController
             $billingInfoRepository->createBillingAccount(Input::get('account_name'),
                                                 Input::get('account_number'),
                                                 Input::get('bank_id'), 
-                                                Input::get('seller_id'));
+                                                Input::get('member_id'));
         }
         
         return Response::json(array('errors' =>  $validator->errors(), 'newBillingInfoId' => $billingInfoRepository->getLastId()));
