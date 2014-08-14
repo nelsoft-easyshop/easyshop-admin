@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory;
 
-class OrderProductRepository extends BaseRepository
+class OrderProductRepository extends AbstractRepository
 {    
 
     /**

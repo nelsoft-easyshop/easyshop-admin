@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use Member, OrderStatus, OrderProductStatus;
 
-class MemberRepository extends BaseRepository
+class MemberRepository extends AbstractRepository
 {    
     
     /**
@@ -21,7 +21,7 @@ class MemberRepository extends BaseRepository
      * Return member by id
      *
      * @param int $memberId
-     * @return Entity
+     * @return Member
      */
     public function getMemberById($memberId)
     {
@@ -38,7 +38,7 @@ class MemberRepository extends BaseRepository
      *  @param string $username
      *  @param Carbon $dateFrom
      *  @param Carbon $dateTo
-     *  @return Entity[] 
+     *  @return Collection
      */
     public function getUserAccountsToPay($username, $dateFrom, $dateTo)
     {

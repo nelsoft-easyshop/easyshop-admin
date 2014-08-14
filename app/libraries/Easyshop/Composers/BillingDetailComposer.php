@@ -15,7 +15,6 @@ class BillingDetailComposer
         $formattedAccounts = array();
 
         $isAccountExist = false;
-        
         foreach($viewData['accounts'] as $idx=>$account){
             $stdAccount = new \stdClass();
             $stdAccount->account_name = $account->bank_account_name;
@@ -30,14 +29,13 @@ class BillingDetailComposer
                 $account->bank_account_number === $defaultAccount->account_number &&
                 $account->bankInfo->bank_name === $defaultAccount->bank_name)
             {
-
-                $swap_temp = $stdAccount;
+                $swapTemp = $stdAccount;
                 if(isset($formattedAccounts[0])){
-                    $swap_temp = $formattedAccounts[0];
+                    $swapTemp = $formattedAccounts[0];
                     $formattedAccounts[0] = $stdAccount;
-                    $formattedAccounts[$idx] = $swap_temp;
+                    $formattedAccounts[$idx] = $swapTemp;
                 }
-                $formattedAccounts[$idx] =  $swap_temp;
+                $formattedAccounts[$idx] =  $swapTemp;
                 $isAccountExist = true;;
             }else{
                 $formattedAccounts[$idx] = $stdAccount;

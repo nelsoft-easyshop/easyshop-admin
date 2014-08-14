@@ -2,26 +2,8 @@
 
 use Magniloquent\Magniloquent\Magniloquent;
 
-class BillingInfo extends Magniloquent
+class BillingInfo extends Eloquent
 {
-
-    /**
-     * Validation rules
-     *
-     */
-    public static $rules = array(
-        "save" => array(
-            'bank_account_name' => 'required',
-            'bank_account_number' => 'required',
-            'bank_id' => 'required|numeric',
-            'member_id' => 'required|numeric',
-        ),
-        "create" => array(),
-        "update" => array(
-            'id_billing_info' => 'required|numeric',
-        )
-    );
-    
 
    /**
     * The database table used by the model.

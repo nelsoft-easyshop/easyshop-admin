@@ -1,20 +1,12 @@
-<?PHP
+<?php
 
-use Easyshop\Services\EmailService as EmailService;
-use Easyshop\Services\TransactionService as TransactionService;
+use Easyshop\Services\EmailService;
+use Easyshop\Services\TransactionService;
+use Easyshop\Services\Validation\Laravel\OrderBillingInfoUpdateValidator;
 use Carbon\Carbon;
 
 class OrderProductController extends BaseController 
 {
-
-    private $emailService;
-    private $transactionService;
-
-    public function __construct(EmailService $emailService, TransactionService $transactionService)
-    {
-        $this->emailService = $emailService;
-        $this->transactionService = $transactionService;
-    }
 
     /**
      *  GET method for displaying list of account to pay
@@ -24,14 +16,16 @@ class OrderProductController extends BaseController
     public function getUsersToPay()
     {        
         $memberRepository = App::make('MemberRepository');
+        $transactionService = App::make('TransactionService');
         
-        if(!(Input::get('year') && Input::get('month') && Input::get('day'))){
-            $dateFilter = $this->transactionService->getNextPayOutDate();
-        }else{
+        if(Input::has('year') && Input::has('month') && Input::has('day')) {
             $dateFilter = Carbon::createFromFormat('Y-m-d', Input::get('year').'-'.Input::get('month').'-'.Input::get('day'));
+        } else {
+            $dateFilter = $transactionService->getNextPayOutDate();
         }
-        $dateFrom = $this->transactionService->getStartPayOutRange($dateFilter);
-        $dateTo = $this->transactionService->getEndPayOutRange($dateFilter);
+            
+        $dateFrom = $transactionService->getStartPayOutRange($dateFilter);
+        $dateTo = $transactionService->getEndPayOutRange($dateFilter);
 
         return View::make('pages.paymentlist')->with('accountsToPay', $memberRepository->getUserAccountsToPay(Input::get('username'), $dateFrom, $dateTo ))
                     ->with('dateFrom',$dateFrom)
@@ -73,7 +67,13 @@ class OrderProductController extends BaseController
         
         $orderProducts = $orderProductRepository->getOrderProductsToPay($userdata['username'], $userdata['accountname'],$userdata['accountno'], $userdata['bankname'],$dateFrom, $dateTo);      
         $completedStatus = $orderProductStatusRepository->getSellerPaidStatus();
-        
+
+        $orderProducts = $orderProductRepository->getOrderProductByPaymentAccount($userdata['username'], 
+                                                                                $userdata['accountname'],
+                                                                                $userdata['accountno'], 
+                                                                                $userdata['bankname'],
+                                                                                $dateFrom, 
+                                                                                $dateTo);      
         $html = View::make('partials.orderproductlist')
                     ->with('orderproducts', $orderProducts)
                     ->with('accountname', $userdata['accountname'])
@@ -82,6 +82,7 @@ class OrderProductController extends BaseController
                     ->with('memberTitle', 'Buyer')
                     ->with('completedStatus', $completedStatus)
                     ->render();
+
         return Response::json(array('html' => $html));
     }
     
@@ -200,8 +201,10 @@ class OrderProductController extends BaseController
         $orderProductRepository = App::make('OrderProductRepository');
         $orderProductStatusRepository = App::make('OrderProductStatusRepository');
         $orderProductHistoryRepository = App::make('OrderProductHistoryRepository');
-        $orderBillingInfoRepository = App::make('OrderBillingInfoRepository');
-                
+        $orderProductBillingInfoRepository = App::make('OrderBillingInfoRepository');
+        $orderBillingInfoUpdateValidator = new OrderBillingInfoUpdateValidator( App::make('validator') );
+        $emailService = App::make('EmailService');
+
         $isPay = $action === 'pay';
         $isValidAction = $isPay ? true : ($action == 'refund');
 
@@ -224,10 +227,21 @@ class OrderProductController extends BaseController
                 if($isPay){
                     $status = $orderProductStatusRepository->getSellerPaidStatus();
                     $orderBillingInfoId = $orderProduct->sellerBillingInfo->id_order_billing_info;
-                    $orderBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName);
+                    $orderBillingInfoUpdateValidator->with(
+                        array('order_billing_info_id' => $orderBillingInfoId,
+                            'account_name' => $accountName,
+                            'account_number' => $accountNumber,
+                            'bank_name' => $bankName)
+                    );
+
+                    if($orderBillingInfoUpdateValidator->passes()){
+                        $orderProductBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName);
+                    }
                 }else{
                     $status = $orderProductStatusRepository->getBuyerPaidStatus();
+                    //ADD VALIDATION HERE
                     $orderBillingInfoRepository->createOrderBillingInfo($accountName, $accountNumber, $bankName);
+                    
                     $orderBillingInfoId = $orderBillingInfoRepository->currentId;
                     $orderProductRepository->updateOrderProductBuyerBillingId($orderProductId, $orderBillingInfoId);
                 }
@@ -237,7 +251,8 @@ class OrderProductController extends BaseController
               
             }
 
-            $this->emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo, $action);
+            $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo, $action);
+
 
             return Response::json(true);
         }

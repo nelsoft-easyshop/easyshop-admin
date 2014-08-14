@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\DB;
 use BillingInfo;
 use Order;
 
-class BillingInfoRepository extends BaseRepository
+class BillingInfoRepository extends AbstractRepository
 {    
     
     /**
@@ -12,7 +12,7 @@ class BillingInfoRepository extends BaseRepository
      * Ordered By is_default
      * 
      * @param int $userId
-     * @return Entity[]
+     * @return BillingInfo[]
      *
      */
     public function getBillingAccountsByMemberId($userId)
@@ -22,7 +22,12 @@ class BillingInfoRepository extends BaseRepository
                             ->get();
     }
     
-    
+    /**
+     * Returns the BillingInfo id
+     *
+     * @param int $billingInfoId
+     * @return BillingInfo[]
+     */
     public function getBillingAccountById($billingInfoId)
     {
         return BillingInfo::find($billingInfoId);
@@ -46,7 +51,6 @@ class BillingInfoRepository extends BaseRepository
         $billingInfo->bank_id = $bankId;
         $isSuccessful = $billingInfo->save();
         
-        $this->errors = $billingInfo->errors();
         $this->currentId = $billingInfo->id_billing_info;
         
         return $isSuccessful;
@@ -63,6 +67,7 @@ class BillingInfoRepository extends BaseRepository
      */
     public function createBillingAccount($accountName, $accountNumber, $bankId, $memberId)
     {
+    
         $billingInfo = new BillingInfo;
         $billingInfo->bank_account_name = $accountName;
         $billingInfo->bank_account_number = $accountNumber;
@@ -71,7 +76,6 @@ class BillingInfoRepository extends BaseRepository
         $billingInfo->is_default = $this->hasDefaultAccount($memberId) ? '0' : '1';
         $isSuccessful = $billingInfo->save();
         
-        $this->errors = $billingInfo->errors();
         $this->currentId = $billingInfo->id_billing_info;
         
         return $isSuccessful;

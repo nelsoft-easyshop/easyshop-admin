@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use OrderBillingInfo;
 
-class OrderBillingInfoRepository extends BaseRepository
+class OrderBillingInfoRepository extends AbstractRepository
 {    
 
     /**
@@ -34,7 +34,6 @@ class OrderBillingInfoRepository extends BaseRepository
         $orderProductBillingInfo->account_number =  $accountNumber;
         $isSuccessful = $orderProductBillingInfo->save();
         
-        $this->errors = $orderProductBillingInfo->errors();
         $this->currentId = $orderProductBillingInfo->id_order_billing_info;
         
         return $isSuccessful;

@@ -1,6 +1,6 @@
 <?php  namespace Easyshop\ModelRepositories;
 
-class BaseRepository
+abstract class AbstractRepository
 {    
 
     /**
@@ -9,15 +9,7 @@ class BaseRepository
      * @var integer
      */
     public $currentId;
-    
-    
-    /**
-     * Error for Model Validation
-     *
-     * @var MessageBag[]
-     */
-    public $errors;
-    
+
     
     /**
      * Returns ID of last modified database row
@@ -27,16 +19,6 @@ class BaseRepository
     public function getLastId()
     {
         return $this->currentId;
-    }
-    
-    /**
-     * Returns the errors of the last CRUD operation
-     *
-     * @return MessageBag[]
-     */
-    public function getErrors()
-    {
-        return $this->errors;
     }
 
 }

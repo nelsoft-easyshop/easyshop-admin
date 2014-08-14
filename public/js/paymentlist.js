@@ -180,7 +180,7 @@
                 account_name:accnt_name,
                 account_number:accnt_number,
                 bank_id:accnt_bank , 
-                seller_id: seller_id
+                member_id: seller_id
             };
         }
         
@@ -197,7 +197,7 @@
                     $('#accnt_bank_id').val(accnt_bank);
                     $('#accnt_bank').html(accnt_bank_name);
                     if(isCreate){
-                        var option_html = '<option value="'+result.new_billing_info_id+'" data-bank-id="'+accnt_bank+'" data-name="'+accnt_name+'" data-number="'+accnt_number+'" data-bank-name="'+accnt_bank_name+'" selected>'+accnt_bank_name+' - '+accnt_name+'</option>';
+                        var option_html = '<option value="'+result.newBillingInfoId+'" data-bank-id="'+accnt_bank+'" data-name="'+accnt_name+'" data-number="'+accnt_number+'" data-bank-name="'+accnt_bank_name+'" selected>'+accnt_bank_name+' - '+accnt_name+'</option>';
                         $(option_html).insertBefore('#account_collection option#add-option');
                     }else{
                         selected_account.data('bank-id', accnt_bank);
