@@ -3385,6 +3385,7 @@ div#mainsection{
 }
 .tbl-title{
     color: #6f6f6f;
+    margin-top: 7px;
 }
 .filter-container{
 
@@ -3443,7 +3444,26 @@ top:0px !important;
 }
 #srch_container .tbl-title{margin-bottom: 3%}
 /* end */
-
+.breadcrumb
+{
+    background-color:white;
+    margin-bottom: 0px;
+}
+.breadcrumb .active
+{
+    color: #ff6600;
+}
+#mdl_title{
+    color: #f5f5f5;
+}
+.table-clickable > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th
+{
+    background-color: #FFF2C3;
+}
+.tbl-breadcrumb
+{
+    margin-top: 4%;
+}
 /* Payments and Transactions  */
 
 .table-payment{

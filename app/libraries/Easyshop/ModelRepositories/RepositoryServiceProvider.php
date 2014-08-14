@@ -45,6 +45,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('BankInfoRepository', function($app){  
             return new BankInfoRepository();
         });
+
+        $this->app->bind('CategoryRepository', function($app){
+            return new CategoryRepository();
+        });
     }
 }
 
