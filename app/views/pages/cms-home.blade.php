@@ -27,25 +27,27 @@
               <li class=""><a href="#mainSlide" data-toggle="tab">Manage Main Slide</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Section Heads<b class="caret"></b></a>
-                  <ul class="dropdown-menu">
+                 	<ul class="dropdown-menu">
                       @foreach($sectionHeads as $heads)
                          <li><a href="#{{ $heads->value }}" data-toggle="tab">{{ $heads->value }}</a></li>
                       @endforeach
-                         <li class='divider'></li>
-                         <li><a href='#nodeTypes' data-toggle ="tab">Add Type</a></li>
-                  </ul>
+                       
+                        <li class='divider'></li>
+                        <li><a href='#addSectionMainPanel' data-toggle ="tab">Add Section Main Panel</a></li>
+                        <li><a href='#AddSectionProduct' data-toggle ="tab">Add Section Product</a></li>
+                        <li><a href='#nodeTypes' data-toggle ="tab">Add Node Type</a></li>
+                 	</ul>
               </li>
           </ul>
     </section>
 
 
-    <div id="myTabContent" class="tab-content">	
-		  <?php $collapse = 0; ?>
+    <div id="myTabContent" class="tab-content">
 		@foreach($sectionHeads as $section)
-					<?php $collapse++; ?>  
+					<span style='display:none;'> {{ $collapse++; }}</span>
 					<div class="tab-pane fade" id="{{$section->value}}">
 						<div class="panel-group" id="accordion">
-							<span style='display:none;'> {{ $sectionId }}</span>
+							<span style='display:none;'> {{ $sectionId++ }}</span>
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
@@ -96,7 +98,7 @@
 									</div>
 								</div> 
 							</div>
-							<?php $collapse++; ?>
+					<span style='display:none;'> {{ $collapse++; }}</span>
 					<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
@@ -106,7 +108,7 @@
 									</h4>
 								</div>
 								<div id="collapse{{$collapse}}" class="panel-collapse collapse ">
-							<div class="panel-body">
+							<div class="panel-body">	 <span style='display:none;'> {{ $panelMainId = 0 }}</span>
 								@foreach($section->product_panel_main as $panelMain)
 									<span style='display:none;'>{{ $panelMainId }}</span>
 									<form class="form-horizontal">
@@ -161,12 +163,12 @@
 									<hr/>
 									<span style='display:none;'>{{ $panelMainId++ }}</span>
 								@endforeach
+					
 							</div>
-						 <span style='display:none;'> {{ $panelMainId = 0 }}</span>
 				   
 					  </div>
 					</div>
-					<?php $collapse++; ?>
+					<span style='display:none;'> {{ $collapse++; }}</span>
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title">
@@ -177,6 +179,7 @@
 						</div>
 						<div id="collapse{{$collapse}}" class="panel-collapse collapse">
 							<div class="panel-body">
+							<span style='display:none;'>{{ $panelMainId = 0 }}</span>
 							  @foreach($section->product_panel as $product_panel)  
 									<span style='display:none;'>{{ $panelMainId }}</span>
 									<form class="form-horizontal">
@@ -205,135 +208,12 @@
 						  </div>
 					</div>
 
-					<?php $collapse++; ?>
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$collapse}}">
-								Add Section Product
-							</a>
-							</h4>
-						</div>
-						<div id="collapse{{$collapse}}" class="panel-collapse collapse">
-							<div class="panel-body">
-									 <form class="form-horizontal" method='post' action = 'https://easyshop.ph.feature/webservice/homewebservice/addSectionProduct'>
+					<span style='display:none;'> {{ $collapse++; }}</span>
 
-										<input type="hidden" id="typesectionproduct" class="form-control" name= 'index' readonly='readonly' placeholder="Value" value="{{$sectionId}}">
-										<input type="hidden" id="type" class="form-control" name= 'type' readonly='readonly' placeholder="Value" value="Product">
-										<input type="hidden" id="type" class="form-control" name= 'userid' readonly='readonly' placeholder="Value" value="{{$userId}}">
-				  
-										<div class="form-group">
-											<label for="inputPassword" class="control-label col-xs-2">Type</label>
-											<div class="col-xs-10">
-												<div class="btn-group" >
-													<button data-toggle="dropdown" id="mybuttonsectionproduct" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
-													<ul class="dropdown-menu" id='sectionProductDrop'>
-														@foreach($nodeTypes as $types)
-														<li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='{{ $panelMainId }}' class='{{$types->value}}'>{{$types->value}}</span ></li>
-														@endforeach                                
-													</ul>
-												</div>
-												</div>
-										</div>
-										<div class="form-group">
-											<label for="inputPassword" class="control-label col-xs-2">Value</label>
-											<div class="col-xs-10">
-												<input type="text" id="value" class="form-control" name='value' placeholder="Value" >
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="inputPassword" class="control-label col-xs-2">Product Index</label>
-											<div class="col-xs-10">
-												<input type="text" id="value" name='productindex' class="form-control"  placeholder="Product Index" >
-											</div>
-										</div>
-
-										<div class="form-group">
-											<div class="col-xs-offset-2 col-xs-10">
-												<input type="submit" class="btn btn-default" value='Submit'/>
-											</div>
-										</div>
-								 </form>
-								 <hr/>
-							</div>
-						 </div>
-					</div>
 				   
-					<?php $collapse++; ?>
-					<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$collapse}}">
-									Add Section Main Panel
-								</a>
-								</h4>
-							</div>
-							<div id="collapse{{$collapse}}" class="panel-collapse collapse in">
-								<div class="panel-body">
-										<form class="form-horizontal" method='post' action = 'https://easyshop.ph.feature/webservice/homewebservice/addSectionMainPanel'>
-											<div class="form-group">
-												<label for="inputEmail" class="control-label col-xs-2">Type of Main Panel</label>
-												<div class="col-xs-10">
-													<div class="btn-group">
-														<button data-toggle="dropdown" id="mybutton{{ $panelMainId }}" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
-														<ul class="dropdown-menu">
-															@foreach($nodeTypes as $types)
-															  <li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='{{ $panelMainId }}' class='{{$types->value}}'>{{$types->value}}</span ></li>
-															@endforeach
-														</ul>
-													</div>			  
-												</div>
-											</div>
-														  
-											<input type="hidden" id="type" class="form-control" name= 'index' readonly='readonly' placeholder="Value" value="{{$sectionId}}">
-											<input type="hidden" id="type" class="form-control" name= 'userid' readonly='readonly' placeholder="Value" value="{{$userId}}">
-											<div class="form-group">
-												<label for="inputPassword" class="control-label col-xs-2">Type</label>
-												<div class="col-xs-10">
-													<input type="text" id="type" class="form-control" name= 'type' readonly='readonly' placeholder="Value" value="Product">
-												</div>
-											</div>    
-											<div class="form-group">
-												<label for="inputPassword" class="control-label col-xs-2">Value</label>
-												<div class="col-xs-10">
-													<input type="text" id="value" class="form-control" name='value'  placeholder="Value" value="">
-												</div>
-											</div>
-											<div class="form-group">
-												<label for="inputPassword" class="control-label col-xs-2">Product index</label>
-												<div class="col-xs-10">
-													<input type="text" id="productindex" class="form-control" name='productindex' placeholder="Product Index" value="">
-												</div>
-											</div>
-											<div id='imagetype{{$panelMainId}}' style="display:none;">
-											  <div class="form-group">
-													<label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
-													<div class="col-xs-10">
-														<input type="text" id="coordinate" class="form-control" name='coordinate' placeholder="0,0,0,0" value="">
-													</div>
-											  </div>
-										  
-											  <div class="form-group">
-													<label for="inputPassword" class="control-label col-xs-2">Target</label>
-													<div class="col-xs-10">
-														<input type="text" id="target" class="form-control" name='target'  placeholder="Value" value="">
-													</div>
-											  </div>
-										   </div>
-										  <div class="form-group">
-												<div class="col-xs-offset-2 col-xs-10">
-													<input type="submit" class="btn btn-default" value='Submit'/>
-												</div>
-										  </div>
-									  </form>
-								</div>
-							 <span style='display:none;'> {{ $panelMainId = 0 }}</span>
-							 <span style='display:none;'> {{ $sectionId++ }}</span>
-						  </div>
-					</div>
 				  </div>
-				</div>
-				
+				</div>	
+		
 
 		@endforeach
 
@@ -388,31 +268,36 @@
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Choose File</label>
 									<div class="col-xs-10">
-										<input type="file" id="exampleInputFile" name='myfile'> 
+										<input type="file" id="photoFile" name='myfile'> 
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Value</label>
 									<div class="col-xs-10">
-										<input type="text" id="value" class="form-control" name='value'  placeholder="Value" >
+										<input type="text" id="valueMainSlide" class="form-control" name='value'  placeholder="Value" >
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
 									<div class="col-xs-10">
-										<input type="text" id="value" class="form-control" name='coordinate'  placeholder="0,0,0,0" >
+										<input type="text" id="mainSlideCoordinate" class="form-control" name='coordinate'  placeholder="0,0,0,0" >
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Target</label>
 									<div class="col-xs-10">
-										<input type="text" id="value" class="form-control" name='target'  placeholder="Value" >
+										<input type="text" id="mainSlideTarget" class="form-control" name='target'  placeholder="Value" >
 									</div>
 								</div>
 
+								<input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >
+								<input type="hidden" id="adminPasswordMainSlide" class="form-control" name="password" value='{{$adminPassword}}'  placeholder="Value" >
+								<input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
+					
+
 								<div class="form-group">
 									<div class="col-xs-offset-2 col-xs-10">
-										<button type="submit" class="btn btn-default">Submit</button>
+										<button type="submit" id='submitAddMainSlide' class="btn btn-default">Submit</button>
 									</div>
 								</div>
 							 </form>
@@ -439,7 +324,7 @@
 										 @foreach ($mainSlides as $mainSlide)
 											<div style="position:relative;display:inline-block;">
 											<p>
-												<img src="https://easyshop.ph.feature/{{ $mainSlide->value }}" data-div="" width="250px" height="100px" class='img-responsive'/>
+												<img src="https://easyshop.ph.feature/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important;" class='img-responsive'/>
 											</p>
 
 											<a href="#myMain{{ $mainSlideId }}" data-toggle="modal" class="btn btn-default" style="position:absolute;top:110px;left:105px;">Edit</a>
@@ -550,6 +435,126 @@
 				</div>
 			</fieldset>
         </form>
+    </div>
+    <div class="tab-pane fade" id="addSectionMainPanel">
+        <legend>Add Section Main Panel</legend>
+			<form class="form-horizontal" id="formSectionMainPanel" method='post' action = 'https://easyshop.ph.feature/webservice/homewebservice/addSectionMainPanel'>
+				<div class="form-group">
+					<label for="inputEmail" class="control-label col-xs-2">Type of Main Panel</label>
+					<div class="col-xs-10">
+						<div class="btn-group">
+							<button data-toggle="dropdown" id="mybutton{{ $panelMainId }}" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
+							<ul class="dropdown-menu">
+								@foreach($nodeTypes as $types)
+									<li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='1' class='{{$types->value}}'>{{$types->value}}</span ></li>
+								@endforeach
+							</ul>
+						</div>			  
+					</div>
+				</div>
+		  
+				<div class="form-group">
+					<label for="inputPassword" class="control-label col-xs-2">Type</label>
+					<div class="col-xs-10">
+						<input type="text" id="typeSectionMainPanel" class="form-control" name= 'type' readonly='readonly' placeholder="Value" value="Product">
+					</div>
+				</div>  
+				<div class="form-group">
+					<label for="inputPassword" class="control-label col-xs-2">Index</label>
+					<div class="col-xs-10">
+						<input type="text" id="indexSectionMainPanel" class="form-control" name= 'index' placeholder="Value" value=""/>
+					</div>
+				</div>   
+				<div class="form-group">
+					<label for="inputPassword" class="control-label col-xs-2">Value</label>
+					<div class="col-xs-10">
+						<input type="text" id="valueSectionMainPanel" class="form-control" name='value'  placeholder="Value" value="">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputPassword" class="control-label col-xs-2">Product index</label>
+					<div class="col-xs-10">
+						<input type="text" id="productindexSectionMainPanel" class="form-control" name='productindex' placeholder="Product Index" value="">
+					</div>
+				</div>
+				<div id='imagetype1' style="display:none;">
+				  <div class="form-group">
+						<label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
+						<div class="col-xs-10">
+							<input type="text" id="coordinateSectionMainPanel" class="form-control" name='coordinate' placeholder="0,0,0,0" value="">
+						</div>
+				  </div>
+			  
+				<div class="form-group">
+						<label for="inputPassword" class="control-label col-xs-2">Target</label>
+						<div class="col-xs-10">
+							<input type="text" id="targetSectionMainPanel" class="form-control" name='target'  placeholder="Value" value="">
+						</div>
+				  </div>
+			    </div>
+
+				<input type="hidden" id="userIdSectionMainPanel" class="form-control" name= 'userid' readonly='readonly' placeholder="Value" value="{{$userId}}"/>
+				<input type="hidden" id="passwordSectionMainPanel" class="form-control" name= 'password' readonly='readonly' placeholder="Value" value="{{$adminPassword}}"/>
+				<input type="hidden" id="hashSectionMainPanel" class="form-control" name= 'hash' readonly='readonly' placeholder="Value" value=""/>
+
+			  	<div class="form-group">
+					<div class="col-xs-offset-2 col-xs-10">
+						<button id='submitSectionMainPanel' class="btn btn-default">Submit</button>
+					</div>
+			 	</div>
+		  </form>
+    </div>
+    <div class="tab-pane fade" id="AddSectionProduct">
+        <legend> Add Section Product</legend>
+
+			<form class="form-horizontal" id='formSectionProduct'  method='post' action = 'https://easyshop.ph.feature/webservice/homewebservice/addSectionProduct'>
+
+				<input type="text" id="typeSectionProduct" class="form-control" name= 'type' readonly='readonly' placeholder="Value" value="Product" style='display:none'/>
+				
+				<div class="form-group">
+					<label for="inputPassword" class="control-label col-xs-2">Type</label>
+					<div class="col-xs-10">
+						<div class="btn-group" >
+							<button data-toggle="dropdown" id="mybuttonsectionproduct" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
+							<ul class="dropdown-menu" id='sectionProductDrop'>
+								@foreach($nodeTypes as $types)
+								<li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' class='{{$types->value}}'>{{$types->value}}</span ></li>
+								@endforeach                                
+							</ul>
+						</div>
+						</div>
+				</div>
+				<div class="form-group">
+					<label for="inputPassword" class="control-label col-xs-2">Index</label>
+					<div class="col-xs-10">
+						<input type="text" id="indexSectionProduct" class="form-control" name="index" placeholder="Value" />
+					</div>
+				</div>	
+				<div class="form-group">
+					<label for="inputPassword" class="control-label col-xs-2">Value</label>
+					<div class="col-xs-10">
+						<input type="text" id="valueSectionProduct" class="form-control" name="value" placeholder="Value" />
+					</div>
+				</div>	
+
+				<div class="form-group">
+					<label for="inputPassword" class="control-label col-xs-2">Product Index</label>
+					<div class="col-xs-10">
+						<input type="text" id="productIndexSectionProduct" name="productindex" class="form-control"  placeholder="Product Index" />
+					</div>
+				</div>
+
+				<input type="hidden" id="userIdSectionProduct" class="form-control" name= "userid" readonly='readonly' placeholder="Value" value="{{$userId}}"/>
+				<input type="hidden" id="passwordSectionProduct" class="form-control" name= "password" value='{{ $adminPassword}}' readonly='readonly' placeholder="Value" value="{{$userId}}">
+				<input type="hidden" id="hashSectionProduct" class="form-control" name= "hash" readonly='readonly' placeholder="Value" >
+
+				<div class="form-group">
+					<div class="col-xs-offset-2 col-xs-10">
+						<button type="submit" id='submitSectionProduct'  class="btn btn-default">Submit</button>
+					</div>
+				</div>
+			</form>
+
     </div>
     <div class="tab-pane fade" id="nodeTypes">
         <legend> Add Type</legend>
@@ -674,16 +679,12 @@
 							<div class="form-group ">
 								  
 								<div class="col-lg-15" style='text-align:center'>
-									<?php 
-										$productSlide = json_decode($productSlide, TRUE); 
-										$productTypes = json_decode($productTypes, TRUE); 
-									?>  
 
 									@for($i=0; $i < count($productSlide) ; $i++)
 										@for($y=0;$y < 1;$y++)
 		  
 											<div style="position:relative; display:inline-block;">
-													<p><img src="https://www.easyshop.ph/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" width="250px" height="100px" class='img-responsive' ></p>
+													<p><img src="https://www.easyshop.ph/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" style="width:250px !important;height:150px !important;" class='img-responsive' ></p>
 
 													 <a href="#"  class="btn btn-default" id="moveUpProductSlide" 
 													  data-index='{{$i}}'
