@@ -16,5 +16,6 @@ class ComposerServiceProvider extends ServiceProvider
         $this->app->view->composer('pages.paymentlist', 'Easyshop\Composers\PaymentComposer');
         $this->app->view->composer('partials.orderproductbilling', 'Easyshop\Composers\BillingDetailComposer');
     }
- 
+
 }
+
