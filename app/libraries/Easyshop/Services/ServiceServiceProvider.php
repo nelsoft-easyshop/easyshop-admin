@@ -24,6 +24,10 @@ class ServiceServiceProvider extends ServiceProvider
         $this->app->bind('NumberFormatter', function(){
             return new NumberFormatterService();
         });
+
+        $this->app->bind('XMLContentGetterService', function(){
+            return new XMLContentGetterService();
+        });
         
     }
 }
