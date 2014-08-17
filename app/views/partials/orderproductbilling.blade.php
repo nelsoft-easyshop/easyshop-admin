@@ -63,7 +63,7 @@
     <div id="error-container"></div>
     <div class="payment_message"></div>
     
-    <input type="hidden" id="action" value = {{{ $action }}}/>
+    <input type="hidden" id="action" value = "{{{ $action }}}"/>
     <input type="hidden" id="seller_id" value="{{{ $seller_id or 0 }}}"/>
     <input type="hidden" id="buyer_id" value="{{{ $buyer_id or 0 }}}"/>
     <input type="hidden" id="order_product_ids" value="{{{ $order_product_ids }}}"/>
