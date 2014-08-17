@@ -33,7 +33,8 @@ Route::group(array('before' => 'auth'), function(){
     
     Route::get('orderproduct-payment/pay', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToPay'));
     Route::get('orderproduct-payment/refund', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToRefund'));
-    Route::put('orderproduct-status/{action}', array('uses' => 'OrderProductController@updateOrderProductStatus'));
+    Route::put('orderproduct-status/pay', array('uses' => 'OrderProductController@payOrderProducts'));
+    Route::put('orderproduct-status/refund', array('uses' => 'OrderProductController@refundOrderProducts'));
 
     Route::put('billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
     Route::post('billinginfo', array('uses' => 'BillingInfoController@createOrderProductPaymentAccount'));
