@@ -2,7 +2,6 @@
 
 use Easyshop\Services\EmailService;
 use Easyshop\Services\TransactionService;
-use Easyshop\Services\Validation\Laravel\OrderBillingInfoUpdateValidator;
 use Carbon\Carbon;
 
 class OrderProductController extends BaseController 
@@ -68,12 +67,12 @@ class OrderProductController extends BaseController
         $orderProducts = $orderProductRepository->getOrderProductsToPay($userdata['username'], $userdata['accountname'],$userdata['accountno'], $userdata['bankname'],$dateFrom, $dateTo);      
         $completedStatus = $orderProductStatusRepository->getSellerPaidStatus();
 
-        $orderProducts = $orderProductRepository->getOrderProductByPaymentAccount($userdata['username'], 
-                                                                                $userdata['accountname'],
-                                                                                $userdata['accountno'], 
-                                                                                $userdata['bankname'],
-                                                                                $dateFrom, 
-                                                                                $dateTo);      
+        $orderProducts = $orderProductRepository->getOrderProductsToPay($userdata['username'], 
+                                                                        $userdata['accountname'],
+                                                                        $userdata['accountno'], 
+                                                                        $userdata['bankname'],
+                                                                        $dateFrom, 
+                                                                        $dateTo);      
         $html = View::make('partials.orderproductlist')
                     ->with('orderproducts', $orderProducts)
                     ->with('accountname', $userdata['accountname'])
@@ -190,76 +189,72 @@ class OrderProductController extends BaseController
 
 
     /**
-     * Updates the status of an order product
+     * Updates the status of multiple order products as paid
      *
-     * @parameter string $action
      * @return JSON
      */
-    public function updateOrderProductStatus($action)
+    public function payOrderProducts()
     {        
         $memberRepository = App::make('MemberRepository');
         $orderProductRepository = App::make('OrderProductRepository');
-        $orderProductStatusRepository = App::make('OrderProductStatusRepository');
-        $orderProductHistoryRepository = App::make('OrderProductHistoryRepository');
-        $orderProductBillingInfoRepository = App::make('OrderBillingInfoRepository');
-        $orderBillingInfoUpdateValidator = new OrderBillingInfoUpdateValidator( App::make('validator') );
+        $transactionService = App::make('TransactionService');
         $emailService = App::make('EmailService');
 
-        $isPay = $action === 'pay';
-        $isValidAction = $isPay ? true : ($action == 'refund');
+        $orderProductIds = json_decode(Input::get('order_product_ids'));
+        $accountName = Input::get('account_name');
+        $accountNumber = Input::get('account_number');
+        $bankName = Input::get('bank_name');
+        $userId = Input::get('member_id');
 
-        if($isValidAction){
-            
-            $orderProductIds = json_decode(Input::get('order_product_ids'));
-            $accountName = Input::get('account_name');
-            $accountNumber = Input::get('account_number');
-            $bankName = Input::get('bank_name');
-            $userId = Input::get('member_id');
-            
-            $dateFrom = Carbon::createFromFormat('Y/m/d',  Input::get('dateFrom'));
-            $dateTo = Carbon::createFromFormat('Y/m/d',  Input::get('dateTo'));
+        $dateFrom = Carbon::createFromFormat('Y/m/d',  Input::get('dateFrom'));
+        $dateTo = Carbon::createFromFormat('Y/m/d',  Input::get('dateTo'));
 
-            $member = $memberRepository->getMemberById($userId);
-            $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
-            foreach($orderProducts as $orderProduct){ 
-                $orderProductId = $orderProduct->id_order_product;
+        $member = $memberRepository->getMemberById($userId);
+        $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
 
-                if($isPay){
-                    $status = $orderProductStatusRepository->getSellerPaidStatus();
-                    $orderBillingInfoId = $orderProduct->sellerBillingInfo->id_order_billing_info;
-                    $orderBillingInfoUpdateValidator->with(
-                        array('order_billing_info_id' => $orderBillingInfoId,
-                            'account_name' => $accountName,
-                            'account_number' => $accountNumber,
-                            'bank_name' => $bankName)
-                    );
+        $errors = $transactionService->updateOrderProductsAsPaid($orderProducts, $accountName, $accountNumber, $bankName);
+        $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo);
 
-                    if($orderBillingInfoUpdateValidator->passes()){
-                        $orderProductBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, $accountName, $accountNumber, $bankName);
-                    }
-                }else{
-                    $status = $orderProductStatusRepository->getBuyerPaidStatus();
-                    //ADD VALIDATION HERE
-                    $orderBillingInfoRepository->createOrderBillingInfo($accountName, $accountNumber, $bankName);
-                    
-                    $orderBillingInfoId = $orderBillingInfoRepository->currentId;
-                    $orderProductRepository->updateOrderProductBuyerBillingId($orderProductId, $orderBillingInfoId);
-                }
-                
-                $orderProductRepository->updateOrderProductStatus($orderProductId, $status);
-                $orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
-              
-            }
-
-            $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo, $action);
-
-
-            return Response::json(true);
-        }
+        return  Response::json(
+            array('success' => count($errors) > 0,
+                  'errors' => $errors)
+        );
         
-        return Response::json(false);
     }
     
+    /**
+     * Updates the status of multiple order products as refunded
+     *
+     * @return JSON
+     */
+    public function refundOrderProducts()
+    {        
+        $memberRepository = App::make('MemberRepository');
+        $orderProductRepository = App::make('OrderProductRepository');
+        $transactionService = App::make('TransactionService');
+        $emailService = App::make('EmailService');
+        
+        $orderProductIds = json_decode(Input::get('order_product_ids'));
+        $accountName = Input::get('account_name');
+        $accountNumber = Input::get('account_number');
+        $bankName = Input::get('bank_name');
+        $userId = Input::get('member_id');
+
+        $dateFrom = Carbon::createFromFormat('Y/m/d',  Input::get('dateFrom'));
+        $dateTo = Carbon::createFromFormat('Y/m/d',  Input::get('dateTo'));
+
+        $member = $memberRepository->getMemberById($userId);
+        $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
+
+        $errors = $transactionService->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
+        $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo, true);
+
+        return  Response::json(
+            array('success' => count($errors) > 0,
+                  'errors' => $errors)
+        );
+        
+    }
 
     
     
