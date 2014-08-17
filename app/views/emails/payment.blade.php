@@ -1,11 +1,6 @@
 @extends('emails.layout')
 
 @section('email-tbl-body')
-    @set('isRefund', false)
-    @if($action === 'refund')
-        @set('isRefund', true)
-    @endif
-
     <tbody>
         <tr>
             <td>
