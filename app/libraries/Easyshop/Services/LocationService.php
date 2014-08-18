@@ -11,7 +11,13 @@ class LocationService
      */
     public function location($listOfLoc)
     {
-        $formattedListOfLocations = array();
+        $formattedListOfLocations = array(
+            'country_name' => '',
+            'country_id' => '',
+            'stateregion_lookup' => array(),
+            'city_lookup' => array(),
+        );
+        
         foreach($listOfLoc as $location){
             if($location['type'] == 0){
                 $formattedListOfLocations['country_name'] = $location['location'];
@@ -23,8 +29,10 @@ class LocationService
             }
         }
 
+
         $formattedListOfLocations['json_city'] = json_encode($formattedListOfLocations['city_lookup'], JSON_FORCE_OBJECT);
 
         return $formattedListOfLocations;
     }
+
 }
