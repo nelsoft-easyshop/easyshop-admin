@@ -19,7 +19,6 @@ class OrderProductRepository extends AbstractRepository
         return OrderProduct::find($orderProductId);
     }
     
-    
     /**
      * Get order products by Id. Accepts integer array.
      *
