@@ -1,4 +1,5 @@
 <?php
+
 use Easyshop\Services\XMLContentGetterService as XMLService;
 
 
@@ -11,6 +12,7 @@ class ContentManagerController extends BaseController
     {
         $this->XMLService = $XMLService;
     }
+
     
     public function getHomeContent()
     {
@@ -26,6 +28,7 @@ class ContentManagerController extends BaseController
 
             $productSlides[] =  $productEntity->getProductBySlug($slides->value);
             $productTypes[] = $slides;
+
         }
         foreach($map->section as $section)
         {
@@ -39,6 +42,7 @@ class ContentManagerController extends BaseController
         {
             $nodeTypes[] =  $types;
         }
+
 
         $productSlidesEncode = json_encode($productSlides);
         $productTypesEncode = json_encode($productTypes);
@@ -57,6 +61,7 @@ class ContentManagerController extends BaseController
             ->with('mainSlides',  $mainSlides)
             ->with('mainSlideId',  0)
             ->with('mainSlideCount',  count($mainSlides))
+
             ->with('productSlide',  $productSlidesDecode)
             ->with('slugs',  $productSlides)
             ->with('productSlideCount',  count($productTypes))
@@ -72,8 +77,10 @@ class ContentManagerController extends BaseController
     public function getMainSlides()
     {
         $id = Auth::id();
+
         $adminEntity = App::make('AdminMemberRepository');
         $xmlString = $this->XMLService->GetXmlContent();
+
         $map = simplexml_load_string(trim($xmlString));
         foreach($map->mainSlide as $slides)
         {
@@ -82,6 +89,7 @@ class ContentManagerController extends BaseController
 
         return View::make('partials.mainslides')
             ->with('adminPassword', $adminEntity->getAdminMemberById($id))
+
             ->with('userId', $id)
             ->with('mainSlides',$mainSlides)
             ->with('mainSlideId',0)
@@ -91,6 +99,7 @@ class ContentManagerController extends BaseController
     public function getProductSlides()
     {
         $id = Auth::id();
+
         $adminEntity = App::make('AdminMemberRepository');
         $xmlString = $this->XMLService->GetXmlContent();
         $map = simplexml_load_string(trim($xmlString));
@@ -105,6 +114,7 @@ class ContentManagerController extends BaseController
 
         return View::make('partials.productslides')
             ->with('adminPassword', $adminEntity->getAdminMemberById($id))
+
             ->with('userId', $id)
             ->with('productSlide',  json_encode($productSlides))
             ->with('slugs',  $productSlides)

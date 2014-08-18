@@ -1,15 +1,18 @@
 (function () {
 
+
     $.ajaxSetup({
         headers: {
             
         }
     });
 
+
     $('#myTab a').click(function (e) {
       e.preventDefault();
       $(this).tab('show');
     });
+
 
 
     $('#AddSectionProduct').on('click','#submitSectionProduct',function (e) { 
@@ -96,6 +99,7 @@
 
     $("#mainSlide").on('click','#moveup',function () { 
 
+
         var index = $(this).data('index');
         var userid = $(this).data('userid');
         var value = $(this).data('value');
@@ -155,7 +159,9 @@
     });
 
 
+
     $("#myTabContent").on('click','#btnSetSectionMainPanel',function () { 
+
         var index = $(this).data('index');
         var userid = $(this).data('userid');
         var productindex = $(this).data('productindex');
@@ -171,7 +177,9 @@
         setSectionMainPanel(data);
     });
 
+
     $("#myTabContent").on('click','#btnSetSectionPanel',function () { 
+
         var index = $(this).data('index');
         var userid = $(this).data('userid');
         var productindex = $(this).data('productindex');
@@ -203,6 +211,7 @@
         var hash = hex_sha1(sidebanner + userid + password);
         data = { value:sidebanner, userid:userid, hash: hash, password:password, callback: '?'};
 
+
         $.ajax({
             type: 'GET',
             url: 'https://easyshop.ph.feature/webservice/homewebservice/setProductSideBanner',
@@ -219,17 +228,21 @@
                     $("#loading").modal('hide');
                     $("#error").modal('show');
   
+
             }
         });
     });
 
+
     $("#productSlideTitle").on('click','#submitProductSlideTitle', function() {
+
         $("#loading").modal('show');
         var slidetitle = $("#slidetitle").val();
         var password = $("#adminPassword").val();
         var userid = $("#userId").val();
         var hash = hex_sha1(slidetitle + userid + password);    
         data = { productslidetitle:slidetitle, userid:userid, hash:hash, password:password,  callback: '?'};
+
 
         $.ajax({
             type: 'GET',
@@ -247,13 +260,14 @@
                     $("#loading").modal('hide');
                     $("#error").modal('show');
   
+
             }
         });
     });
 
     $("#setText").on('click','#submitBannerText', function() {
 
-     
+
         $("#loading").modal('show');
         var bannertext = $("#bannertext").val();
         var userid = $("#userId").val();
@@ -261,6 +275,7 @@
         var string = bannertext + userid + password;
         var hashed = hex_sha1(string);
         data = { value:bannertext , userid:userid, password:password, hash:hashed, callback: '?'};
+
 
          $.ajax({
             type: 'GET',
@@ -287,6 +302,7 @@
 
 
 
+
     $("#mainSlide").on('click','#submit',function () {       
         var index = $(this).data('index');
         var userid = $(this).data('userid');
@@ -305,7 +321,9 @@
 
 
 
+
     $("#myTabContent").on('click','#btnSectionHead',function () {   
+
 
         var index = $(this).data('index');
         var userid = $(this).data('userid');
@@ -324,10 +342,12 @@
 
 
     $(".dropdown-menu span").click(function(){
+
         
         var text = $(this).text();
         var index = $(this).data('index');
         var selector = "#mybutton" + index;
+
         $(selector).text(text);
         var imagetype = "imagetype";
         var divselector = "#imagetype" + index;
@@ -401,7 +421,9 @@
     }
 
 
+
     $("#productSlide").on('click','#submitProductSlide',function () {     
+
         var index = $(this).data('index');
         var userid = $(this).data('userid');
         var order = $(this).data('order');
@@ -417,6 +439,7 @@
     function setSectionPanel(data) {
         $("#loading").modal('show');
         $.ajax({
+
             type: 'GET',
             url: 'https://easyshop.ph.feature/webservice/homewebservice/setSectionProduct',
             data:data,
@@ -433,6 +456,7 @@
                     $("#loading").modal('hide');
                     $("#error").modal('show');
   
+
             }
         });
     }  
@@ -440,6 +464,7 @@
     function setSectionMainPanel(data) {
         $("#loading").modal('show');
         $.ajax({
+
             type: 'GET',
             url: 'https://easyshop.ph.feature/webservice/homewebservice/setsectionmainpanel',
             data:data,
@@ -455,12 +480,14 @@
                     $("#loading").modal('hide');
                     $("#error").modal('show');
   
+
             }
         });
     }
 
     function setDataSectionHead(data,order) {
         $("#loading").modal('show');
+
 
         $.ajax({
             type: 'GET',
@@ -471,22 +498,27 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
+
                     $("type").val(type);
                     $("value").val(value);
                     $("cssclass").val(cssclass);
                     $("layout").val(layout);
                     $("#loading").modal('hide');
                     $("#success").modal('show');
+
             },
             error: function(e) {
+
                     $("type").val(type);
                     $("value").val(value);
                     $("cssclass").val(cssclass);
                     $("layout").val(layout);
                     $("#loading").modal('hide');
                     $("#error").modal('show');
+
             }
         });
+
 
     }
 
@@ -494,6 +526,7 @@
 
     function setPositionProductSlide(data,order) {
         $("#loading").modal('show');
+
 
         $.ajax({
             type: 'GET',
@@ -512,10 +545,12 @@
             }
         });
 
+
     }
 
     function setDataProductSlide(data,order) {
         $("#loading").modal('show');
+
 
         $.ajax({
             type: 'GET',
@@ -535,11 +570,13 @@
         });
 
 
+
     }
 
 
     function setDataMainSlide(data,order) {
         $("#loading").modal('show');
+
 
         $.ajax({
             type: 'GET',
@@ -556,6 +593,7 @@
                      $("#error").modal('show');
                      $("#loading").modal('hide');
   
+
             }
         });
     }
@@ -563,6 +601,7 @@
 
     function setPositionMainSlide(data,order) {
         $("#loading").modal('show');
+
 
 
         $.ajax({
@@ -578,11 +617,13 @@
             },
             error: function(e) {
                  $("#error").modal('show');  
+
             }
         });
 
 
     }
+
 
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -602,6 +643,7 @@
     {
         $("#success").modal('show');
     }
+
 
 })(jQuery);
 

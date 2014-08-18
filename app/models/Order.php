@@ -2,10 +2,6 @@
 
 class Order extends Eloquent 
 {
-    
-    const STATUS_PAID = 0;
-    const STATUS_COMPLETED = 1;
-
    /**
     * The database table used by the model.
     *

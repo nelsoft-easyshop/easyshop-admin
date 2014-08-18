@@ -124,6 +124,7 @@
         'Easyshop\Composers\ComposerServiceProvider',
         'Easyshop\ModelRepositories\RepositoryServiceProvider',
         'Easyshop\Services\ServiceServiceProvider',
+        'Alexdover\BladeSet\BladeSetServiceProvider',
     ),
 
     /*
@@ -190,7 +191,7 @@
         'URL'             => 'Illuminate\Support\Facades\URL',
         'Validator'       => 'Illuminate\Support\Facades\Validator',
         'View'            => 'Illuminate\Support\Facades\View',
-        'NumberFormatter' => 'NumberFormatterFacade'
+        'NumberFormatter' => 'NumberFormatterFacade',
     ),
 
 );

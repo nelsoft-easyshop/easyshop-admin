@@ -2,7 +2,7 @@
 
 use Address;
 
-class AddressRepository
+class AddressRepository extends AbstractRepository
 {
     public function update($id,$data)
     {
