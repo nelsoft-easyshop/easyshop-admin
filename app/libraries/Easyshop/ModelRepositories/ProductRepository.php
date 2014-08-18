@@ -7,12 +7,11 @@ class ProductRepository
 {
 
     /**
-    * Get order by id
-    *
-    * @param string $slug
-    * @return Entity
-    */
-    
+     *  Get product by slug
+     *
+     *  @param string $slug
+     *  @return Entity
+     */
     public function getProductBySlug($slug)
     {
          $query = DB::table('es_product')
