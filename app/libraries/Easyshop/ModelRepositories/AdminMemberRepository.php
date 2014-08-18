@@ -10,7 +10,6 @@ class AdminMemberRepository
     * @param string $slug
     * @return Entity
     */
-
     public function getAdminMemberById($id)
     {
         return AdminMember::find($id)->pluck('password');
