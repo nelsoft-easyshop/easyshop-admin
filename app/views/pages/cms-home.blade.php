@@ -106,35 +106,29 @@
 					<span style='display:none;'> {{ $collapse++; }}</span>
 
 					<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$collapse}}">
-										Set Section Main Panel
-									</a>
-									</h4>
-								</div>
-								<div id="collapse{{$collapse}}" class="panel-collapse collapse ">
-
+						<div class="panel-heading">
+							<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$collapse}}">Set Section Main Panel</a>
+							</h4>
+						</div>
+						<div id="collapse{{$collapse}}" class="panel-collapse collapse ">
 							<div class="panel-body">	 
 								<span style='display:none;'> {{ $panelMainId = 0 }}</span>
-
 								@foreach($section->product_panel_main as $panelMain)
 									<span style='display:none;'>{{ $panelMainId }}</span>
 									<form class="form-horizontal">
 										<div class="form-group">
 											<label for="inputEmail" class="control-label col-xs-2">Type of Main Panel</label>
-											  <div class="col-xs-10">
-												
-												<div class="btn-group">
-													<button data-toggle="dropdown" id="mybutton{{ $panelMainId }}" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
-													<ul class="dropdown-menu">
-														@foreach($nodeTypes as $types)
-														  <li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='{{ $panelMainId }}' class='{{$types->value}}'>{{$types->value}}</span ></li>
-														@endforeach
-													</ul>
-												</div>
-																	  
-											  </div>
+											  	<div class="col-xs-10">
+													<div class="btn-group">
+														<button data-toggle="dropdown" id="mybutton{{ $panelMainId }}" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
+														<ul class="dropdown-menu">
+															@foreach($nodeTypes as $types)
+															  <li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='{{ $panelMainId }}' class='{{$types->value}}'>{{$types->value}}</span ></li>
+															@endforeach
+														</ul>
+													</div>				  
+											 	 </div>
 										</div>
 										<div class="form-group">
 											<label for="inputPassword" class="control-label col-xs-2">Type</label>
@@ -164,28 +158,23 @@
 											</div>
 										</div>
 										<div class="form-group">
-										  <div class="col-xs-offset-2 col-xs-10">
-											  <a class="btn btn-default text-center" id="btnSetSectionMainPanel" data-password = "{{ $adminPassword }}" data-index="{{$sectionId}}" data-productindex="{{ $panelMainId }}" data-userid="{{$userId}}">Submit</a>
-										  </div>
+										  	<div class="col-xs-offset-2 col-xs-10">
+											  	<a class="btn btn-default text-center" id="btnSetSectionMainPanel" data-password = "{{ $adminPassword }}" data-index="{{$sectionId}}" data-productindex="{{ $panelMainId }}" data-userid="{{$userId}}">Submit</a>
+										 	 </div>
 										</div>
 									</form>
 									<hr/>
 									<span style='display:none;'>{{ $panelMainId++ }}</span>
 								@endforeach
-
-					
 							</div>
-				   
-					  </div>
+					 	</div>
 					</div>
 					<span style='display:none;'> {{ $collapse++; }}</span>
 
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$collapse}}">
-								Set Product Panel
-							</a>
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$collapse}}">Set Product Panel</a>
 							</h4>
 						</div>
 						<div id="collapse{{$collapse}}" class="panel-collapse collapse">
@@ -218,27 +207,14 @@
 								  <span style='display:none;'>{{ $panelMainId++ }}</span>
 							  @endforeach
 							</div>
-						  </div>
+						</div>
 					</div>
-
-
-					<span style='display:none;'> {{ $collapse++; }}</span>
-
-				   
-				  </div>
+						<span style='display:none;'> {{ $collapse++; }}</span>
+				  	</div>
 				</div>	
-		
-
-
 		@endforeach
 
-
-
-
-
-
-
-      <div class="tab-pane fade active in" id="setText">
+    	<div class="tab-pane fade active in" id="setText">
 			<form method="post" action="https://easyshop.ph.feature/webservice/homewebservice/settext" onsubmit ="document.getElementById('hash').value = hex_sha1(document.getElementById('bannertext').value + document.getElementById('userId').value)">
 				<fieldset>
 						<!-- Form Name -->
@@ -252,66 +228,51 @@
 							{{ Form::hidden('hash', "", array('id' => 'hash')) }}
 						</div>
 					</div>
-					 <div class="form-group">
+					<div class="form-group">
 						<div style='text-align:center;padding-top:10px;'>
-						  <br/>
-						   <a1 href="#"  class="btn btn-default text-center" id="submitBannerText"
-							 >Submit</a>
-
+						  	<br/>
+						 		<a1 href="#"  class="btn btn-default text-center" id="submitBannerText">Submit</a>
 						</div>
 					</div>
 				</fieldset>
 			</form>
-
-      </div>
+      	</div>
 	<!-- here -->
 	<div class="tab-pane fade" id="mainSlide" style='margin-bottom:-250px;'>
-				
-		  <div class="panel-group" id="accordion">
+		<div class="panel-group" id="accordion">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-								Add Main Slide
-							</a>
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Add Main Slide</a>
 						</h4>
 					</div>
 					<div id="collapseOne" class="panel-collapse collapse in">
 						<div class="panel-body">
-
 							<form id='mainSlideForm' action="https://easyshop.ph.feature/webservice/homewebservice/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Choose File</label>
 									<div class="col-xs-10">
-
 										<input type="file" id="photoFile" name='myfile'> 
-
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Value</label>
 									<div class="col-xs-10">
-
 										<input type="text" id="valueMainSlide" class="form-control" name='value'  placeholder="Value" >
-
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
 									<div class="col-xs-10">
-
 										<input type="text" id="mainSlideCoordinate" class="form-control" name='coordinate'  placeholder="0,0,0,0" >
-
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Target</label>
 									<div class="col-xs-10">
-
 										<input type="text" id="mainSlideTarget" class="form-control" name='target'  placeholder="Value" >
 									</div>
 								</div>
-
 								<input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >
 								<input type="hidden" id="adminPasswordMainSlide" class="form-control" name="password" value='{{$adminPassword}}'  placeholder="Value" >
 								<input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
@@ -320,7 +281,6 @@
 								<div class="form-group">
 									<div class="col-xs-offset-2 col-xs-10">
 										<button type="submit" id='submitAddMainSlide' class="btn btn-default">Submit</button>
-
 									</div>
 								</div>
 							 </form>
@@ -338,18 +298,14 @@
 					</div>
 					<div id="collapseOne" class="panel-collapse collapse in">
 						<div class="panel-body">
-
 							<fieldset>
 								<!-- Form Name -->
 								<div class="form-group ">
-								
 									<div class="col-lg-15" style='text-align:center;'>
 										 @foreach ($mainSlides as $mainSlide)
 											<div style="position:relative;display:inline-block;">
 											<p>
-
 												<img src="https://easyshop.ph.feature/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important;" class='img-responsive'/>
-
 											</p>
 
 											<a href="#myMain{{ $mainSlideId }}" data-toggle="modal" class="btn btn-default" style="position:absolute;top:110px;left:105px;">Edit</a>
@@ -381,10 +337,9 @@
 												style="position:absolute;top:110px;right:5px;"
 											 >>></a>
 
-
 											<div class="modal fade" id="myMain{{ $mainSlideId }}" role="dialog">
 												<div class="modal-dialog">
-													  <div class="modal-content">
+													<div class="modal-content">
 															<div class="modal-header">
 															  <h4>Edit Main Slide</h4>
 															</div>
@@ -420,20 +375,18 @@
 															   data-dismiss = "modal" id='submit'>Submit</a>
 															</form>	
 														</div>
-													  </div>
+													 </div>
 												</div>
 											  </div>
 											</div><span style="display:none;">{{$mainSlideId++}}</span>
 										@endforeach
-
 									</div>
 								</div>
-								
 							</fieldset>
 						</div>
 					</div>
 				</div>
-			</div>
+		</div>
 	</div>  
 		  
 	   
@@ -548,7 +501,7 @@
 								@endforeach                                
 							</ul>
 						</div>
-						</div>
+					</div>
 				</div>
 				<div class="form-group">
 					<label for="inputPassword" class="control-label col-xs-2">Index</label>
@@ -594,7 +547,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
-					<a href="#"  class="btn btn-default text-center" data-index="{{$userId}}" id="btnAddType" >Submit</a>
+					<a href="#"  class="btn btn-default text-center" data-userid="{{$userId}}" data-password = "{{$adminPassword}}" id="btnAddType" >Submit</a>
 				</div>
 			</div>
 		</form>
@@ -614,7 +567,6 @@
         <div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body" style='text-align:center;'>
-
 					<img src="{{{ asset('images/es_32x32.png') }}}">
 					<h3>Success</h3>        
 				</div>
@@ -625,7 +577,6 @@
         <div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body" style='text-align:center;'>
-
 					<img src="{{{ asset('images/img_alert.png') }}}">
 					<h3>Please try again</h3>        
 				</div>
@@ -658,10 +609,7 @@
         </form>
       </div>
 
-
-
-	   <div class="tab-pane fade " id="productSlide" >
-		
+	   	<div class="tab-pane fade " id="productSlide" >
 			<div class="panel-group" id="accordion">
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -673,24 +621,19 @@
 					</div>
 					<div id="addProductSlide" class="panel-collapse collapse in">
 						<div class="panel-body">
-
 							<form action="https://easyshop.ph.feature/webservice/homewebservice/addproductslide" id="addProductForm" class="form-horizontal" method="post" enctype="multipart/form-data">
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Value</label>
 									<div class="col-xs-10">
-
 										<input type="text" id="valueProductSlide" class="form-control" name='value'  placeholder="Value" >
 										<input type="hidden" id="userIdProductSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >
 										<input type="hidden" id="adminPasswordProductSlide" class="form-control" name="password" value='{{$adminPassword}}'  placeholder="Value" >
 										<input type="hidden" id="hashProductSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
-
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="col-xs-offset-2 col-xs-10">
-
 										<button type="submit" id='submitAddProduct' class="btn btn-default">Submit</button>
-
 									</div>
 								</div>
 							 </form>
@@ -707,11 +650,8 @@
 					</div>
 					<div id="collapseTwo" class="panel-collapse collapse in">
 						<div class="panel-body">
-							<div class="form-group ">
-								  
+							<div class="form-group "> 
 								<div class="col-lg-15" style='text-align:center'>
-
-
 
 									@for($i=0; $i < count($productSlide) ; $i++)
 										@for($y=0;$y < 1;$y++)
@@ -784,9 +724,8 @@
 												</div>
 											</div>       
 										@endfor
-									@endfor
-													 
-									</div>
+									@endfor					 
+								</div>
 							</div>  
 						</div>
 					</div>
