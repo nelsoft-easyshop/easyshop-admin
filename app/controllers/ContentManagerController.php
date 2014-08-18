@@ -6,6 +6,12 @@ use Easyshop\Services\XMLContentGetterService as XMLService;
 
 class ContentManagerController extends BaseController 
 {
+
+    /**
+     *  Constructor declaration for XMLService  
+     *
+     *  
+     */
     protected $XMLService;
 
     public function __construct(XMLService $XMLService)
@@ -13,11 +19,15 @@ class ContentManagerController extends BaseController
         $this->XMLService = $XMLService;
     }
 
-    
+    /**
+     *  GET method for displaying the retrieved xml contents
+     *
+     *  @return View
+     */
     public function getHomeContent()
     {
         $id = Auth::id();
-        $xmlString = file_get_contents("https://easyshop.ph.feature/webservice/homewebservice/getContents/");
+        $xmlString = $this->XMLService->GetXmlContent();
         $map = simplexml_load_string(trim($xmlString));
 
         $productEntity = App::make('ProductRepository');
@@ -30,19 +40,21 @@ class ContentManagerController extends BaseController
             $productTypes[] = $slides;
 
         }
+
         foreach($map->section as $section)
         {
             $sectionHeads[] =  $section;
         }
+
         foreach($map->mainSlide as $slides)
         {
             $mainSlides[] =  $slides;
         }
+
         foreach($map->typeNode as $types)
         {
             $nodeTypes[] =  $types;
         }
-
 
         $productSlidesEncode = json_encode($productSlides);
         $productTypesEncode = json_encode($productTypes);
@@ -61,7 +73,6 @@ class ContentManagerController extends BaseController
             ->with('mainSlides',  $mainSlides)
             ->with('mainSlideId',  0)
             ->with('mainSlideCount',  count($mainSlides))
-
             ->with('productSlide',  $productSlidesDecode)
             ->with('slugs',  $productSlides)
             ->with('productSlideCount',  count($productTypes))
@@ -74,6 +85,11 @@ class ContentManagerController extends BaseController
            
     }
 
+    /**
+     *  GET method for displaying the xml contents for MainSlide
+     *
+     *  @return View
+     */
     public function getMainSlides()
     {
         $id = Auth::id();
@@ -96,6 +112,11 @@ class ContentManagerController extends BaseController
             ->with('mainSlideCount',  count($mainSlides));
     }
 
+    /**
+     *  GET method for displaying the xml contents for ProductSlides
+     *
+     *  @return View
+     */
     public function getProductSlides()
     {
         $id = Auth::id();
