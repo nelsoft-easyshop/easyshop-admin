@@ -159,7 +159,7 @@
         var order_billing_info_id = selected_account.data('order-billing-id');
                 
         var member_id =  ($('#action').val() == 'pay')  ?  $('#seller_id').val() : $('#buyer_id').val();
-        
+
         var spinner = Ladda.create(this);
         spinner.start();
         
@@ -180,10 +180,11 @@
                 account_name:accnt_name,
                 account_number:accnt_number,
                 bank_id:accnt_bank , 
-                member_id: seller_id
+                member_id: member_id
             };
         }
         
+
         $.ajax({
             url: 'billinginfo',
             data: json_data,
@@ -199,7 +200,8 @@
                     if(isCreate){
                         var option_html = '<option value="'+result.newBillingInfoId+'" data-bank-id="'+accnt_bank+'" data-name="'+accnt_name+'" data-number="'+accnt_number+'" data-bank-name="'+accnt_bank_name+'" selected>'+accnt_bank_name+' - '+accnt_name+'</option>';
                         $(option_html).insertBefore('#account_collection option#add-option');
-                    }else{
+                    }
+                    else{
                         selected_account.data('bank-id', accnt_bank);
                         selected_account.data('name', accnt_name);
                         selected_account.data('number', accnt_number);
@@ -212,7 +214,8 @@
                     }
                     
                     hideInputs();
-                }else{
+                }
+                else{
                     $.each(result.errors, function(){
                         var alert_html = 
                             '<div class="alert alert-warning">' +
