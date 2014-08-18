@@ -1,6 +1,5 @@
 (function () {
 
-
     $.ajaxSetup({
         headers: {
             
@@ -9,11 +8,9 @@
 
 
     $('#myTab a').click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
+        e.preventDefault();
+        $(this).tab('show');
     });
-
-
 
     $('#AddSectionProduct').on('click','#submitSectionProduct',function (e) { 
         e.preventDefault();
@@ -25,7 +22,6 @@
         var userIdSectionProduct = $("#userIdSectionProduct").val();
         var passwordSectionProduct = $("#passwordSectionProduct").val();
         var hash = hex_sha1(typeSectionProduct + indexSectionProduct + valueSectionProduct + productIndexSectionProduct + userIdSectionProduct + passwordSectionProduct);
-        //alert(valueSectionProduct);
         $("#hashSectionProduct").val(hash);
         $("#formSectionProduct").submit();
     });   
@@ -88,17 +84,17 @@
         var order = index;
         var nodename = "mainSlide";
 
-        if(order == (count - 1))
+        if(order == (count - 1)) {
             order = order;
-        else
-            order = order + 1;
+        } else {
+             order = order + 1;
+        }
         var hash = hex_sha1(index + value + coordinate + target + order + nodename + userid + password);
         data = { index: index, value: value, coordinate:coordinate, target:target, order:order, nodename:nodename,  userid: userid, password:password, hash:hash, callback:'?'};
         setPositionMainSlide(data,order);
     });
 
     $("#mainSlide").on('click','#moveup',function () { 
-
 
         var index = $(this).data('index');
         var userid = $(this).data('userid');
@@ -109,10 +105,12 @@
         var order = index;
         var nodename = "mainSlide";
 
-        if(order > 0)
+        if(order > 0) {
             order = order - 1;
-        else
-            order = 0;
+        } else {
+           order = 0;
+        }
+            
         var hash = hex_sha1(index + value + coordinate + target + order + nodename + userid + password);
         data = { index: index, value: value,  coordinate:coordinate, target:target, order:order, nodename:nodename, userid: userid, password:password, hash:hash, callback:'?'};
         setPositionMainSlide(data,order);
@@ -127,11 +125,16 @@
         var password = $(this).data('password');
         var nodeName = "productSlide";
         var value = $(this).data('value');
-        var type = $(this).data('type');        
-        if(order > 0)
+        var type = $(this).data('type');      
+        
+        if(order > 0) {
             order = order - 1;
-        else
+
+        } else {
             order = 0;
+        }
+
+
         var hash =  hex_sha1(index + nodeName + userid + order + value + type + password);
         data = { index: index, nodename:nodeName, userid: userid, hash:hash, order:order, value: value, type:type, password:password,callback:'?'};
         setPositionProductSlide(data,order);
@@ -148,17 +151,17 @@
         var type = $(this).data('type');
         var count = $(this).data('count');
 
-        if(order == (count - 1))
+        if(order == (count - 1)) {
             order = order;
-        else
-            order = order + 1;
+        } else {
+             order = order + 1;
+        }
+
         var hash =  hex_sha1(index + nodeName + userid + order + value + type + password);
         data = { index: index, nodename:nodeName, userid: userid, order:order, value: value, type:type, password:password, hash:hash, callback:'?'};
         setPositionProductSlide(data,order);
         
     });
-
-
 
     $("#myTabContent").on('click','#btnSetSectionMainPanel',function () { 
 
@@ -196,9 +199,11 @@
     $("#nodeTypes").on('click','#btnAddType',function () { 
 
         var userid = $(this).data('userid');
+        var password = $(this).data('password');
         var type = $(this).closest("form").find("#type").val();
-        var hash = hex_sha1(userid + type);
-        data = {userid:userid, value:type, hash:hash,  callback:'?'};
+        var hash = hex_sha1(type + userid + password); 
+        
+        data = {value:type, userid:userid, password:password, hash:hash,  callback:'?'};
         addType(data);
     });
 
@@ -210,7 +215,6 @@
         var password = $("#adminPassword").val();
         var hash = hex_sha1(sidebanner + userid + password);
         data = { value:sidebanner, userid:userid, hash: hash, password:password, callback: '?'};
-
 
         $.ajax({
             type: 'GET',
@@ -227,8 +231,6 @@
             error: function(e) {
                     $("#loading").modal('hide');
                     $("#error").modal('show');
-  
-
             }
         });
     });
@@ -242,7 +244,6 @@
         var userid = $("#userId").val();
         var hash = hex_sha1(slidetitle + userid + password);    
         data = { productslidetitle:slidetitle, userid:userid, hash:hash, password:password,  callback: '?'};
-
 
         $.ajax({
             type: 'GET',
@@ -267,7 +268,6 @@
 
     $("#setText").on('click','#submitBannerText', function() {
 
-
         $("#loading").modal('show');
         var bannertext = $("#bannertext").val();
         var userid = $("#userId").val();
@@ -275,7 +275,6 @@
         var string = bannertext + userid + password;
         var hashed = hex_sha1(string);
         data = { value:bannertext , userid:userid, password:password, hash:hashed, callback: '?'};
-
 
          $.ajax({
             type: 'GET',
@@ -295,13 +294,7 @@
   
             }
         });
-
-
-
     });
-
-
-
 
     $("#mainSlide").on('click','#submit',function () {       
         var index = $(this).data('index');
@@ -318,13 +311,7 @@
         setDataMainSlide(data,order);
     });
 
-
-
-
-
     $("#myTabContent").on('click','#btnSectionHead',function () {   
-
-
         var index = $(this).data('index');
         var userid = $(this).data('userid');
         var password = $(this).data('password');
@@ -339,11 +326,8 @@
     });
 
 
-
-
     $(".dropdown-menu span").click(function(){
 
-        
         var text = $(this).text();
         var index = $(this).data('index');
         var selector = "#mybutton" + index;
@@ -352,19 +336,15 @@
         var imagetype = "imagetype";
         var divselector = "#imagetype" + index;
 
-        if(text == "Image")
-        {
-                    var type = $(this).closest("form").find(divselector).css('display','block');
+        if(text == "Image") {
+            var type = $(this).closest("form").find(divselector).css('display','block');
 
+        } else {
+            var type = $(this).closest("form").find(divselector).css('display','none');
+            $(this).closest("form").find(":input[name='coordinate']").val('');
+            $(this).closest("form").find(":input[name='target']").val('');
         }
-        else
-        {
 
-                    var type = $(this).closest("form").find(divselector).css('display','none');
-                    $(this).closest("form").find(":input[name='coordinate']").val('');
-                    $(this).closest("form").find(":input[name='target']").val('');
-
-        }
         var inputtext = $(this).closest("form").find(":input[type='text']:first").val(text);
         
     });
@@ -372,23 +352,19 @@
     function addType(data) {
         $("#loading").modal('show');
         $.ajax({
-            type: "POST",
-            url: "https://easyshop.ph.feature/webservice/homewebservice/addType",
-            data: data,
-            dataType: "json",
-            cache: false,
-            success: function(d) {
-               if(d=="success")
-               {
-
-                    $("#loading").modal('hide');
-                    $("#success").modal('show');
-               }
-               else
-               {
-                    $("#loading").modal('hide');
-                    $("#error").modal('show');
-               }
+            type: 'GET',
+            url: 'https://easyshop.ph.feature/webservice/homewebservice/addType',
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                    $("#mainSlide").load('slides');
+            },
+            error: function(e) {
+                     $("#error").modal('show');
+                     $("#loading").modal('hide');
             }
         });
     }
@@ -409,18 +385,14 @@
     var error = getUrlVars()["error"];
     var success = getUrlVars()["success"];
 
-    if(error == 1)
-    {
+    if(error == 1){
 
         $("#error").modal('show');
       
-    }
-    else if(success == 1)
-    {
+    } 
+    else if(success == 1) {
         $("#success").modal('show');
     }
-
-
 
     $("#productSlide").on('click','#submitProductSlide',function () {     
 
@@ -455,8 +427,6 @@
             error: function(e) {
                     $("#loading").modal('hide');
                     $("#error").modal('show');
-  
-
             }
         });
     }  
@@ -479,15 +449,12 @@
             error: function(e) {
                     $("#loading").modal('hide');
                     $("#error").modal('show');
-  
-
             }
         });
     }
 
     function setDataSectionHead(data,order) {
         $("#loading").modal('show');
-
 
         $.ajax({
             type: 'GET',
@@ -526,8 +493,6 @@
 
     function setPositionProductSlide(data,order) {
         $("#loading").modal('show');
-
-
         $.ajax({
             type: 'GET',
             url: 'https://easyshop.ph.feature/webservice/homewebservice/setproductslide',
@@ -550,8 +515,6 @@
 
     function setDataProductSlide(data,order) {
         $("#loading").modal('show');
-
-
         $.ajax({
             type: 'GET',
             url: 'https://easyshop.ph.feature/webservice/homewebservice/setproductslide',
@@ -569,15 +532,10 @@
             }
         });
 
-
-
     }
-
 
     function setDataMainSlide(data,order) {
         $("#loading").modal('show');
-
-
         $.ajax({
             type: 'GET',
             url: 'https://easyshop.ph.feature/webservice/homewebservice/setmainslide',
@@ -592,17 +550,12 @@
             error: function(e) {
                      $("#error").modal('show');
                      $("#loading").modal('hide');
-  
-
             }
         });
     }
 
-
     function setPositionMainSlide(data,order) {
         $("#loading").modal('show');
-
-
 
         $.ajax({
             type: 'GET',
@@ -620,8 +573,6 @@
 
             }
         });
-
-
     }
 
 
@@ -635,15 +586,14 @@
     var error = getParameterByName('error');
     var success = getParameterByName('success');
 
-    if(error == "1")
-    {
+    if(error == "1") {
         $("#error").modal('show');
     }
-    if(success == "1")
-    {
+    if(success == "1") {
         $("#success").modal('show');
     }
 
 
 })(jQuery);
+
 
