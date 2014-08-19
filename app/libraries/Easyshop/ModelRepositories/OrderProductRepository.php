@@ -174,7 +174,7 @@ class OrderProductRepository extends AbstractRepository
      * @param inetger $status
      * @return Boolean
      */
-    public function updateOrderProductStatus($orderProductId,$status)
+    public function updateOrderProductStatus($orderProductId, $status)
     {
         $orderProduct = OrderProduct::find($orderProductId);
         $orderProduct->status = $status;        
@@ -188,7 +188,7 @@ class OrderProductRepository extends AbstractRepository
      * @param inetger $buyerBillingId
      * @return Boolean
      */
-    public function updateOrderProductBuyerBillingId($orderProductId,$buyerBillingId)
+    public function updateOrderProductBuyerBillingId($orderProductId, $buyerBillingId)
     {
         $orderProduct = OrderProduct::find($orderProductId);
         $orderProduct->buyer_billing_id = $buyerBillingId;        
