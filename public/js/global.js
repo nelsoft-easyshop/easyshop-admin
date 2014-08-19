@@ -44,6 +44,23 @@ function escapeHtml(string) {
     });
 }
 
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+    results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+var error = getParameterByName('error');
+var success = getParameterByName('success');
+
+if(error == "1") {
+    $("#error").modal('show');
+}
+if(success == "1") {
+    $("#success").modal('show');
+}
+
 
 var loader = loader || (function () {
     var pleaseWaitDiv = $('<div style="text-align:center"><hr/> <p><img src = "images/orange_loader.gif" /></p> <p style="font-size:13px;"><strong>One moment please </strong> </p> <hr/></div>');
