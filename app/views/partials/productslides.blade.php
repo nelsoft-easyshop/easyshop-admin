@@ -74,6 +74,8 @@
                             data-count="{{$productSlideCount}}" 
                             data-value="{{$productTypes[$i]['value']}}" 
                             data-type="{{$productTypes[$i]['type']}}" 
+                            data-url = "{{ $homeCmsLink }}/setproductslide"
+
 
 
                            style="position:absolute;top:110px;left:5px;"><<</a>
@@ -89,6 +91,8 @@
                             data-count="{{$productSlideCount}}" 
                             data-value="{{$productTypes[$i]['value']}}" 
                             data-type="{{$productTypes[$i]['type']}}" 
+                            data-url = "{{ $homeCmsLink }}/setproductslide"
+
 
 
                            style="position:absolute;top:110px;right:5px;">>></a>
@@ -120,6 +124,8 @@
                                     data-userid="{{$userId}}" 
                                     data-order='{{$i}}'
                                     data-count="{{$productSlideCount}}" 
+                                    data-url = "{{ $homeCmsLink }}/setproductslide"
+
                                     
                                     id='submitProductSlide'>Submit</a> 
                                   </form>
