@@ -13,9 +13,25 @@ class RefundComposer
     {
         $viewData = $view->getData();
 
-        $dateFrom = !isset($viewData['input']['dateFrom']) ? Carbon::now()->startOfDay()->format('Y/m/d') : $viewData['input']['dateFrom'];
-        $dateTo = !isset($viewData['input']['dateTo']) ? Carbon::now()->endOfDay()->format('Y/m/d') : $viewData['input']['dateTo'];
-        $username =   isset($viewData['input']['username']) ? $viewData['input']['username'] : '';
+        if(isset($viewData['input']['dateFrom'])){
+            $dateFrom =  $viewData['input']['dateFrom'];
+        }
+        else{
+            $dateFrom = Carbon::now()->startOfDay()->format('Y/m/d');
+        }
+        
+        if(isset($viewData['input']['dateTo'])){
+            $dateTo =  $viewData['input']['dateTo'];
+        }
+        else{
+            $dateTo =  Carbon::now()->endOfDay()->format('Y/m/d');
+        }
+ 
+        if(isset($viewData['input']['username'])){
+            $username = $viewData['input']['username'];
+        }else{
+            $username = '';
+        }
         
         $view->with('dateFrom',  $dateFrom)
              ->with('dateTo', $dateTo)
