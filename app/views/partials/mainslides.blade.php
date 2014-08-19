@@ -9,7 +9,7 @@
 
   <div class="tab-pane fade active in" id="mainSlide" onload = "success()">
           
-         <div class="panel-group" id="accordion">
+        <div class="panel-group" id="accordion">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h4 class="panel-title">
@@ -66,12 +66,12 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
                     Manage Main Slide
                   </a>
                 </h4>
               </div>
-              <div id="collapseOne" class="panel-collapse collapse in">
+              <div id="collapseTwo" class="panel-collapse collapse in">
                 <div class="panel-body">
 
                   <fieldset>
@@ -97,6 +97,7 @@
                  data-order="{{$mainSlideId}}" 
                  data-password="{{$adminPassword}}"
                  style="position:absolute;top:110px;left:5px;"
+                 data-url = "{{ $homeCmsLink }}/setmainslide"
                  ><<</a>
 
                  <a href="#"  class="btn btn-default" 
@@ -110,6 +111,8 @@
                 data-order="{{$mainSlideId}}" 
                 data-count="{{$mainSlideCount}}" 
                 data-password="{{$adminPassword}}"
+                data-url = "{{ $homeCmsLink }}/setmainslide"
+
                 style="position:absolute;top:110px;right:5px;"
                  >>></a>
 
@@ -148,6 +151,7 @@
                          data-order="{{$mainSlideId}}" 
                          data-count="{{$mainSlideCount}}"
                          data-password="{{$adminPassword}}"
+                         data-url = "{{ $homeCmsLink }}/setmainslide"
 
                          data-dismiss = "modal" id='submit'>Submit</a>
                         </form> 
