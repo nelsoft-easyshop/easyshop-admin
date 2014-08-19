@@ -35,6 +35,9 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
     Route::post('billinginfo', array('uses' => 'BillingInfoController@createOrderProductPaymentAccount'));
 
+    
+    Route::get('transaction', array('uses' => 'OrderProductController@getAllValidTransactions'));
+
 });
 
 
