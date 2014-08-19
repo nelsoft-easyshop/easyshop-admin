@@ -25,8 +25,16 @@ class OrderProductController extends BaseController
             
         $dateFrom = $transactionService->getStartPayOutRange($dateFilter);
         $dateTo = $transactionService->getEndPayOutRange($dateFilter);
+        
+        if(Input::has('username')){
+            $accounts = $memberRepository->getUserAccountsToPay($dateFrom, $dateTo, Input::get('username'));
+        }
+        else{
+            $accounts = $memberRepository->getUserAccountsToPay($dateFrom, $dateTo);
+        }
 
-        return View::make('pages.paymentlist')->with('accountsToPay', $memberRepository->getUserAccountsToPay(Input::get('username'), $dateFrom, $dateTo ))
+        return View::make('pages.paymentlist')
+                    ->with('accountsToPay', $accounts)
                     ->with('dateFrom',$dateFrom)
                     ->with('dateTo', $dateTo)
                     ->with('input', Input::all());
@@ -41,11 +49,30 @@ class OrderProductController extends BaseController
     {   
         $memberRepository = App::make('MemberRepository');
 
-        $dateFrom = Input::has('dateFrom') ? Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay() : Carbon::now()->startOfDay() ;
-        $dateTo = Input::has('dateTo') ?  Carbon::createFromFormat('Y/m/d', Input::get('dateTo'))->endOfDay() : Carbon::now()->endOfDay() ;
+        if(Input::has('dateFrom')){
+            $dateFrom = Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay();
+        }   
+        else{
+            $dateFrom = Carbon::now()->startOfDay();
+        }
+
+        if(Input::has('dateTo')){
+            $dateTo = Carbon::createFromFormat('Y/m/d', Input::get('dateTo'))->endOfDay();
+        }   
+        else{
+           $dateTo = Carbon::now()->endOfDay();
+        }
+
+        if(Input::has('username')){
+            $accounts = $memberRepository->getUserAccountsToRefund($dateFrom, $dateTo, Input::get('username'));
+        }
+        else{
+            $accounts = $memberRepository->getUserAccountsToRefund($dateFrom, $dateTo);
+        }
         
-        return View::make('pages.refundlist')->with('accountsToRefund', $memberRepository->getUserAccountsToRefund( Input::get('username'), $dateFrom, $dateTo))
-                                            ->with('input', Input::all());
+        return View::make('pages.refundlist')
+                    ->with('accountsToRefund', $accounts)
+                    ->with('input', Input::all());
     }
 
     
@@ -64,15 +91,20 @@ class OrderProductController extends BaseController
         $orderProductRepository = App::make('OrderProductRepository');
         $orderProductStatusRepository = App::make('OrderProductStatusRepository');
         
-        $orderProducts = $orderProductRepository->getOrderProductsToPay($userdata['username'], $userdata['accountname'],$userdata['accountno'], $userdata['bankname'],$dateFrom, $dateTo);      
         $completedStatus = $orderProductStatusRepository->getSellerPaidStatus();
-
         $orderProducts = $orderProductRepository->getOrderProductsToPay($userdata['username'], 
                                                                         $userdata['accountname'],
                                                                         $userdata['accountno'], 
                                                                         $userdata['bankname'],
                                                                         $dateFrom, 
                                                                         $dateTo);      
+        $orderProducts = $orderProductRepository->getOrderProductsToPay($userdata['username'], 
+                                                                        $userdata['accountname'],
+                                                                        $userdata['accountno'], 
+                                                                        $userdata['bankname'],
+                                                                        $dateFrom, 
+                                                                        $dateTo);  
+                                                                        
         $html = View::make('partials.orderproductlist')
                     ->with('orderproducts', $orderProducts)
                     ->with('accountname', $userdata['accountname'])
