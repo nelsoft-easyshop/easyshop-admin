@@ -5,6 +5,19 @@
         $(this).tab('show');
     });
 
+
+    $("#productSlide").on('click','#submitAddProduct',function (e) { 
+          
+        var value = $(this).closest("form").find("#valueProductSlide").val();
+        var userid = $(this).data('userid');
+        var password = $(this).data('password');
+        var url = $(this).data('url');
+        var hash = hex_sha1(value + userid + password);
+        data = {value:value, userid:userid , password:password, hash:hash};
+        addDataProductSlide(data, url);
+
+    });   
+
     $('#AddSectionProduct').on('click','#submitSectionProduct',function (e) { 
         e.preventDefault();
   
@@ -14,10 +27,33 @@
         var productIndexSectionProduct = $("#productIndexSectionProduct").val();
         var userIdSectionProduct = $("#userIdSectionProduct").val();
         var passwordSectionProduct = $("#passwordSectionProduct").val();
-        var hash = hex_sha1(typeSectionProduct + indexSectionProduct + valueSectionProduct + productIndexSectionProduct + userIdSectionProduct + passwordSectionProduct);
-        $("#hashSectionProduct").val(hash);
-        $("#formSectionProduct").submit();
+        var url = $(this).data('url');
+        var hash = (typeSectionProduct + indexSectionProduct + valueSectionProduct + productIndexSectionProduct + userIdSectionProduct + passwordSectionProduct);
+        data = {type:typeSectionProduct, index:indexSectionProduct, value:valueSectionProduct, productindex:productIndexSectionProduct, userid:userIdSectionProduct, password:passwordSectionProduct, hash:hash};
+        AddSectionProduct(data,url);
     });   
+
+
+    $("#mainSlide").on('click','#submitAddMainSlide',function (e) { 
+        e.preventDefault();
+        var url = $(this).data('url');
+        var value = $("#valueMainSlide").val();
+        var myvalue = $("#photoFile").val();
+        var mainSlideCoordinate = $("#mainSlideCoordinate").val();
+        var mainSlideTarget = $("#mainSlideTarget").val();
+        var useridMainSlide = $("#userIdMainSlide").val();
+        var passwordMainSlide = $("#adminPasswordMainSlide").val();
+        var hash = myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide;
+        $("#hashMainSlide").val(hash);
+        if( myvalue == "" || value == "" || mainSlideCoordinate == "" || mainSlideTarget == "")
+        {
+                $("#error").modal('show');         
+        }
+        else
+        {
+            addMainSlide(url);
+        }
+    });  
 
 
     $('#addSectionMainPanel').on('click','#submitSectionMainPanel',function (e) { 
@@ -31,48 +67,26 @@
         var indexSectionMainPanel = $("#indexSectionMainPanel").val();
         var userIdSectionMainPanel = $("#userIdSectionMainPanel").val();
         var passwordSectionMainPanel = $("#passwordSectionMainPanel").val();
+        var url = $(this).data('url');
         var hash = hex_sha1(typeSectionMainPanel + indexSectionMainPanel + valueSectionMainPanel + productindexSectionMainPanel + coordinateSectionMainPanel + targetSectionMainPanel + userIdSectionMainPanel + passwordSectionMainPanel);
 
-        $("#hashSectionMainPanel").val(hash);
-        $("#formSectionMainPanel").submit();
+        data = {type:typeSectionMainPanel, index:indexSectionMainPanel, value:valueSectionMainPanel, productindex:productindexSectionMainPanel, coordinate:coordinateSectionMainPanel, target:targetSectionMainPanel, userid:userIdSectionMainPanel,password:passwordSectionMainPanel, hash:hash};
+        addSectionMainPanel(data,url);
+
     });
 
-
-    $("#mainSlideForm").on('click','#submitAddMainSlide',function (e) { 
-        e.preventDefault();
-  
-        var value = $("#valueMainSlide").val();
-        var mainSlideCoordinate = $("#mainSlideCoordinate").val();
-        var mainSlideTarget = $("#mainSlideTarget").val();
-        var useridMainSlide = $("#userIdMainSlide").val();
-        var passwordMainSlide = $("#adminPasswordMainSlide").val();
-        var hash = hex_sha1(value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide);
-        $("#hashMainSlide").val(hash);
-        $("#mainSlideForm").submit();
-    });   
-
-
-    $("#productSlide").on('click','#submitAddProduct',function (e) { 
-        e.preventDefault();
-  
-        var value = $("#valueProductSlide").val();
-        var userid = $("#userIdProductSlide").val();
-        var password = $("#adminPasswordProductSlide").val();
-        var hash = hex_sha1(value + userid + password);
-        $("#hashProductSlide").val(hash);
-        $("#addProductForm").submit();
-    });   
+ 
 
 
     $("#mainSlide").on('click','#movedown',function () {       
 
         var index = $(this).data('index');
         var userid = $(this).data('userid');
+        var password = $(this).data('password');
         var value = $(this).data('value');
         var coordinate = $(this).data('coordinate');
         var target = $(this).data('target');
         var count = $(this).data('count');
-        var password = $(this).data('password');
         var order = index;
         var nodename = "mainSlide";
         var url = $(this).data('url');
@@ -458,6 +472,48 @@
         });
     }
 
+    function addSectionMainPanel(data,url) {
+        $("#loading").modal('show');
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                    $("#productSlide").load('productslides');
+            },
+            error: function(e) {
+                    $("#error").modal('show');
+  
+            }
+        });
+    }
+
+    function addMainSlide(url) {
+        $("#loading").modal('show');
+        $('#mainSlideForm').ajaxForm({
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                    $("#mainSlide").load('slides');
+            },
+            error: function(e) {
+                    $("#mainSlide").load('slides');
+                     $("#loading").modal('hide');
+            }
+        }); 
+        $('#mainSlideForm').submit();
+
+    }
+
     function setPositionProductSlide(data,order, url) {
         $("#loading").modal('show');
         $.ajax({
@@ -514,6 +570,47 @@
             error: function(e) {
                      $("#error").modal('show');
                      $("#loading").modal('hide');
+            }
+        });
+    }
+
+
+    function addDataProductSlide(data,url) {
+        $("#loading").modal('show');
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                    $("#productSlide").load('productslides');
+            },
+            error: function(e) {
+                    $("#error").modal('show');
+  
+            }
+        });
+    }
+
+    function AddSectionProduct(data,url) {
+        $("#loading").modal('show');
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                    $("#productSlide").load('productslides');
+            },
+            error: function(e) {
+                    $("#error").modal('show');
+  
             }
         });
     }
