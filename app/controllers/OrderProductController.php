@@ -41,8 +41,8 @@ class OrderProductController extends BaseController
     {   
         $memberRepository = App::make('MemberRepository');
 
-        $dateFrom = !Input::get('dateFrom') ? Carbon::now()->startOfDay() : Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay();
-        $dateTo = !Input::get('dateTo') ? Carbon::now()->endOfDay() : Carbon::createFromFormat('Y/m/d', Input::get('dateTo'))->endOfDay();
+        $dateFrom = Input::has('dateFrom') ? Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay() : Carbon::now()->startOfDay() ;
+        $dateTo = Input::has('dateTo') ?  Carbon::createFromFormat('Y/m/d', Input::get('dateTo'))->endOfDay() : Carbon::now()->endOfDay() ;
         
         return View::make('pages.refundlist')->with('accountsToRefund', $memberRepository->getUserAccountsToRefund( Input::get('username'), $dateFrom, $dateTo))
                                             ->with('input', Input::all());
