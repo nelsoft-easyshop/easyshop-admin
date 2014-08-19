@@ -14,8 +14,8 @@ class ContentManagerController extends BaseController
      */
     protected $XMLService;
 
-    public function __construct(XMLService $XMLService)
-    {
+    public function __construct(XMLService $XMLService) 
+    { 
         $this->XMLService = $XMLService;
     }
 
@@ -81,7 +81,8 @@ class ContentManagerController extends BaseController
             ->with('sectionId', -1 )
             ->with('panelMainId', 0 )
             ->with('collapse', 0 )
-            ->with('nodeTypes', $nodeTypes);
+            ->with('nodeTypes', $nodeTypes)
+            ->with('homeCmsLink',$this->getHomeCmsLink());
            
     }
 
@@ -90,7 +91,7 @@ class ContentManagerController extends BaseController
      *
      *  @return View
      */
-    public function getMainSlides()
+    public function getMainSlides() 
     {
         $id = Auth::id();
 
@@ -105,11 +106,14 @@ class ContentManagerController extends BaseController
 
         return View::make('partials.mainslides')
             ->with('adminPassword', $adminEntity->getAdminMemberById($id))
-
             ->with('userId', $id)
             ->with('mainSlides',$mainSlides)
             ->with('mainSlideId',0)
-            ->with('mainSlideCount',  count($mainSlides));
+            ->with('mainSlideCount',  count($mainSlides))
+            ->with('homeCmsLink',$this->getHomeCmsLink());
+
+
+
     }
 
     /**
@@ -117,7 +121,7 @@ class ContentManagerController extends BaseController
      *
      *  @return View
      */
-    public function getProductSlides()
+    public function getProductSlides() 
     {
         $id = Auth::id();
 
@@ -135,13 +139,27 @@ class ContentManagerController extends BaseController
 
         return View::make('partials.productslides')
             ->with('adminPassword', $adminEntity->getAdminMemberById($id))
-
             ->with('userId', $id)
             ->with('productSlide',  json_encode($productSlides))
             ->with('slugs',  $productSlides)
             ->with('productSlideCount',  count($productTypes))
             ->with('productTypes',  json_encode($productTypes))
-            ->with('productSlideId', 0 );
+            ->with('productSlideId', 0 )
+            ->with('homeCmsLink',$this->getHomeCmsLink());
+
+
+
+    }
+
+    /**
+     *  Returns the link for the homewebservice.php from easyshop.ph. The link was retrieved from app/config/easyshop/webservice.php
+     *
+     *  @return string $link
+     */
+    public function getHomeCmsLink()
+    {
+        $link = Config::get('easyshop/webservice.homeCmsLink');
+        return $link;
     }
 
 }
