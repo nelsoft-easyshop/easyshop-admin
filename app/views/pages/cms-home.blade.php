@@ -95,7 +95,7 @@
 											</div>
 											<div class="form-group">
 												<div class="col-xs-offset-2 col-xs-10">
-													<a href="#"  class="btn btn-default text-center" id="btnSectionHead" data-password = "{{ $adminPassword }}" data-index="{{$sectionId}}" data-userid="{{$userId}}">Submit</a>
+													<a href="#"  class="btn btn-default text-center" id="btnSectionHead" data-url = "{{ $homeCmsLink }}/setsectionhead" data-password = "{{ $adminPassword }}" data-index="{{$sectionId}}" data-userid="{{$userId}}">Submit</a>
 												</div>
 											</div>
 										</form>
@@ -159,7 +159,7 @@
 										</div>
 										<div class="form-group">
 										  	<div class="col-xs-offset-2 col-xs-10">
-											  	<a class="btn btn-default text-center" id="btnSetSectionMainPanel" data-password = "{{ $adminPassword }}" data-index="{{$sectionId}}" data-productindex="{{ $panelMainId }}" data-userid="{{$userId}}">Submit</a>
+											  	<a class="btn btn-default text-center" id="btnSetSectionMainPanel" data-url = "{{ $homeCmsLink }}/setsectionmainpanel" data-password = "{{ $adminPassword }}" data-index="{{$sectionId}}" data-productindex="{{ $panelMainId }}" data-userid="{{$userId}}">Submit</a>
 										 	 </div>
 										</div>
 									</form>
@@ -199,7 +199,7 @@
 										</div>
 										<div class="form-group">
 											<div class="col-xs-offset-2 col-xs-10">
-												<a class="btn btn-default text-center" id="btnSetSectionPanel" data-password = "{{ $adminPassword }}" data-index="{{$sectionId}}" data-productindex="{{ $panelMainId }}" data-userid="{{$userId}}">Submit</a>
+												<a class="btn btn-default text-center" id="btnSetSectionPanel" data-url = "{{ $homeCmsLink }}/setSectionProduct" data-password = "{{ $adminPassword }}" data-index="{{$sectionId}}" data-productindex="{{ $panelMainId }}" data-userid="{{$userId}}">Submit</a>
 											</div>
 										</div>
 									</form>
@@ -231,7 +231,7 @@
 					<div class="form-group">
 						<div style='text-align:center;padding-top:10px;'>
 						  	<br/>
-						 		<a1 href="#"  class="btn btn-default text-center" id="submitBannerText">Submit</a>
+						 		<a1 href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/settext" id="submitBannerText">Submit</a>
 						</div>
 					</div>
 				</fieldset>
@@ -248,7 +248,7 @@
 					</div>
 					<div id="collapseOne" class="panel-collapse collapse in">
 						<div class="panel-body">
-							<form id='mainSlideForm' action="https://easyshop.ph.feature/webservice/homewebservice/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
+							<form id='mainSlideForm' action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Choose File</label>
 									<div class="col-xs-10">
@@ -291,12 +291,12 @@
 			  <div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
 							Manage Main Slide
 							</a>
 						</h4>
 					</div>
-					<div id="collapseOne" class="panel-collapse collapse in">
+					<div id="collapseTwo" class="panel-collapse collapse in">
 						<div class="panel-body">
 							<fieldset>
 								<!-- Form Name -->
@@ -305,7 +305,7 @@
 										 @foreach ($mainSlides as $mainSlide)
 											<div style="position:relative;display:inline-block;">
 											<p>
-												<img src="https://easyshop.ph.feature/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important;" class='img-responsive'/>
+												<img src="https://easyshop.ph.feature/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
 											</p>
 
 											<a href="#myMain{{ $mainSlideId }}" data-toggle="modal" class="btn btn-default" style="position:absolute;top:110px;left:105px;">Edit</a>
@@ -321,6 +321,7 @@
 												 data-order="{{$mainSlideId}}" 
 												 data-password="{{$adminPassword}}"
 												 style="position:absolute;top:110px;left:5px;"
+												 data-url = "{{ $homeCmsLink }}/setmainslide"
 											 ><<</a>
 
 											 <a href="#"  class="btn btn-default" 
@@ -335,6 +336,7 @@
 												data-count="{{$mainSlideCount}}" 
 												data-password="{{$adminPassword}}"
 												style="position:absolute;top:110px;right:5px;"
+												data-url = "{{ $homeCmsLink }}/setmainslide"
 											 >>></a>
 
 											<div class="modal fade" id="myMain{{ $mainSlideId }}" role="dialog">
@@ -371,6 +373,7 @@
 															   data-order="{{$mainSlideId}}" 
 															   data-count="{{$mainSlideCount}}"
 															   data-password="{{$adminPassword}}"
+															   data-url = "{{ $homeCmsLink }}/setmainslide"
 
 															   data-dismiss = "modal" id='submit'>Submit</a>
 															</form>	
@@ -407,7 +410,7 @@
 				<div class="form-group">
 					<div style='text-align:center;padding-top:10px;'>
 					<br/>
-					<a href="#"  class="btn btn-default text-center" id="submitProductSlideTitle"
+					<a href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/setProductTitle" id="submitProductSlideTitle"
 						>Submit</a>
 					</div>
 				</div>
@@ -417,7 +420,7 @@
 
     <div class="tab-pane fade" id="addSectionMainPanel">
         <legend>Add Section Main Panel</legend>
-			<form class="form-horizontal" id="formSectionMainPanel" method='post' action = 'https://easyshop.ph.feature/webservice/homewebservice/addSectionMainPanel'>
+			<form class="form-horizontal" id="formSectionMainPanel" method='post' action = '{{$homeCmsLink}}/addSectionMainPanel'>
 				<div class="form-group">
 					<label for="inputEmail" class="control-label col-xs-2">Type of Main Panel</label>
 					<div class="col-xs-10">
@@ -486,7 +489,7 @@
     <div class="tab-pane fade" id="AddSectionProduct">
         <legend> Add Section Product</legend>
 
-			<form class="form-horizontal" id='formSectionProduct'  method='post' action = 'https://easyshop.ph.feature/webservice/homewebservice/addSectionProduct'>
+			<form class="form-horizontal" id='formSectionProduct'  method='post' action = '{{$homeCmsLink}}/addSectionProduct'>
 
 				<input type="text" id="typeSectionProduct" class="form-control" name= 'type' readonly='readonly' placeholder="Value" value="Product" style='display:none'/>
 				
@@ -547,7 +550,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
-					<a href="#"  class="btn btn-default text-center" data-userid="{{$userId}}" data-password = "{{$adminPassword}}" id="btnAddType" >Submit</a>
+					<a href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/addType" data-userid="{{$userId}}" data-password = "{{$adminPassword}}" id="btnAddType" >Submit</a>
 				</div>
 			</div>
 		</form>
@@ -601,7 +604,7 @@
 				<div class="form-group">
 					<div style='text-align:center;padding-top:10px;'>
 					<br/>
-					<a href="#"  class="btn btn-default text-center" id="submitProductSidebanner"
+					<a href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/setProductSideBanner" id="submitProductSidebanner"
 						>Submit</a>
 					</div>
 				</div>
@@ -621,7 +624,7 @@
 					</div>
 					<div id="addProductSlide" class="panel-collapse collapse in">
 						<div class="panel-body">
-							<form action="https://easyshop.ph.feature/webservice/homewebservice/addproductslide" id="addProductForm" class="form-horizontal" method="post" enctype="multipart/form-data">
+							<form action="{{$homeCmsLink}}/addproductslide" id="addProductForm" class="form-horizontal" method="post" enctype="multipart/form-data">
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Value</label>
 									<div class="col-xs-10">
@@ -658,7 +661,7 @@
 		  
 											<div style="position:relative; display:inline-block;">
 
-													<p><img src="https://www.easyshop.ph/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" style="width:250px !important;height:150px !important;" class='img-responsive' ></p>
+													<p><img src="https://www.easyshop.ph/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive' ></p>
 
 
 													 <a href="#"  class="btn btn-default" id="moveUpProductSlide" 
@@ -669,7 +672,7 @@
 													  data-count="{{$productSlideCount}}" 
 													  data-value="{{$productTypes[$i]['value']}}" 
 													  data-type="{{$productTypes[$i]['type']}}" 
-
+													  data-url = "{{ $homeCmsLink }}/setproductslide"
 
 													 style="position:absolute;top:110px;left:5px;"><<</a>
 														  <button class="btn btn-default" data-toggle="modal" data-target="#myModal{{$i}}"  style="position:absolute;top:110px;left:105px;">
@@ -684,7 +687,7 @@
 													  data-count="{{$productSlideCount}}" 
 													  data-value="{{$productTypes[$i]['value']}}" 
 													  data-type="{{$productTypes[$i]['type']}}" 
-
+													  data-url = "{{ $homeCmsLink }}/setproductslide"
 
 													 style="position:absolute;top:110px;right:5px;">>></a>
 
@@ -715,6 +718,8 @@
 																		data-userid="{{$userId}}" 
 																		data-order='{{$i}}'
 																		data-count="{{$productSlideCount}}" 
+																		data-url = "{{ $homeCmsLink }}/setproductslide"
+
 																		
 																		id='submitProductSlide'>Submit</a> 
 																	</form>
@@ -740,3 +745,4 @@
 {{ HTML::script('js/src/cms.js') }}
 
 @stop
+
