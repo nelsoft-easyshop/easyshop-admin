@@ -24,7 +24,7 @@ class BillingDetailComposer
             $stdAccount->billing_id = $account->id_billing_info;
             $stdAccount->order_billing_id = null;
         
-            if( $defaultAccount &&
+            if( $defaultAccount !== null &&
                 $account->bank_account_name === $defaultAccount->account_name &&
                 $account->bank_account_number === $defaultAccount->account_number &&
                 $account->bankInfo->bank_name === $defaultAccount->bank_name)
@@ -36,14 +36,14 @@ class BillingDetailComposer
                     $formattedAccounts[$idx] = $swapTemp;
                 }
                 $formattedAccounts[$idx] =  $swapTemp;
-                $isAccountExist = true;;
+                $isAccountExist = true;
             }else{
                 $formattedAccounts[$idx] = $stdAccount;
             }
             
         }
             
-        if(!$isAccountExist && $defaultAccount){
+        if(!$isAccountExist && $defaultAccount !== null){
             
                 $defaultBank = $bankList->filter(function($bank) use ($defaultAccount)
                 {
