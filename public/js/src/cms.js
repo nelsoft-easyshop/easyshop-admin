@@ -1,12 +1,5 @@
 (function () {
 
-    $.ajaxSetup({
-        headers: {
-            
-        }
-    });
-
-
     $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
@@ -66,7 +59,6 @@
         var userid = $("#userIdProductSlide").val();
         var password = $("#adminPasswordProductSlide").val();
         var hash = hex_sha1(value + userid + password);
-              //alert(hash);
         $("#hashProductSlide").val(hash);
         $("#addProductForm").submit();
     });   
@@ -83,6 +75,8 @@
         var password = $(this).data('password');
         var order = index;
         var nodename = "mainSlide";
+        var url = $(this).data('url');
+
 
         if(order == (count - 1)) {
             order = order;
@@ -91,7 +85,7 @@
         }
         var hash = hex_sha1(index + value + coordinate + target + order + nodename + userid + password);
         data = { index: index, value: value, coordinate:coordinate, target:target, order:order, nodename:nodename,  userid: userid, password:password, hash:hash, callback:'?'};
-        setPositionMainSlide(data,order);
+        setPositionMainSlide(data,order, url);
     });
 
     $("#mainSlide").on('click','#moveup',function () { 
@@ -99,6 +93,7 @@
         var index = $(this).data('index');
         var userid = $(this).data('userid');
         var value = $(this).data('value');
+        var url = $(this).data('url');
         var coordinate = $(this).data('coordinate');
         var target = $(this).data('target');
         var password = $(this).data('password');
@@ -113,7 +108,7 @@
             
         var hash = hex_sha1(index + value + coordinate + target + order + nodename + userid + password);
         data = { index: index, value: value,  coordinate:coordinate, target:target, order:order, nodename:nodename, userid: userid, password:password, hash:hash, callback:'?'};
-        setPositionMainSlide(data,order);
+        setPositionMainSlide(data,order, url);
     });
 
 
@@ -125,7 +120,8 @@
         var password = $(this).data('password');
         var nodeName = "productSlide";
         var value = $(this).data('value');
-        var type = $(this).data('type');      
+        var type = $(this).data('type');   
+        var url = $(this).data('url');   
         
         if(order > 0) {
             order = order - 1;
@@ -134,10 +130,9 @@
             order = 0;
         }
 
-
         var hash =  hex_sha1(index + nodeName + userid + order + value + type + password);
         data = { index: index, nodename:nodeName, userid: userid, hash:hash, order:order, value: value, type:type, password:password,callback:'?'};
-        setPositionProductSlide(data,order);
+        setPositionProductSlide(data, order, url);
     });
 
     $("#productSlide").on('click','#moveDownProductSlide',function () { 
@@ -145,6 +140,7 @@
         var index = $(this).data('index');
         var userid = $(this).data('userid');
         var order = $(this).data('order');
+        var url = $(this).data('url');
         var password = $(this).data('password');
         var nodeName = "productSlide";
         var value = $(this).data('value');
@@ -159,7 +155,7 @@
 
         var hash =  hex_sha1(index + nodeName + userid + order + value + type + password);
         data = { index: index, nodename:nodeName, userid: userid, order:order, value: value, type:type, password:password, hash:hash, callback:'?'};
-        setPositionProductSlide(data,order);
+        setPositionProductSlide(data,order,url);
         
     });
 
@@ -169,15 +165,15 @@
         var userid = $(this).data('userid');
         var productindex = $(this).data('productindex');
         var password = $(this).data('password');
+        var url = $(this).data('url');
         var type = $(this).closest("form").find("#type").val();
         var value = $(this).closest("form").find("#value").val();
         var coordinate = $(this).closest("form").find("#coordinate").val();
         var target = $(this).closest("form").find("#target").val();
         var nodeName = "product_panel_main";
-
         var hash = hex_sha1(index + type + value + coordinate + target + productindex + nodeName + userid + password);
         data = {index:index , type:type, value:value, coordinate:coordinate, target:target,  productindex:productindex, nodename: nodeName, userid:userid, password:password, hash:hash, callback:'?'};
-        setSectionMainPanel(data);
+        setSectionMainPanel(data, url);
     });
 
 
@@ -187,30 +183,32 @@
         var userid = $(this).data('userid');
         var productindex = $(this).data('productindex');
         var password = $(this).data('password');
+        var url = $(this).data('url');
         var type = $(this).closest("form").find("#type").val();
         var value = $(this).closest("form").find("#value").val();
 
-
         var hash = hex_sha1(index + type + productindex + value + userid + password);
         data = {index:index, type:type, productindex:productindex,  value:value, userid:userid, password:password, hash:hash, callback:'?'};
-        setSectionPanel(data);
+        setSectionPanel(data, url);
     });
 
     $("#nodeTypes").on('click','#btnAddType',function () { 
 
         var userid = $(this).data('userid');
         var password = $(this).data('password');
+        var url = $(this).data('url');
         var type = $(this).closest("form").find("#type").val();
         var hash = hex_sha1(type + userid + password); 
         
         data = {value:type, userid:userid, password:password, hash:hash,  callback:'?'};
-        addType(data);
+        addType(data, url);
     });
 
 
     $("#productSideBanner").on('click','#submitProductSidebanner', function() {
         $("#loading").modal('show');
         var sidebanner = $("#sidebanner").val();
+        var url = $(this).data('url');
         var userid = $("#userId").val();
         var password = $("#adminPassword").val();
         var hash = hex_sha1(sidebanner + userid + password);
@@ -218,7 +216,7 @@
 
         $.ajax({
             type: 'GET',
-            url: 'https://easyshop.ph.feature/webservice/homewebservice/setProductSideBanner',
+            url: url,
             data:data,
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -242,12 +240,13 @@
         var slidetitle = $("#slidetitle").val();
         var password = $("#adminPassword").val();
         var userid = $("#userId").val();
+        var url = $(this).data('url');
         var hash = hex_sha1(slidetitle + userid + password);    
         data = { productslidetitle:slidetitle, userid:userid, hash:hash, password:password,  callback: '?'};
 
         $.ajax({
             type: 'GET',
-            url: 'https://easyshop.ph.feature/webservice/homewebservice/setProductTitle',
+            url: url,
             data:data,
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -267,8 +266,8 @@
     });
 
     $("#setText").on('click','#submitBannerText', function() {
-
         $("#loading").modal('show');
+        var url = $(this).data('url');
         var bannertext = $("#bannertext").val();
         var userid = $("#userId").val();
         var password = $("#adminPassword").val();
@@ -278,7 +277,7 @@
 
          $.ajax({
             type: 'GET',
-            url: 'https://easyshop.ph.feature/webservice/homewebservice/settext',
+            url: url,
             data:data,
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -291,7 +290,6 @@
             error: function(e) {
                 $("#error").modal('show'); 
                 $("#loading").modal('hide');  
-  
             }
         });
     });
@@ -315,6 +313,7 @@
         var index = $(this).data('index');
         var userid = $(this).data('userid');
         var password = $(this).data('password');
+        var url = $(this).data('url');
         var type = $(this).closest("form").find("#type").val();
         var value = $(this).closest("form").find("#value").val();
         var css_class = $(this).closest("form").find("#cssclass").val();
@@ -322,9 +321,8 @@
         var title = $(this).closest("form").find("#title").val();
         var hash = hex_sha1(index + type + value + css_class + layout + title + userid + password);
         data = { index:index , type:type, value:value,  css_class:css_class, layout:layout, title:title, userid:userid, password: password, hash:hash, callback:'?'};
-        setDataSectionHead(data);
+        setDataSectionHead(data, url);
     });
-
 
     $(".dropdown-menu span").click(function(){
 
@@ -349,11 +347,11 @@
         
     });
 
-    function addType(data) {
+    function addType(data, url) {
         $("#loading").modal('show');
         $.ajax({
             type: 'GET',
-            url: 'https://easyshop.ph.feature/webservice/homewebservice/addType',
+            url: url,
             data:data,
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -369,51 +367,26 @@
         });
     }
 
-    function getUrlVars()
-    {
-        var vars = [], hash;
-        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-        for(var i = 0; i < hashes.length; i++)
-        {
-            hash = hashes[i].split('=');
-            vars.push(hash[0]);
-            vars[hash[0]] = hash[1];
-        }
-        return vars;
-    }
-
-    var error = getUrlVars()["error"];
-    var success = getUrlVars()["success"];
-
-    if(error == 1){
-
-        $("#error").modal('show');
-      
-    } 
-    else if(success == 1) {
-        $("#success").modal('show');
-    }
-
     $("#productSlide").on('click','#submitProductSlide',function () {     
 
         var index = $(this).data('index');
         var userid = $(this).data('userid');
         var order = $(this).data('order');
+        var url = $(this).data('url');
         var value = $(this).closest("form").find("#productSlideValue").val();
         var type = $(this).closest("form").find("#productSlideType").val();
         var password = $(this).closest("form").find("#adminPassword").val();
         var nodeName = "productSlide";
         var hash = hex_sha1(index+value+type+nodeName+order+userid+password);
         data = { index: index, value: value, type:type, nodename:nodeName,  order:order,  userid: userid, password:password,  hash:hash, callback:'?'};
-        setDataProductSlide(data,order);
+        setDataProductSlide(data,order, url);
     });
 
-    function setSectionPanel(data) {
+    function setSectionPanel(data, url) {
         $("#loading").modal('show');
         $.ajax({
-
             type: 'GET',
-            url: 'https://easyshop.ph.feature/webservice/homewebservice/setSectionProduct',
+            url: url,
             data:data,
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -431,12 +404,11 @@
         });
     }  
 
-    function setSectionMainPanel(data) {
+    function setSectionMainPanel(data, url) {
         $("#loading").modal('show');
         $.ajax({
-
             type: 'GET',
-            url: 'https://easyshop.ph.feature/webservice/homewebservice/setsectionmainpanel',
+            url: url,
             data:data,
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -453,12 +425,11 @@
         });
     }
 
-    function setDataSectionHead(data,order) {
+    function setDataSectionHead(data,url) {
         $("#loading").modal('show');
-
         $.ajax({
             type: 'GET',
-            url: 'https://easyshop.ph.feature/webservice/homewebservice/setsectionhead',
+            url: url,
             data:data,
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -485,17 +456,13 @@
 
             }
         });
-
-
     }
 
-
-
-    function setPositionProductSlide(data,order) {
+    function setPositionProductSlide(data,order, url) {
         $("#loading").modal('show');
         $.ajax({
             type: 'GET',
-            url: 'https://easyshop.ph.feature/webservice/homewebservice/setproductslide',
+            url: url,
             data:data,
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -509,15 +476,13 @@
   
             }
         });
-
-
     }
 
-    function setDataProductSlide(data,order) {
+    function setDataProductSlide(data,order,url) {
         $("#loading").modal('show');
         $.ajax({
             type: 'GET',
-            url: 'https://easyshop.ph.feature/webservice/homewebservice/setproductslide',
+            url: url,
             data:data,
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -531,7 +496,6 @@
   
             }
         });
-
     }
 
     function setDataMainSlide(data,order) {
@@ -554,12 +518,12 @@
         });
     }
 
-    function setPositionMainSlide(data,order) {
+    function setPositionMainSlide(data,order,url) {
         $("#loading").modal('show');
 
         $.ajax({
             type: 'GET',
-            url: 'https://easyshop.ph.feature/webservice/homewebservice/setmainslide',
+            url: url,
             data:data,
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -570,28 +534,11 @@
             },
             error: function(e) {
                  $("#error").modal('show');  
-
             }
         });
     }
 
 
-    function getParameterByName(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
-
-    var error = getParameterByName('error');
-    var success = getParameterByName('success');
-
-    if(error == "1") {
-        $("#error").modal('show');
-    }
-    if(success == "1") {
-        $("#success").modal('show');
-    }
 
 
 })(jQuery);
