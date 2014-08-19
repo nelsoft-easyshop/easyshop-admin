@@ -248,7 +248,7 @@
 					</div>
 					<div id="collapseOne" class="panel-collapse collapse in">
 						<div class="panel-body">
-							<form id='mainSlideForm' action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
+							<form id='mainSlideForm' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Choose File</label>
 									<div class="col-xs-10">
@@ -280,7 +280,7 @@
 
 								<div class="form-group">
 									<div class="col-xs-offset-2 col-xs-10">
-										<button type="submit" id='submitAddMainSlide' class="btn btn-default">Submit</button>
+										<a1 href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
 									</div>
 								</div>
 							 </form>
@@ -477,11 +477,10 @@
 
 				<input type="hidden" id="userIdSectionMainPanel" class="form-control" name= 'userid' readonly='readonly' placeholder="Value" value="{{$userId}}"/>
 				<input type="hidden" id="passwordSectionMainPanel" class="form-control" name= 'password' readonly='readonly' placeholder="Value" value="{{$adminPassword}}"/>
-				<input type="hidden" id="hashSectionMainPanel" class="form-control" name= 'hash' readonly='readonly' placeholder="Value" value=""/>
 
 			  	<div class="form-group">
 					<div class="col-xs-offset-2 col-xs-10">
-						<button id='submitSectionMainPanel' class="btn btn-default">Submit</button>
+						<a href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/addSectionMainPanel" id="submitSectionMainPanel">Submit</a>
 					</div>
 			 	</div>
 		  </form>
@@ -528,11 +527,10 @@
 
 				<input type="hidden" id="userIdSectionProduct" class="form-control" name= "userid" readonly='readonly' placeholder="Value" value="{{$userId}}"/>
 				<input type="hidden" id="passwordSectionProduct" class="form-control" name= "password" value='{{ $adminPassword}}' readonly='readonly' placeholder="Value" value="{{$userId}}">
-				<input type="hidden" id="hashSectionProduct" class="form-control" name= "hash" readonly='readonly' placeholder="Value" >
 
 				<div class="form-group">
 					<div class="col-xs-offset-2 col-xs-10">
-						<button type="submit" id='submitSectionProduct'  class="btn btn-default">Submit</button>
+						<a href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/addSectionProduct" id="submitSectionProduct">Submit</a>
 					</div>
 				</div>
 			</form>
@@ -628,15 +626,12 @@
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Value</label>
 									<div class="col-xs-10">
-										<input type="text" id="valueProductSlide" class="form-control" name='value'  placeholder="Value" >
-										<input type="hidden" id="userIdProductSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >
-										<input type="hidden" id="adminPasswordProductSlide" class="form-control" name="password" value='{{$adminPassword}}'  placeholder="Value" >
-										<input type="hidden" id="hashProductSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
+										<input type="text" id="valueProductSlide" class="form-control" name='value'  placeholder="Value" >									
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="col-xs-offset-2 col-xs-10">
-										<button type="submit" id='submitAddProduct' class="btn btn-default">Submit</button>
+										<a href="#"  class="btn btn-default text-center" data-userid="{{$userId}}" data-password="{{$adminPassword}}" data-url = "{{ $homeCmsLink }}/addproductslide" id="submitAddProduct">Submit</a>
 									</div>
 								</div>
 							 </form>
@@ -743,6 +738,7 @@
 @section('page_js') 
 {{ HTML::script('js/src/sha1.js') }}
 {{ HTML::script('js/src/cms.js') }}
+{{ HTML::script('js/src/jquery.form.js') }}
 
 @stop
 
