@@ -35,18 +35,19 @@ class MemberRepository extends AbstractRepository
      *  OrderProduct->status = 1 / Payment has been cleared for transfer to seller 
      *  OrderProduct->status = 4 / Payment has been moved to the seller
      *
-     *  @param string $username
      *  @param Carbon $dateFrom
      *  @param Carbon $dateTo
+     *  @param string $username
      *  @return Collection
      */
-    public function getUserAccountsToPay($username, $dateFrom, $dateTo)
+    public function getUserAccountsToPay($dateFrom, $dateTo, $username = null)
     {
 
         $dateFrom = $dateFrom->format('Y-m-d H:i:s');
         $dateTo = $dateTo->format('Y-m-d H:i:s');
         
-        $query = DB::table('es_order_product')->leftJoin('es_order_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_billing_info.id_order_billing_info');
+        $query = DB::table('es_order_product');
+        $query->leftJoin('es_order_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_billing_info.id_order_billing_info');
         $query->join('es_member','es_order_product.seller_id', '=', 'es_member.id_member');
         $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
         $query->join('es_order_product_history', function($join){
@@ -77,23 +78,31 @@ class MemberRepository extends AbstractRepository
             });
         });
         
-        if(!empty($username)){
+        if($username !== null){
             $query->where('es_member.username', '=', $username);
         }     
-                                        
-        $completedOrders = $query->groupBy('es_member.id_member', 'es_order_billing_info.bank_name',  'es_order_billing_info.account_name',  'es_order_billing_info.account_number'  )
-                                ->get(['es_member.username', 'es_member.email', 'es_member.contactno', 'es_order_billing_info.bank_name', 'es_order_billing_info.account_name', 'es_order_billing_info.account_number', DB::raw('SUM(es_order_product.net) as net')]);
+                       
+        $query->groupBy('es_member.id_member', 'es_order_billing_info.bank_name',  'es_order_billing_info.account_name',  'es_order_billing_info.account_number'  );
+        $completedOrders = $query->get(['es_member.username',
+                                       'es_member.email', 
+                                       'es_member.contactno', 
+                                       'es_order_billing_info.bank_name', 
+                                       'es_order_billing_info.account_name', 
+                                       'es_order_billing_info.account_number', 
+                                        DB::raw('SUM(es_order_product.net) as net')
+                                    ]);
 
-        
         return $completedOrders;
     }
 
     /**
-     * Get users to be refunded. Results are grouped by user.
-     *
-     * 
+     *  Get users to be refunded. Results are grouped by user.
+     *  @param Carbon $dateFrom
+     *  @param Carbon $dateTo
+     *  @param string $username
+     *  @return Collection
      */
-    public function getUserAccountsToRefund($username, $dateFrom, $dateTo)
+    public function getUserAccountsToRefund($dateFrom, $dateTo,$username = null)
     {
         $dateFrom = $dateFrom->format('Y-m-d H:i:s');
         $dateTo = $dateTo->format('Y-m-d H:i:s');
@@ -116,13 +125,20 @@ class MemberRepository extends AbstractRepository
             $query->where('es_order_product_history.created_at', '<', $dateTo);
         });
 
-        if(!empty($username)){
+        if($username !== null){
             $query->where('es_member.username', '=', $username);
         }     
         
         $query->groupBy('es_member.id_member');
         
-        $returnedOrders = $query->get(['es_member.username', 'es_member.email', 'es_member.contactno', 'es_billing_info.bank_account_name as account_name', 'es_billing_info.bank_account_number as account_number', 'es_bank_info.bank_name as bank_name' , DB::raw('SUM(es_order_product.net) as net')]);
+        $returnedOrders = $query->get(['es_member.username',
+                                       'es_member.email', 
+                                       'es_member.contactno', 
+                                       'es_billing_info.bank_account_name as account_name', 
+                                       'es_billing_info.bank_account_number as account_number', 
+                                       'es_bank_info.bank_name as bank_name' , 
+                                       DB::raw('SUM(es_order_product.net) as net')
+                                    ]);
         
         return $returnedOrders;
     
