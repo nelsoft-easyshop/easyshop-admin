@@ -21,7 +21,7 @@
               <div id="collapseOne" class="panel-collapse collapse in">
                 <div class="panel-body">
 
-                  <form id='mainSlideForm' action="https://easyshop.ph.feature/webservice/homewebservice/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
+              <form id='mainSlideForm' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
                             <div class="col-xs-10">
@@ -47,14 +47,14 @@
                             </div>
                         </div>
             
-            <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >
-            <input type="hidden" id="adminPasswordMainSlide" class="form-control" name="password" value='{{$adminPassword}}'  placeholder="Value" >
-            <input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
-          
+                        <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >
+                        <input type="hidden" id="adminPasswordMainSlide" class="form-control" name="password" value='{{$adminPassword}}'  placeholder="Value" >
+                        <input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
+                      
 
                         <div class="form-group">
                             <div class="col-xs-offset-2 col-xs-10">
-                               <button type="submitAddMainSlide" class="btn btn-default">Submit</button>
+                    <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
                             </div>
                         </div>
                     </form>
@@ -86,35 +86,35 @@
 
                               <a href="#myMain{{ $mainSlideId }}" data-toggle="modal" class="btn btn-default" style="position:absolute;top:110px;left:105px;">Edit</a>
                                
-                <a href="#"  class="btn btn-default" 
-                id="moveup" 
-                 data-action="up" 
-                 data-index="{{$mainSlideId}}" 
-                 data-userid="{{$userId}}" 
-                 data-value="{{$mainSlide->value}}" 
-                 data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
-                 data-target="{{$mainSlide->imagemap->target}}" 
-                 data-order="{{$mainSlideId}}" 
-                 data-password="{{$adminPassword}}"
-                 style="position:absolute;top:110px;left:5px;"
-                 data-url = "{{ $homeCmsLink }}/setmainslide"
-                 ><<</a>
+                              <a href="#"  class="btn btn-default" 
+                              id="moveup" 
+                               data-action="up" 
+                               data-index="{{$mainSlideId}}" 
+                               data-userid="{{$userId}}" 
+                               data-value="{{$mainSlide->value}}" 
+                               data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
+                               data-target="{{$mainSlide->imagemap->target}}" 
+                               data-order="{{$mainSlideId}}" 
+                               data-password="{{$adminPassword}}"
+                               style="position:absolute;top:110px;left:5px;"
+                               data-url = "{{ $homeCmsLink }}/setmainslide"
+                               ><<</a>
 
-                 <a href="#"  class="btn btn-default" 
-                id="movedown" 
-                data-action="up" 
-                data-index="{{$mainSlideId}}" 
-                data-userid="{{$userId}}" 
-                data-value="{{$mainSlide->value}}" 
-                data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
-                data-target="{{$mainSlide->imagemap->target}}" 
-                data-order="{{$mainSlideId}}" 
-                data-count="{{$mainSlideCount}}" 
-                data-password="{{$adminPassword}}"
-                data-url = "{{ $homeCmsLink }}/setmainslide"
+                               <a href="#"  class="btn btn-default" 
+                              id="movedown" 
+                              data-action="up" 
+                              data-index="{{$mainSlideId}}" 
+                              data-userid="{{$userId}}" 
+                              data-value="{{$mainSlide->value}}" 
+                              data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
+                              data-target="{{$mainSlide->imagemap->target}}" 
+                              data-order="{{$mainSlideId}}" 
+                              data-count="{{$mainSlideCount}}" 
+                              data-password="{{$adminPassword}}"
+                              data-url = "{{ $homeCmsLink }}/setmainslide"
 
-                style="position:absolute;top:110px;right:5px;"
-                 >>></a>
+                              style="position:absolute;top:110px;right:5px;"
+                               >>></a>
 
 
                                   <div class="modal fade" id="myMain{{ $mainSlideId }}" role="dialog">
@@ -124,7 +124,7 @@
                                             <p>Contact Form</p>
                                           </div>
                                           <div class="modal-body">
-                                             <form method="post" id='mainSlideForm' data-div='1' action="https://easyshop.ph.feature/webservice/homewebservice/addmainslide" onsubmit ="document.getElementById('hash2').value = hex_sha1(document.getElementById('sidebanner').value + document.getElementById('userId').value)">       
+              <form id='mainSlideForm' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
 
                         <fieldset>
                         <!-- Form Name -->
@@ -142,18 +142,18 @@
                           </div>
                         </div>
                         </fieldset>
-                        <a href="" class="btn btn-primary"
-                         data-index="{{$mainSlideId}}" 
-                         data-userid="{{$userId}}" 
-                         data-value="{{$mainSlide->value}}" 
-                         data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
-                         data-target="{{$mainSlide->imagemap->target}}" 
-                         data-order="{{$mainSlideId}}" 
-                         data-count="{{$mainSlideCount}}"
-                         data-password="{{$adminPassword}}"
-                         data-url = "{{ $homeCmsLink }}/setmainslide"
+                            <a href="" class="btn btn-primary"
+                             data-index="{{$mainSlideId}}" 
+                             data-userid="{{$userId}}" 
+                             data-value="{{$mainSlide->value}}" 
+                             data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
+                             data-target="{{$mainSlide->imagemap->target}}" 
+                             data-order="{{$mainSlideId}}" 
+                             data-count="{{$mainSlideCount}}"
+                             data-password="{{$adminPassword}}"
+                             data-url = "{{ $homeCmsLink }}/setmainslide"
 
-                         data-dismiss = "modal" id='submit'>Submit</a>
+                             data-dismiss = "modal" id='submit'>Submit</a>
                         </form> 
                                                   
                                           </div>
