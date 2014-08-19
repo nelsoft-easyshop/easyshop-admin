@@ -104,7 +104,13 @@ class OrderProductRepository extends AbstractRepository
         }    
         
         
-        return $query->get(['es_order_product.*', 'es_order.invoice_no', 'es_order.buyer_id as buyer_seller_id', 'buyer.username as buyer_seller_username', 'es_product.name as productname', 'es_order_product_status.name as statusname']);
+        return $query->get(['es_order_product.*', 
+                            'es_order.invoice_no', 
+                            'es_order.buyer_id as buyer_seller_id', 
+                            'buyer.username as buyer_seller_username', 
+                            'es_product.name as productname', 
+                            'es_order_product_status.name as statusname'
+                        ]);
 
     }
  
@@ -150,7 +156,12 @@ class OrderProductRepository extends AbstractRepository
             $query->where('es_member.username', '=', $username);
         }     
         
-        $returnedOrders = $query->get(['es_order_product.*', 'es_order.invoice_no', 'es_order_product.seller_id as buyer_seller_id', 'seller.username as buyer_seller_username' , 'es_product.name as productname', 'es_order_product_status.name as statusname']);
+        $returnedOrders = $query->get(['es_order_product.*', 
+                                    'es_order.invoice_no', 
+                                    'es_order_product.seller_id as buyer_seller_id',
+                                    'seller.username as buyer_seller_username' , 
+                                    'es_product.name as productname', 
+                                    'es_order_product_status.name as statusname']);
         
         return $returnedOrders;
     }
