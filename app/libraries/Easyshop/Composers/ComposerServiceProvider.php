@@ -14,7 +14,10 @@ class ComposerServiceProvider extends ServiceProvider
     {
         $this->app->view->composer('includes.header', 'Easyshop\Composers\HeaderComposer');
         $this->app->view->composer('pages.paymentlist', 'Easyshop\Composers\PaymentComposer');
+        $this->app->view->composer('pages.refundlist', 'Easyshop\Composers\RefundComposer');
         $this->app->view->composer('partials.orderproductbilling', 'Easyshop\Composers\BillingDetailComposer');
+        $this->app->view->composer('partials.orderproductlist', 'Easyshop\Composers\OrderProductListComposer');
+        
     }
  
 }

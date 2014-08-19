@@ -2,51 +2,48 @@
 
 class BillingDetailComposer
 {
-   /**
-    *    Inject parameters in $view everytime the view is loaded
-    *
-    *    @param View $view
-    */
+    /**
+     *    Inject parameters in $view everytime the view is loaded
+     *
+     *    @param View $view
+     */
     public function compose($view)
     {
         $viewData = $view->getData();
-        $defaultAccount = $viewData['defaultAccount'];
+        $defaultAccount = isset($viewData['defaultAccount']) ? $viewData['defaultAccount'] : null;
         $bankList = $viewData['bankList'];
         $formattedAccounts = array();
 
-        if($defaultAccount){
+        $isAccountExist = false;
+        foreach($viewData['accounts'] as $idx=>$account){
+            $stdAccount = new \stdClass();
+            $stdAccount->account_name = $account->bank_account_name;
+            $stdAccount->account_number = $account->bank_account_number;
+            $stdAccount->bank_name = $account->bankInfo->bank_name;
+            $stdAccount->bank_id = $account->bank_id;
+            $stdAccount->billing_id = $account->id_billing_info;
+            $stdAccount->order_billing_id = null;
         
-            $isAccountExist = false;
-            foreach($viewData['accounts'] as $idx=>$account){
-            
-                $stdAccount = new \stdClass();
-                $stdAccount->account_name = $account->bank_account_name;
-                $stdAccount->account_number = $account->bank_account_number;
-                $stdAccount->bank_name = $account->bankInfo->bank_name;
-                $stdAccount->bank_id = $account->bank_id;
-                $stdAccount->billing_id = $account->id_billing_info;
-                $stdAccount->order_billing_id = null;
-            
-                if($account->bank_account_name === $defaultAccount->account_name &&
-                   $account->bank_account_number === $defaultAccount->account_number &&
-                   $account->bankInfo->bank_name === $defaultAccount->bank_name)
-                {
-
-                    $swapTemp = $stdAccount;
-                    if(isset($formattedAccounts[0])){
-                        $swapTemp = $formattedAccounts[0];
-                        $formattedAccounts[0] = $stdAccount;
-                        $formattedAccounts[$idx] = $swapTemp;
-                    }
-                    $formattedAccounts[$idx] =  $swapTemp;
-                    $isAccountExist = true;
-                }else{
-
-                    $formattedAccounts[$idx] = $stdAccount;
+            if( $defaultAccount !== null &&
+                $account->bank_account_name === $defaultAccount->account_name &&
+                $account->bank_account_number === $defaultAccount->account_number &&
+                $account->bankInfo->bank_name === $defaultAccount->bank_name)
+            {
+                $swapTemp = $stdAccount;
+                if(isset($formattedAccounts[0])){
+                    $swapTemp = $formattedAccounts[0];
+                    $formattedAccounts[0] = $stdAccount;
+                    $formattedAccounts[$idx] = $swapTemp;
                 }
+                $formattedAccounts[$idx] =  $swapTemp;
+                $isAccountExist = true;
+            }else{
+                $formattedAccounts[$idx] = $stdAccount;
             }
             
-            if(!$isAccountExist){
+        }
+            
+        if(!$isAccountExist && $defaultAccount !== null){
             
                 $defaultBank = $bankList->filter(function($bank) use ($defaultAccount)
                 {
@@ -63,12 +60,11 @@ class BillingDetailComposer
                 $newStdAccount->billing_id = null;
                 $newStdAccount->order_billing_id = $defaultAccount->id_order_billing_info;       
                 array_unshift($formattedAccounts, $newStdAccount);
-            }
-
-
         }
 
+ 
         $view->with('accounts',  $formattedAccounts);
+
    
     }
     
