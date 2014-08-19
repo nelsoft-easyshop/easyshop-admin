@@ -123,7 +123,7 @@ class OrderProductRepository extends AbstractRepository
      * @param Carbon dateTo
      * @return Collection
      */
-    public function getOrderProductsToRefund($username, $dateFrom = null, $dateTo = null)
+    public function getOrderProductsToRefund($username = null, $dateFrom = null, $dateTo = null)
     {               
         $query = OrderProduct::join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
         $query->join('es_member','es_order.buyer_id', '=', 'es_member.id_member');
@@ -152,7 +152,7 @@ class OrderProductRepository extends AbstractRepository
             });
         }
         
-        if(!empty($username)){
+        if($username !== null){
             $query->where('es_member.username', '=', $username);
         }     
         
