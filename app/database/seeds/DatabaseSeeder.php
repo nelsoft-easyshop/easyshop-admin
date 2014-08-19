@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder {
         
         $this->call('AdminMemberTableSeeder');
         $this->call('BankInfoTableSeeder');
+        $this->call('LocationLookUpTableSeeder');
 
     }
 

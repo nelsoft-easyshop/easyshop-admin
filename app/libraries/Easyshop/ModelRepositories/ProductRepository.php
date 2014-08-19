@@ -8,7 +8,8 @@ class ProductRepository
     {
         $product = new Product();
         if($isViewable){
-            return $product->where('is_delete', '=', 0)->where('is_draft', '=', 0, 'AND');
+            return $product->where('is_delete', '=', 0)
+                ->where('is_draft', '=', 0, 'AND');
         }
 
         return $product;
