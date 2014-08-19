@@ -18,6 +18,7 @@ class OrderProductListComposer
         foreach($viewData['orderproducts'] as $orderProduct){
             if(intval($orderProduct->status) !== $paidStatus){
                 $isPaid = false;
+                break;
             }
         }
         
