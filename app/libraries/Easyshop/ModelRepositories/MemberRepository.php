@@ -43,8 +43,8 @@ class MemberRepository extends AbstractRepository
     public function getUserAccountsToPay($dateFrom, $dateTo, $username = null)
     {
 
-        $dateFrom = $dateFrom->format('Y-m-d H:i:s');
-        $dateTo = $dateTo->format('Y-m-d H:i:s');
+        $formattedDateFrom = $dateFrom->format('Y-m-d H:i:s');
+        $formattedDateTo = $dateTo->format('Y-m-d H:i:s');
         
         $query = DB::table('es_order_product');
         $query->leftJoin('es_order_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_billing_info.id_order_billing_info');
@@ -57,13 +57,13 @@ class MemberRepository extends AbstractRepository
         
         $query->leftJoin('es_product_shipping_comment','es_product_shipping_comment.order_product_id', '=', 'es_order_product.id_order_product');
         
-        $query->where(function ($query) use ($dateFrom, $dateTo){
-            $query->where(function ($query) use ($dateFrom, $dateTo){
-                $query->where('es_order_product_history.created_at', '>=', $dateFrom);
-                $query->where('es_order_product_history.created_at', '<', $dateTo);
+        $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
+            $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
+                $query->where('es_order_product_history.created_at', '>=', $formattedDateFrom);
+                $query->where('es_order_product_history.created_at', '<', $formattedDateTo);
             });
 
-            $query->orWhere(function ($query) use ($dateFrom, $dateTo) {
+            $query->orWhere(function ($query) use ($formattedDateFrom, $formattedDateTo) {
                 $query->where(function ($query) {
                                 $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
                                     ->orWhere('es_order.order_status', '=',  OrderStatus::STATUS_COMPLETED);
@@ -72,9 +72,9 @@ class MemberRepository extends AbstractRepository
                 $query->where('es_order_product.is_reject', '=', '0');
                 $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
                 $query->where(DB::raw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15"));
-                $query->setBindings(array_merge($query->getBindings(),array($dateTo)));
+                $query->setBindings(array_merge($query->getBindings(),array($formattedDateTo)));
                 $query->where(DB::raw(" DATE_ADD(es_product_shipping_comment.`delivery_date`, INTERVAL 15 DAY) BETWEEN ? AND ?"));
-                $query->setBindings(array_merge($query->getBindings(),array($dateFrom, $dateTo)));
+                $query->setBindings(array_merge($query->getBindings(),array($formattedDateFrom, $formattedDateTo)));
             });
         });
         
@@ -104,8 +104,8 @@ class MemberRepository extends AbstractRepository
      */
     public function getUserAccountsToRefund($dateFrom, $dateTo,$username = null)
     {
-        $dateFrom = $dateFrom->format('Y-m-d H:i:s');
-        $dateTo = $dateTo->format('Y-m-d H:i:s');
+        $formattedDateFrom = $dateFrom->format('Y-m-d H:i:s');
+        $formattedDateTo = $dateTo->format('Y-m-d H:i:s');
         
         $query = DB::table('es_order_product')->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
         $query->join('es_member','es_order.buyer_id', '=', 'es_member.id_member');
@@ -120,9 +120,9 @@ class MemberRepository extends AbstractRepository
             $join->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
             $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_RETURN_BUYER));
         });
-        $query->where(function ($query) use ($dateFrom, $dateTo){
-            $query->where('es_order_product_history.created_at', '>=', $dateFrom);
-            $query->where('es_order_product_history.created_at', '<', $dateTo);
+        $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
+            $query->where('es_order_product_history.created_at', '>=', $formattedDateFrom);
+            $query->where('es_order_product_history.created_at', '<', $formattedDateTo);
         });
 
         if($username !== null){
