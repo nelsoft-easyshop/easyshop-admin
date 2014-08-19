@@ -290,4 +290,10 @@ class OrderProductController extends BaseController
 
     
     
+    public function getAllValidTransactions()
+    {
+        return View::make('pages.transactionlist');
+    }
+    
+    
 }
