@@ -1,4 +1,4 @@
-       <script type="text/javascript">
+  <script type="text/javascript">
       $(document).ready(function(){
 
         $("#loading").modal('hide');
@@ -9,38 +9,34 @@
      <div class="tab-pane fade active in" id="productSlide" onload = "success">
     
         <div class="panel-group" id="accordion">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-          Add Product Slide
-        </a>
-      </h4>
-    </div>
-    <div id="collapseOne" class="panel-collapse collapse in">
-      <div class="panel-body">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                  Add Product Slide
+                </a>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+              <div class="panel-body">
 
-              <form action="https://easyshop.ph.feature/webservice/homewebservice/addproductslide" id="addProductForm" class="form-horizontal" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                  <label for="inputPassword" class="control-label col-xs-2">Value</label>
-                  <div class="col-xs-10">
+                      <form action="{{$homeCmsLink}}/addproductslide" id="addProductForm" class="form-horizontal" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                          <label for="inputPassword" class="control-label col-xs-2">Value</label>
+                          <div class="col-xs-10">
+                            <input type="text" id="valueProductSlide" class="form-control" name='value'  placeholder="Value" >                  
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-xs-offset-2 col-xs-10">
+                            <a href="#"  class="btn btn-default text-center" data-userid="{{$userId}}" data-password="{{$adminPassword}}" data-url = "{{ $homeCmsLink }}/addproductslide" id="submitAddProduct">Submit</a>
+                          </div>
+                        </div>
+                       </form>
 
-                    <input type="text" id="valueProductSlide" class="form-control" name='value'  placeholder="Value" >
-                    <input type="hidden" id="userIdProductSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >
-                    <input type="hidden" id="adminPasswordProductSlide" class="form-control" name="password" value='{{$adminPassword}}'  placeholder="Value" >
-                    <input type="hidden" id="hashProductSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-xs-offset-2 col-xs-10">
-                    <button type="submit" id='submitAddProduct' class="btn btn-default">Submit</button>
-                  </div>
-                </div>
-               </form>
-
-      </div>
-    </div>
-  </div>
+              </div>
+            </div>
+          </div>
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -138,26 +134,13 @@
                   @endfor
                            
                   </div>
-              
-    
-    
-   
       </div>  
-   
-
 <!-- end -->
       </div>
     </div>
     </div>
 
+</div>  
 </div>
-        
-    
-
-
-
-
-      
-  </div>
 
   
