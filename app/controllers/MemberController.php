@@ -13,10 +13,30 @@ class MemberController extends BaseController
     {
         $locationLookUpRepository = App::make('LocationLookUpRepository');
         $dataFormatter = $this->locationService;
-        $data = $dataFormatter->location($locationLookUpRepository->getByType());
+        $data = $dataFormatter->format($locationLookUpRepository->getByType());
+
 
         return View::make('pages.userlist')
             ->with('list_of_member', Member::paginate(100))
+            ->with('list_of_location', $data);
+    }
+
+    public function search()
+    {
+        $userData = array(
+            'fullname' => Input::get('fullname'),
+            'username' => Input::get('username'),
+            'contactno' => Input::get('number'),
+            'email' => Input::get('email'),
+            'startdate' => Input::get('startdate'),
+            'enddate' => Input::get('enddate')
+        );
+        $locationLookUpRepository = App::make('LocationLookUpRepository');
+        $locationService = $this->locationService;
+        $data = $locationService->format($locationLookUpRepository->getByType());
+
+        return View::make('pages.userlist')
+            ->with('list_of_member', App::make('MemberRepository')->search($userData, 100))
             ->with('list_of_location', $data);
     }
 
@@ -35,7 +55,10 @@ class MemberController extends BaseController
             'country' => 148
         );
         $memberRepository = App::make('MemberRepository');
-        $memberRepository->update(Input::get('id'), $dataMember);
+        $memberRepository->update(
+            $memberRepository->getById(Input::get('id')),
+            $dataMember
+        );
         $addressRepository = App::make('AddressRepository');
         $addressRepository->update(Input::get('id'), $dataAddress);
 

@@ -3,7 +3,8 @@
  * @homepage http://xdsoft.net/jqplugins/datetimepicker/
  * (c) 2014, Chupurnov Valeriy.
  */
-(function( $ ) {
+(function( $ )
+{
     'use strict';
     var default_options  = {
         i18n:{

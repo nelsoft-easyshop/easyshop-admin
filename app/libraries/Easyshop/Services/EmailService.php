@@ -18,7 +18,7 @@ class EmailService{
     *
     */
     public function sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber,$bankName, $dateFrom, $dateTo, $isRefund = false)
-    {
+    {    
         $data = array(
             'recipient' => $member->username,
             'startPayOutDate' => $dateFrom,

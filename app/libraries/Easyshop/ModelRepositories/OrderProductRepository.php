@@ -44,7 +44,7 @@ class OrderProductRepository extends AbstractRepository
      * @return Collection
      */
     public function getOrderProductsToPay($username, $accountname, $accountno, $bankname, $dateFrom = null, $dateTo = null)
-    {
+    {       
 
         $query = OrderProduct::leftJoin('es_order_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_billing_info.id_order_billing_info')
                         ->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member')
@@ -61,6 +61,7 @@ class OrderProductRepository extends AbstractRepository
         if($dateFrom && $dateTo){
             $dateFrom = $dateFrom->format('Y-m-d H:i:s');
             $dateTo = $dateTo->format('Y-m-d H:i:s');
+            
             $query->where(function ($query) use ($dateFrom, $dateTo){
                 $query->where(function ($query) use ($dateFrom, $dateTo){
                     $query->where('es_order_product_history.created_at', '>=', $dateFrom);
@@ -165,6 +166,7 @@ class OrderProductRepository extends AbstractRepository
         return $returnedOrders;
     }
  
+ 
     /**
      * Updates the order product status
      *
@@ -178,7 +180,7 @@ class OrderProductRepository extends AbstractRepository
         $orderProduct->status = $status;        
         return $orderProduct->save();
     }
-
+    
     /**
      * Updates the buyer billing id
      *
@@ -192,6 +194,9 @@ class OrderProductRepository extends AbstractRepository
         $orderProduct->buyer_billing_id = $buyerBillingId;        
         return $orderProduct->save();
     }
+    
 
+
+    
 }
 

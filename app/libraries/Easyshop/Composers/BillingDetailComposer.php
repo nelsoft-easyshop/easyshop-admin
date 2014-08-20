@@ -44,6 +44,7 @@ class BillingDetailComposer
         }
             
         if(!$isAccountExist && $defaultAccount !== null){
+            
                 $defaultBank = $bankList->filter(function($bank) use ($defaultAccount)
                 {
                     if (strtolower($bank->bank_name) == strtolower($defaultAccount->bank_name)) {
@@ -64,6 +65,9 @@ class BillingDetailComposer
  
         $view->with('accounts',  $formattedAccounts);
 
+   
     }
+    
+    
 }
  

@@ -80,6 +80,7 @@
                     <span >Seller Pay-out</span>
                 </a>
                 <p> View details about payments for sellers that are cleared for transfer every month. Update the status of completed transactions.</p>
+            
             </li>
         
             <li>
@@ -88,6 +89,7 @@
                     <span >Buyer Refund</span>
                 </a>
                 <p> View details about refunds for buyers and update the status of the transaction</p>
+            
             </li>
             
         </ul>

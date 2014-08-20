@@ -9,7 +9,9 @@
     
     @if(isset($bankname))
         <label> Bank Name:  </label>  <input type="text" class="form-control bankname" value="{{{ $bankname }}}" readonly/> 
-    @endif
+    @endif 
+    
+
 </div>
 
 
@@ -28,7 +30,9 @@
             <td>NET</td>        
             <td>Status</td>
             <td>&nbsp;</td>
-        </tr>
+        </tr>    
+
+         
         @foreach($orderproducts as $orderproduct)
         <tr class="order_product" data-orderproductid = "{{{ $orderproduct->id_order_product }}}">
             
@@ -47,7 +51,8 @@
                 <span class="org_btn view"> View </span>&nbsp;
             </td>
             <td class="hide order-product-id"> {{{$orderproduct->id_order_product }}} </td>
-        </tr>
+
+        </tr>   
         @endforeach           
     </table>
     

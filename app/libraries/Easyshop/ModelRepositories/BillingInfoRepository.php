@@ -52,7 +52,7 @@ class BillingInfoRepository extends AbstractRepository
         $isSuccessful = $billingInfo->save();
         
         $this->currentId = $billingInfo->id_billing_info;
-
+        
         return $isSuccessful;
     }
     
@@ -80,11 +80,13 @@ class BillingInfoRepository extends AbstractRepository
         else{
             billingInfo->is_default = 0;
         }
+        
         $isSuccessful = $billingInfo->save();
         
         $this->currentId = $billingInfo->id_billing_info;
         
         return $isSuccessful;
+
     }
     
     
@@ -100,7 +102,10 @@ class BillingInfoRepository extends AbstractRepository
                                     ->where('is_default', '=', DB::raw('1'))
                                     ->get();
         return $defaultAccount;
+        
     }
+
+
 
 }
     

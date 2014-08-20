@@ -1,5 +1,5 @@
 (function ($) {
-    
+
     $('.date').each(function() {
         $(this).datetimepicker({
             timepicker:false,
@@ -115,8 +115,7 @@
                             }
                              
                         },
-                    });   
-
+                    });
                 }    
         });
        
@@ -139,6 +138,7 @@
         $('#form_accnt_bank').val(accnt_bank );
         showInputs();
     });
+    
 
     $(document.body).on('click','#cancel_account',function(){
         emptyErrors(); 
@@ -146,7 +146,6 @@
     });
     
     $(document.body).on('click','#save_account',function(){
-        
         $('#error-container').children().fadeOut(500);        
         var $this = $(this);
         var accnt_name = $('#form_accnt_name').val().trim();
@@ -156,6 +155,7 @@
         var billing_info_id = $('#account_collection').val();
         var selected_account = $('#account_collection').find('option:selected');
         var order_billing_info_id = selected_account.data('order-billing-id');
+
         var member_id =  ($('#action').val() == 'pay')  ?  $('#seller_id').val() : $('#buyer_id').val();
 
         var spinner = Ladda.create(this);
@@ -168,8 +168,9 @@
             json_data = {
                 account_name:accnt_name, 
                 account_number:accnt_number, 
-                bank_id:accnt_bank,
+                bank_id:accnt_bank, 
                 member_id:  member_id
+
             };
         }else{
             json_data = {
@@ -181,7 +182,6 @@
                 member_id: member_id
             };
         }
-
         $.ajax({
             url: 'billinginfo',
             data: json_data,
@@ -258,6 +258,7 @@
         var account_name = selected_option.data('name');
         var account_number = selected_option.data('number');
         var bank_name = selected_option.data('bank-name');
+
         var order_product_ids = $('#order_product_ids').val();
  
         var dateFrom = $('input#date-from').val();
@@ -294,6 +295,7 @@
             $('#form_accnt_name').css('display', 'inline');
             $('#form_accnt_number').css('display', 'inline');
             $('#form_accnt_bank').css('display', 'inline');
+   
             $('#accnt_name').css('display', 'none');
             $('#accnt_number').css('display', 'none');
             $('#accnt_bank').css('display', 'none');      
