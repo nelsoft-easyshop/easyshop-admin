@@ -43,7 +43,7 @@
         var mainSlideTarget = $("#mainSlideTarget").val();
         var useridMainSlide = $("#userIdMainSlide").val();
         var passwordMainSlide = $("#adminPasswordMainSlide").val();
-        var hash = myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide;
+        var hash = hex_sha1(myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide);
         $("#hashMainSlide").val(hash);
         if( myvalue == "" || value == "" || mainSlideCoordinate == "" || mainSlideTarget == "")
         {
@@ -311,16 +311,17 @@
     $("#mainSlide").on('click','#submit',function () {       
         var index = $(this).data('index');
         var userid = $(this).data('userid');
-        var value = $(this).data('value');
+        var value = $(this).closest("form").find("#mainSlideValue").val();
         var password = $(this).data('password');
         var coordinate = $(this).closest("form").find("#mainSlideCoordinate").val();
         var target = $(this).closest("form").find('#mainSlideTarget').val();
         var count = $(this).data('count');
+        var url = $(this).data('url');
         var order = index;
         var nodename = "mainSlide";
-        var hash =  hex_sha1(index + value + coordinate + target + order + nodename + userid + password); 
+        var hash =  hex_sha1(index + value + coordinate + target + order + nodename + userid + password);
         data = { index: index, value: value, coordinate:coordinate,  target:target, order:order, nodename:nodename,  userid: userid, password:password, hash:hash, callback:'?'};
-        setDataMainSlide(data,order);
+        setDataMainSlide(url, data,order);
     });
 
     $("#myTabContent").on('click','#btnSectionHead',function () {   
@@ -353,8 +354,6 @@
 
         } else {
             var type = $(this).closest("form").find(divselector).css('display','none');
-            $(this).closest("form").find(":input[name='coordinate']").val('');
-            $(this).closest("form").find(":input[name='target']").val('');
         }
 
         var inputtext = $(this).closest("form").find(":input[type='text']:first").val(text);
@@ -554,11 +553,11 @@
         });
     }
 
-    function setDataMainSlide(data,order) {
+    function setDataMainSlide(url, data,order) {
         $("#loading").modal('show');
         $.ajax({
             type: 'GET',
-            url: 'https://easyshop.ph.feature/webservice/homewebservice/setmainslide',
+            url: url,
             data:data,
             async: false,
             jsonpCallback: 'jsonCallback',
