@@ -142,18 +142,22 @@
 												<input type="text" id="value" class="form-control"  placeholder="Value" value="{{ $panelMain->value }}">
 											</div>
 										</div>
-										<div id='imagetype{{$panelMainId}}' style="display:none;">
+										@if ($panelMain->type == "image")
+											<div id='imagetype{{$panelMainId}}' style="display:block;">
+										@else
+											<div id='imagetype{{$panelMainId}}' style="display:none;">
+										@endif
 											<div class="form-group">
 												<label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
 												<div class="col-xs-10">
-													<input type="text" id="coordinate" class="form-control" name='coordinate' placeholder="0,0,0,0" value="{{ $panelMain->coordinate }}">
+													<input type="text" id="coordinate" class="form-control" name='coordinate' placeholder="0,0,0,0" value="{{ $panelMain->imagemap->coordinate }}">
 												</div>
 											</div>
 									  
 											<div class="form-group">
 												<label for="inputPassword" class="control-label col-xs-2">Target</label>
 												<div class="col-xs-10">
-													<input type="text" id="target" class="form-control" name='target' placeholder="Value" value="{{ $panelMain->target }}">
+													<input type="text" id="target" class="form-control" name='target' placeholder="Value" value="{{ $panelMain->imagemap->target }}">
 												</div>
 											</div>
 										</div>
@@ -305,7 +309,7 @@
 										 @foreach ($mainSlides as $mainSlide)
 											<div style="position:relative;display:inline-block;">
 											<p>
-												<img src="https://easyshop.ph.feature/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
+												<img src="{{$easyShopLink}}/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
 											</p>
 
 											<a href="#myMain{{ $mainSlideId }}" data-toggle="modal" class="btn btn-default" style="position:absolute;top:110px;left:105px;">Edit</a>
@@ -346,37 +350,40 @@
 															  <h4>Edit Main Slide</h4>
 															</div>
 														<div class="modal-body">
-															<form method="post" id='mainSlideForm' data-div='1' action="https://easyshop.ph.feature/webservice/homewebservice/addmainslide" onsubmit ="document.getElementById('hash2').value = hex_sha1(document.getElementById('sidebanner').value + document.getElementById('userId').value)">       
+									                     <form id='mainSlideForm' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
 
-															<fieldset>
-																<!-- Form Name -->
-																{{ Form::hidden('index', $mainSlideId) }}
-																{{ Form::hidden('userid', $userId) }}
-																{{ Form::hidden('value', "$mainSlide->value", array('id' => 'mainSlideImage','class' => 'form-control')) }}
-																<div class="form-group ">
-																	<label for="userId" class="col-sm-2 control-label">Coordinate</label>
-																	<div class="col-sm-10">
-																	   {{ Form::text('coordinate', $mainSlide->imagemap->coordinate, array('id' => 'mainSlideCoordinate','class' => 'form-control')) }}
-																	</div>
-																	 <label for="userId" class="col-sm-2 control-label">Target</label>
-																	<div class="col-sm-10">
-																	  {{ Form::text('target', $mainSlide->imagemap->target, array('id' => 'mainSlideTarget','class' => 'form-control')) }}
-																	</div>
-																</div>
-															</fieldset>
-															<a href="" class="btn btn-primary"
-															   data-index="{{$mainSlideId}}" 
-															   data-userid="{{$userId}}" 
-															   data-value="{{$mainSlide->value}}" 
-															   data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
-															   data-target="{{$mainSlide->imagemap->target}}" 
-															   data-order="{{$mainSlideId}}" 
-															   data-count="{{$mainSlideCount}}"
-															   data-password="{{$adminPassword}}"
-															   data-url = "{{ $homeCmsLink }}/setmainslide"
+									                        <fieldset>
+									                        <!-- Form Name -->
+									                        {{ Form::hidden('index', $mainSlideId) }}
+									                        {{ Form::hidden('userid', $userId) }}
+									                        {{ Form::hidden('value', "$mainSlide->value", array('id' => 'mainSlideImage','class' => 'form-control')) }}
+									                        <div class="form-group ">
+									                       		  <label for="userId" class="col-sm-2 control-label">Value</label>
+										                          <div class="col-sm-10">
+										                           		{{ Form::text('coordinate', $mainSlide->value, array('id' => 'mainSlideValue','class' => 'form-control')) }}
+										                          </div>
+										                          <label for="userId" class="col-sm-2 control-label">Coordinate</label>
+										                          <div class="col-sm-10">
+										                           		{{ Form::text('coordinate', $mainSlide->imagemap->coordinate, array('id' => 'mainSlideCoordinate','class' => 'form-control')) }}
+										                          </div>
+										                           <label for="userId" class="col-sm-2 control-label">Target</label>
+										                          <div class="col-sm-10">
+										                          		{{ Form::text('target', $mainSlide->imagemap->target, array('id' => 'mainSlideTarget','class' => 'form-control')) }}
+										                          </div>
+									                        </div>
+									                        </fieldset>
+									                            <a href="" class="btn btn-primary"
+									                             data-index="{{$mainSlideId}}" 
+									                             data-userid="{{$userId}}" 
+									                             data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
+									                             data-target="{{$mainSlide->imagemap->target}}" 
+									                             data-order="{{$mainSlideId}}" 
+									                             data-count="{{$mainSlideCount}}"
+									                             data-password="{{$adminPassword}}"
+									                             data-url = "{{ $homeCmsLink }}/setmainslide"
 
-															   data-dismiss = "modal" id='submit'>Submit</a>
-															</form>	
+									                             data-dismiss = "modal" id='submit'>Submit</a>
+									                        </form> 
 														</div>
 													 </div>
 												</div>
@@ -656,7 +663,7 @@
 		  
 											<div style="position:relative; display:inline-block;">
 
-													<p><img src="https://www.easyshop.ph/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive' ></p>
+													<p><img src="{{$easyShopLink}}/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive' ></p>
 
 
 													 <a href="#"  class="btn btn-default" id="moveUpProductSlide" 
