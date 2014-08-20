@@ -82,7 +82,7 @@
                                @foreach ($mainSlides as $mainSlide)
                               <div style="position:relative;
                                   display:inline-block;">
-                              <p><img src="https://easyshop.ph.feature/{{ $mainSlide->value }}" data-div="" width="250px" height="100px" class='img-responsive'></p>
+                              <p><img src="{{$easyShopLink}}/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'></p>
 
                               <a href="#myMain{{ $mainSlideId }}" data-toggle="modal" class="btn btn-default" style="position:absolute;top:110px;left:105px;">Edit</a>
                                
@@ -121,26 +121,30 @@
                                       <div class="modal-dialog">
                                         <div class="modal-content">
                                           <div class="modal-header">
-                                            <p>Contact Form</p>
+                                            <h4>Edit Main Slide</h4>
                                           </div>
                                           <div class="modal-body">
-              <form id='mainSlideForm' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
+                     <form id='mainSlideForm' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
 
                         <fieldset>
                         <!-- Form Name -->
                         {{ Form::hidden('index', $mainSlideId) }}
                         {{ Form::hidden('userid', $userId) }}
                         {{ Form::hidden('value', "$mainSlide->value", array('id' => 'mainSlideImage','class' => 'form-control')) }}
-                        <div class="form-group ">
-                          <label for="userId" class="col-sm-2 control-label">Coordinate</label>
-                          <div class="col-sm-10">
-                           {{ Form::text('coordinate', $mainSlide->imagemap->coordinate, array('id' => 'mainSlideCoordinate','class' => 'form-control')) }}
-                          </div>
-                           <label for="userId" class="col-sm-2 control-label">Target</label>
-                          <div class="col-sm-10">
-                          {{ Form::text('target', $mainSlide->imagemap->target, array('id' => 'mainSlideTarget','class' => 'form-control')) }}
-                          </div>
-                        </div>
+                                          <div class="form-group ">
+                                              <label for="userId" class="col-sm-2 control-label">Value</label>
+                                              <div class="col-sm-10">
+                                                  {{ Form::text('coordinate', $mainSlide->value, array('id' => 'mainSlideValue','class' => 'form-control')) }}
+                                              </div>
+                                              <label for="userId" class="col-sm-2 control-label">Coordinate</label>
+                                              <div class="col-sm-10">
+                                                  {{ Form::text('coordinate', $mainSlide->imagemap->coordinate, array('id' => 'mainSlideCoordinate','class' => 'form-control')) }}
+                                              </div>
+                                               <label for="userId" class="col-sm-2 control-label">Target</label>
+                                              <div class="col-sm-10">
+                                                  {{ Form::text('target', $mainSlide->imagemap->target, array('id' => 'mainSlideTarget','class' => 'form-control')) }}
+                                              </div>
+                                          </div>
                         </fieldset>
                             <a href="" class="btn btn-primary"
                              data-index="{{$mainSlideId}}" 
