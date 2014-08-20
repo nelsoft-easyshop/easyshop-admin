@@ -60,7 +60,7 @@
                     @for($y=0;$y < 1;$y++)
       
                       <div style="position:relative; display:inline-block;">
-                          <p><img src="https://www.easyshop.ph/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" width="250px" height="100px" class='img-responsive' ></p>
+                          <p><img src="{{$easyShopLink}}/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive' ></p>
 
                            <a href="#"  class="btn btn-default" id="moveUpProductSlide" 
                             data-index='{{$i}}'
