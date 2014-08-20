@@ -1,19 +1,26 @@
 <?php
+use Easyshop\Services\LocationService;
 class MemberController extends BaseController
 {
+    private $locationService;
+
+    public function __construct(LocationService $locationService)
+    {
+        $this->locationService = $locationService;
+    }
 
     public function showAllUsers()
     {
         $locationLookUpRepository = App::make('LocationLookUpRepository');
-        $dataFormatter = App::make('Easyshop\Services\DataFormatterService');
-        $data = $dataFormatter->location($locationLookUpRepository->getByType());
+        $dataFormatter = $this->locationService;
+        $data = $dataFormatter->format($locationLookUpRepository->getByType());
 
         return View::make('pages.userlist')
             ->with('list_of_member', Member::paginate(100))
             ->with('list_of_location', $data);
     }
 
-    public function doSearchUser()
+    public function search()
     {
         $userData = array(
             'fullname' => Input::get('fullname'),
@@ -24,11 +31,11 @@ class MemberController extends BaseController
             'enddate' => Input::get('enddate')
         );
         $locationLookUpRepository = App::make('LocationLookUpRepository');
-        $dataFormatter = App::make('Easyshop\Services\DataFormatterService');
-        $data = $dataFormatter->location($locationLookUpRepository->getByType());
+        $locationService = $this->locationService;
+        $data = $locationService->format($locationLookUpRepository->getByType());
 
         return View::make('pages.userlist')
-            ->with('list_of_member', App::make('MemberRepository')->search($userData))
+            ->with('list_of_member', App::make('MemberRepository')->search($userData, 100))
             ->with('list_of_location', $data);
     }
 
@@ -47,7 +54,10 @@ class MemberController extends BaseController
             'country' => 148
         );
         $memberRepository = App::make('MemberRepository');
-        $memberRepository->update(Input::get('id'), $dataMember);
+        $memberRepository->update(
+            $memberRepository->getById(Input::get('id')),
+            $dataMember
+        );
         $addressRepository = App::make('AddressRepository');
         $addressRepository->update(Input::get('id'), $dataAddress);
 

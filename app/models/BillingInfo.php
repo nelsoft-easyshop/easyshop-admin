@@ -1,6 +1,8 @@
 <?php
 
-class BillingInfo extends Ardent
+use Magniloquent\Magniloquent\Magniloquent;
+
+class BillingInfo extends Eloquent
 {
 
    /**
@@ -15,18 +17,6 @@ class BillingInfo extends Ardent
     *
     */
     protected $primaryKey = 'id_billing_info';
-
-   /**
-    * Ardent validation rules
-    *
-    */
-
-    public static $create_rules = array(
-        'bank_account_name' => 'required',
-        'bank_account_number' => 'required',
-        'bank_id' => 'required|numeric',
-    );
-
 
     
     public function member() 
