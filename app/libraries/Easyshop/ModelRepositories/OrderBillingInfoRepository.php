@@ -39,7 +39,28 @@ class OrderBillingInfoRepository extends AbstractRepository
         return $isSuccessful;
 
     }
-    
+
+    /**
+     * Inserts new Order Product Billing Info
+     *
+     * @param string $accountName
+     * @param string $accountNumber
+     * @param string $bankName
+     * @return Boolean
+     */
+    public function createOrderBillingInfo($accountName, $accountNumber, $bankName)
+    {
+        $orderProductBillingInfo = new OrderBillingInfo;
+        $orderProductBillingInfo->bank_name =  $bankName;
+        $orderProductBillingInfo->account_name =  $accountName;
+        $orderProductBillingInfo->account_number =  $accountNumber;
+        $isSuccessful = $orderProductBillingInfo->save();
+        
+        $this->currentId = $orderProductBillingInfo->id_order_billing_info;
+        
+        return $isSuccessful;
+        
+    }
 
 }
 

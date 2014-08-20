@@ -52,7 +52,7 @@ class BillingInfoRepository extends AbstractRepository
         $isSuccessful = $billingInfo->save();
         
         $this->currentId = $billingInfo->id_billing_info;
-        
+
         return $isSuccessful;
     }
     
@@ -73,14 +73,34 @@ class BillingInfoRepository extends AbstractRepository
         $billingInfo->bank_account_number = $accountNumber;
         $billingInfo->member_id = $memberId;
         $billingInfo->bank_id = $bankId;
+        
+        if($this->getDefaultAccount($memberId)->isEmpty()){
+            billingInfo->is_default = 1;
+        }
+        else{
+            billingInfo->is_default = 0;
+        }
         $isSuccessful = $billingInfo->save();
         
         $this->currentId = $billingInfo->id_billing_info;
         
         return $isSuccessful;
-
     }
-
+    
+    
+    /**
+     * Return the default account for a particular member
+     *
+     * @param integer $userId
+     * @return BillingInfo
+     */
+    public function getDefaultAccount($userId)
+    {
+        $defaultAccount = BillingInfo::where('member_id', '=',$userId)
+                                    ->where('is_default', '=', DB::raw('1'))
+                                    ->get();
+        return $defaultAccount;
+    }
 
 }
     

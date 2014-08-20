@@ -42,6 +42,10 @@ div#mainsection ul{
     
 }
 
+div#mainsection .featurebox{
+    padding-left: 10%;
+}
+
 
 div#mainsection ul img{
     margin-top: -6px;
