@@ -220,7 +220,6 @@
 
 @stop
 
-
 @section('page_js')
 {{ HTML::script('js/userlist.js') }}
 @stop
