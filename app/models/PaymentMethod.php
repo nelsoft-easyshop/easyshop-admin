@@ -10,7 +10,7 @@ class PaymentMethod extends Eloquent
      */
     protected $table = 'es_payment_method';
 
-    /*
+    /**
      * The primary key of the table
      *
      */

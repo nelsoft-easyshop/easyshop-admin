@@ -123,7 +123,8 @@
         'Easyshop\Composers\ComposerServiceProvider',
         'Easyshop\ModelRepositories\RepositoryServiceProvider',
         'Easyshop\Services\ServiceServiceProvider',
-        'Maatwebsite\Excel\ExcelServiceProvider',
+        'Alexdover\BladeSet\BladeSetServiceProvider',
+        'Maatwebsite\Excel\ExcelServiceProvider'
     ),
 
     /*
@@ -190,7 +191,7 @@
         'URL'             => 'Illuminate\Support\Facades\URL',
         'Validator'       => 'Illuminate\Support\Facades\Validator',
         'View'            => 'Illuminate\Support\Facades\View',
-        'NumberFormatter' => 'NumberFormatterFacade'
+        'NumberFormatter' => 'NumberFormatterFacade',
     ),
 
 );

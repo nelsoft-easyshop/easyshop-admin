@@ -1,6 +1,8 @@
 <?php namespace Easyshop\Services;
 
-class DataFormatterService
+use LocationLookUp;
+
+class LocationService
 {
     /**
      * Returns format needed for list of location
@@ -8,24 +10,26 @@ class DataFormatterService
      * @param $listOfLoc array
      * @return array
      */
-    public function location($listOfLoc)
+    public function format($listOfLoc)
     {
-        $type = array(
-            'country' => 0,
-            'state' => 3,
-            'city' => 4,
+        $formattedListOfLocation = array(
+            'country_name' => '',
+            'country_id' => '',
+            'stateregion_lookup' => array(),
+            'city_lookup' => array(),
         );
-        $formattedListOfLocation = array();
+
         foreach($listOfLoc as $location){
-            if($location['type'] == $type['country']){
+            if($location['type'] == LocationLookUp::$TYPE[0]){
                 $formattedListOfLocation['country_name'] = $location['location'];
                 $formattedListOfLocation['country_id'] = $location['id_location'];
-            }else if($location['type'] == $type['state']) {
+            }else if($location['type'] == LocationLookUp::$TYPE[1]) {
                 $formattedListOfLocation['stateregion_lookup'][$location['id_location']] = $location['location'];
-            }else if($location['type'] == $type['city']) {
+            }else if($location['type'] ==  LocationLookUp::$TYPE[2]) {
                 $formattedListOfLocation['city_lookup'][$location['parent_id']][$location['id_location']] = $location['location'];
             }
         }
+
         $formattedListOfLocation['json_city'] = json_encode($formattedListOfLocation['city_lookup'], JSON_FORCE_OBJECT);
 
         return $formattedListOfLocation;

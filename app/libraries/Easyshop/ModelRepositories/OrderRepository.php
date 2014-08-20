@@ -1,10 +1,11 @@
 <?php namespace Easyshop\ModelRepositories;
 
-use Order;
 use Illuminate\Support\Facades\DB;
+use Order;
 
-class OrderRepository
+class OrderRepository extends AbstractRepository
 {
+
    /**
     * Get order by id
     *

@@ -12,6 +12,18 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind('OrderProductHistoryRepository', function($app){   
+            return new OrderProductHistoryRepository();
+        });
+        
+        $this->app->bind('OrderProductStatusRepository', function($app){   
+            return new OrderProductStatusRepository();
+        });
+        
+        $this->app->bind('OrderStatusRepository', function($app){   
+            return new OrderStatusRepository();
+        });
+    
         $this->app->bind('OrderRepository', function($app){   
             return new OrderRepository();
         });
@@ -45,6 +57,12 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('BankInfoRepository', function($app){  
             return new BankInfoRepository();
         });
+        
+        $this->app->bind('OrderBillingInfoRepository', function($app){  
+            return new OrderBillingInfoRepository();
+        });
+                      
+
     }
 }
 
