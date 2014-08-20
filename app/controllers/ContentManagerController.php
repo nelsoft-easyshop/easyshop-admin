@@ -15,7 +15,7 @@ class ContentManagerController extends BaseController
     protected $XMLService;
 
     public function __construct(XMLService $XMLService) 
-    { 
+    {   
         $this->XMLService = $XMLService;
     }
 
@@ -82,7 +82,8 @@ class ContentManagerController extends BaseController
             ->with('panelMainId', 0 )
             ->with('collapse', 0 )
             ->with('nodeTypes', $nodeTypes)
-            ->with('homeCmsLink',$this->getHomeCmsLink());
+            ->with('homeCmsLink',$this->XMLService->GetHomeCmsLink())
+            ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
            
     }
 
@@ -110,7 +111,9 @@ class ContentManagerController extends BaseController
             ->with('mainSlides',$mainSlides)
             ->with('mainSlideId',0)
             ->with('mainSlideCount',  count($mainSlides))
-            ->with('homeCmsLink',$this->getHomeCmsLink());
+            ->with('homeCmsLink',$this->XMLService->GetHomeCmsLink())
+            ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
+
 
 
 
@@ -145,21 +148,14 @@ class ContentManagerController extends BaseController
             ->with('productSlideCount',  count($productTypes))
             ->with('productTypes',  json_encode($productTypes))
             ->with('productSlideId', 0 )
-            ->with('homeCmsLink',$this->getHomeCmsLink());
+            ->with('homeCmsLink',$this->XMLService->GetHomeCmsLink())
+            ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
+
 
 
 
     }
 
-    /**
-     *  Returns the link for the homewebservice.php from easyshop.ph. The link was retrieved from app/config/easyshop/webservice.php
-     *
-     *  @return string $link
-     */
-    public function getHomeCmsLink()
-    {
-        $link = Config::get('easyshop/webservice.homeCmsLink');
-        return $link;
-    }
+
 
 }
