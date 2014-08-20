@@ -8,6 +8,7 @@
 @section('page_header')
     @include('includes.header')
 @stop
+
 @section('content')
     <div id="mainsection">
         <div class="filter-container ">
@@ -214,8 +215,8 @@
         </div>
         <!--End Modal -->
     </div>
-    </div>
     <div id="jsonData" data = "{{{ $list_of_location['json_city'] }}}"></div>
+</div>
 
 @stop
 

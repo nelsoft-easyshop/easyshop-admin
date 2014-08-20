@@ -43,11 +43,13 @@
             </div>
 
             <div class="dateContainer">
-                <input type="text" id="date-from" class="form-control" value="{{{ $dateFrom->format('m-d-Y') }}}" readonly="">
-                <input type="text" id="date-to" class="form-control" value="{{{ $dateTo->format('m-d-Y') }}}" readonly="">
+                <input type="text" id="date-from" class="form-control" value="{{{ $dateFrom->format('Y/m/d') }}}" readonly="">
+                <input type="text" id="date-to" class="form-control" value="{{{ $dateTo->format('Y/m/d') }}}" readonly="">
             </div>
             
         </div>
+        
+        <div class='clear'></div>
         
         <div class="table-responsive table-payment"> 
             <table class="table table-striped table-hover">

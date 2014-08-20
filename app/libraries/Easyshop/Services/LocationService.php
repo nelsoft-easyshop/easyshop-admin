@@ -9,7 +9,7 @@ class LocationService
      * @param $listOfLoc array
      * @return array
      */
-    public function format($listOfLoc)
+    public function location($listOfLoc)
     {
         $formattedListOfLocations = array(
             'country_name' => '',
