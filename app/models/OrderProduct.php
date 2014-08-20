@@ -1,12 +1,8 @@
 <?php
 
-class OrderProduct extends Eloquent
+class OrderProduct extends Eloquent 
 {
-
-    const STATUS_ON_GOING = 0;
-    const STATUS_FUND_CLEARED = 1;
-    const STATUS_FUND_MOVED = 4;
-
+    
     /**
      * The database table used by the model.
      *
@@ -19,12 +15,13 @@ class OrderProduct extends Eloquent
      *
      */
     protected $primaryKey = 'id_order_product';
+
     
     /**
      * Relationship with es_member table
      *
      */
-    public function seller()
+    public function seller() 
     {
         return $this->hasOne('Member', 'id_member', 'seller_id');
     }
@@ -33,7 +30,7 @@ class OrderProduct extends Eloquent
      * Relationship with es_order
      *
      */
-    public function order()
+    public function order() 
     {
         return $this->hasOne('Order', 'id_order', 'order_id');
     }
@@ -42,21 +39,16 @@ class OrderProduct extends Eloquent
      * Relationship with es_order_product_status
      *
      */
-    public function orderProductStatus()
+    public function orderProductStatus() 
     {
         return $this->hasOne('OrderProductStatus', 'id_order_product_status', 'status');
-    }
-
-    public function product()
-    {
-        return $this->hasOne('Product', 'id_product', 'product_id');
     }
 
     /**
      *  Relationship with es_order_product_status
      *
      */
-    public function billingInfo()
+    public function product() 
     {
         return $this->hasOne('Product', 'id_product', 'product_id');
     }
@@ -65,7 +57,7 @@ class OrderProduct extends Eloquent
      * Relationship with es_order_billing_info
      *
      */
-    public function sellerBillingInfo()
+    public function sellerBillingInfo() 
     {
         return $this->hasOne('OrderBillingInfo', 'id_order_billing_info', 'seller_billing_id');
     }

@@ -1,15 +1,14 @@
 <?php namespace Easyshop\Services\Validation\Laravel;
  
-class OrderBillingInfoUpdateValidator extends AbstractLaravelValidator
+class OrderBillingInfoCreateValidator extends AbstractLaravelValidator
 {
  
    /**
-    * Validation for updating OrderBillingInfo
+    * Validation for create OrderBillingInfo
     *
     * @var array
     */
     protected $rules = array(
-        'order_billing_info_id' => 'numeric',
         'account_name' => 'required',
         'account_number' => 'required',
         'bank_name' => 'required',

@@ -51,6 +51,7 @@ class BillingInfoController extends BaseController
                   'newBillingInfoId' => $billingInfoRepository->getLastId()
             )
         );
+
     }
 
 }
