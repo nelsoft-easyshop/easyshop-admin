@@ -8,7 +8,14 @@
                 Dear {{{ $recipient }}},
                 </p>
                 <p>
-                    Thank you for selling through Easyshop.ph! The payment for your sales from  {{{ $startPayOutDate->format('F j, Y') }}} until {{{ $endPayOutDate->format('F j, Y') }}} has now been forwarded to your account. Details for your transactions are included below.
+                  
+                    @if($isRefund)  
+                        We have transferred the payment for your refund request. 
+                    @else
+                        Thank you for selling through Easyshop.ph! The payment for your sales from  {{{ $startPayOutDate->format('F j, Y') }}} until {{{ $endPayOutDate->format('F j, Y') }}} has now been forwarded to your account.
+                    @endif
+                    
+                    Details for your transactions are included below.
                 </p>
             </td>
         </tr>
@@ -32,7 +39,12 @@
         <tbody>
             <tr style="font-weight:bold; background-color: #f18200; color: white; ">
                 <td style="padding: 4px;">Invoice No.</td>
-                <td style="padding: 4px;">Buyer</td>
+                @if($isRefund)  
+                    <td style="padding: 4px;">Seller</td>
+                @else
+                    <td style="padding: 4px;">Buyer</td>
+                @endif
+                
                 <td style="padding: 4px;">Product Name</td>
                 <td style="padding: 4px;">Qty.</td>
                 <td style="padding: 4px;">Unit Price</td>
@@ -45,7 +57,13 @@
             @foreach($orderProducts as $idx=>$orderProduct)
                 <tr style="color: black; background-color:  {{{ ($idx%2 === 0) ? '#f5f5f5': 'ffffff'   }}};" >
                     <td style="padding: 4px;">{{{ $orderProduct->order->invoice_no }}}</td>
-                    <td style="padding: 4px;">{{{ $orderProduct->order->buyer->username }}}</td>
+                    
+                    @if($isRefund)  
+                        <td style="padding: 4px;">{{{ $orderProduct->seller->username }}} </td>
+                    @else
+                        <td style="padding: 4px;">{{{ $orderProduct->order->buyer->username }}}</td>
+                    @endif
+                    
                     <td style="padding: 4px;">{{{ $orderProduct->product->name }}}</td>
                     <td style="padding: 4px;">{{{ $orderProduct->order_quantity }}}</td>
                     <td style="padding: 4px;">{{ number_format($orderProduct->price,2,'.',',') }}</td>

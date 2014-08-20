@@ -20,21 +20,28 @@ Route::post('login', array('uses' => 'AccountController@doLogin'));
 Route::get('logout', array('uses' => 'AccountController@doLogout'));
 
 Route::group(array('before' => 'auth'), function(){
-
     Route::get('/', array('uses' => 'HomeController@index'));    
-    
     Route::get('users', array('uses' => 'MemberController@showAllUsers'));
     Route::get('cms/home', array('uses' => 'ContentManagerController@getHomeContent'));
     Route::put('user', array('uses' => 'MemberController@ajaxUpdateUsers'));
+   
+    Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));    
+    Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));
+
+    Route::get('orderproduct/pay', array('uses' => 'OrderProductController@getOrderProductsToPay'));
+    Route::get('orderproduct/refund', array('uses' => 'OrderProductController@getOrderProductsToRefund'));
+    Route::get('orderproduct-detail', array('uses' => 'OrderProductController@getOrderProductDetail'));
     
-    Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
-    Route::get('orderproduct', array('uses' => 'OrderProductController@getOrderProducts'));
-    Route::get('orderproduct-history', array('uses' => 'OrderProductController@getOrderProductDetail'));
-    Route::get('orderproduct-payment', array('uses' => 'OrderProductController@getOrderProductPaymentDetail'));
-    Route::put('orderproduct-status/{action}', array('uses' => 'OrderProductController@updateOrderProductStatus'));
+    Route::get('orderproduct-payment/pay', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToPay'));
+    Route::get('orderproduct-payment/refund', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToRefund'));
+    Route::put('orderproduct-status/pay', array('uses' => 'OrderProductController@payOrderProducts'));
+    Route::put('orderproduct-status/refund', array('uses' => 'OrderProductController@refundOrderProducts'));
 
     Route::put('billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
     Route::post('billinginfo', array('uses' => 'BillingInfoController@createOrderProductPaymentAccount'));
+
+    
+    Route::get('transaction', array('uses' => 'OrderProductController@getAllValidTransactions'));
 
 });
 

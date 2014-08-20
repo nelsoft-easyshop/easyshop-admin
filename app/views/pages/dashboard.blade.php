@@ -82,6 +82,15 @@
                 <p> View details about payments for sellers that are cleared for transfer every month. Update the status of completed transactions.</p>
             
             </li>
+        
+            <li>
+                <a href='/refund'>
+                    <img src="{{{ asset('images/img_icon_business.png') }}}"/> 
+                    <span >Buyer Refund</span>
+                </a>
+                <p> View details about refunds for buyers and update the status of the transaction</p>
+            
+            </li>
             
         </ul>
     </div>
