@@ -9,8 +9,24 @@ class XMLContentGetterService
      */
     public function GetXmlContent()
     {
-        $xmlString = file_get_contents("https://easyshop.ph.feature/webservice/homewebservice/getContents/");
+        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getXML'));
         return $xmlString;
     }
 
+    public function GetHomeCmsLink()
+    {
+        $link = \Config::get('easyshop/webservice.homeCmsLink');
+        return $link;
+    }
+    /**
+     *  Returns the the link https://www.easyshop.ph
+     *
+     *  @return string $link
+     */
+    public function GetEasyShopLink()
+    {
+        $link = \Config::get('easyshop/webservice.easyShopLink');
+        return $link;
+
+    }
 }
