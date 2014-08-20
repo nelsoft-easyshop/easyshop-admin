@@ -10,6 +10,44 @@
 @section('content')
 
 <div id="mainsection">
+<!--  START  -->
+    <button type="button" class="btn"  data-toggle="modal" data-target="#myModal" data="">
+        Download
+    </button>
+    <div class="modal fade user_modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-list-alt"></span> RECORD OF TRANSACTIONS</h4>
+                </div>
+                <div class="modal-body">
+                    {{ Form::open(array('url' => 'transactionRecord')) }}
+                    <div class="form-group">
+                        <label for="date_timepicker_start">Start Date</label>
+                        <div class="inner-addon left-addon">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                            {{ Form::text('trans_startdate', Input::old('trans_startdate'), array('id' => 'date_timepicker_start', 'class' => 'form-control' ) ) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="date_timepicker_end">End Date</label>
+                        <div class="inner-addon left-addon">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                            {{ Form::text('trans_enddate', Input::old('trans_enddate'), array('id' => 'date_timepicker_end', 'class' => 'form-control' ) ) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    {{ Form::submit(' Download File ', array('id' => 'btn_download', 'class' => 'btn btn-primary')) }}
+                </div>
+                {{ Form::close() }}
+            </div>
+        </div>
+    </div>
+<!--  END. -->
+<!--  NOTE : This is not the proper place of this feature, this will be included on sam's transaction page  -->
     <div class="filter-container ">
         <div id="srch_container">
             <h4 class="tbl-title">

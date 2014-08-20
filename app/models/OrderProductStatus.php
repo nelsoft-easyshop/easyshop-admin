@@ -1,6 +1,6 @@
 <?php
 
-class OrderProductStatus extends Eloquent 
+class OrderProductStatus extends Eloquent
 {
 
     const STATUS_ON_GOING = 0;
@@ -23,8 +23,5 @@ class OrderProductStatus extends Eloquent
      *
      */
     protected $primaryKey = 'id_order_product_status';
-
-
-    
 
 }

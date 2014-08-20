@@ -15,7 +15,6 @@ class MemberController extends BaseController
         $dataFormatter = $this->locationService;
         $data = $dataFormatter->format($locationLookUpRepository->getByType());
 
-
         return View::make('pages.userlist')
             ->with('list_of_member', Member::paginate(100))
             ->with('list_of_location', $data);
