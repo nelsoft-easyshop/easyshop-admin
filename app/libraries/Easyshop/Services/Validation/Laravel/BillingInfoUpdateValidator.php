@@ -9,7 +9,7 @@ class BillingInfoUpdateValidator extends AbstractLaravelValidator
     * @var array
     */
     protected $rules = array(
-        'billing_info_id' => 'required|numeric',
+        'billing_info_id' => 'numeric',
         'account_name' => 'required',
         'account_number' => 'required',
         'bank_id' => 'required|numeric',

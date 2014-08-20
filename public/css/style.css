@@ -3280,6 +3280,7 @@ top:0px !important;
 .payment_search_filter_container input, .payment_search_filter_container select, .payment_search_filter_container button {
     padding: 4px 12px;
 }
+
 .payment_search_filter_container input:focus{
     border: 1px solid #ff4400;
     box-shadow: none;
@@ -3288,6 +3289,17 @@ top:0px !important;
     padding: 5px 13px;
     
 }
+
+.payment_search_filter_container input.date{
+    width: 130px;
+}
+
+
+.payment_search_filter_container .date-label{
+    font-weight: normal;
+    font-size: 13px;
+}
+
 
 .payment_search_filter_container .btn {
     background-color: #ff4400;
