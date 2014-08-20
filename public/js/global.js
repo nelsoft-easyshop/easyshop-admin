@@ -51,15 +51,7 @@ function getParameterByName(name) {
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-var error = getParameterByName('error');
-var success = getParameterByName('success');
 
-if(error == "1") {
-    $("#error").modal('show');
-}
-if(success == "1") {
-    $("#success").modal('show');
-}
 
 
 var loader = loader || (function () {
