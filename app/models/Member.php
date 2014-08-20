@@ -19,8 +19,7 @@ class Member extends Eloquent
 
     public function product($isViewable=false)
     {
-        if($isViewable)
-        {
+        if($isViewable){
             return $this->hasMany('Product','member_id')->where('is_delete', '=', 0, 'AND')->where('is_draft', '=', 0, 'AND');
         }
 
