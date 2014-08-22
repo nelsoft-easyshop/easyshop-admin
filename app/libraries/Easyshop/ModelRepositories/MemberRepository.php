@@ -4,17 +4,18 @@ use Illuminate\Support\Facades\DB;
 use Member, OrderStatus, OrderProductStatus;
 
 class MemberRepository extends AbstractRepository
-{    
-    
+{
+    private $transactionService;
+
     /**
      * Update the member entity
      *
-     * @param $id integer
+     * @param $member object
      * @param $data
      */
-    public function update($id,$data)
+    public function update($member, $data)
     {
-        Member::find($id)->update($data);
+        return $member->update($data);
     }
         
     /**
@@ -23,9 +24,14 @@ class MemberRepository extends AbstractRepository
      * @param int $memberId
      * @return Member
      */
-    public function getMemberById($memberId)
+    public function getById($memberId)
     {
-        return Member::find($memberId);
+        $member = Member::with('address')
+            ->find($memberId);
+        $member->Address->City;
+        $member->Address->Region;
+
+        return $member;
     }
     
     
@@ -56,7 +62,6 @@ class MemberRepository extends AbstractRepository
         });
         
         $query->leftJoin('es_product_shipping_comment','es_product_shipping_comment.order_product_id', '=', 'es_order_product.id_order_product');
-        
         $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
             $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
                 $query->where('es_order_product_history.created_at', '>=', $formattedDateFrom);
@@ -128,7 +133,7 @@ class MemberRepository extends AbstractRepository
         if($username !== null){
             $query->where('es_member.username', '=', $username);
         }     
-        
+
         $query->groupBy('es_member.id_member');
         
         $returnedOrders = $query->get(['es_member.username',
@@ -143,5 +148,27 @@ class MemberRepository extends AbstractRepository
         return $returnedOrders;
     
     }
-}
 
+    public function search($userData,$row=50)
+    {
+        $member = Member::groupBy('es_member.id_member');
+        if($userData['fullname']){
+            $member->where('es_member.fullname', 'LIKE', '%' . $userData['fullname'] . '%');
+        }
+        if($userData['username']){
+            $member->where('es_member.username', 'LIKE', '%' . $userData['username'] . '%');
+        }
+        if($userData['contactno']){
+            $member->where('es_member.contactno', 'LIKE', '%' . $userData['contactno'] . '%');
+        }
+        if($userData['email']){
+            $member->where('es_member.email', 'LIKE', '%' . $userData['email'] . '%');
+        }
+        if(($userData['startdate']) && ($userData['enddate'])){
+            $member->where('es_member.datecreated', '>=', str_replace('/', '-', $userData['startdate']) . ' 00:00:00' )
+                ->where('es_member.datecreated', '<=', str_replace('/', '-', $userData['enddate']) . ' 23:59:59', 'AND');
+        }
+
+        return $member->paginate($row);
+    }
+}

@@ -1,5 +1,4 @@
 <?php
-
     return array(
 
     /*
@@ -125,6 +124,7 @@
         'Easyshop\ModelRepositories\RepositoryServiceProvider',
         'Easyshop\Services\ServiceServiceProvider',
         'Alexdover\BladeSet\BladeSetServiceProvider',
+        'Maatwebsite\Excel\ExcelServiceProvider'
     ),
 
     /*

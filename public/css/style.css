@@ -3199,6 +3199,34 @@ top:0px !important;
 .data_container{
     display: none ;
 }
+.inner-addon {
+    position: relative;
+}
+
+/* style icon */
+.inner-addon .glyphicon {
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+    z-index: 99;
+}
+
+/* align icon */
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
+.dd-right{ left:80px !important;}
+#srch_container{display: none}
+
+#srch_container{
+    border: 1px solid #b7b7b7;
+    padding: 3%;
+}
+#srch_container .tbl-title{margin-bottom: 3%}
 /* end */
 
 /* Payments and Transactions  */

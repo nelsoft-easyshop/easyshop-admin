@@ -2,8 +2,6 @@
 
 use Illuminate\Support\ServiceProvider;
 
-
-
 /**
  * Register our easyshop services with Laravel
  */
@@ -17,6 +15,11 @@ class ServiceServiceProvider extends ServiceProvider
     {
         $this->app->bind('LocationService', function($app){
             return new LocationService();
+        });
+
+        $this->app->bind('ExcelService', function($app){
+            return new ExcelService();
+
         });
 
         $this->app->bind('TransactionService', function($app){
@@ -37,10 +40,12 @@ class ServiceServiceProvider extends ServiceProvider
             return new NumberFormatterService();
         });
 
+
         $this->app->bind('XMLContentGetterService', function(){
             return new XMLContentGetterService();
         });
         
+
     }
 }
 

@@ -25,7 +25,7 @@ class OrderProductController extends BaseController
             
         $dateFrom = $transactionService->getStartPayOutRange($dateFilter);
         $dateTo = $transactionService->getEndPayOutRange($dateFilter);
-        
+
         if(Input::has('username')){
             $accounts = $memberRepository->getUserAccountsToPay($dateFrom, $dateTo, Input::get('username'));
         }
@@ -39,7 +39,7 @@ class OrderProductController extends BaseController
                     ->with('dateTo', $dateTo)
                     ->with('input', Input::all());
     }
-    
+
     /**
      * GET method for displaying list of accounts for refund
      *
@@ -116,7 +116,7 @@ class OrderProductController extends BaseController
 
         return Response::json(array('html' => $html));
     }
-    
+
     /**
      *  GET method for displaying specific order products to be refunded for each user
      *
@@ -152,7 +152,6 @@ class OrderProductController extends BaseController
     public function getOrderProductDetail()
     {
         $userdata = Input::get();
-
         $orderProductRepository = App::make('OrderProductRepository');
         $orderProduct = $orderProductRepository->getOrderProductById($userdata['order_product_id']);
       
