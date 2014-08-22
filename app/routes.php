@@ -20,9 +20,7 @@ Route::post('login', array('uses' => 'AccountController@doLogin'));
 Route::get('logout', array('uses' => 'AccountController@doLogout'));
 
 Route::group(array('before' => 'auth'), function(){
-
     Route::get('/', array('uses' => 'HomeController@index'));
-
     Route::get('users', array('uses' => 'MemberController@showAllUsers'));
     Route::post('users', array('uses' => 'MemberController@search'));
     Route::put('user', array('uses' => 'MemberController@ajaxUpdateUsers'));
@@ -38,6 +36,7 @@ Route::group(array('before' => 'auth'), function(){
 
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
     Route::post('items', array('uses' => 'ProductController@doSearchItem'));
+
 
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
 
