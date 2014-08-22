@@ -294,5 +294,4 @@ class OrderProductController extends BaseController
         return View::make('pages.transactionlist');
     }
     
-    
 }
