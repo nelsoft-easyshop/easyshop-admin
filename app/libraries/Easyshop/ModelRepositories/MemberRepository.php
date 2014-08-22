@@ -149,7 +149,7 @@ class MemberRepository extends AbstractRepository
     
     }
 
-    public function search($userData,$row)
+    public function search($userData,$row=50)
     {
         $member = Member::groupBy('es_member.id_member');
         if($userData['fullname']){

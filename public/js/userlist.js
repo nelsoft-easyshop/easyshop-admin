@@ -89,6 +89,7 @@
                 }
             })
         });
+
         $('.drct_search').on('click', function(){
             var id = $(this).attr('data');
             var text = $('#searchBox').val();
@@ -96,6 +97,7 @@
             $('#searchForm').submit();
         });
     });
+
     function cityFilter(stateregionselect,cityselect)
     {
         var stateregionID = stateregionselect.find('option:selected').attr('value');

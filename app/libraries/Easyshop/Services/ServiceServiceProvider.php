@@ -19,6 +19,11 @@ class ServiceServiceProvider extends ServiceProvider
             return new LocationService();
         });
 
+        $this->app->bind('ExcelService', function($app){
+            return new ExcelService();
+
+        });
+
         $this->app->bind('TransactionService', function($app){
             return new TransactionService(
                 new \Easyshop\ModelRepositories\OrderProductStatusRepository,
@@ -36,7 +41,6 @@ class ServiceServiceProvider extends ServiceProvider
         $this->app->bind('NumberFormatter', function(){
             return new NumberFormatterService();
         });
-        
     }
 }
 

@@ -7,8 +7,7 @@ class ProductController extends BaseController
             ->with(
                 'list_of_items',
                 App::make('ProductRepository')
-                    ->getAll(true)
-                    ->paginate(100)
+                    ->getAll(100)
             );
     }
 
