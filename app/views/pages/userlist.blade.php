@@ -10,19 +10,100 @@
 @stop
 
 @section('content')
-<div id="mainsection">
-    <div class="filter-container">
-
-    </div>
-    <div class="tbl-container">
-        <div class="input-group srch_div">
-            <input type="text" class="form-control">
-            <div class="input-group-btn">
-                <button type="button" class=" btn btn-primary">
-                    <span class=" glyphicon glyphicon-search"></span> SEARCH
-                </button>
+    <div id="mainsection">
+        <div class="filter-container ">
+            <div id="srch_container">
+                <h4 class="tbl-title">
+                    <span class="glyphicon glyphicon-zoom-in"></span>
+                    ADVANCE SEARCH
+                </h4>
+                {{ Form::open(array('url' => 'users', 'id' => 'searchForm')) }}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="date_timepicker_start">Start Date</label>
+                            <div class="inner-addon left-addon">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                {{ Form::text('startdate', Input::old('startdate'), array('id' => 'date_timepicker_start', 'class' => 'form-control' ) ) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 ">
+                        <div class="form-group">
+                            <label for="date_timepicker_end">End Date</label>
+                            <div class="inner-addon left-addon">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                {{ Form::text('enddate', Input::old('enddate'), array('id' => 'date_timepicker_end', 'class' => 'form-control' ) ) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="src_fullname">Fullname</label>
+                            {{ Form::text('fullname', Input::old('fullname'), array('id' => 'src_fullname', 'class' => 'form-control', 'placeholder' => 'Enter fullname' ) ) }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="src_username">Username</label>
+                            {{ Form::text('username', Input::old('item'), array('id' => 'src_username', 'class' => 'form-control', 'placeholder' => 'Enter username' ) ) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="src_number">Contact number</label>
+                            {{ Form::text('number', Input::old('number'), array('id' => 'src_number', 'class' => 'form-control', 'placeholder' => 'Enter number' ) ) }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="src_email">Email</label>
+                            {{ Form::text('email', Input::old('email'), array('id' => 'src_email', 'class' => 'form-control', 'placeholder' => 'Enter email' ) ) }}
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-md-offset-2">
+                        <div class="form-group">
+                            <label for="btn_close_search">&nbsp</label>
+                            <button type="button" id="btn_close_search" class="btn btn-default"> Cancel </button>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label for="btn_search">&nbsp</label>
+                            {{ Form::submit(' Search ', array('id' => 'btn_search', 'class' => 'btn btn-primary')) }}
+                        </div>
+                    </div>
+                </div>
+                {{ Form::close() }}
             </div>
         </div>
+        <div class="tbl-container">
+            <div class="input-group srch_div">
+                <div class="inner-addon left-addon">
+                    <i class="glyphicon glyphicon-search"></i>
+                    <input type="text" id="searchBox"  class="form-control" placeholder="Search all items" />
+                </div>
+                <div class="input-group-btn">
+                    &nbsp;
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Filters
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dd-right" role="menu">
+                        <li role="presentation" class="dropdown-header">Search by :</li>
+                        <li><a class="drct_search" data="src_fullname" href="javascript:void(0)">Fullname</a></li>
+                        <li><a class="drct_search" data="src_username" href="javascript:void(0)">Username</a></li>
+                        <li><a class="drct_search" data="src_number" href="javascript:void(0)">Contact Number</a></li>
+                        <li><a class="drct_search" data="src_email" href="javascript:void(0)">Email</a></li>
+                        <li class="divider"></li>
+                        <li><a href="javascript:void(0)" id="btn_advance_search"><span class="glyphicon glyphicon-new-window"></span> View advance search</a></li>
+                    </ul>
+                </div>
+            </div>
         <h4 class="tbl-title">
             <span class="glyphicon glyphicon-list-alt"></span>
             LIST OF REGISTERED USERS
@@ -138,7 +219,6 @@
 </div>
 
 @stop
-
 
 @section('page_js')
 {{ HTML::script('js/userlist.js') }}

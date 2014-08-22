@@ -1,5 +1,5 @@
 (function ($) {
-    
+
     $('.date').each(function() {
         $(this).datetimepicker({
             timepicker:false,
@@ -115,9 +115,7 @@
                             }
                              
                         },
-                    });   
-
-                    
+                    });
                 }    
         });
        
@@ -141,13 +139,13 @@
         showInputs();
     });
     
+
     $(document.body).on('click','#cancel_account',function(){
         emptyErrors(); 
         hideInputs();
     });
     
     $(document.body).on('click','#save_account',function(){
-        
         $('#error-container').children().fadeOut(500);        
         var $this = $(this);
         var accnt_name = $('#form_accnt_name').val().trim();
@@ -157,7 +155,7 @@
         var billing_info_id = $('#account_collection').val();
         var selected_account = $('#account_collection').find('option:selected');
         var order_billing_info_id = selected_account.data('order-billing-id');
-                
+
         var member_id =  ($('#action').val() == 'pay')  ?  $('#seller_id').val() : $('#buyer_id').val();
 
         var spinner = Ladda.create(this);
@@ -165,13 +163,14 @@
         
         var json_data = {};
         var isCreate = billing_info_id == 0;
-        
+
         if(isCreate){
             json_data = {
                 account_name:accnt_name, 
                 account_number:accnt_number, 
                 bank_id:accnt_bank, 
-                member_id:  member_id 
+                member_id:  member_id
+
             };
         }else{
             json_data = {
@@ -179,12 +178,10 @@
                 billing_info_id:billing_info_id, 
                 account_name:accnt_name,
                 account_number:accnt_number,
-                bank_id:accnt_bank , 
+                bank_id:accnt_bank ,
                 member_id: member_id
             };
         }
-        
-
         $.ajax({
             url: 'billinginfo',
             data: json_data,
@@ -227,7 +224,6 @@
             }           
         });
 
-
     });
         
     $(document.body).on('change','#account_collection',function(){
@@ -262,7 +258,7 @@
         var account_name = selected_option.data('name');
         var account_number = selected_option.data('number');
         var bank_name = selected_option.data('bank-name');
-        
+
         var order_product_ids = $('#order_product_ids').val();
  
         var dateFrom = $('input#date-from').val();

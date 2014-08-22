@@ -1,6 +1,6 @@
 <?php
 
-class PaymentMethod extends Eloquent
+class OrderShippingAddress extends Eloquent
 {
 
     /**
@@ -8,12 +8,12 @@ class PaymentMethod extends Eloquent
      *
      * @var string
      */
-    protected $table = 'es_payment_method';
+    protected $table = 'es_order_shipping_address';
 
     /**
      * The primary key of the table
      *
      */
-    protected $primaryKey = 'id_payment_method';
+    protected $primaryKey = 'id_order_shipping_address';
 
 }
