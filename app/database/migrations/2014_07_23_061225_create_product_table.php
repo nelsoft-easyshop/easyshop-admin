@@ -33,8 +33,8 @@ class CreateProductTable extends Migration
             $table->integer('is_promote',false,true)->default(0);
             $table->integer('member_id',false,true)->default(0);
             $table->string('member_memo',1024);
-            $table->dateTime('createddate');
-            $table->dateTime('lastmodifieddate');
+            $table->timestamp('createddate');
+            $table->timestamp('lastmodifieddate');
             $table->integer('clickcount',false,true)->default(0);
             $table->string('cat_other_name',150);
             $table->string('brand_other_name',150);
@@ -43,8 +43,8 @@ class CreateProductTable extends Migration
             $table->integer('is_cod')->default(0);
             $table->string('slug');
             $table->decimal('discount',15,4)->default(0.0000);
-            $table->dateTime('startdate');
-            $table->dateTime('enddate');
+            $table->timestamp('startdate');
+            $table->timestamp('enddate');
             $table->integer('promo_type')->default(0);
             $table->integer('is_sold_out')->default(0);
         });

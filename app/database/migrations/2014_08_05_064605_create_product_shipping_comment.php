@@ -21,9 +21,10 @@ class CreateProductShippingComment extends Migration
             $table->string('tracking_num', 45)->default('')->nullable();
             $table->string('comment', 450)->default('')->nullable();
             $table->integer('member_id')->default(0);
-            $table->string('expected_date')->default('')->nullable();
-            $table->dateTime('datemodified');
-            $table->dateTime('delivery_date');
+            $table->timestamp('delivery_date');
+            $table->timestamp('expected_date');
+            $table->timestamps();
+
         });
     }
 
