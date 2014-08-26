@@ -7,7 +7,9 @@
         }
     });
 
+
 })(jQuery);
+
 
 var entityMap = {
     "&": "&amp;",
@@ -41,6 +43,15 @@ function escapeHtml(string) {
         return entityMap[s];
     });
 }
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+    results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+
 
 
 var loader = loader || (function () {

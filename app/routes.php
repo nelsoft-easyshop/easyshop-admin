@@ -25,6 +25,13 @@ Route::group(array('before' => 'auth'), function(){
     Route::post('users', array('uses' => 'MemberController@search'));
     Route::put('user', array('uses' => 'MemberController@ajaxUpdateUsers'));
 
+
+
+    Route::get('cms/home', array('uses' => 'ContentManagerController@getHomeContent'));
+    Route::get('cms/slides', array('uses' => 'ContentManagerController@getMainSlides'));
+    Route::get('cms/productslides', array('uses' => 'ContentManagerController@getProductSlides'));
+
+
     Route::post('transactionRecord', array('uses' => 'HomeController@transactionRecord'));
 
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
@@ -44,13 +51,12 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('orderproduct-status/pay', array('uses' => 'OrderProductController@payOrderProducts'));
     Route::put('orderproduct-status/refund', array('uses' => 'OrderProductController@refundOrderProducts'));
 
+
     Route::put('billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
     Route::post('billinginfo', array('uses' => 'BillingInfoController@createOrderProductPaymentAccount'));
 
     
     Route::get('transaction', array('uses' => 'OrderProductController@getAllValidTransactions'));
 
+
 });
-
-
-    

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory;
 
+
 class OrderProductRepository extends AbstractRepository
 {    
 
@@ -12,11 +13,11 @@ class OrderProductRepository extends AbstractRepository
      * @param integer $orderProductId
      * @return OrderProduct
      */
+
     public function getOrderProductById($orderProductId)
     {
         return OrderProduct::find($orderProductId);
     }
-    
     
     /**
      * Get order products by Id. Accepts integer array.

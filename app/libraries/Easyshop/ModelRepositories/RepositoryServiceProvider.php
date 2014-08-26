@@ -31,6 +31,12 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('OrderProductRepository', function($app){
             return new OrderProductRepository();
         });
+        $this->app->bind('ProductRepository', function($app){   
+            return new ProductRepository();
+        });
+        $this->app->bind('AdminMemberRepository', function($app){   
+            return new AdminMemberRepository();
+        });
 
         $this->app->bind('LocationLookUpRepository', function($app){
             return new LocationLookUpRepository();
