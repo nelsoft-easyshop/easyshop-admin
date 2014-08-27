@@ -31,6 +31,11 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('cms/slides', array('uses' => 'ContentManagerController@getMainSlides'));
     Route::get('cms/productslides', array('uses' => 'ContentManagerController@getProductSlides'));
 
+    Route::get('cms/content_files', array('uses' => 'ContentFilesManagerController@getContentFiles'));
+    Route::get('cms/featuredProduct', array('uses' => 'ContentFilesManagerController@getFeaturedProducts'));
+    Route::get('cms/popularItem', array('uses' => 'ContentFilesManagerController@getPopularItems'));
+    Route::get('cms/promoItems', array('uses' => 'ContentFilesManagerController@getPromoItems'));
+
 
     Route::post('transactionRecord', array('uses' => 'HomeController@transactionRecord'));
 
