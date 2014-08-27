@@ -1145,6 +1145,7 @@
             },
             error: function(e) {
                  $("#error").modal('show');  
+                 $("#loading").modal('hide');
             }
         });
     }
