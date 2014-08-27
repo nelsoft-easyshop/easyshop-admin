@@ -14,9 +14,9 @@ return array(
     |
     */
     'homeCmsLink' => 'https://easyshop.ph.local/webservice/homewebservice',
-    'contentWebServiceCmsLink' => 'https://easyshop.ph.local/webservice/contentwebservice',
-    'getXML'=> 'https://easyshop.ph.local/webservice/homewebservice/getContents/',
-    'getContentsXML'=> 'https://easyshop.ph.local/webservice/contentwebservice/getcontents/',
+    'feedCmsLink' => 'https://easyshop.ph.local/webservice/feedwebservice',
+    'getHomeXML'=> 'https://easyshop.ph.local/webservice/homewebservice/getContents/',
+    'getFeedXML'=> 'https://easyshop.ph.local/webservice/feedwebservice/getcontents/',
     'easyShopLink'=> 'https://easyshop.ph.local',
 );
 
