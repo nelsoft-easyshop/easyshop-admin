@@ -7,9 +7,9 @@ class XMLContentGetterService
      * 
      * @return $xmlString
      */
-    public function GetXmlContent()
+    public function GetXMLHomeFiles()
     {
-        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getXML'));
+        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getHomeXML'));
         return $xmlString;
     }
 
@@ -32,7 +32,7 @@ class XMLContentGetterService
      */
     public function GetContentCmsLink()
     {
-        $link = \Config::get('easyshop/webservice.contentWebServiceCmsLink');
+        $link = \Config::get('easyshop/webservice.feedCmsLink');
         return $link;
     }
 
@@ -56,7 +56,7 @@ class XMLContentGetterService
     public function GetXmlContentFiles()
     {
 
-        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getContentsXML'));
+        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getFeedXML'));
         return $xmlString;
     }
 }
