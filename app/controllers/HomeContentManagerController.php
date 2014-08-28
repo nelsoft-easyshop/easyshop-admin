@@ -4,7 +4,7 @@ use Easyshop\Services\XMLContentGetterService as XMLService;
 
 
 
-class ContentManagerController extends BaseController 
+class HomeContentManagerController extends BaseController 
 {
 
     /**
@@ -27,7 +27,7 @@ class ContentManagerController extends BaseController
     public function getHomeContent()
     {
         $id = Auth::id();
-        $xmlString = $this->XMLService->GetXmlContent();
+        $xmlString = $this->XMLService->GetXMLHomeFiles();
         $map = simplexml_load_string(trim($xmlString));
 
         $productEntity = App::make('ProductRepository');
@@ -97,7 +97,7 @@ class ContentManagerController extends BaseController
         $id = Auth::id();
 
         $adminEntity = App::make('AdminMemberRepository');
-        $xmlString = $this->XMLService->GetXmlContent();
+        $xmlString = $this->XMLService->GetXMLHomeFiles();
 
         $map = simplexml_load_string(trim($xmlString));
         foreach($map->mainSlide as $slides)
@@ -129,7 +129,7 @@ class ContentManagerController extends BaseController
         $id = Auth::id();
 
         $adminEntity = App::make('AdminMemberRepository');
-        $xmlString = $this->XMLService->GetXmlContent();
+        $xmlString = $this->XMLService->GetXMLHomeFiles();
         $map = simplexml_load_string(trim($xmlString));
 
         $productEntity = App::make('ProductRepository');

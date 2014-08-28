@@ -121,7 +121,7 @@
 											<label for="inputEmail" class="control-label col-xs-2">Type of Main Panel</label>
 											  	<div class="col-xs-10">
 													<div class="btn-group">
-														<button data-toggle="dropdown" id="mybutton{{ $panelMainId }}" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
+														<button data-toggle="dropdown" id="mybutton{{ $panelMainId }}" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span><span class="caret"></span></button>
 														<ul class="dropdown-menu">
 															@foreach($nodeTypes as $types)
 															  <li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='{{ $panelMainId }}' class='{{$types->value}}'>{{$types->value}}</span ></li>
@@ -142,7 +142,7 @@
 												<input type="text" id="value" class="form-control"  placeholder="Value" value="{{ $panelMain->value }}">
 											</div>
 										</div>
-										@if ($panelMain->type == "image")
+										@if ($panelMain->type == "Image" || $panelMain->type == "image")
 											<div id='imagetype{{$panelMainId}}' style="display:block;">
 										@else
 											<div id='imagetype{{$panelMainId}}' style="display:none;">
@@ -190,9 +190,22 @@
 									<span style='display:none;'>{{ $panelMainId }}</span>
 									<form class="form-horizontal">
 										<div class="form-group">
+											<label for="inputEmail" class="control-label col-xs-2">Type of Product Panel</label>
+											  	<div class="col-xs-10">
+													<div class="btn-group">
+														<button data-toggle="dropdown" id="mybutton{{ $panelMainId }}" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span><span class="caret"></span></button>
+														<ul class="dropdown-menu">
+															@foreach($nodeTypes as $types)
+															  <li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='{{ $panelMainId }}' class='{{$types->value}}'>{{$types->value}}</span ></li>
+															@endforeach
+														</ul>
+													</div>				  
+											 	 </div>
+										</div>
+										<div class="form-group">
 											<label for="inputPassword" class="control-label col-xs-2">Type</label>
 											<div class="col-xs-10">
-												<input type="text" id="type" class="form-control" placeholder="Value" value="{{ $product_panel->type }}">
+												<input type="text" id="type" class="form-control" readonly='readonly' placeholder="Value" value="{{ $panelMain->type }}">
 											</div>
 										</div>
 										<div class="form-group">
@@ -432,10 +445,10 @@
 					<label for="inputEmail" class="control-label col-xs-2">Type of Main Panel</label>
 					<div class="col-xs-10">
 						<div class="btn-group">
-							<button data-toggle="dropdown" id="mybutton{{ $panelMainId }}" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
+							<button data-toggle="dropdown" id="mybutton100001" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
 							<ul class="dropdown-menu">
 								@foreach($nodeTypes as $types)
-									<li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='1' class='{{$types->value}}'>{{$types->value}}</span ></li>
+									<li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='100001' class='{{$types->value}}'>{{$types->value}}</span ></li>
 								@endforeach
 							</ul>
 						</div>			  
@@ -466,7 +479,7 @@
 						<input type="text" id="productindexSectionMainPanel" class="form-control" name='productindex' placeholder="Product Index" value="">
 					</div>
 				</div>
-				<div id='imagetype1' style="display:none;">
+				<div id='imagetype100' style="display:none;">
 				  <div class="form-group">
 						<label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
 						<div class="col-xs-10">
@@ -497,16 +510,17 @@
 
 			<form class="form-horizontal" id='formSectionProduct'  method='post' action = '{{$homeCmsLink}}/addSectionProduct'>
 
+
 				<input type="text" id="typeSectionProduct" class="form-control" name= 'type' readonly='readonly' placeholder="Value" value="Product" style='display:none'/>
-				
+		
 				<div class="form-group">
 					<label for="inputPassword" class="control-label col-xs-2">Type</label>
 					<div class="col-xs-10">
 						<div class="btn-group" >
-							<button data-toggle="dropdown" id="mybuttonsectionproduct" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
+							<button data-toggle="dropdown" id="mybutton20000001" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
 							<ul class="dropdown-menu" id='sectionProductDrop'>
 								@foreach($nodeTypes as $types)
-								<li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' class='{{$types->value}}'>{{$types->value}}</span ></li>
+									<li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index = "20000001"class='{{$types->value}}'>{{$types->value}}</span ></li>
 								@endforeach                                
 							</ul>
 						</div>

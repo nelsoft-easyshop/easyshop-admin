@@ -38,6 +38,10 @@ class RepositoryServiceProvider extends ServiceProvider
             return new AdminMemberRepository();
         });
 
+        $this->app->bind('RegisterAdminRepository', function($app){   
+            return new RegisterAdminRepository();
+        });        
+
         $this->app->bind('LocationLookUpRepository', function($app){
             return new LocationLookUpRepository();
         });
@@ -67,10 +71,15 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('OrderBillingInfoRepository', function($app){  
             return new OrderBillingInfoRepository();
         });
-        
+
         $this->app->bind('OrderHistoryRepository', function($app){  
             return new OrderHistoryRepository();
         });
+        
+        $this->app->bind('PaymentMethodRepository', function($app){  
+            return new PaymentMethodRepository();
+        });
+
                       
 
     }
