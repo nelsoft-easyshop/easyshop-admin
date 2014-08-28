@@ -39,24 +39,20 @@ Route::group(array('before' => 'auth'), function(){
 
 
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
-
     Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));
-
     Route::get('orderproduct/pay', array('uses' => 'OrderProductController@getOrderProductsToPay'));
     Route::get('orderproduct/refund', array('uses' => 'OrderProductController@getOrderProductsToRefund'));
     Route::get('orderproduct-detail', array('uses' => 'OrderProductController@getOrderProductDetail'));
-    
     Route::get('orderproduct-payment/pay', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToPay'));
     Route::get('orderproduct-payment/refund', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToRefund'));
     Route::put('orderproduct-status/pay', array('uses' => 'OrderProductController@payOrderProducts'));
     Route::put('orderproduct-status/refund', array('uses' => 'OrderProductController@refundOrderProducts'));
-
-
     Route::put('billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
     Route::post('billinginfo', array('uses' => 'BillingInfoController@createOrderProductPaymentAccount'));
 
-    
-    Route::get('transaction', array('uses' => 'OrderProductController@getAllValidTransactions'));
-
+    Route::get('transaction', array('uses' => 'OrderController@getAllValidOrders'));
+    Route::get('order-detail', array('uses' => 'OrderController@getOrderDetail'));
+    Route::put('order-void', array('uses' => 'OrderController@voidOrder'));
+    Route::put('order-product-void', array('uses' => 'OrderProductController@voidOrderProduct'));
 
 });
