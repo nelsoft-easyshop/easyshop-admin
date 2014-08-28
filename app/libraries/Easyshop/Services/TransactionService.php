@@ -363,11 +363,38 @@ class TransactionService
             }
             $this->orderProductRepository->updateOrderProductStatus($orderProduct, $voidStatus);
             $this->orderProductHistoryRepository->createOrderProductHistory($orderProduct->id_order_product, $voidStatus);
-           
+            $this->synchOrderVoidStatusWithOrderProduct($orderProduct->order_id, $voidStatus);
             return true;
         }
 
         return false;
+    }
+    
+    
+    /**
+     * Synch Order void status with Order Product status
+     * If all order products are voided, the order will also be voided
+     *
+     * @param integer $orderId
+     * @param integer $orderProductVoidStatus
+     */
+    public function synchOrderVoidStatusWithOrderProduct($orderId, $orderProductVoidStatus)
+    {
+        $orderProducts = $this->orderProductRepository->getOrderProductByOrderId($orderId);
+        $isOrderVoid = true;
+        
+        foreach($orderProducts as $orderProduct){
+            if(intval($orderProduct->status) !== intval($orderProductVoidStatus)){
+                $isOrderVoid = false;
+                break;
+            }
+        }
+        
+        if($isOrderVoid){
+            $orderVoidStatus = $this->orderStatusRepository->getVoidStatus();
+            $order = $this->orderRepository->getOrderById($orderId);
+            $this->orderRepository->updateOrderStatus($order, $orderVoidStatus);
+        }
     }
     
     
