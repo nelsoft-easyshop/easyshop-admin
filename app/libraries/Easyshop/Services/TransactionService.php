@@ -10,6 +10,10 @@ use Easyshop\ModelRepositories\OrderProductStatusRepository as OrderProductStatu
 use Easyshop\ModelRepositories\OrderBillingInfoRepository as OrderBillingInfoRepository;
 use Easyshop\ModelRepositories\OrderProductRepository as OrderProductRepository;
 use Easyshop\ModelRepositories\OrderProductHistoryRepository as OrderProductHistoryRepository;
+use Easyshop\ModelRepositories\OrderRepository as OrderRepository;
+use Easyshop\ModelRepositories\OrderStatusRepository as OrderStatusRepository;
+use Easyshop\ModelRepositories\OrderHistoryRepository as OrderHistoryRepository;
+use Easyshop\ModelRepositories\PaymentMethodRepository as PaymentMethodRepository;
 
 /**
  * TransactionService, containing all useful methods for business logic around transactions
@@ -51,8 +55,34 @@ class TransactionService
      * @var OrderProductHistoryRepository
      */ 
     private $orderProductHistoryRepository;
-
     
+    /**
+     * Order Repository
+     *
+     * @var OrderRepository
+     */
+    private $orderRepository;
+    
+    /**
+     * OrderStatus Repository
+     *
+     * @var OrderStatusRepository
+     */
+    private $orderStatusRepository;
+    
+    /**
+     * OrderHistory Repository
+     *
+     * @var OrderHistoryRepository
+     */
+    private $orderHistoryRepository;
+    
+    /**
+     * PaymentMethod Repository
+     *
+     * @var PaymentMethodRepository
+     */
+    private $paymentMethodRepository;
     
     /**
      * Inject dependecies
@@ -61,13 +91,20 @@ class TransactionService
     public function __construct(OrderProductStatusRepository $orderProductStatusRepository,
                                 OrderBillingInfoRepository $orderBillingInfoRepository,
                                 OrderProductRepository $orderProductRepository,
-                                OrderProductHistoryRepository $orderProductHistoryRepository)    
+                                OrderProductHistoryRepository $orderProductHistoryRepository,
+                                OrderRepository $orderRepository,
+                                OrderStatusRepository $orderStatusRepository,
+                                OrderHistoryRepository $orderHistoryRepository,
+                                PaymentMethodRepository $paymentMethodRepository)    
     {
         $this->orderProductStatusRepository = $orderProductStatusRepository;
         $this->orderBillingInfoRepository = $orderBillingInfoRepository;
         $this->orderProductRepository = $orderProductRepository;
         $this->orderProductHistoryRepository = $orderProductHistoryRepository; 
-
+        $this->orderRepository = $orderRepository;
+        $this->orderStatusRepository = $orderStatusRepository;
+        $this->orderHistoryRepository = $orderHistoryRepository;
+        $this->paymentMethodRepository = $paymentMethodRepository;
         $this->payOutConfig = Config::get('transaction.payOut');
     }
     
@@ -240,7 +277,7 @@ class TransactionService
                                                                                 $accountName,
                                                                                 $accountNumber, 
                                                                                 $bankName);
-                $this->orderProductRepository->updateOrderProductStatus($orderProductId, $status);
+                $this->orderProductRepository->updateOrderProductStatus($orderProduct, $status);
                 $this->orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
             }
             
@@ -276,13 +313,61 @@ class TransactionService
                 $this->orderBillingInfoRepository->createOrderBillingInfo($accountName, $accountNumber, $bankName);   
                 $orderBillingInfoId = $this->orderBillingInfoRepository->currentId;
                 $this->orderProductRepository->updateOrderProductBuyerBillingId($orderProductId, $orderBillingInfoId);
-                $this->orderProductRepository->updateOrderProductStatus($orderProductId, $status);
+                $this->orderProductRepository->updateOrderProductStatus($orderProduct, $status);
                 $this->orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
             }
         }
     
         return $orderBillingInfoCreateValidator->errors();
         
+    }
+    
+    /**
+     * Voids an entire order
+     *
+     * @param integer $orderId
+     * @return boolean
+     */
+    public function voidOrder($orderId)
+    {   
+        $voidStatus = $this->orderStatusRepository->getVoidStatus();
+        $order = $this->orderRepository->getOrderById($orderId);
+        $orderProducts = $this->orderProductRepository->getOrderProductByOrderId($orderId);
+        foreach($orderProducts as $orderProduct){
+            $this->voidOrderProduct($orderProduct->id_order_product);
+        }
+        $this->orderRepository->updateOrderStatus($order, $voidStatus);
+        $this->orderHistoryRepository->createOrderHistory($order->id_order, $voidStatus, 'VOIDED');
+
+        return true;
+    }
+
+    /**
+     * Voids a single order product
+     *
+     * @param integer $orderProductId
+     * @return boolean
+     */
+    public function voidOrderProduct($orderProductId)
+    {
+        $cashOnDeliveryId = intval($this->paymentMethodRepository->getCashOnDelivery());       
+        $onGoingStatus = intval($this->orderProductStatusRepository->getOnGoingStatus());
+        $orderProduct = $this->orderProductRepository->getOrderProductById($orderProductId);
+        
+        if(intval($orderProduct->status) === $onGoingStatus){
+            if(intval($orderProduct->order->payment_method_id) === $cashOnDeliveryId){
+                $voidStatus = $this->orderProductStatusRepository->getCashOnDeliveryStatus();
+            }
+            else{
+                $voidStatus = $this->orderProductStatusRepository->getReturnBuyerStatus();
+            }
+            $this->orderProductRepository->updateOrderProductStatus($orderProduct, $voidStatus);
+            $this->orderProductHistoryRepository->createOrderProductHistory($orderProduct->id_order_product, $voidStatus);
+           
+            return true;
+        }
+
+        return false;
     }
     
     
