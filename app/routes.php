@@ -16,8 +16,13 @@ Route::when('*', 'csrf', array('post', 'put', 'delete'));
 Route::get('login', array('uses' => 'AccountController@showLogin'));
 Route::post('login', array('uses' => 'AccountController@doLogin'));
 
+#Registration
+Route::get('register', array('uses' => 'RegistrationController@showRegistration'));
+Route::post('register', array('uses' => 'RegistrationController@doRegister'));
+
 #LOGOUT
 Route::get('logout', array('uses' => 'AccountController@doLogout'));
+
 
 Route::group(array('before' => 'auth'), function(){
     Route::get('/', array('uses' => 'HomeController@index'));
@@ -35,7 +40,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('cms/featuredProduct', array('uses' => 'FeedsContentManagerController@getFeaturedProducts'));
     Route::get('cms/popularItem', array('uses' => 'FeedsContentsManagerController@getPopularItems'));
     Route::get('cms/promoItems', array('uses' => 'FeedsContentManagerController@getPromoItems'));
-
+    
 
     Route::post('transactionRecord', array('uses' => 'HomeController@transactionRecord'));
 
