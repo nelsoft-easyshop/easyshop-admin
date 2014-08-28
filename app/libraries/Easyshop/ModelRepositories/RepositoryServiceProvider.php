@@ -67,6 +67,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('OrderBillingInfoRepository', function($app){  
             return new OrderBillingInfoRepository();
         });
+        
+        $this->app->bind('OrderHistoryRepository', function($app){  
+            return new OrderHistoryRepository();
+        });
                       
 
     }
