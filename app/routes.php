@@ -17,8 +17,8 @@ Route::get('login', array('uses' => 'AccountController@showLogin'));
 Route::post('login', array('uses' => 'AccountController@doLogin'));
 
 #Registration
-Route::get('register', array('uses' => 'RegistrationController@showRegistration'));
-Route::post('register', array('uses' => 'RegistrationController@doRegister'));
+Route::get('register', array('uses' => 'AccountController@showRegistration'));
+Route::post('register', array('uses' => 'AccountController@doRegister'));
 
 #LOGOUT
 Route::get('logout', array('uses' => 'AccountController@doLogout'));
