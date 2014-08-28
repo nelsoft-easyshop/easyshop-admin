@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\MessageBag;
+use Easyshop\Services\Validation\Laravel\RegistrationValidator;
 
 class AccountController extends BaseController
 {
@@ -60,6 +61,44 @@ class AccountController extends BaseController
     {
         Auth::logout();
         return Redirect::to('/');  
+    }
+
+    /**
+     *  Render the registration page
+     *
+     *  @return View
+     */
+    public function showRegistration()
+    {
+        return View::make('pages.registration');
+    }
+
+    /**
+     * Perform user registration
+     *
+     */
+    public function doRegister()
+    {
+        $registerRepository = App::make('RegisterAdminRepository');
+        $validator = new RegistrationValidator( App::make('validator') );
+
+        if($validator->with(Input::get())->passes()){
+
+            $registerRepository->registerAdmin(Input::get('username'),
+                                            Crypt::encrypt(Input::get('password')), 
+                                            Input::get('fullname'));
+
+            if($registerRepository) {
+                Input::flash();
+                return View::make('pages.registration')
+                    ->with('success','success!');
+            }
+        }
+        else {
+            Input::flash();
+            return View::make('pages.registration')
+                ->withErrors($validator->errors());
+        }
     }
 
 
