@@ -91,6 +91,32 @@
                 <p> View details about refunds for buyers and update the status of the transaction</p>
             
             </li>
+
+            <li>
+                <a href='/cms/home'>
+                    <img src="{{{ asset('images/icon_category.png') }}}"/> 
+                    <span >Manage Home Page</span>
+                </a>
+                <p>Manage the home page of Easyshop.ph. View and updates its different web parts.</p>
+            
+            </li>   
+            <li>
+                <a href='/cms/feeds'>
+                    <img src="{{{ asset('images/icon_category.png') }}}"/> 
+                    <span >Manage Feeds Contents</span>
+                </a>
+                <p>Manage the feeds section of Easyhop.ph. View and updates its different web parts.</p>
+
+            
+            </li>  
+            <li>
+                <a href='/register'>
+                    <img src="{{{ asset('images/icon_category.png') }}}"/> 
+                    <span >Add Administrator</span>
+                </a>
+                <p>Registers an administrator user of the site.</p>
+            
+            </li>                                 
             
         </ul>
     </div>

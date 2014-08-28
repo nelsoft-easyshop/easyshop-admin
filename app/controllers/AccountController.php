@@ -89,15 +89,11 @@ class AccountController extends BaseController
                                             Input::get('fullname'));
 
             if($registerRepository) {
-                Input::flash();
-                return View::make('pages.registration')
-                    ->with('success','success!');
+                return Response::json("success");
             }
         }
         else {
-            Input::flash();
-            return View::make('pages.registration')
-                ->withErrors($validator->errors());
+            return Response::json(array('errors' => $validator->errors()));
         }
     }
 

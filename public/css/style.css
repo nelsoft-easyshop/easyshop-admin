@@ -3017,46 +3017,17 @@ span.transac_title_date:after {
 table.dataTable.hover tbody tr:hover  .brand_op_lnk, table.dataTable.hover tbody tr.odd:hover .brand_op_lnk, table.dataTable.hover tbody tr.even:hover .brand_op_lnk, table.dataTable.display tbody tr:hover .brand_op_lnk, table.dataTable.display tbody tr.odd:hover .brand_op_lnk, table.dataTable.display tbody tr.even:hover  .brand_op_lnk{
     display:block;
 }
-/*ADMIN REGISTRATION FORM START*/
-#registration_form {
-    padding-top: 30px;
 
-}
-.registration_container{
-    border: 1px solid rgba(255, 137, 0, 0.89);
-    border-radius: 13px;
-    min-height: 360px;
-    text-align:center;
-    width: 35%;
-    top:15%;
-    position: absolute;
-    left:31%;
-    padding:30px;
+.registration_form{
 
+    padding-top: 50px !important;
+    padding:100px;
 }
-.img-responsive {
-    margin-left:10px !important;
-}
-
-#registration_container #label {
-padding:50px;
-    border:red 1px solid;
-}
-
-#registration_form #btn_register{
-    margin-right: 15%;
-    width: 60%;
+.registration_form #btn_register {
     background-color: #F18200;
-    color: #FFFFFF !important;
-}
-.help-block text-center{
-    display: none;
-    color:#b70000;
+    color: #FFFFFF;
 }
 
-/*REGISTRATION FORM END*/
-
-/*LOGIN FORM START*/
 
 .login_container{
     border: 1px solid rgba(255, 137, 0, 0.89);
@@ -3659,3 +3630,8 @@ width: 1200px;
     font-size: 13px;
     margin-right: 5px;
 }
+
+#changeTextError h4 {
+    padding-top: 10px;
+}
+
