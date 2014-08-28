@@ -14,7 +14,9 @@ return array(
     |
     */
     'homeCmsLink' => 'https://easyshop.ph.local/webservice/homewebservice',
-    'getXML'=> 'https://easyshop.ph.local/webservice/homewebservice/getContents/',
+    'feedCmsLink' => 'https://easyshop.ph.local/webservice/feedwebservice',
+    'getHomeXML'=> 'https://easyshop.ph.local/webservice/homewebservice/getContents/',
+    'getFeedXML'=> 'https://easyshop.ph.local/webservice/feedwebservice/getcontents/',
     'easyShopLink'=> 'https://easyshop.ph.local',
 );
 

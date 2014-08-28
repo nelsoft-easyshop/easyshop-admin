@@ -27,9 +27,14 @@ Route::group(array('before' => 'auth'), function(){
 
 
 
-    Route::get('cms/home', array('uses' => 'ContentManagerController@getHomeContent'));
-    Route::get('cms/slides', array('uses' => 'ContentManagerController@getMainSlides'));
-    Route::get('cms/productslides', array('uses' => 'ContentManagerController@getProductSlides'));
+    Route::get('cms/home', array('uses' => 'HomeContentManagerController@getHomeContent'));
+    Route::get('cms/slides', array('uses' => 'HomeContentManagerController@getMainSlides'));
+    Route::get('cms/productslides', array('uses' => 'HomeContentManagerController@getProductSlides'));
+
+    Route::get('cms/feeds', array('uses' => 'FeedsContentManagerController@getContentFiles'));
+    Route::get('cms/featuredProduct', array('uses' => 'FeedsContentManagerController@getFeaturedProducts'));
+    Route::get('cms/popularItem', array('uses' => 'FeedsContentsManagerController@getPopularItems'));
+    Route::get('cms/promoItems', array('uses' => 'FeedsContentManagerController@getPromoItems'));
 
 
     Route::post('transactionRecord', array('uses' => 'HomeController@transactionRecord'));
