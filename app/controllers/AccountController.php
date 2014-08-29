@@ -82,7 +82,7 @@ class AccountController extends BaseController
                 ->with("users",$adminEntity->getAllAdminUsers())
                 ->with("index",1)
                 ->with("roles",$adminEntity->getAllAdminRoles())
-                ->with("specificRoles",$specificRoles);          
+                ->with("specificRoles",$specificRoles);         
     }
 
     /**
@@ -122,11 +122,11 @@ class AccountController extends BaseController
             $specificRoles[] = $adminEntity->getAdminRoleById($users->role_id);
 
         }
-        return View::make("pages.adminusers")
-                ->with("users",$adminEntity->getAllAdminUsers())
-                ->with("index",1)
-                ->with("roles",$adminEntity->getAllAdminRoles())
-                ->with("specificRoles",$specificRoles);
+            return View::make("pages.adminusers")
+                    ->with("users",$adminEntity->getAllAdminUsers())
+                    ->with("index",1)
+                    ->with("roles",$adminEntity->getAllAdminRoles())
+                    ->with("specificRoles",$specificRoles);
     }
 
     /**
