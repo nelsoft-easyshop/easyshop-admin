@@ -3,17 +3,21 @@
 class OrderStatus extends Eloquent 
 {
 
-   /**
-    * The database table used by the model.
-    *
-    * @var string
-    */
+    const STATUS_PAID = 0;
+    const STATUS_COMPLETED = 1;
+    const STATUS_DRAFT = 99;
+
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
     protected $table = 'es_order_status';
 
-   /**
-    * The primary key of the table
-    *
-    */
+    /**
+     * The primary key of the table
+     *
+     */
     protected $primaryKey = 'id_order_status';
 
 

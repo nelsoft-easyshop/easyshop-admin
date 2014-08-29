@@ -2,10 +2,7 @@
 
 class OrderProduct extends Eloquent 
 {
-    const STATUS_ON_GOING = 0;
-    const STATUS_FUND_CLEARED = 1;
-    const STATUS_FUND_MOVED = 4;
-
+    
     /**
      * The database table used by the model.
      *
@@ -19,36 +16,65 @@ class OrderProduct extends Eloquent
      */
     protected $primaryKey = 'id_order_product';
 
-    public function seller()
+    
+    /**
+     * Relationship with es_member table
+     *
+     */
+    public function seller() 
     {
         return $this->hasOne('Member', 'id_member', 'seller_id');
     }
 
-    public function order()
+    /**
+     * Relationship with es_order
+     *
+     */
+    public function order() 
     {
         return $this->hasOne('Order', 'id_order', 'order_id');
     }
 
-    public function orderProductStatus()
+    /**
+     * Relationship with es_order_product_status
+     *
+     */
+    public function orderProductStatus() 
     {
         return $this->hasOne('OrderProductStatus', 'id_order_product_status', 'status');
     }
 
-    public function product()
+    /**
+     *  Relationship with es_order_product_status
+     *
+     */
+    public function product() 
     {
         return $this->hasOne('Product', 'id_product', 'product_id');
     }
-
-    public function billingInfo()
+    
+    /**
+     * Relationship with es_order_billing_info
+     *
+     */
+    public function sellerBillingInfo() 
     {
-        return $this->hasOne('OrderProductBillingInfo', 'order_product_id', 'id_order_product');
+        return $this->hasOne('OrderBillingInfo', 'id_order_billing_info', 'seller_billing_id');
     }
-
+    
+    /**
+     * Relationship with es_order_product_history
+     *
+     */
     public function orderProductHistory()
     {
         return $this->hasMany('OrderProductHistory', 'order_product_id', 'id_order_product');
     }
-
+    
+    /**
+     * Relationship with es_order_shipping_comment
+     *
+     */
     public function orderProductComment()
     {
         return $this->hasOne('ProductShippingComment', 'order_product_id', 'id_order_product');

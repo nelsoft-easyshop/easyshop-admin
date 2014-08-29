@@ -1,18 +1,73 @@
 <?php namespace Easyshop\Services;
 
+use App;
 use Config;
 use Carbon\Carbon;
+use Easyshop\Services\Validation\Laravel\OrderBillingInfoUpdateValidator;
+use Easyshop\Services\Validation\Laravel\OrderBillingInfoCreateValidator;
+
+use Easyshop\ModelRepositories\OrderProductStatusRepository as OrderProductStatusRepository;
+use Easyshop\ModelRepositories\OrderBillingInfoRepository as OrderBillingInfoRepository;
+use Easyshop\ModelRepositories\OrderProductRepository as OrderProductRepository;
+use Easyshop\ModelRepositories\OrderProductHistoryRepository as OrderProductHistoryRepository;
 
 /**
  * TransactionService, containing all useful methods for business logic around transactions
  */
 class TransactionService
 {
-    
+    /**
+     * Payout configs
+     * 
+     * @var string[]
+     */
     private $payOutConfig;
     
-    public function __construct()
+    /**
+     * OrderProductStatus Repository
+     *
+     * @var OrderProductStatusRepository
+     */
+    private $orderProductStatusRepository;
+    
+    
+    /**
+     * OrderBillingInfo Repository
+     *
+     * @var OrderBillingInfoRepository
+     */ 
+    private $orderBillingInfoRepository;
+    
+    /**
+     * OrderProduct Repository
+     *
+     * @var OrderProductRepository
+     */ 
+    private $orderProductRepository;
+    
+    /**
+     * OrderProductHistory Repository
+     *
+     * @var OrderProductHistoryRepository
+     */ 
+    private $orderProductHistoryRepository;
+
+    
+    
+    /**
+     * Inject dependecies
+     *
+     */
+    public function __construct(OrderProductStatusRepository $orderProductStatusRepository,
+                                OrderBillingInfoRepository $orderBillingInfoRepository,
+                                OrderProductRepository $orderProductRepository,
+                                OrderProductHistoryRepository $orderProductHistoryRepository)    
     {
+        $this->orderProductStatusRepository = $orderProductStatusRepository;
+        $this->orderBillingInfoRepository = $orderBillingInfoRepository;
+        $this->orderProductRepository = $orderProductRepository;
+        $this->orderProductHistoryRepository = $orderProductHistoryRepository; 
+
         $this->payOutConfig = Config::get('transaction.payOut');
     }
     
@@ -103,7 +158,7 @@ class TransactionService
     */
     public function getStartPayOutRange($dateFilter = "")
     {
-        $dateFilter = ($dateFilter !== "")?$dateFilter:Carbon::now();
+        $dateFilter = ($dateFilter !== "")?$dateFilter: $this->getNextPayoutDate();
         $dayFilter = intval($dateFilter->format('d'));
         $monthFilter = intval($dateFilter->format('m'));
         $yearFilter = intval($dateFilter->format('Y'));
@@ -131,7 +186,7 @@ class TransactionService
     */
     public function getEndPayOutRange($dateFilter = "")
     {
-        $dateFilter = ($dateFilter !== "")?$dateFilter:Carbon::now();
+        $dateFilter = ($dateFilter !== "") ? $dateFilter : $this->getNextPayoutDate();
         $dayFilter = intval($dateFilter->format('d'));
         $monthFilter = intval($dateFilter->format('m'));
         $yearFilter = intval($dateFilter->format('Y'));
@@ -153,6 +208,83 @@ class TransactionService
 
         return Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$endDay);
     }
+    
+    
+    /**
+     * Updates the status of a transaction to seller-paid and notifies the seller
+     *
+     * @param OrderProduct[] $orderProducts 
+     * @param string $accountName
+     * @param string $accountNumber
+     * @param string $bankName
+     * @return MessageBag[]
+     */
+    public function updateOrderProductsAsPaid($orderProducts, $accountName, $accountNumber, $bankName)
+    {    
+        $orderBillingInfoUpdateValidator = new OrderBillingInfoUpdateValidator( App::make('validator') );
+
+        $orderBillingInfoUpdateValidator->with(
+            array('account_name' => $accountName,
+                'account_number' => $accountNumber,
+                'bank_name' => $bankName)
+        );
+            
+        
+        if($orderBillingInfoUpdateValidator->passes()){
+            $status = $this->orderProductStatusRepository->getSellerPaidStatus();
+            foreach($orderProducts as $orderProduct){
+                $orderProductId = $orderProduct->id_order_product;
+                $orderBillingInfoId = $orderProduct->sellerBillingInfo->id_order_billing_info;
+                
+                $this->orderBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, 
+                                                                                $accountName,
+                                                                                $accountNumber, 
+                                                                                $bankName);
+                $this->orderProductRepository->updateOrderProductStatus($orderProductId, $status);
+                $this->orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
+            }
+            
+        }
+        
+        return $orderBillingInfoUpdateValidator->errors();
+    }
+    
+    
+    /**
+     * Updates the status of a transaction to buyer-refunded
+     *
+     * @param OrderProduct[] $orderProducts 
+     * @param string $accountName
+     * @param string $accountNumber
+     * @param string $bankName
+     * @return MessageBag[]
+     */
+    public function updateOrderProductsAsRefunded($orderProducts,$accountName, $accountNumber, $bankName)
+    {
+        $orderBillingInfoCreateValidator = new OrderBillingInfoCreateValidator( App::make('validator') );
+        
+        $orderBillingInfoCreateValidator->with(
+            array('account_name' => $accountName,
+                'account_number' => $accountNumber,
+                'bank_name' => $bankName)
+        );
+
+        if($orderBillingInfoCreateValidator->passes()){
+            $status = $this->orderProductStatusRepository->getBuyerPaidStatus();
+            foreach($orderProducts as $orderProduct){
+                $orderProductId = $orderProduct->id_order_product;
+                $this->orderBillingInfoRepository->createOrderBillingInfo($accountName, $accountNumber, $bankName);   
+                $orderBillingInfoId = $this->orderBillingInfoRepository->currentId;
+                $this->orderProductRepository->updateOrderProductBuyerBillingId($orderProductId, $orderBillingInfoId);
+                $this->orderProductRepository->updateOrderProductStatus($orderProductId, $status);
+                $this->orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
+            }
+        }
+    
+        return $orderBillingInfoCreateValidator->errors();
+        
+    }
+    
     
 }
 
