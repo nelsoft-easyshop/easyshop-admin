@@ -8,6 +8,7 @@ class AdminMemberTableSeeder extends Seeder
             'fullname' => 'Inon Baguio',
             'username' => 'inonbaguio',
             'password' => Hash::make('inonbaguio'),
+        ]);
         AdminMember::create([
             'fullname' => 'Sam Gavinio',
             'username' => 'samgavinio',
