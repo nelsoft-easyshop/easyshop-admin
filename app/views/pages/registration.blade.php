@@ -44,7 +44,7 @@
 
                     <div class="form-group">
                         <div class="col-xs-offset-2 col-xs-10">
-                            <input type="submit" id="btn_register" class="btn btn-primary" value="Register Administartor">
+                            <input type="submit" id="btn_register" class="btn btn-primary" value="Register Administrator">
                         </div>
                     </div>
 
