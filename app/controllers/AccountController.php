@@ -85,7 +85,7 @@ class AccountController extends BaseController
         if($validator->with(Input::get())->passes()){
 
             $registerRepository->registerAdmin(Input::get('username'),
-                                            Crypt::encrypt(Input::get('password')), 
+                                            Hash::make(Input::get('password')), 
                                             Input::get('fullname'));
 
             if($registerRepository) {
