@@ -20,6 +20,7 @@
                 if(json == "success") {
                     $("#success").modal('show');  
                     $("#loading").modal('hide');
+                    $("#rolesDiv").load('managerole');                         
                 }
                 else {
                     if((json.errors.username) != null || (json.errors.password) != null || (json.errors.fullname) != null) {
@@ -33,6 +34,7 @@
                         $("#changeTextError").html(errors);
                         $("#error").modal('show');  
                         $("#loading").modal('hide');
+                   
                     }
                 }
             },
