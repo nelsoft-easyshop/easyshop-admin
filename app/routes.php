@@ -43,6 +43,8 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
     Route::post('items', array('uses' => 'ProductController@doSearchItem'));
 
+    Route::get('adminroles', array('uses' => 'AdminRolesManagerController@showAdminLists'));
+    Route::post('adminroles', array('uses' => 'AdminRolesManagerController@updateAdministratorRole'));
 
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
 
