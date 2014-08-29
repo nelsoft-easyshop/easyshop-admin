@@ -1,4 +1,6 @@
 <?php
+use Easyshop\Services\StringHelperService;
+use Illuminate\Support\Facades\DB;
 class CategoryController extends BaseController
 {
     public function showAllCategory()
@@ -25,7 +27,11 @@ class CategoryController extends BaseController
     public function ajaxAddCategory()
     {
         $categoryRepository = App::make('CategoryRepository');
-        $category = $categoryRepository->insert(Input::except('_method'));
+        $data = Input::except('_method');
+        $data['slug'] = $categoryRepository->generateSlug(
+            StringHelperService::clean(strtolower($data['name']))
+        );
+        $category = $categoryRepository->insert($data);
 
         echo json_encode($category);
     }

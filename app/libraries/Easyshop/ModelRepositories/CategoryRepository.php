@@ -15,7 +15,6 @@ class categoryRepository
     public function insert($data)
     {
         $category = new Category();
-        $data['slug'] =  StringHelperService::clean($data['name']);
         $category->insert($data);
 
         return $this->getById(DB::getPdo()->lastInsertId());
@@ -95,6 +94,11 @@ class categoryRepository
         return $query;
     }
 
+    /**
+     * Search Category depending on the array content
+     * @param $userData
+     * @return array
+     */
     public function search($userData)
     {
         $member = Category::where('es_cat.id_cat', '>', 1);
@@ -113,6 +117,22 @@ class categoryRepository
         }
 
         return $member->first();
+    }
+
+    /**
+     * Generate unique Slug
+     * @param $slug
+     * @return string
+     */
+    public function generateSlug($slug)
+    {
+        $category = new Category();
+        $count = $category->where('es_cat.slug', 'LIKE', '%' . $slug . '%')->count();
+        if($count >= 1){
+            $slug = $slug.$count;
+        }
+
+        return $slug;
     }
 
 }
