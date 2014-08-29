@@ -1,6 +1,7 @@
 <?php namespace Easyshop\ModelRepositories;
 
 use Category;
+use Easyshop\Services\StringHelperService;
 use Illuminate\Support\Facades\DB;
 
 class categoryRepository
@@ -14,6 +15,7 @@ class categoryRepository
     public function insert($data)
     {
         $category = new Category();
+        $data['slug'] =  StringHelperService::clean($data['name']);
         $category->insert($data);
 
         return $this->getById(DB::getPdo()->lastInsertId());
