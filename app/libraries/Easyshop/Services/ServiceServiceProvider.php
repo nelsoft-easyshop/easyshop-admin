@@ -2,8 +2,6 @@
 
 use Illuminate\Support\ServiceProvider;
 
-
-
 /**
  * Register our easyshop services with Laravel
  */
@@ -44,6 +42,11 @@ class ServiceServiceProvider extends ServiceProvider
         $this->app->bind('StringHelperService', function(){
             return new StringHelperService();
         });
+
+        $this->app->bind('XMLContentGetterService', function(){
+            return new XMLContentGetterService();
+        });
+
     }
 }
 

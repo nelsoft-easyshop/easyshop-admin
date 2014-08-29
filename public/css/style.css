@@ -3016,8 +3016,16 @@ table.dataTable.hover tbody tr:hover  .brand_op_lnk, table.dataTable.hover tbody
     display:block;
 }
 
+.registration_form{
 
-/*LOGIN FORM START*/
+    padding-top: 50px !important;
+    padding:100px;
+}
+.registration_form #btn_register {
+    background-color: #F18200;
+    color: #FFFFFF;
+}
+
 
 .login_container{
     border: 1px solid rgba(255, 137, 0, 0.89);
@@ -3533,3 +3541,10 @@ width: 1200px;
 .order_product_pay_container p{
     margin-bottom: 10px;
 }
+
+#changeTextError h4 {
+    padding-top: 10px;
+}
+
+
+

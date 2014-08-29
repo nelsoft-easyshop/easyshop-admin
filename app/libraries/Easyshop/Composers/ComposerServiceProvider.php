@@ -19,5 +19,7 @@ class ComposerServiceProvider extends ServiceProvider
         $this->app->view->composer('partials.orderproductlist', 'Easyshop\Composers\OrderProductListComposer');
         
     }
- 
+
 }
+
+

@@ -3,7 +3,11 @@ class AdminMemberTableSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('es_admin_member')->delete();
+		DB::table('es_admin_member')->delete();
+        AdminMember::create([
+            'fullname' => 'Inon Baguio',
+            'username' => 'inonbaguio',
+            'password' => Hash::make('inonbaguio'),
         AdminMember::create([
             'fullname' => 'Sam Gavinio',
             'username' => 'samgavinio',
