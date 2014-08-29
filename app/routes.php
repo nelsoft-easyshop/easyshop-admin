@@ -37,14 +37,13 @@ Route::group(array('before' => 'auth'), function(){
 
     Route::get('register', array('uses' => 'AccountController@showRegistration'));
     Route::post('register', array('uses' => 'AccountController@doRegister'));    
+    Route::get('managerole', array('uses' => 'AccountController@showAdminLists'));    
+    Route::post('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
 
     Route::post('transactionRecord', array('uses' => 'HomeController@transactionRecord'));
 
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
     Route::post('items', array('uses' => 'ProductController@doSearchItem'));
-
-    Route::get('adminroles', array('uses' => 'AdminRolesManagerController@showAdminLists'));
-    Route::post('adminroles', array('uses' => 'AdminRolesManagerController@updateAdministratorRole'));
 
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
 
