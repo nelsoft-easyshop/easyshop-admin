@@ -69,6 +69,7 @@
 
                 return false;
             }
+            loader.showPleaseWait();
             $.ajax({
                 url:'user',
                 dataType:'JSON',
@@ -84,6 +85,7 @@
                     stateregion:user_stateID,
                     address:user_address},
                 success:function(result){
+                    loader.hidePleaseWait();
                     pushJsonToFields(result);
                     CloseBootstrapModal();
                 }
