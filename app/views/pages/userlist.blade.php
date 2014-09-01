@@ -161,7 +161,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span> EDIT USER INFORMATION</h4>
+                        <h4 class="modal-title white_header" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span> EDIT USER INFORMATION</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -186,23 +186,27 @@
                             </label>
                         </div>
                         <span class="help-block">This will set if the user can join the promo .</span>
-                        <div class="form-group">
+                        <div class="form-group address_div">
                             <label>Address : </label>
-                            <select name="c_stateregion" class="address_dropdown stateregionselect" data-status="">
-                                <option value="0">--- Select State/Region ---</option>
-                                @foreach($list_of_location['stateregion_lookup'] as $srkey=>$stateregion)
-                                <option class="echo" value="{{{ $srkey }}}" >{{{ $stateregion }}}</option>
-                                @endforeach
-                            </select>
-
-                            <select name="c_city" class="address_dropdown cityselect" data-status="">
-                                <option value="0">--- Select City ---</option>
-                                <option class="optionclone" value="" style="display:none;" disabled></option>
-                            </select>
-
-                            <select disabled>
-                                <option selected="">{{{ $list_of_location['country_name'] }}}</option>
-                            </select>
+                            <div>
+                                <select name="c_stateregion" class="address_dropdown stateregionselect form-control" data-status="">
+                                    <option value="0">--- Select State/Region ---</option>
+                                    @foreach($list_of_location['stateregion_lookup'] as $srkey=>$stateregion)
+                                    <option class="echo" value="{{{ $srkey }}}" >{{{ $stateregion }}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <select name="c_city" class="address_dropdown cityselect form-control" data-status="">
+                                    <option value="0">--- Select City ---</option>
+                                    <option class="optionclone" value="" style="display:none;" disabled></option>
+                                </select>
+                            </div>
+                            <div>
+                                <select disabled class="form-control">
+                                    <option selected="">{{{ $list_of_location['country_name'] }}}</option>
+                                </select>
+                            </div>
                             <input type="text" class="form-control" id="mdl_address" placeholder="Enter complete address">
                         </div>
                     </div>
