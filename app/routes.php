@@ -36,9 +36,9 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('cms/promoItems', array('uses' => 'FeedsContentManagerController@getPromoItems'));
 
     Route::get('register', array('uses' => 'AccountController@showRegistration'));
-    Route::post('register', array('uses' => 'AccountController@doRegister'));    
+    Route::put('register', array('uses' => 'AccountController@doRegister'));    
     Route::get('managerole', array('uses' => 'AccountController@showAdminLists'));    
-    Route::post('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
+    Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
 
     Route::post('transactionRecord', array('uses' => 'HomeController@transactionRecord'));
 
