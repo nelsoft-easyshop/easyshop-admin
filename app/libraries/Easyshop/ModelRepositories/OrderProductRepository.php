@@ -184,7 +184,7 @@ class OrderProductRepository extends AbstractRepository
      * Updates the order product status
      *
      * @param OrderProduct $orderProduct
-     * @param inetger $status
+     * @param integer $status
      * @return Boolean
      */
     public function updateOrderProductStatus($orderProduct, $status)
