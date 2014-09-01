@@ -130,7 +130,7 @@ class AccountController extends BaseController
     }
 
     /**
-     *  Updates the role of a particular administrator
+     *  PUT method that updates the role of a particular administrator
      *
      *  @return JSON
      */ 
@@ -139,13 +139,8 @@ class AccountController extends BaseController
         $adminEntity = App::make('AdminMemberRepository');
         $isSuccessful = $adminEntity->updateAdminRole(Input::get('adminid'),
                                                       Input::get('roleid'));
-        if($isSuccessful) {
-            return Response::json("success");
-        }
-        else {
-            return Response::json("error");            
-        } 
 
+        return Response::json(array($isSuccessful)); 
 
     }
 
