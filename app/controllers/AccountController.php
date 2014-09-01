@@ -70,7 +70,19 @@ class AccountController extends BaseController
      */
     public function showRegistration()
     {
-        return View::make('pages.registration');
+        $adminEntity = App::make('AdminMemberRepository');
+        foreach($adminEntity->getAllAdminUsers() as $users)
+        {
+            $allUsers[] = $users;
+            $specificRoles[] = $adminEntity->getAdminRoleById($users->role_id,$users->id_admin_member);
+
+        }
+
+        return View::make('pages.registration')
+                ->with("users",$adminEntity->getAllAdminUsers())
+                ->with("index",1)
+                ->with("roles",$adminEntity->getAllAdminRoles())
+                ->with("specificRoles",$specificRoles);         
     }
 
     /**
@@ -85,7 +97,7 @@ class AccountController extends BaseController
         if($validator->with(Input::get())->passes()){
 
             $registerRepository->registerAdmin(Input::get('username'),
-                                            Crypt::encrypt(Input::get('password')), 
+                                            Hash::make(Input::get('password')), 
                                             Input::get('fullname'));
 
             if($registerRepository) {
@@ -95,6 +107,41 @@ class AccountController extends BaseController
         else {
             return Response::json(array('errors' => $validator->errors()));
         }
+    }
+    
+    /**
+     *  Get Administrator Users
+     *  @return View
+     */    
+    public function showAdminLists()
+    {
+        $adminEntity = App::make('AdminMemberRepository');
+        foreach($adminEntity->getAllAdminUsers() as $users)
+        {
+            $allUsers[] = $users;
+            $specificRoles[] = $adminEntity->getAdminRoleById($users->role_id);
+
+        }
+            return View::make("pages.adminusers")
+                    ->with("users",$adminEntity->getAllAdminUsers())
+                    ->with("index",1)
+                    ->with("roles",$adminEntity->getAllAdminRoles())
+                    ->with("specificRoles",$specificRoles);
+    }
+
+    /**
+     *  PUT method that updates the role of a particular administrator
+     *
+     *  @return JSON
+     */ 
+    public function updateAdministratorRole()
+    {
+        $adminEntity = App::make('AdminMemberRepository');
+        $isSuccessful = $adminEntity->updateAdminRole(Input::get('adminid'),
+                                                      Input::get('roleid'));
+
+        return Response::json(array($isSuccessful)); 
+
     }
 
 
