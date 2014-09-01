@@ -75,6 +75,27 @@ class AdminMemberRepository
     {
         return AdminMember::find($adminId)->pluck('role_id');
     }   
+    /**
+     * Returns the role name retrieved from AdminRoles model
+     *
+     * @param string $roleName
+     * @return Entity
+     */
+    public function getRoleNames($roleName)
+    {
+        if($roleName == "CONTENT") {
+            return AdminRoles::CONTENT;
+        }
+        else if($roleName == "CSR") {
+            return AdminRoles::CSR;
+        }
+        else if($roleName == "MARKETING") {
+            return AdminRoles::MARKETING;
+        }
+        else if($roleName == "SUPER-USER") {
+            return AdminRoles::SUPER_USER;
+        }   
+    }
 
     
 }
