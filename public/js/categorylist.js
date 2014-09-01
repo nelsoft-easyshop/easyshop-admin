@@ -68,6 +68,7 @@
             alert('Invalid Sort.');
             return false;
         }
+        loader.showPleaseWait();
         if($(this).attr('todo') === 'update'){
             update(
                 cat_id,
@@ -87,6 +88,7 @@
                 cat_main
             );
         }
+        loader.hidePleaseWait();
     });
 
 
