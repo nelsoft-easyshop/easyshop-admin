@@ -45,6 +45,9 @@ class ServiceServiceProvider extends ServiceProvider
             return new XMLContentGetterService();
         });
         
+        $this->app->bind('AdminMemberManagerService', function(){
+            return new AdminMemberManagerService();
+        });
 
     }
 }
