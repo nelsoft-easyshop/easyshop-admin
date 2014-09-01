@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Application & Route Filters
@@ -14,6 +13,12 @@
 App::before(function($request)
 {
 	//
+    $AdminMemberService = App::make("AdminMemberManagerService");
+    $isAuthorized = $AdminMemberService->GetPrivilege(Request::url());
+    if(!$isAuthorized) {
+        //do something for unauthorized user
+    }
+
 });
 
 
@@ -46,6 +51,8 @@ Route::filter('auth', function()
 			return Redirect::guest('login');
 		}
 	}
+
+
 });
 
 

@@ -1,6 +1,6 @@
 <?php
 
-
+$baseUrl = "https://easyshop.ph.local";
 return array(
 
     /*
@@ -13,11 +13,11 @@ return array(
     | 
     |
     */
-    'homeCmsLink' => 'https://easyshop.ph.local/webservice/homewebservice',
-    'feedCmsLink' => 'https://easyshop.ph.local/webservice/feedwebservice',
-    'getHomeXML'=> 'https://easyshop.ph.local/webservice/homewebservice/getContents/',
-    'getFeedXML'=> 'https://easyshop.ph.local/webservice/feedwebservice/getcontents/',
-    'easyShopLink'=> 'https://easyshop.ph.local',
+    'homeCmsLink' => "$baseUrl/webservice/homewebservice",
+    'feedCmsLink' => "$baseUrl/webservice/feedwebservice",
+    'getHomeXML'=> "$baseUrl/webservice/homewebservice/getContents/",
+    'getFeedXML'=> "$baseUrl/webservice/feedwebservice/getcontents/",
+    'easyShopLink'=> "$baseUrl",
 );
 
 

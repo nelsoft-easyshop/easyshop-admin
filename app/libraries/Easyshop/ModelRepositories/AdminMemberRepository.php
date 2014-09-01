@@ -64,6 +64,18 @@ class AdminMemberRepository
         $isSuccessful = $adminEntity->save();        
         return $isSuccessful;        
     }
+
+    /**
+     * Get the role_id of the passed adminId
+     *
+     * @param interger $adminId
+     * @return Entity
+     */
+    public function getAdminRoleId($adminId)
+    {
+        return AdminMember::find($adminId)->pluck('role_id');
+    }   
+
     
 }
 
