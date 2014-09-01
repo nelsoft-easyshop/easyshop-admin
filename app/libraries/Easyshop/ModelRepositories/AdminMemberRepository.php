@@ -41,10 +41,11 @@ class AdminMemberRepository
      *  @param int $roleId
      *  @return array
      */
-    public function getAdminRoleById($roleId)
+    public function getAdminRoleById($roleId,$adminId)
     {
          $query = AdminMember::leftJoin('es_admin_member_role', 'es_admin_member.role_id', '=', 'es_admin_member_role.id_role')
          ->where('es_admin_member.role_id','=', $roleId)
+         ->where('es_admin_member.id_admin_member','=', $adminId)
          ->get();
          return $query;
     }  
