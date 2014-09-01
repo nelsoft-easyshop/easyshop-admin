@@ -28,8 +28,6 @@ class MemberRepository extends AbstractRepository
     {
         $member = Member::with('address')
             ->find($memberId);
-        $member->Address->City;
-        $member->Address->Region;
 
         return $member;
     }

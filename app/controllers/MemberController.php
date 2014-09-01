@@ -12,8 +12,8 @@ class MemberController extends BaseController
     public function showAllUsers()
     {
         $locationLookUpRepository = App::make('LocationLookUpRepository');
-        $dataFormatter = $this->locationService;
-        $data = $dataFormatter->location($locationLookUpRepository->getByType());
+        $locationService = $this->locationService;
+        $data = $locationService->location($locationLookUpRepository->getByType());
 
         return View::make('pages.userlist')
             ->with('list_of_member', Member::paginate(100))
@@ -60,7 +60,10 @@ class MemberController extends BaseController
         );
         $addressRepository = App::make('AddressRepository');
         $addressRepository->update(Input::get('id'), $dataAddress);
+        $member = $memberRepository->getById(Input::get('id'));
+        $member->Address->City;
+        $member->Address->Region;
 
-        echo json_encode($memberRepository->getById(Input::get('id')));
+        echo json_encode($member);
     }
 }
