@@ -13,7 +13,7 @@
 App::before(function($request)
 {
 	//
-    $AdminMemberService = new Easyshop\Services\AdminMemberManagerService;
+    $AdminMemberService = App::make("AdminMemberManagerService");
     $isAuthorized = $AdminMemberService->GetPrivilege(Request::url());
     if(!$isAuthorized) {
         //do something for unauthorized user
