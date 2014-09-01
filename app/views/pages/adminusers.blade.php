@@ -26,7 +26,7 @@
 
                                   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                                       @foreach($roles as $adminRoles)
-                                        <li><a tabindex="-1" href="#" data-role="{{ $adminRoles->role_name }}" data-id = "{{$adminUsers->id_admin_member}}" data-index="{{$index}}" data-action="{{$accessor}}" data-roleid="{{$adminRoles->id_role}}"  id="rolesLink"><span id="myspan{{$index}}">{{ $adminRoles->role_name }}</span></a></li>
+                                        <li><a tabindex="-1" data-role="{{ $adminRoles->role_name }}" data-id = "{{$adminUsers->id_admin_member}}" data-index="{{$index}}" data-action="{{$accessor}}" data-roleid="{{$adminRoles->id_role}}"  id="rolesLink"><span id="myspan{{$index}}">{{ $adminRoles->role_name }}</span></a></li>
                                         <span style="display:none">{{$index++}}</span>
                                       @endforeach
                                   </ul>
