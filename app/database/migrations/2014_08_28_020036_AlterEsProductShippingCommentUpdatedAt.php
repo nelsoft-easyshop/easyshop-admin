@@ -22,7 +22,7 @@ class AlterEsProductShippingCommentUpdatedAt extends Migration {
      */
     public function down()
     {
-            DB::update(DB::raw('ALTER TABLE `es_product_shipping_comment` CHANGE COLUMN `datemodified` `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;'));//
+        DB::update(DB::raw('ALTER TABLE `es_product_shipping_comment` CHANGE COLUMN `datemodified` `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;'));
     }
 
 }
