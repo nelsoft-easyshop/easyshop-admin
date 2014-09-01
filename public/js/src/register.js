@@ -3,7 +3,7 @@
     $( "#form" ).on( "submit", function( event ) {
 
         event.preventDefault();
-        data = $( this ).serialize();
+        data = $( this ).serialize() + "&_method=put";
         register(data);
     });
 
@@ -13,6 +13,7 @@
 
         $.ajax({
             type: 'post',
+            dataType: 'JSON', 
             url: "/register",
             data:data,
             success: function(json) {
@@ -57,13 +58,16 @@
         var selector = "#action" + action;
         loader.showPleaseWait();   
         $(selector).text(role);
-        data = {adminid:adminId, roleid:roleid};
+        data = {_method: 'put', adminid:adminId, roleid:roleid};
         $.ajax({
-            type: 'POST',
-            url: "/adminroles",
+            type: 'post',
+            dataType: 'JSON', 
+            url: "adminroles",
             data:data,
             success: function(json) {
-                loader.hidePleaseWait();  
+                if(json[0] == true) {
+                     loader.hidePleaseWait();                     
+                 }
             },
             error: function(e) {
                 loader.hidePleaseWait();   
