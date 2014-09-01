@@ -7,17 +7,23 @@ class OrderStatusRepository extends AbstractRepository
 {    
     public function getPaidStatus()
     {
-        return OrderStatus::find(OrderStatus::STATUS_PAID);
+        return OrderStatus::STATUS_PAID;
     }
     
     public function getCompletedStatus()
     {
-        return OrderStatus::find(OrderStatus::STATUS_COMPLETED);
+        return OrderStatus::STATUS_COMPLETED;
     }
+    
+    public function getVoidStatus()
+    {
+        return OrderStatus::STATUS_VOID;
+    }
+    
     
     public function getDraftStatus()
     {
-        return OrderStatus::find(OrderStatus::STATUS_DRAFT);
+        return OrderStatus::STATUS_DRAFT;
     }
 
 }

@@ -22,7 +22,7 @@ class OrderProductStatusRepository extends AbstractRepository
     
     public function getCashOnDeliveryStatus()
     {
-        return OrderProductStatus::STATUS_COD;
+        return OrderProductStatus::STATUS_RETURN_COD;
     }
     
     public function getSellerPaidStatus()

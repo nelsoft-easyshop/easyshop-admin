@@ -5,6 +5,7 @@ class OrderStatus extends Eloquent
 
     const STATUS_PAID = 0;
     const STATUS_COMPLETED = 1;
+    const STATUS_VOID = 2;
     const STATUS_DRAFT = 99;
 
     /**
@@ -18,7 +19,7 @@ class OrderStatus extends Eloquent
      * The primary key of the table
      *
      */
-    protected $primaryKey = 'id_order_status';
+    protected $primaryKey = 'order_status';
 
 
 

@@ -49,7 +49,7 @@
             
             </li>
             <li>	
-                <a href="/transactions">
+                <a href="/transaction">
                     <img src="{{{ asset('images/icon_list.png') }}}"/> 
                     <span>Transactions List</span>
                 </a>

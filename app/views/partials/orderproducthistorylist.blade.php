@@ -58,7 +58,33 @@
     @endif
     
     @if($orderproduct->orderProductComment)
-        <h6>* Shipped on {{{ $orderproduct->orderProductComment->delivery_date }}}.</h6>
+        <hr/>
+        <div class='shipment-detail-container row'>
+            <div class='heading'>
+                Shipment Information
+            </div>
+            <div>
+                <span class='tag'>Courier</span> {{{ $orderproduct->orderProductComment->courier }}}
+            </div>
+            <div>
+                <span class='tag'>Date of Shipment</span>{{{ $orderproduct->orderProductComment->delivery_date }}}
+            </div>
+            <div>
+                <span class='tag'>Expected Date of Arrival</span> {{{ $orderproduct->orderProductComment->expected_date }}}
+            </div>
+            <div>
+                <span class='tag'>Tracking Number</span> {{{ $orderproduct->orderProductComment->tracking_num}}}
+            </div>
+            <div>
+                <span class='tag'>Remarks</span> {{{ $orderproduct->orderProductComment->comment }}}
+            </div>
+            <div class='footer'>
+                Last updated on {{{ $orderproduct->orderProductComment->datemodified }}}
+            </div>
+            
+        </div>
+    @else
+        <h6>* Item has not been shipped</h6>
     @endif
     </div>
     

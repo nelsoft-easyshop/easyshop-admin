@@ -154,7 +154,7 @@ class OrderProductController extends BaseController
         $userdata = Input::get();
         $orderProductRepository = App::make('OrderProductRepository');
         $orderProduct = $orderProductRepository->getOrderProductById($userdata['order_product_id']);
-      
+  
         $html = View::make('partials.orderproducthistorylist')
                     ->with('orderproduct', $orderProduct)
                     ->render();
@@ -284,14 +284,22 @@ class OrderProductController extends BaseController
             array('success' => count($errors) > 0,
                   'errors' => $errors)
         );
+    }
         
-    }
-
-    
-    
-    public function getAllValidTransactions()
+    /**
+     * PUT method for voiding a transaction
+     *
+     * @return JSON
+     */
+    public function voidOrderProduct()
     {
-        return View::make('pages.transactionlist');
+        $userdata = Input::get();
+        $transactionService = App::make('TransactionService');
+        $isSuccess = $transactionService->voidOrderProduct($userdata['order_product_id']);
+
+        return Response::json(array('success' => $isSuccess));
     }
+        
+
     
 }
