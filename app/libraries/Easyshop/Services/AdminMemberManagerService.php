@@ -66,8 +66,6 @@ class AdminMemberManagerService
         return $pages;              
     }
 
-    public function test() {
-        echo "test";
-    }
+
 
 }
