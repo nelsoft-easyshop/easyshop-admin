@@ -3229,7 +3229,7 @@ top:0px !important;
 .left-addon input  { padding-left:  30px; }
 .right-addon input { padding-right: 30px; }
 
-.dd-right{ left:80px !important;}
+.dd-right{ left:-120px !important;}
 #srch_container{display: none}
 
 #srch_container{
@@ -3238,9 +3238,17 @@ top:0px !important;
 }
 #srch_container .tbl-title{margin-bottom: 3%}
 /* end */
-
+.address_div div{
+    display: inline-block;
+    width: 29%;
+}
+.address_div input{
+    margin-top: 2%;
+}
 /* Payments and Transactions  */
-
+.white_header{
+    color: whitesmoke;
+}
 .table-payment{
     max-width: 98%;
     margin-left:auto;

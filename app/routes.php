@@ -36,13 +36,14 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('cms/promoItems', array('uses' => 'FeedsContentManagerController@getPromoItems'));
 
     Route::get('register', array('uses' => 'AccountController@showRegistration'));
-    Route::post('register', array('uses' => 'AccountController@doRegister'));    
+    Route::put('register', array('uses' => 'AccountController@doRegister'));    
+    Route::get('managerole', array('uses' => 'AccountController@showAdminLists'));    
+    Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
 
     Route::post('transactionRecord', array('uses' => 'HomeController@transactionRecord'));
 
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
     Route::post('items', array('uses' => 'ProductController@doSearchItem'));
-
 
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
     Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));

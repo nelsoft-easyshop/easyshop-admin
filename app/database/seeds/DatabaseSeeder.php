@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder {
         $this->call('BankInfoTableSeeder');
         $this->call('LocationLookUpTableSeeder');
         $this->call('OrderStatusTableSeeder');
+        $this->call('AdminRoleTableSeeder');
+
     }
 
 }

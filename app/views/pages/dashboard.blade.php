@@ -112,9 +112,9 @@
             <li>
                 <a href='/register'>
                     <img src="{{{ asset('images/icon_category.png') }}}"/> 
-                    <span >Add Administrator</span>
+                    <span >Manage Administrators</span>
                 </a>
-                <p>Registers an administrator user of the site.</p>
+                <p>Registers an administrator user of the site. View and updates its site priveleges.</p>
             
             </li>                                 
             
