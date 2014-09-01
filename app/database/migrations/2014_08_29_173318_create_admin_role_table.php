@@ -16,7 +16,6 @@ class CreateAdminRoleTable extends Migration {
         {
             $table->integer('id_role',true,true);
             $table->string('role_name');
-            $table->integer('admin_member_id')->default(0);
             $table->timestamps();             
         });     
 	}
