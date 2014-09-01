@@ -14,15 +14,6 @@ class AdminMemberManagerService
     private $adminMemberRepo;
 
     /**
-     * Inject dependecy
-     *
-     */
-    public function __construct(AdminMemberRepository $adminMemberRepo)
-    {
-        $this->adminMemberRepo = $adminMemberRepo;
-    }
-
-    /**
      * Determines the accessible pages of the current administrator
      *
      * @param string $currentUrl
@@ -31,10 +22,12 @@ class AdminMemberManagerService
      */    
     public function GetPrivilege($currentUrl)
     {
+        $this->adminMemberRepo = new AdminMemberRepository;
         $url = str_replace(\URL::to('/'),"", $currentUrl);
+        $currentAdminId = \Auth::id();
 
-        $roleId = $this->adminMemberRepo->getAdminRoleId(\Auth::id());
-        $roleOfCurrentAdmin = $this->adminMemberRepo->getAdminRoleById($roleId, \Auth::id());
+        $roleId = $this->adminMemberRepo->getAdminRoleId($currentAdminId);
+        $roleOfCurrentAdmin = $this->adminMemberRepo->getAdminRoleById($roleId, $currentAdminId);
 
         foreach($roleOfCurrentAdmin as $role)
         {
@@ -71,6 +64,10 @@ class AdminMemberManagerService
             $pages = array("/cms/home","/cms/feeds");
         }
         return $pages;              
+    }
+
+    public function test() {
+        echo "test";
     }
 
 }
