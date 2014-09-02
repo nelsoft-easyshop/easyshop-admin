@@ -177,7 +177,7 @@
                     <td>{{{ $item->sku }}}</td>
                     <td>{{{ $item->brief }}}</td>
                     <td>{{{ $item->condition }}}</td>
-                    <td>https://easyshop.ph/item/{{{ $item->slug }}}</td>
+                    <td>{{{ $easyShopLink . '/item/' . $item->slug }}}</td>
                 </tr>
                 @endforeach
                 </tbody>
