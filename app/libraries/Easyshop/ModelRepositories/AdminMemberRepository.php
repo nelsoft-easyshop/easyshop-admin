@@ -66,6 +66,21 @@ class AdminMemberRepository
     }
 
     /**
+     *  Update the account activation administrator
+     *
+     *  @param int $adminId
+     *  @param int $activation     
+     *  @return array
+     */
+    public function updateAdminActivation($adminId, $activation)
+    {            
+        $adminEntity = AdminMember::find($adminId);
+        $adminEntity->is_active = $activation;
+        $isSuccessful = $adminEntity->save();        
+        return $isSuccessful;        
+    }    
+
+    /**
      * Get the role_id of the passed adminId
      *
      * @param interger $adminId
@@ -94,7 +109,10 @@ class AdminMemberRepository
         }
         else if($roleName == "SUPER-USER") {
             return AdminRoles::SUPER_USER;
-        }   
+        }
+        else if($roleName == "GUEST") {
+            return AdminRoles::GUEST;
+        }  
     }
 
     

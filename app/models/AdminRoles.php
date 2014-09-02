@@ -5,6 +5,7 @@ class AdminRoles extends Eloquent
     const CONTENT = "CONTENT";
     const CSR = "CSR";
     const MARKETING = "MARKETING";
+    const GUEST = "GUEST";
     const SUPER_USER = "SUPER-USER";
 
 
