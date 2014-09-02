@@ -12,6 +12,21 @@
         $('#transaction-form').submit();
     });
     
+    $('#download-btn').click(function(){
+        
+        $.ajax({
+            url: 'orderproduct-download',
+            data: $('#transaction-form').serialize(),
+            type: 'get',
+            dataType: 'JSON',                      
+            success: function(result){
+                
+            }
+        });
+        
+
+    });
+    
     
     $('.transaction-list td').click(function(){
         $this = $(this);
