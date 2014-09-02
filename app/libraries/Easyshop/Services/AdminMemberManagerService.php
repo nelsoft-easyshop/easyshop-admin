@@ -20,14 +20,13 @@ class AdminMemberManagerService
      *
      * @return bool
      */    
-    public function GetPrivilege($currentUrl)
+    public function getPrivilege($currentUrl)
     {
         $this->adminMemberRepo = new AdminMemberRepository;
         $url = str_replace(\URL::to('/'),"", $currentUrl);
         $currentAdminId = \Auth::id();
-
-        $roleId = $this->adminMemberRepo->getAdminRoleId($currentAdminId);
-        $roleOfCurrentAdmin = $this->adminMemberRepo->getAdminRoleById($roleId, $currentAdminId);
+    
+        $roleOfCurrentAdmin = $this->adminMemberRepo->getAdminRoleById($currentAdminId);
 
         foreach($roleOfCurrentAdmin as $role)
         {
