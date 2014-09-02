@@ -15,6 +15,9 @@ class AdminRoleTableSeeder extends Seeder
         ]);         
         AdminRoles::create([
             'role_name' => 'SUPER-USER',
-        ]);         
+        ]); 
+        AdminRoles::create([
+            'role_name' => 'GUEST',
+        ]);                 
     }
 }
