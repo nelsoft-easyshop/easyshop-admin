@@ -31,13 +31,13 @@
                         <div class="form-group">
                             <label for="inputPassword" class="control-label col-xs-2">Value</label>
                             <div class="col-xs-10">
-                                <input type="text" id="valueMainSlide" class="form-control" name='value'  placeholder="Value" >
+                                <input type="text" id="valueMainSlide" class="form-control" name='value' readonly="readonly" value="value" placeholder="Value" >
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
                             <div class="col-xs-10">
-                                <input type="text" id="mainSlideCoordinate" class="form-control" name='coordinate'  placeholder="0,0,0,0" >
+                                <input type="text" id="mainSlideCoordinate" class="form-control" name='coordinate' value="0,0,589,352" placeholder="0,0,0,0" >
                             </div>
                         </div>
                         <div class="form-group">
