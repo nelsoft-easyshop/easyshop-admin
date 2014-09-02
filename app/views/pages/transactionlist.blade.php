@@ -65,9 +65,13 @@
             </table>
             
             {{ $orders->links() }}
-        </div>
+            
+            <button class="btn btn-default btn-sm" id='download-btn'><span class="glyphicon glyphicon-floppy-disk"></span> Download</button>
 
-  </div>
+        </div>
+      </div>
+    
+    
     
 @stop
 
