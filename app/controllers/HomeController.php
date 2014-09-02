@@ -12,4 +12,5 @@ class HomeController extends BaseController
             ->with('username', Auth::user()->username);
     }
 
+
 }

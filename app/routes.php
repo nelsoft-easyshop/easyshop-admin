@@ -32,13 +32,14 @@ Route::group(array('before' => 'auth'), function(){
 
     Route::get('cms/feeds', array('uses' => 'FeedsContentManagerController@getContentFiles'));
     Route::get('cms/featuredProduct', array('uses' => 'FeedsContentManagerController@getFeaturedProducts'));
-    Route::get('cms/popularItem', array('uses' => 'FeedsContentsManagerController@getPopularItems'));
+    Route::get('cms/popularItem', array('uses' => 'FeedsContentManagerController@getPopularItems'));
     Route::get('cms/promoItems', array('uses' => 'FeedsContentManagerController@getPromoItems'));
 
     Route::get('register', array('uses' => 'AccountController@showRegistration'));
     Route::put('register', array('uses' => 'AccountController@doRegister'));    
     Route::get('managerole', array('uses' => 'AccountController@showAdminLists'));    
     Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
+    Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));    
 
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
     Route::post('items', array('uses' => 'ProductController@doSearchItem'));

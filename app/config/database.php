@@ -55,7 +55,7 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'laravel',
+			'database'  => 'easyshop',
 			'username'  => 'root',
 			'password'  => '121586',
 			'charset'   => 'utf8',

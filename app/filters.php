@@ -12,12 +12,19 @@
 
 App::before(function($request)
 {
-	//
-    $AdminMemberService = App::make("AdminMemberManagerService");
-    $isAuthorized = $AdminMemberService->GetPrivilege(Request::url());
-    if(!$isAuthorized) {
-        //do something for unauthorized user
+	if(Auth::check()) {
+        if(Request::url() != URL::to('/')) {
+            $AdminMemberService = App::make("AdminMemberManagerService");
+            $isAuthorized = $AdminMemberService->getPrivilege(Request::url());
+            if($isAuthorized === FALSE) {
+                /*
+                    Comment out the code below to activate the page access feature
+                    return Redirect::to("/");
+                */
+            }                
+        }
     }
+
 
 });
 
