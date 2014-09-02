@@ -7,34 +7,6 @@
         register(data);
     });
 
-    $('.btn-toggle').click(function() {
-        var adminId = $(this).data('admin');
-        $(this).find('.btn').toggleClass('active');  
-        
-        if ($(this).find('.btn-primary').size()>0) {
-            $(this).find('.btn').toggleClass('btn-primary');
-        }
-        var text = $(this).find('.active').text();
-        var IsActive = text == "Enabled" ? 1 : 0;
-
-        data = {_method: 'put', adminid:adminId, activation:IsActive};
-        $.ajax({
-            type: 'post',
-            dataType: 'JSON', 
-            url: "adminactivation",
-            data:data,
-            success: function(json) {
-                if(json[0] == true) {
-                     loader.hidePleaseWait();                     
-                 }
-            },
-            error: function(e) {
-                loader.hidePleaseWait();   
-            }
-        });
-        
-    });    
-
     function register(data) {
         var errors;
         $("#loading").modal('show');

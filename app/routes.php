@@ -39,7 +39,6 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('register', array('uses' => 'AccountController@doRegister'));    
     Route::get('managerole', array('uses' => 'AccountController@showAdminLists'));    
     Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
-    Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));    
 
     Route::post('transactionRecord', array('uses' => 'HomeController@transactionRecord'));
 
