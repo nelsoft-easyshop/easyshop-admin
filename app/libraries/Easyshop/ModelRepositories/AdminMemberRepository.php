@@ -1,6 +1,7 @@
 <?php namespace Easyshop\ModelRepositories;
 
 use AdminMember, AdminRoles;
+use Illuminate\Support\Facades\DB;
 
 class AdminMemberRepository
 {
@@ -41,12 +42,12 @@ class AdminMemberRepository
      *  @param int $roleId
      *  @return array
      */
-    public function getAdminRoleById($roleId,$adminId)
+    public function getAdminRoleById($adminId)
     {
          $query = AdminMember::leftJoin('es_admin_member_role', 'es_admin_member.role_id', '=', 'es_admin_member_role.id_role')
-         ->where('es_admin_member.role_id','=', $roleId)
          ->where('es_admin_member.id_admin_member','=', $adminId)
          ->get();
+
          return $query;
     }  
 
@@ -88,7 +89,7 @@ class AdminMemberRepository
      */
     public function getAdminRoleId($adminId)
     {
-        return AdminMember::find($adminId)->pluck('role_id');
+        return AdminMember::find($adminId)->role_id;
     }   
     /**
      * Returns the role name retrieved from AdminRoles model

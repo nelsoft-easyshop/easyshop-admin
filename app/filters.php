@@ -15,7 +15,7 @@ App::before(function($request)
 	if(Auth::check()) {
         if(Request::url() != URL::to('/')) {
             $AdminMemberService = App::make("AdminMemberManagerService");
-            $isAuthorized = $AdminMemberService->GetPrivilege(Request::url());
+            $isAuthorized = $AdminMemberService->getPrivilege(Request::url());
             if($isAuthorized === FALSE) {
                 /*
                     Comment out the code below to activate the page access feature
