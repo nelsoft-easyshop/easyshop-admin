@@ -12,7 +12,7 @@ class AdminMemberRepository
     */
     public function getAdminMemberById($id)
     {
-        return AdminMember::find($id)->pluck('password');
+        return AdminMember::find($id)->password;
     }
 
     /**
