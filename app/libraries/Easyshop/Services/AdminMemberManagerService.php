@@ -51,16 +51,19 @@ class AdminMemberManagerService
      * @return array
      */    
     public function getPages($currentRole) {
-        if($currentRole == "CONTENT") {
+        
+        $this->adminMemberRepo = new AdminMemberRepository;
+
+        if($currentRole == $this->adminMemberRepo->getRoleNames("CONTENT")) {
             $pages = array("/test","/cms/feeds");
         }
-        else if($currentRole == "CSR") {
+        else if($currentRole == $this->adminMemberRepo->getRoleNames("CSR")) {
             $pages = array("/cms/home","/cms/feeds");
         }
-        else if($currentRole == "MARKETING") {
+        else if($currentRole == $this->adminMemberRepo->getRoleNames("MARKETING")) {
             $pages = array("/cms/home","/cms/feeds");
         }
-        else if($currentRole == "SUPER-USER") {
+        else if($currentRole == $this->adminMemberRepo->getRoleNames("SUPER-USER")) {
             $pages = array("/cms/home","/cms/feeds");
         }
         return $pages;              
