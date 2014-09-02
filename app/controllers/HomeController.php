@@ -19,7 +19,7 @@ class HomeController extends BaseController
         );
 
         $orderRepository = App::make('OrderRepository');
-        $transactionRecord = $orderRepository->getTransactionRecord($userData);
+        $transactionRecord = $orderRepository->getTransactionRecordByDate($userData);
 
         $excelService = App::make('Easyshop\Services\ExcelService');
         $excelService->transactionRecord('EasyshopRecord', $transactionRecord);
