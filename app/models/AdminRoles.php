@@ -16,6 +16,11 @@ class AdminRoles extends Eloquent
     */
     protected $primaryKey = 'id_role';
 
-  
+    /**
+     * Set guarded parameters
+     *
+     */
+    protected $guarded = array();
+
 
 }
