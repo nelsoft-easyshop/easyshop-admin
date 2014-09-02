@@ -69,7 +69,7 @@ class OrderRepository extends AbstractRepository
         return $order;
     }
 
-    public function getTransactionRecordByDate($userData)
+    public function getTransactionRecord($startDate, $endDate, $orderId=False, $transactionId=False, $invoiceNo=False)
     {
         $record = Order::join('es_member AS buyer', 'buyer.id_member', '=', 'es_order.buyer_id')
             ->join('es_payment_method AS paymentMethod',
@@ -95,9 +95,18 @@ class OrderRepository extends AbstractRepository
             ->leftJoin('es_product_shipping_comment AS productShippingComment',
                 'productShippingComment.order_product_id', '=', 'orderProduct.id_order_product'
             );
-        if( ($userData['startdate']) && ($userData['enddate']) ){
-            $record->where('es_order.dateadded', '>=', str_replace('/', '-', $userData['startdate']) . ' 00:00:00' )
-                ->where('es_order.dateadded', '<=', str_replace('/', '-', $userData['enddate']) . ' 23:59:59', 'AND');
+        if( ($startDate) && ($endDate) ){
+            $record->where('es_order.dateadded', '>=', str_replace('/', '-', $startDate) . ' 00:00:00' )
+                ->where('es_order.dateadded', '<=', str_replace('/', '-', $endDate ) . ' 23:59:59', 'AND');
+        }
+        if($orderId){
+            $record->where('es_order.id_order', 'LIKE', '%' . $orderId . '%');
+        }
+        if($transactionId){
+            $record->where('es_order.transaction_id', 'LIKE', '%' . $transactionId . '%');
+        }
+        if($invoiceNo){
+            $record->where('es_order.invoice_no', 'LIKE', '%' . $invoiceNo . '%');
         }
         $record->select(
             'es_order.id_order AS Order_ID',
