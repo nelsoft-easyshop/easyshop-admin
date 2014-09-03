@@ -13,18 +13,10 @@
     });
     
     $('#download-btn').click(function(){
-        
-        $.ajax({
-            url: 'orderproduct-download',
-            data: $('#transaction-form').serialize(),
-            type: 'get',
-            dataType: 'JSON',                      
-            success: function(result){
-                
-            }
-        });
-        
-
+        var action = $('#transaction-form').attr('action');
+        $('#transaction-form').attr('action','orderproduct-download');
+        $('#transaction-form').submit();
+        $('#transaction-form').attr('action',action);
     });
     
     
