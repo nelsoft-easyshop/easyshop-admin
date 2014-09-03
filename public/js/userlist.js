@@ -117,19 +117,24 @@
 
     function pushJsonToFields(data_json)
     {
+        var idRegion = (data_json.address !== null) ? escapeHtml(data_json.address.region.id_location) : '';
+        var region = (data_json.address !== null) ? data_json.address.region.location : '';
+        var idCity = (data_json.address !== null) ? escapeHtml(data_json.address.city.id_location) : '';
+        var city = (data_json.address !== null) ?  data_json.address.city.location : '';
+        var address =  (data_json.address !== null) ? escapeHtml(data_json.address.address) : '';
         var id = escapeHtml(data_json.id_member);
         var obj = '{"id":"' + id +
             '","fullname":"' + escapeHtml(data_json.fullname) +
             '","contact_number":"' + escapeHtml(data_json.contactno) +
             '","remarks":"' + escapeHtml(data_json.remarks) +
             '","is_promote":"' + escapeHtml(data_json.is_promo_valid) +
-            '","c_stateregionID":"' + escapeHtml(data_json.address.region.id_location) +
-            '","c_cityID":"' + escapeHtml(data_json.address.city.id_location) +
-            '","address":"' + escapeHtml(data_json.address.address) + '"}';
+            '","c_stateregionID":"' + idRegion +
+            '","c_cityID":"' + idCity +
+            '","address":"' + address + '"}';
         $('.tbl-my-style #' + id + '_uname').html(escapeHtml(data_json.fullname));
         $('.tbl-my-style #' + id + '_contact').html(escapeHtml(data_json.contactno));
         $('.tbl-my-style #' + id + '_remarks').html(escapeHtml(data_json.remarks));
-        $('.tbl-my-style #' + id + '_address').html(data_json.address.city.location + ' ' + data_json.address.region.location + ' ' + escapeHtml(data_json.address.address));
+        $('.tbl-my-style #' + id + '_address').html(city + ' ' + region + ' ' + address);
         $('.tbl-my-style #data_' + id ).attr('data',obj);
     }
 
