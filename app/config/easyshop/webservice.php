@@ -1,6 +1,6 @@
 <?php
 
-$baseUrl = "https://easyshop.ph.local";
+$baseUrl = "https://easyshop.ph";
 return array(
 
     /*
