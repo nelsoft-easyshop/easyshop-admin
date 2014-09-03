@@ -302,13 +302,15 @@ class OrderProductController extends BaseController
         
     public function downloadTransactionRecord()
     {
-        $userData = array(
-            'startdate' => Input::get('trans_startdate'),
-            'enddate' => Input::get('trans_enddate')
-        );
-
         $orderRepository = App::make('OrderRepository');
-        $transactionRecord = $orderRepository->getTransactionRecord($userData);
+
+        $dateFrom = Carbon::createFromFormat('Y/m/d',  Input::get('dateFrom'));
+        $dateTo = Carbon::createFromFormat('Y/m/d',  Input::get('dateTo'));
+        $transactionRecord = $orderRepository->getTransactionRecord(
+                                            $dateFrom,
+                                            $dateTo, 
+                                            Input::get('stringFilter')
+                                        );
         $excelService = App::make('Easyshop\Services\ExcelService');
         $excelService->transactionRecord('EasyshopRecord', $transactionRecord);
     }
