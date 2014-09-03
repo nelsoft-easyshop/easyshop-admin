@@ -1,4 +1,4 @@
-  @extends('layouts.default')
+@extends('layouts.default')
 
 @section('description', 'Content Manager - Home')
 @section('keywords', '')
