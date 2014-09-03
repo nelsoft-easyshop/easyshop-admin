@@ -53,7 +53,7 @@ return array(
 		),
 
 		'mysql' => array(
-			'driver'    => isset($_ENV['DB_driver']) ? $_ENV['DB_Driver'] : 'mysql'  ,
+			'driver'    => isset($_ENV['DB_driver']) ? $_ENV['DB_driver'] : 'mysql'  ,
 			'host'      => isset($_ENV['DB_host']) ? $_ENV['DB_host'] : 'localhost'  ,
 			'database'  => isset($_ENV['DB_dbname']) ? $_ENV['DB_dbname'] : 'easyshop'  ,
 			'username'  => isset($_ENV['DB_user']) ? $_ENV['DB_user'] : 'root'  ,
