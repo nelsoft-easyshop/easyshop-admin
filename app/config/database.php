@@ -53,11 +53,11 @@ return array(
 		),
 
 		'mysql' => array(
-			'driver'    => 'mysql',
-			'host'      => 'localhost',
-			'database'  => 'easyshop',
-			'username'  => 'root',
-			'password'  => '121586',
+			'driver'    => isset($_ENV['DB_driver']) ? $_ENV['DB_driver'] : 'mysql'  ,
+			'host'      => isset($_ENV['DB_host']) ? $_ENV['DB_host'] : 'localhost'  ,
+			'database'  => isset($_ENV['DB_dbname']) ? $_ENV['DB_dbname'] : 'easyshop'  ,
+			'username'  => isset($_ENV['DB_user']) ? $_ENV['DB_user'] : 'root'  ,
+			'password'  => isset($_ENV['DB_password']) ? $_ENV['DB_password'] : '121586',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
