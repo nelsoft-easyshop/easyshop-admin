@@ -16,6 +16,7 @@ class Address extends Eloquent
     */
     protected $primaryKey = 'id_address';
     protected $fillable = array('city', 'stateregion', 'address', 'country', 'id_member');
+    public $timestamps = false;
 
     public function city()
     {

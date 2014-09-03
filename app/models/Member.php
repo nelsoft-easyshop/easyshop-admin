@@ -11,6 +11,7 @@ class Member extends Eloquent
     protected $table = 'es_member';
     protected $fillable = array('fullname', 'contactno', 'remarks', 'is_promo_valid');
     protected $primaryKey = 'id_member';
+    public $timestamps = false;
 
     public function address()
     {
