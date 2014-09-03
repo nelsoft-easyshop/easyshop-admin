@@ -75,7 +75,7 @@ class AccountController extends BaseController
         foreach($adminEntity->getAllAdminUsers() as $users)
         {
             $allUsers[] = $users;
-            $specificRoles[] = $adminEntity->getAdminRoleById($users->role_id,$users->id_admin_member);
+            $specificRoles[] = $adminEntity->getAdminRoleById($users->id_admin_member);
 
         }
 
