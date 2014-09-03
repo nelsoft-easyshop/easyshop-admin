@@ -17,6 +17,13 @@ class Order extends Eloquent
     protected $primaryKey = 'id_order';
 
 
+    /**
+     * Timestamp enable flag
+     *
+     * @var boolean
+     */
+    public $timestamps = false;
+    
     public function buyer() 
     {
         return $this->hasOne('Member', 'id_member', 'buyer_id');
@@ -34,7 +41,7 @@ class Order extends Eloquent
 
     public function orderStatus() 
     {
-        return $this->hasOne('OrderStatus');
+        return $this->hasOne('OrderStatus', 'order_status', 'order_status');
     }
 
 

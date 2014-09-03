@@ -27,7 +27,11 @@ class ServiceServiceProvider extends ServiceProvider
                 new \Easyshop\ModelRepositories\OrderProductStatusRepository,
                 new \Easyshop\ModelRepositories\OrderBillingInfoRepository,
                 new \Easyshop\ModelRepositories\OrderProductRepository,
-                new \Easyshop\ModelRepositories\OrderProductHistoryRepository
+                new \Easyshop\ModelRepositories\OrderProductHistoryRepository,
+                new \Easyshop\ModelRepositories\OrderRepository,
+                new \Easyshop\ModelRepositories\OrderStatusRepository,
+                new \Easyshop\ModelRepositories\OrderHistoryRepository,
+                new \Easyshop\ModelRepositories\PaymentMethodRepository
             );
         });
 
@@ -45,6 +49,10 @@ class ServiceServiceProvider extends ServiceProvider
 
         $this->app->bind('XMLContentGetterService', function(){
             return new XMLContentGetterService();
+        });
+
+        $this->app->bind('AdminMemberManagerService', function(){
+            return new AdminMemberManagerService();
         });
 
     }

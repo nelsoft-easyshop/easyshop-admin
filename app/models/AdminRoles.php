@@ -2,6 +2,12 @@
 
 class AdminRoles extends Eloquent 
 {
+    const CONTENT = "CONTENT";
+    const CSR = "CSR";
+    const MARKETING = "MARKETING";
+    const GUEST = "GUEST";
+    const SUPER_USER = "SUPER-USER";
+
 
    /**
     * The database table used by the model.
@@ -16,6 +22,11 @@ class AdminRoles extends Eloquent
     */
     protected $primaryKey = 'id_role';
 
-  
+    /**
+     * Set guarded parameters
+     *
+     */
+    protected $guarded = array();
+
 
 }

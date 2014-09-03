@@ -78,5 +78,13 @@ class RepositoryServiceProvider extends ServiceProvider
             return new OrderBillingInfoRepository();
         });
 
+        $this->app->bind('OrderHistoryRepository', function($app){
+            return new OrderHistoryRepository();
+        });
+        
+        $this->app->bind('PaymentMethodRepository', function($app){  
+            return new PaymentMethodRepository();
+        });
+
     }
 }

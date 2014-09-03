@@ -49,7 +49,7 @@
             
             </li>
             <li>	
-                <a href="/transactions">
+                <a href="/transaction">
                     <img src="{{{ asset('images/icon_list.png') }}}"/> 
                     <span>Transactions List</span>
                 </a>
@@ -112,9 +112,9 @@
             <li>
                 <a href='/register'>
                     <img src="{{{ asset('images/icon_category.png') }}}"/> 
-                    <span >Manage Administrators</span>
+                    <span >Manage Administrator </span>
                 </a>
-                <p>Registers an administrator user of the site. View and updates its site priveleges.</p>
+                <p>Registers an administrator user of the site. View and updates its site privileges and account status.</p>
             
             </li>                                 
             

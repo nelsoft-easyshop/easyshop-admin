@@ -35,6 +35,18 @@ class OrderProductRepository extends AbstractRepository
     }
     
     /**
+     * Get order product by OrderId
+     *
+     * @param integer $orderId
+     * @return OrderProduct[]
+     */
+    public function getOrderProductByOrderId($orderId)
+    {
+        return OrderProduct::where('order_id', '=', $orderId)->get();
+    }
+    
+    
+    /**
      * Returns all order products to be paid that are tied to a certain payment account_name
      *
      * @param string username
@@ -171,15 +183,16 @@ class OrderProductRepository extends AbstractRepository
     /**
      * Updates the order product status
      *
-     * @param integer $orderProductId
-     * @param inetger $status
+     * @param OrderProduct $orderProduct
+     * @param integer $status
      * @return Boolean
      */
-    public function updateOrderProductStatus($orderProductId, $status)
+    public function updateOrderProductStatus($orderProduct, $status)
     {
-        $orderProduct = OrderProduct::find($orderProductId);
-        $orderProduct->status = $status;        
-        return $orderProduct->save();
+        $orderProduct->status = $status;
+        $orderProduct->save();
+        
+        return $orderProduct;
     }
     
     /**
@@ -195,9 +208,6 @@ class OrderProductRepository extends AbstractRepository
         $orderProduct->buyer_billing_id = $buyerBillingId;        
         return $orderProduct->save();
     }
-    
-
-
-    
+        
 }
 

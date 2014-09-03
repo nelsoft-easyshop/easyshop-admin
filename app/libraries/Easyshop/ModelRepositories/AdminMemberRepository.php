@@ -1,6 +1,7 @@
 <?php namespace Easyshop\ModelRepositories;
 
 use AdminMember, AdminRoles;
+use Illuminate\Support\Facades\DB;
 
 class AdminMemberRepository
 {
@@ -12,7 +13,7 @@ class AdminMemberRepository
     */
     public function getAdminMemberById($id)
     {
-        return AdminMember::find($id)->pluck('password');
+        return AdminMember::find($id)->password;
     }
 
     /**
@@ -41,12 +42,12 @@ class AdminMemberRepository
      *  @param int $roleId
      *  @return array
      */
-    public function getAdminRoleById($roleId,$adminId)
+    public function getAdminRoleById($adminId)
     {
          $query = AdminMember::leftJoin('es_admin_member_role', 'es_admin_member.role_id', '=', 'es_admin_member_role.id_role')
-         ->where('es_admin_member.role_id','=', $roleId)
          ->where('es_admin_member.id_admin_member','=', $adminId)
          ->get();
+
          return $query;
     }  
 
@@ -64,6 +65,57 @@ class AdminMemberRepository
         $isSuccessful = $adminEntity->save();        
         return $isSuccessful;        
     }
+
+    /**
+     *  Update the account activation administrator
+     *
+     *  @param int $adminId
+     *  @param int $activation     
+     *  @return array
+     */
+    public function updateAdminActivation($adminId, $activation)
+    {            
+        $adminEntity = AdminMember::find($adminId);
+        $adminEntity->is_active = $activation;
+        $isSuccessful = $adminEntity->save();        
+        return $isSuccessful;        
+    }    
+
+    /**
+     * Get the role_id of the passed adminId
+     *
+     * @param interger $adminId
+     * @return Entity
+     */
+    public function getAdminRoleId($adminId)
+    {
+        return AdminMember::find($adminId)->role_id;
+    }   
+    /**
+     * Returns the role name retrieved from AdminRoles model
+     *
+     * @param string $roleName
+     * @return Entity
+     */
+    public function getRoleNames($roleName)
+    {
+        if($roleName == "CONTENT") {
+            return AdminRoles::CONTENT;
+        }
+        else if($roleName == "CSR") {
+            return AdminRoles::CSR;
+        }
+        else if($roleName == "MARKETING") {
+            return AdminRoles::MARKETING;
+        }
+        else if($roleName == "SUPER-USER") {
+            return AdminRoles::SUPER_USER;
+        }
+        else if($roleName == "GUEST") {
+            return AdminRoles::GUEST;
+        }  
+    }
+
     
 }
 

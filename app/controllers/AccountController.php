@@ -38,11 +38,12 @@ class AccountController extends BaseController
         // create our user data for the authentication
         $userdata = array(
             'username' 	=> Input::get('username'),
-            'password' 	=> Input::get('password'),
+            'password'  => Input::get('password'),
+            'is_active' => '1'
         );
 
 
-        if (Auth::attempt($userdata)){
+        if (Auth::attempt($userdata)) {
             return Redirect::to('/');  
         }
 
@@ -74,7 +75,7 @@ class AccountController extends BaseController
         foreach($adminEntity->getAllAdminUsers() as $users)
         {
             $allUsers[] = $users;
-            $specificRoles[] = $adminEntity->getAdminRoleById($users->role_id,$users->id_admin_member);
+            $specificRoles[] = $adminEntity->getAdminRoleById($users->id_admin_member);
 
         }
 
@@ -143,6 +144,21 @@ class AccountController extends BaseController
         return Response::json(array($isSuccessful)); 
 
     }
+
+    /**
+     *  PUT method that updates the activation of administrator
+     *
+     *  @return JSON
+     */ 
+    public function updateAdministratorActivation()
+    {
+        $adminEntity = App::make('AdminMemberRepository');
+        $isSuccessful = $adminEntity->updateAdminActivation(Input::get('adminid'),
+                                                      Input::get('activation'));
+
+        return Response::json(array($isSuccessful)); 
+
+    }    
 
 
 }

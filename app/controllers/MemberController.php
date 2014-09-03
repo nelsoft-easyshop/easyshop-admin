@@ -58,11 +58,13 @@ class MemberController extends BaseController
             $memberRepository->getById(Input::get('id')),
             $dataMember
         );
-        $addressRepository = App::make('AddressRepository');
-        $addressRepository->update(Input::get('id'), $dataAddress);
         $member = $memberRepository->getById(Input::get('id'));
-        $member->Address->City;
-        $member->Address->Region;
+        if(intval($dataAddress['stateregion']) != 0){
+            $addressRepository = App::make('AddressRepository');
+            $addressRepository->update(Input::get('id'), $dataAddress);
+            $member->Address->City;
+            $member->Address->Region;
+        }
 
         echo json_encode($member);
     }

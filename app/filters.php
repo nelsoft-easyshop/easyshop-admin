@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Application & Route Filters
@@ -13,7 +12,20 @@
 
 App::before(function($request)
 {
-	//
+	if(Auth::check()) {
+        if(Request::url() != URL::to('/')) {
+            $AdminMemberService = App::make("AdminMemberManagerService");
+            $isAuthorized = $AdminMemberService->getPrivilege(Request::url());
+            if($isAuthorized === FALSE) {
+                /*
+                    Comment out the code below to activate the page access feature
+                    return Redirect::to("/");
+                */
+            }                
+        }
+    }
+
+
 });
 
 
@@ -46,6 +58,8 @@ Route::filter('auth', function()
 			return Redirect::guest('login');
 		}
 	}
+
+
 });
 
 

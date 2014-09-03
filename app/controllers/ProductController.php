@@ -1,6 +1,16 @@
 <?php
+
+use Easyshop\Services\XMLContentGetterService as XMLService;
+
 class ProductController extends BaseController
 {
+    protected $XMLService;
+
+    public function __construct(XMLService $XMLService)
+    {
+        $this->XMLService = $XMLService;
+    }
+
     public function showAllItems()
     {
         return View::make('pages.itemlist')
@@ -8,7 +18,8 @@ class ProductController extends BaseController
                 'list_of_items',
                 App::make('ProductRepository')
                     ->getAll(100)
-            );
+            )
+            ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
     }
 
     public function doSearchItem()

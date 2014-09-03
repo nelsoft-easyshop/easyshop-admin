@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterAddRoleID extends Migration {
+class OrderStatusSignedInteger extends Migration {
 
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class AlterAddRoleID extends Migration {
      */
     public function up()
     {
-        DB::update(DB::raw('ALTER TABLE `es_admin_member` ADD COLUMN `role_id` INT(10) DEFAULT 1;'));
+        DB::update(DB::raw('ALTER TABLE `es_order_status` CHANGE COLUMN `order_status` `order_status` INT SIGNED;'));
     }
 
     /**
@@ -22,8 +22,7 @@ class AlterAddRoleID extends Migration {
      */
     public function down()
     {
-        DB::update(DB::raw('ALTER TABLE `es_admin_member` DROP COLUMN `role_id`;'));
-
+        DB::update(DB::raw('ALTER TABLE `es_order_status` CHANGE COLUMN `order_status` `order_status` INT UNSIGNED;'));
     }
 
 }
