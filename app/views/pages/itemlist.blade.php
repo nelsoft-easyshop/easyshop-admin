@@ -11,9 +11,7 @@
 
 <div id="mainsection">
 <!--  START  -->
-    <button type="button" class="btn"  data-toggle="modal" data-target="#myModal" data="">
-        Download
-    </button>
+
     <div class="modal fade user_modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

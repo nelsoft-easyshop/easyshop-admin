@@ -41,11 +41,8 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
     Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));    
 
-    Route::post('transactionRecord', array('uses' => 'HomeController@transactionRecord'));
-
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
     Route::post('items', array('uses' => 'ProductController@doSearchItem'));
-
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
     Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));
     Route::get('orderproduct/pay', array('uses' => 'OrderProductController@getOrderProductsToPay'));
@@ -54,6 +51,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('orderproduct-payment/pay', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToPay'));
     Route::get('orderproduct-payment/refund', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToRefund'));
     Route::put('orderproduct-status/pay', array('uses' => 'OrderProductController@payOrderProducts'));
+    Route::get('orderproduct-download', array('uses' => 'OrderProductController@downloadTransactionRecord'));
     Route::put('orderproduct-status/refund', array('uses' => 'OrderProductController@refundOrderProducts'));
     Route::put('billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
     Route::post('billinginfo', array('uses' => 'BillingInfoController@createOrderProductPaymentAccount'));

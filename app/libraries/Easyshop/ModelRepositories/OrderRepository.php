@@ -69,7 +69,16 @@ class OrderRepository extends AbstractRepository
         return $order;
     }
 
-    public function getTransactionRecord($startDate, $endDate, $orderId=False, $transactionId=False, $invoiceNo=False)
+    
+    /**
+     * Generates the data needed for the transaction record
+     *
+     * @param Carbon $startDate
+     * @param Carbon $endDate
+     * @param string $stringFilter
+     * @return mixed
+     */
+    public function getTransactionRecord($startDate = null, $endDate = null, $stringFilter = null)
     {
         $record = Order::join('es_member AS buyer', 'buyer.id_member', '=', 'es_order.buyer_id')
             ->join('es_payment_method AS paymentMethod',
@@ -95,19 +104,24 @@ class OrderRepository extends AbstractRepository
             ->leftJoin('es_product_shipping_comment AS productShippingComment',
                 'productShippingComment.order_product_id', '=', 'orderProduct.id_order_product'
             );
-        if( ($startDate) && ($endDate) ){
-            $record->where('es_order.dateadded', '>=', str_replace('/', '-', $startDate) . ' 00:00:00' )
-                ->where('es_order.dateadded', '<=', str_replace('/', '-', $endDate ) . ' 23:59:59', 'AND');
+
+        if($startDate){
+            $record->where('es_order.dateadded', '>=', $startDate );
         }
-        if($orderId){
-            $record->where('es_order.id_order', 'LIKE', '%' . $orderId . '%');
+        
+        if($endDate){
+            $record->where('es_order.dateadded', '<=', $endDate );
         }
-        if($transactionId){
-            $record->where('es_order.transaction_id', 'LIKE', '%' . $transactionId . '%');
+        
+        if($stringFilter){
+            $record->where(function ($record) use ($stringFilter){
+                $record->where('es_order.id_order', 'LIKE', '%'.$stringFilter.'%');
+                $record->orWhere('es_order.transaction_id', 'LIKE', '%'.$stringFilter.'%');
+                $record->orWhere('es_order.invoice_no', 'LIKE', '%'.$stringFilter.'%');
+            });
+
         }
-        if($invoiceNo){
-            $record->where('es_order.invoice_no', 'LIKE', '%' . $invoiceNo . '%');
-        }
+
         $record->select(
             'es_order.id_order AS Order_ID',
             'es_order.transaction_id AS Transaction_ID',
@@ -136,7 +150,9 @@ class OrderRepository extends AbstractRepository
             DB::raw('CONCAT("https://easyshop.ph/item/", product.slug) AS URL '),
             'es_order.dateadded AS Date_added'
         );
-
+        $record->get();
+        
+   
         return $record->get();
     }
 

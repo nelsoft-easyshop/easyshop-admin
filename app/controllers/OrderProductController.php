@@ -300,6 +300,19 @@ class OrderProductController extends BaseController
         return Response::json(array('success' => $isSuccess));
     }
         
+    public function downloadTransactionRecord()
+    {
+        $orderRepository = App::make('OrderRepository');
 
+        $dateFrom = Carbon::createFromFormat('Y/m/d',  Input::get('dateFrom'));
+        $dateTo = Carbon::createFromFormat('Y/m/d',  Input::get('dateTo'));
+        $transactionRecord = $orderRepository->getTransactionRecord(
+                                            $dateFrom,
+                                            $dateTo, 
+                                            Input::get('stringFilter')
+                                        );
+        $excelService = App::make('Easyshop\Services\ExcelService');
+        $excelService->transactionRecord('EasyshopRecord', $transactionRecord);
+    }
     
 }

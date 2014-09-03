@@ -12,6 +12,13 @@
         $('#transaction-form').submit();
     });
     
+    $('#download-btn').click(function(){
+        var action = $('#transaction-form').attr('action');
+        $('#transaction-form').attr('action','orderproduct-download');
+        $('#transaction-form').submit();
+        $('#transaction-form').attr('action',action);
+    });
+    
     
     $('.transaction-list td').click(function(){
         $this = $(this);
