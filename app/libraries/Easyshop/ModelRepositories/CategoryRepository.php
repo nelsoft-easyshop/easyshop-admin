@@ -4,13 +4,13 @@ use Category;
 use Easyshop\Services\StringHelperService;
 use Illuminate\Support\Facades\DB;
 
-class categoryRepository
+class CategoryRepository
 {
     /**
      * Create category
      *
      * @param $data
-     * @return Object
+     * @return Category Object
      */
     public function insert($data)
     {
@@ -23,33 +23,34 @@ class categoryRepository
     /**
      *  Update a collection of category
      *
-     *  @param Category $category
+     *  @param $category
      *  @param array $data
-     *  @return Object
+     *  @return Category Object
      */
     public function update($category,$data)
     {
-        $category->update($data);
-
-        return $category;
+        return $category->update($data);
     }
 
+    /**
+     * Get category object by its ID
+     *
+     * @param $id
+     * @return Category object
+     */
     public function getById($id)
     {
         return Category::find($id);
     }
 
     /**
-     *  Get method for displaying child categories
+     *  Retrieve child categories
      *
-     *  @param string $id
-     *  @return Object
+     *  @param $id
+     *  @return Category Object
      */
     public function getChildById($id)
     {
-        if(!isset($id)){
-            $id = 1;
-        }
         return Category::where('parent_id', '=', $id)
             ->where('id_cat', '>', 1)
             ->orderBy('sort_order')
@@ -57,16 +58,13 @@ class categoryRepository
     }
 
     /**
-     *  GET method for displaying parent categories
+     *  Retrieve parent categories
      *
-     *  @param string $id
-     *  @return Object
+     *  @param $id
+     *  @return Category Object
      */
     public function getParentById($id)
     {
-        if(!isset($id)){
-            $id = 1;
-        }
         $query = DB::select(DB::raw('
                     SELECT
                         T2.id_cat,
@@ -96,6 +94,7 @@ class categoryRepository
 
     /**
      * Search Category depending on the array content
+     *
      * @param $userData
      * @return array
      */
@@ -124,12 +123,12 @@ class categoryRepository
      * @param $slug
      * @return string
      */
-    public function generateSlug($slug)
+    public function generateSlug($product)
     {
         $category = new Category();
-        $count = $category->where('es_cat.slug', 'LIKE', '%' . $slug . '%')->count();
+        $count = $category->where('es_cat.slug', 'LIKE', '%' . $product . '%')->count();
         if($count >= 1){
-            $slug = $slug.$count;
+            $slug = $product.$count;
         }
 
         return $slug;

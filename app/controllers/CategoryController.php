@@ -5,7 +5,8 @@ class CategoryController extends BaseController
 {
     public function showAllCategory()
     {
-        $catId = Input::get('id');
+        $userInputCatId = Input::get('id');
+        $catId = (isset($userInputCatId)) ? intval(Input::get('id')) : 1;
         $categoryRepository = App::make('CategoryRepository');
 
         return View::make('pages.categorylist')
