@@ -2,7 +2,7 @@
       $(document).ready(function(){
 
         $("#loading").modal('hide');
-        $("#success").modal('show');
+
       });
 
   </script>       
@@ -22,42 +22,35 @@
                 <div class="panel-body">
 
               <form id='mainSlideForm' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
-                            <div class="col-xs-10">
-                                <input type="file" id="exampleInputFile" name='myfile'> 
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputPassword" class="control-label col-xs-2">Value</label>
-                            <div class="col-xs-10">
-                                <input type="text" id="valueMainSlide" class="form-control" name='value' readonly="readonly" value="value" placeholder="Value" >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
-                            <div class="col-xs-10">
-                                <input type="text" id="mainSlideCoordinate" class="form-control" name='coordinate' value="0,0,589,352" placeholder="0,0,0,0" >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputPassword" class="control-label col-xs-2">Target</label>
-                            <div class="col-xs-10">
-                                <input type="text" id="mainSlideTarget" class="form-control" name='target'  placeholder="Value" >
-                            </div>
-                        </div>
-            
-                        <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >
-                        <input type="hidden" id="adminPasswordMainSlide" class="form-control" name="password" value='{{$adminPassword}}'  placeholder="Value" >
-                        <input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
-                      
+                <div class="form-group">
+                  <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
+                  <div class="col-xs-10">
+                    <input type="file" id="photoFile" name='myfile'> 
+                  </div>
+                </div>
+                    <input type="text" id="valueMainSlide" class="form-control" readonly='readonly' value='Image' name='value'  placeholder="Value" style="display:none;"/>
+                <div class="form-group">
+                  <label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
+                  <div class="col-xs-10">
+                    <input type="text" id="mainSlideCoordinate" class="form-control" name='coordinate' value="0,0,589,352" placeholder="0,0,0,0" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword" class="control-label col-xs-2">Target</label>
+                  <div class="col-xs-10">
+                    <input type="text" id="mainSlideTarget" class="form-control" name='target'  placeholder="Value" >
+                  </div>
+                </div>
+                <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >
+                <input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
+          
 
-                        <div class="form-group">
-                            <div class="col-xs-offset-2 col-xs-10">
-                    <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
-                            </div>
-                        </div>
-                    </form>
+                <div class="form-group">
+                  <div class="col-xs-offset-2 col-xs-10">
+                    <a1 href="#"  class="btn btn-default text-center" data-password = "{{$adminPassword}}" data-url = "{{ $homeCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
+                  </div>
+                </div>
+               </form>
 
                 </div>
               </div>
@@ -82,46 +75,59 @@
                                @foreach ($mainSlides as $mainSlide)
                               <div style="position:relative;
                                   display:inline-block;">
-                              <p><img src="{{$easyShopLink}}/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'></p>
+                    <div class='well' style="height:210px;">
+                      <p>
+                        <img src="{{$easyShopLink}}/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
+                      </p>
 
-                              <a href="#myMain{{ $mainSlideId }}" data-toggle="modal" class="btn btn-default" style="position:absolute;top:110px;left:105px;">Edit</a>
-                               
-                              <a href="#"  class="btn btn-default" 
-                              id="moveup" 
-                               data-action="up" 
-                               data-index="{{$mainSlideId}}" 
-                               data-userid="{{$userId}}" 
-                               data-value="{{$mainSlide->value}}" 
-                               data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
-                               data-target="{{$mainSlide->imagemap->target}}" 
-                               data-order="{{$mainSlideId}}" 
-                               data-password="{{$adminPassword}}"
-                               style="position:absolute;top:110px;left:5px;"
-                               data-url = "{{ $homeCmsLink }}/setmainslide"
-                               ><<</a>
+                      <a href="#myMain{{ $mainSlideId }}" data-toggle="modal" style="position:absolute;top:180px;left:135px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                      <a class="btn btn-default" 
+                        id="deleteMainSlide" 
+                        data-index="{{$mainSlideId}}"  
+                        data-nodename="mainSlide" 
+                        data-userid="{{$userId}}"                        
+                        data-password="{{$adminPassword}}"
+                        style="position:absolute;top:2px;left:5px;"
+                        data-url = "{{ $homeCmsLink }}/removeContent"
+                       ><font color='red'><b>X</b></font></a>
 
-                               <a href="#"  class="btn btn-default" 
-                              id="movedown" 
-                              data-action="up" 
-                              data-index="{{$mainSlideId}}" 
-                              data-userid="{{$userId}}" 
-                              data-value="{{$mainSlide->value}}" 
-                              data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
-                              data-target="{{$mainSlide->imagemap->target}}" 
-                              data-order="{{$mainSlideId}}" 
-                              data-count="{{$mainSlideCount}}" 
-                              data-password="{{$adminPassword}}"
-                              data-url = "{{ $homeCmsLink }}/setmainslide"
+                      <a 
+                        id="moveup" 
+                         data-action="up" 
+                         data-index="{{$mainSlideId}}" 
+                         data-userid="{{$userId}}" 
+                         data-value="{{$mainSlide->value}}" 
+                         data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
+                         data-target="{{$mainSlide->imagemap->target}}" 
+                         data-order="{{$mainSlideId}}" 
+                         data-password="{{$adminPassword}}"
+                         style="position:absolute;top:180px;left:5px;"
+                         data-url = "{{ $homeCmsLink }}/setmainslide"
+                       ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
 
-                              style="position:absolute;top:110px;right:5px;"
-                               >>></a>
+                       <a 
+                        id="movedown" 
+                        data-action="up" 
+                        data-index="{{$mainSlideId}}" 
+                        data-userid="{{$userId}}" 
+                        data-value="{{$mainSlide->value}}" 
+                        data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
+                        data-target="{{$mainSlide->imagemap->target}}" 
+                        data-order="{{$mainSlideId}}" 
+                        data-count="{{$mainSlideCount}}" 
+                        data-password="{{$adminPassword}}"
+                        style="position:absolute;top:180px;right:5px;"
+                        data-url = "{{ $homeCmsLink }}/setmainslide"
+                       ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
+                       </div>
 
 
                                   <div class="modal fade" id="myMain{{ $mainSlideId }}" role="dialog">
                                       <div class="modal-dialog">
                                         <div class="modal-content">
                                           <div class="modal-header">
-                                            <h4>Edit Main Slide</h4>
+                                              <button type="button" class="close" data-dismiss="modal" style='margin-top:2px;'><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                              <h4 class="modal-title" id="myModalLabel">Edit Main Slide</h4>
                                           </div>
                                           <div class="modal-body">
                      <form id='mainSlideForm' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
