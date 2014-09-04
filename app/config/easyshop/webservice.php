@@ -1,6 +1,6 @@
 <?php
 
-$baseUrl = "https://easyshop.ph";
+$baseUrl = isset($_ENV['webservice_base_url']) ? $_ENV['webservice_base_url'] :  "https://easyshop.ph.local";
 return array(
 
     /*

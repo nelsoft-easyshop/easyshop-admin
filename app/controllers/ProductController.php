@@ -35,6 +35,7 @@ class ProductController extends BaseController
         );
 
         return View::make('pages.itemlist')
-            ->with('list_of_items', App::make('ProductRepository')->search($userData));
+            ->with('list_of_items', App::make('ProductRepository')->search($userData))
+            ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
     }
 }
