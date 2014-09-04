@@ -2,7 +2,7 @@
       $(document).ready(function(){
 
         $("#loading").modal('hide');
-        $("#success").modal('show');
+
       });
 
   </script>       
@@ -12,12 +12,12 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                <a data-toggle="collapse" data-parent="#accordion" href="#addProd">
                   Add Product Slide
                 </a>
               </h4>
             </div>
-            <div id="collapseOne" class="panel-collapse collapse in">
+            <div id="addProd" class="panel-collapse collapse in">
               <div class="panel-body">
 
                       <form action="{{$homeCmsLink}}/addproductslide" id="addProductForm" class="form-horizontal" method="post" enctype="multipart/form-data">
@@ -40,12 +40,12 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-          Manage Product Slie
+        <a data-toggle="collapse" data-parent="#accordion" href="#managepProd">
+          Manage Product Slide
         </a>
       </h4>
     </div>
-    <div id="collapseTwo" class="panel-collapse collapse in">
+    <div id="managepProd" class="panel-collapse collapse in">
       <div class="panel-body">
 
               <div class="form-group ">
@@ -60,9 +60,20 @@
                     @for($y=0;$y < 1;$y++)
       
                       <div style="position:relative; display:inline-block;">
+                      <div class='well' style="height:210px;">
                           <p><img src="{{$easyShopLink}}/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive' ></p>
+                          
+                          <a class="btn btn-default" 
+                            id="deleteMainSlide" 
+                            data-index='{{$i}}'  
+                            data-nodename="productSlide" 
+                            data-userid="{{$userId}}"                        
+                            data-password="{{$adminPassword}}"
+                            style="position:absolute;top:2px;left:5px;"
+                            data-url = "{{ $homeCmsLink }}/removeContent"
+                           ><font color='red'><b>X</b></font></a>
 
-                           <a href="#"  class="btn btn-default" id="moveUpProductSlide" 
+                           <a  id="moveUpProductSlide" 
                             data-index='{{$i}}'
                             data-password = '{{ $adminPassword }}'
                             data-userid="{{$userId}}" 
@@ -72,14 +83,12 @@
                             data-type="{{$productTypes[$i]['type']}}" 
                             data-url = "{{ $homeCmsLink }}/setproductslide"
 
+                           style="position:absolute;top:180px;left:5px;"><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
+                              <a href="#myModal{{$i}}" data-toggle="modal" style="position:absolute;top:180px;left:135px;">
+                                <span class="glyphicon glyphicon-edit" style="font-size:16px;"></span>
+                              </a>
 
-
-                           style="position:absolute;top:110px;left:5px;"><<</a>
-                              <button class="btn btn-default" data-toggle="modal" data-target="#myModal{{$i}}"  style="position:absolute;top:110px;left:105px;">
-                            Edit
-                          </button>
-
-                            <a href="#"  class="btn btn-default" id="moveDownProductSlide" 
+                            <a  id="moveDownProductSlide" 
                             data-index='{{$i}}'
                             data-password = '{{ $adminPassword }}'
                             data-userid="{{$userId}}" 
@@ -89,15 +98,15 @@
                             data-type="{{$productTypes[$i]['type']}}" 
                             data-url = "{{ $homeCmsLink }}/setproductslide"
 
-
-
-                           style="position:absolute;top:110px;right:5px;">>></a>
+                           style="position:absolute;top:180px;right:5px;"><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
+                      </div>
 
                           <!-- Modal -->
                         <div class="modal fade" id="myModal{{$i}}" >
                           <div class="modal-dialog">
                             <div class="modal-content">
                               <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" style='margin-top:2px;'><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
                                 <h4 class="modal-title" id="myModalLabel">Edit Product Slide</h4>
                               </div>
                                 <div class="modal-body">
@@ -111,7 +120,7 @@
                                     </div>
                                     <label for="userId" class="col-sm-2 control-label">Type</label>
                                     <div class="col-sm-10">
-                                      {{ Form::text('type', $productTypes[$i]['type'], array('id' => 'productSlideType','class' => 'form-control')) }}
+                                      {{ Form::text('type', $productTypes[$i]['type'], array('id' => 'productSlideType','class' => 'form-control','readonly' => 'readonly')) }}
                                     </div>
                                     </fieldset>
                                   <br/>
