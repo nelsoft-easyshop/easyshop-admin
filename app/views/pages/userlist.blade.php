@@ -139,7 +139,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>{{{ $member->created_at }}}</td>
+                    <td>{{{ $member->datecreated }}}</td>
                     <td id="{{{ $member->id_member . '_uname'}}}">{{{ $member->fullname }}}</td>
                     <td>{{{ $member->username }}}</td>
                     <td>{{{ $member->email }}}</td>

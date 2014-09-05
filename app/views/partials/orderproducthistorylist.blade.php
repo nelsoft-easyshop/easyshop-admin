@@ -48,7 +48,7 @@
             
             <td>{{{ $history->id_order_product_history}}}</td>
             <td>{{{ $history->orderProductStatus->name }}}</td>
-            <td>{{{ $history->created_at }}}</td>
+            <td>{{{ $history->date_added }}}</td>
 
             
         </tr>   

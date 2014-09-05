@@ -62,8 +62,8 @@ class MemberRepository extends AbstractRepository
         $query->leftJoin('es_product_shipping_comment','es_product_shipping_comment.order_product_id', '=', 'es_order_product.id_order_product');
         $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
             $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
-                $query->where('es_order_product_history.created_at', '>=', $formattedDateFrom);
-                $query->where('es_order_product_history.created_at', '<', $formattedDateTo);
+                $query->where('es_order_product_history.date_added', '>=', $formattedDateFrom);
+                $query->where('es_order_product_history.date_added', '<', $formattedDateTo);
             });
 
             $query->orWhere(function ($query) use ($formattedDateFrom, $formattedDateTo) {
@@ -124,8 +124,8 @@ class MemberRepository extends AbstractRepository
             $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_RETURN_BUYER));
         });
         $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
-            $query->where('es_order_product_history.created_at', '>=', $formattedDateFrom);
-            $query->where('es_order_product_history.created_at', '<', $formattedDateTo);
+            $query->where('es_order_product_history.date_added', '>=', $formattedDateFrom);
+            $query->where('es_order_product_history.date_added', '<', $formattedDateTo);
         });
 
         if($username !== null){
