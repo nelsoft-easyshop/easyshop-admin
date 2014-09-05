@@ -167,7 +167,7 @@
                 <tbody>
                 @foreach($list_of_items as $item)
                 <tr>
-                    <td>{{{ $item->created_at }}}</td>
+                    <td>{{{ $item->createddate }}}</td>
                     <td>{{{ $item->name }}}</td>
                     <td>{{{ $item->Member->username }}}</td>
                     <td>{{{ $item->Category->name }}}</td>
