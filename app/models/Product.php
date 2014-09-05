@@ -18,6 +18,12 @@ class Product extends Eloquent
 
     protected $primaryKey = 'id_product';
     
+    /**
+     * Disable timestamps
+     *
+     */
+    public $timestamps = false;
+    
     public function brand()
     {
         return $this->hasOne('Brand', 'id_brand', 'brand_id');
