@@ -19,7 +19,7 @@
                 <p>
                     <div class="form-group">
                         {{ Form::text('username', Input::old('username'), array('class'=>'form-control', 'placeholder' => 'Username')) }}
-                        <div class='help-block text-center'>{{ $errors->first('username') }}</div>
+                        <div class='help-block text-center disp_error'>{{ $errors->first('username') }}</div>
                     </div>
                 </p>
 
