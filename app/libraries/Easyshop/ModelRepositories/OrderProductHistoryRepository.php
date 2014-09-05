@@ -20,6 +20,7 @@ class OrderProductHistoryRepository extends AbstractRepository
         $orderProductHistory->order_product_id = $orderProductId;
         $orderProductHistory->comment = $comment;
         $orderProductHistory->order_product_status = $status;
+        $orderProductHistory->date_added = date('Y-m-d H:i:s');
 
         return $orderProductHistory->save();
     }
