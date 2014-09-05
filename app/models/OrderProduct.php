@@ -16,6 +16,11 @@ class OrderProduct extends Eloquent
      */
     protected $primaryKey = 'id_order_product';
 
+    /**
+     * Disable timestamps
+     *
+     */
+    public $timestamps = false;
     
     /**
      * Relationship with es_member table
