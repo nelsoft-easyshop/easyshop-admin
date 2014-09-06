@@ -42,7 +42,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));    
 
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
-    Route::post('items', array('uses' => 'ProductController@doSearchItem'));
+    Route::get('items', array('uses' => 'ProductController@doSearchItem'));
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
     Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));
     Route::get('orderproduct/pay', array('uses' => 'OrderProductController@getOrderProductsToPay'));
