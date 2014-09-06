@@ -19,15 +19,15 @@
                 <p>
                     <div class="form-group">
                         {{ Form::text('username', Input::old('username'), array('class'=>'form-control', 'placeholder' => 'Username')) }}
-                        <div class='help-block text-center'>{{ $errors->first('username') }}</div>
+                        <div class='help-block text-center disp_error'>{{ $errors->first('username') }}</div>
                     </div>
                 </p>
 
                 <p>
                      <div class="form-group">
                     {{ Form::password('password', array('class'=>'form-control','placeholder' => 'Password')) }}
-                    <div class='help-block text-center'>{{ $errors->first('password') }}</div>
-                    <div class='help-block text-center'>{{ $errors->first('login_error') }}</div>
+                    <div class='help-block text-center disp_error'>{{ $errors->first('password') }}</div>
+                    <div class='help-block text-center disp_error'>{{ $errors->first('login_error') }}</div>
                     </div>
                 </p>
 
