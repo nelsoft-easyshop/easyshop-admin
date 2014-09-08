@@ -36,7 +36,7 @@
                         <li class='divider'></li>
                         <li><a href='#addSectionMainPanel' data-toggle ="tab">Add Section Main Panel</a></li>
                         <li><a href='#AddSectionProduct' data-toggle ="tab">Add Section Product</a></li>
-                        <li><a href='#nodeTypes' data-toggle ="tab">Add Node Type</a></li>
+
                  	</ul>
 
               </li>
@@ -46,9 +46,11 @@
 
 
     <div id="myTabContent" class="tab-content">
+    	<span id="userIdSpan" style="display:none;">{{ $userId }}</span>
+    	<span id="adminPasswordSpan" style="display:none;">{{ $adminPassword }}</span>
 		@foreach($sectionHeads as $section)
 					<span style='display:none;'> {{ $collapse++; }}</span>
-					<div class="tab-pane fade" id="{{$section->value}}">
+					<div class="tab-pane fade  " id="{{$section->value}}">
 						<div class="panel-group" id="accordion">
 							<span style='display:none;'> {{ $sectionId++ }}</span>
 
@@ -95,15 +97,15 @@
 											</div>
 											<div class="form-group">
 												<div class="col-xs-offset-2 col-xs-10">
-													<a href="#"  class="btn btn-default text-center" id="btnSectionHead" data-url = "{{ $homeCmsLink }}/setsectionhead" data-password = "{{ $adminPassword }}" data-index="{{$sectionId}}" data-userid="{{$userId}}">Submit</a>
+													<a   class="btn btn-default text-center" id="btnSectionHead" data-url = "{{ $homeCmsLink }}/setsectionhead" data-index="{{$sectionId}}">Submit</a>
 												</div>
 											</div>
 										</form>
 									</div>
 								</div> 
+							<span style='display:none;'> {{ $collapse++; }}</span>
 							</div>
 
-					<span style='display:none;'> {{ $collapse++; }}</span>
 
 					<div class="panel panel-default">
 						<div class="panel-heading">
@@ -116,36 +118,54 @@
 								<span style='display:none;'> {{ $panelMainId = 0 }}</span>
 								@foreach($section->product_panel_main as $panelMain)
 									<span style='display:none;'>{{ $panelMainId }}</span>
-									<form class="form-horizontal">
+									<form id="formSetSectionMainPanel{{$sectionId}}{{$panelMainId}}" target="test" action="{{ $homeCmsLink }}/setsectionmainpanel" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">        
 										<div class="form-group">
 											<label for="inputEmail" class="control-label col-xs-2">Type of Main Panel</label>
 											  	<div class="col-xs-10">
 													<div class="btn-group">
-														<button data-toggle="dropdown" id="mybutton{{ $panelMainId }}" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span><span class="caret"></span></button>
-														<ul class="dropdown-menu">
+														<button data-toggle="dropdown" id="mybutton{{$sectionId}}{{ $panelMainId }}" class="btn btn-default dropdown-toggle"><span id="btntext{{$sectionId}}{{$panelMainId}}">{{ $panelMain->type }}</span><span class="carete"></span></button>
+														<ul class="dropdown-menu" id="dropme">
 															@foreach($nodeTypes as $types)
-															  <li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='{{ $panelMainId }}' class='{{$types->value}}'>{{$types->value}}</span ></li>
+															  <li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='{{$sectionId}}{{ $panelMainId }}' class='{{$types->value}}'>{{$types->value}}</span ></li>
 															@endforeach
 														</ul>
 													</div>				  
 											 	 </div>
 										</div>
+											<input type="text" id="index" class="form-control" name = 'index' value="{{ $sectionId }}"  placeholder="Value" style="display:none;">										
+
 										<div class="form-group">
 											<label for="inputPassword" class="control-label col-xs-2">Type</label>
 											<div class="col-xs-10">
-												<input type="text" id="type" class="form-control" readonly='readonly' placeholder="Value" value="{{ $panelMain->type }}">
+												<input type="text" id="type" name="type" class="form-control" readonly='readonly' placeholder="Value" value="{{ $panelMain->type }}">
 											</div>
 										</div>
-										 <div class="form-group">
-											<label for="inputPassword" class="control-label col-xs-2">Value</label>
-											<div class="col-xs-10">
-												<input type="text" id="value" class="form-control"  placeholder="Value" value="{{ $panelMain->value }}">
-											</div>
-										</div>
+											<input type="text" id="productindex" class="form-control" name = 'productindex' value="{{ $panelMainId }}"  placeholder="Value" style="display:none;">										
+										
 										@if ($panelMain->type == "Image" || $panelMain->type == "image")
-											<div id='imagetype{{$panelMainId}}' style="display:block;">
+											<div class="form-group">
+												<label for="inputPassword" class="control-label col-xs-2">Value</label>
+												<div class="col-xs-10">
+													<div class='well' id="imgwell{{$sectionId}}{{$panelMainId}}" style="max-width:auto;">
+														<img src="{{$easyShopLink}}/{{ $panelMain->value }}" class='img-responsive' style="max-height:200px;max-width:auto;"/>
+													</div>
+													<input type="file" id="value" class="form-control"  name="myfile" placeholder="Value" value="{{ $panelMain->value }}">
+												</div>
+											</div>
 										@else
-											<div id='imagetype{{$panelMainId}}' style="display:none;">
+											<div class="form-group">
+												<label for="inputPassword" class="control-label col-xs-2">Value</label>
+												<div class="col-xs-10">
+													<input type="text" id="value" class="form-control"  name="myfile" placeholder="Value" value="{{ $panelMain->value }}">
+												</div>
+											</div>
+										@endif	
+																				
+
+										@if ($panelMain->type == "Image" || $panelMain->type == "image")
+											<div id='imagetype{{$sectionId}}{{$panelMainId}}' style="display:block;">
+										@else
+											<div id='imagetype{{$sectionId}}{{$panelMainId}}' style="display:none;">
 										@endif
 											<div class="form-group">
 												<label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
@@ -160,20 +180,24 @@
 													<input type="text" id="target" class="form-control" name='target' placeholder="Value" value="{{ $panelMain->imagemap->target }}">
 												</div>
 											</div>
+											<input type="text" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" style="display:none;">
+											<input type="text" id="hashSetSectionMainPanel{{$sectionId}}{{$panelMainId}}" class="form-control" name = 'hash' value=''  placeholder="Value"  style="display:none;">			    
+
 										</div>
 										<div class="form-group">
 										  	<div class="col-xs-offset-2 col-xs-10">
-											  	<a class="btn btn-default text-center" id="btnSetSectionMainPanel" data-url = "{{ $homeCmsLink }}/setsectionmainpanel" data-password = "{{ $adminPassword }}" data-index="{{$sectionId}}" data-productindex="{{ $panelMainId }}" data-userid="{{$userId}}">Submit</a>
+											  	<a class="btn btn-default text-center" id="btnSetSectionMainPanel" data-url = "{{ $homeCmsLink }}/setsectionmainpanel" data-index="{{$sectionId}}" data-productindex="{{ $panelMainId }}">Submit</a>
+											  	<a class="btn btn-default text-center" id="btnRemoveSetSection" data-url = "{{ $homeCmsLink }}/removeContent" data-index="{{$sectionId}}" data-productindex="{{ $panelMainId }}" data-nodename="product_panel_main">Delete</a>
 										 	 </div>
 										</div>
-									</form>
 									<hr/>
+									</form>
 									<span style='display:none;'>{{ $panelMainId++ }}</span>
 								@endforeach
 							</div>
 					 	</div>
-					</div>
 					<span style='display:none;'> {{ $collapse++; }}</span>
+					</div>
 
 					<div class="panel panel-default">
 						<div class="panel-heading">
@@ -188,39 +212,65 @@
 
 							  @foreach($section->product_panel as $product_panel)  
 									<span style='display:none;'>{{ $panelMainId }}</span>
-									<form class="form-horizontal">
+                                    <form id="formSetSectionProduct{{$sectionId}}{{$panelMainId}}" target="test" action="{{ $homeCmsLink }}/setsectionproduct" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">        									
 										<div class="form-group">
 											<label for="inputEmail" class="control-label col-xs-2">Type of Product Panel</label>
 											  	<div class="col-xs-10">
 													<div class="btn-group">
-														<button data-toggle="dropdown" id="mybutton{{ $panelMainId }}" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span><span class="caret"></span></button>
-														<ul class="dropdown-menu">
+														<button data-toggle="dropdown" id="mybutton{{ $sectionId }}{{ $panelMainId }}" class="btn btn-default dropdown-toggle"><span id="btntext{{ $sectionId }}{{$panelMainId}}">{{ $product_panel->type }}</span><span class="carete"></span></button>
+														<ul class="dropdown-menu" id="dropme">
 															@foreach($nodeTypes as $types)
-															  <li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='{{ $panelMainId }}' class='{{$types->value}}'>{{$types->value}}</span ></li>
+															  <li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='{{ $sectionId }}{{ $panelMainId }}' class='{{$types->value}}'>{{$types->value}}</span ></li>
 															@endforeach
 														</ul>
 													</div>				  
 											 	 </div>
 										</div>
+
+                                            <input type="text" id="index" class="form-control" name = 'index' value="{{ $sectionId }}"  placeholder="Value" style="display:none;">                                      
+
 										<div class="form-group">
 											<label for="inputPassword" class="control-label col-xs-2">Type</label>
 											<div class="col-xs-10">
-												<input type="text" id="type" class="form-control" readonly='readonly' placeholder="Value" value="{{ $panelMain->type }}">
+                                                <input type="text" id="type" name="type" class="form-control" readonly='readonly' placeholder="Value" value="{{ $product_panel->type }}">
 											</div>
 										</div>
-										<div class="form-group">
-											<label for="inputPassword" class="control-label col-xs-2">Value</label>
-											<div class="col-xs-10">
-												<input type="text" id="value" class="form-control"  placeholder="Value" value="{{ $product_panel->value }}">
+
+                                            <input type="text" id="productindex" class="form-control" name = 'productindex' value="{{ $panelMainId }}"  placeholder="Value"  style="display:none;">                             
+
+
+										@if ($product_panel->type == "Image" || $product_panel->type == "image")
+											<div class="form-group">
+												<label for="inputPassword" class="control-label col-xs-2">Value</label>
+												<div class="col-xs-10">
+													<div class='well' id="imgwell{{$sectionId}}{{$panelMainId}}" style="max-width:auto;">
+														<img src="{{$easyShopLink}}/{{ $product_panel->value }}" class='img-responsive' style="max-height:200px;max-width:auto;"/>
+													</div>
+													<input type="file" id="value" class="form-control"  placeholder="Value" name="myfile" value="{{ $product_panel->value }}">
+												</div>
 											</div>
-										</div>
+										@else
+											<div class="form-group">
+												<label for="inputPassword" class="control-label col-xs-2">Value</label>
+												<div class="col-xs-10">
+													<input type="text" id="value" class="form-control"  placeholder="Value" name="myfile" value="{{ $product_panel->value }}">
+												</div>
+											</div>
+										@endif											
+
+										<input type="text" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" style="display:none;">
+										<input type="text" id="hashSetProductPanel{{$sectionId}}{{$panelMainId}}" class="form-control" name = 'hash' value=''  placeholder="Value"  style="display:none;">  			    										
+
 										<div class="form-group">
 											<div class="col-xs-offset-2 col-xs-10">
-												<a class="btn btn-default text-center" id="btnSetSectionPanel" data-url = "{{ $homeCmsLink }}/setSectionProduct" data-password = "{{ $adminPassword }}" data-index="{{$sectionId}}" data-productindex="{{ $panelMainId }}" data-userid="{{$userId}}">Submit</a>
+												<a class="btn btn-default text-center" id="btnSetSectionPanel" data-url = "{{ $homeCmsLink }}/setSectionProduct" data-index="{{$sectionId}}" data-productindex="{{ $panelMainId }}" >Submit</a>
+												<a class="btn btn-default text-center" id="btnRemoveSetSection" data-url = "{{ $homeCmsLink }}/removeContent" data-index="{{$sectionId}}" data-productindex="{{ $panelMainId }}" data-nodename="product_panel">Delete</a>
+
 											</div>
 										</div>
+										<hr/>
 									</form>
-								  <hr/>
+
 								  <span style='display:none;'>{{ $panelMainId++ }}</span>
 							  @endforeach
 							</div>
@@ -232,7 +282,7 @@
 		@endforeach
 
     	<div class="tab-pane fade active in" id="setText">
-			<form method="post" action="https://easyshop.ph.feature/webservice/homewebservice/settext" onsubmit ="document.getElementById('hash').value = hex_sha1(document.getElementById('bannertext').value + document.getElementById('userId').value)">
+			<form method="post" >
 				<fieldset>
 						<!-- Form Name -->
 					<legend>Manage Banner Text</legend>
@@ -240,8 +290,6 @@
 						<label for="userId" class="col-sm-2 control-label">Banner Text</label>
 						<div class="col-sm-10">
 							{{ Form::text('value', "$value", array('id' => 'bannertext','class' => 'form-control')) }}
-							{{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}    
-							{{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}    
 							{{ Form::hidden('hash', "", array('id' => 'hash')) }}
 						</div>
 					</div>
@@ -265,19 +313,14 @@
 					</div>
 					<div id="collapseOne" class="panel-collapse collapse in">
 						<div class="panel-body">
-							<form id='mainSlideForm' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
+							<form id='mainSlideForm' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Choose File</label>
 									<div class="col-xs-10">
 										<input type="file" id="photoFile" name='myfile'> 
 									</div>
 								</div>
-								<div class="form-group">
-									<label for="inputPassword" class="control-label col-xs-2">Value</label>
-									<div class="col-xs-10">
-										<input type="text" id="valueMainSlide" class="form-control" readonly='readonly' value='Image' name='value'  placeholder="Value" >
-									</div>
-								</div>
+									<input type="text" id="valueMainSlide" class="form-control" readonly='readonly' value='Image' name='value'  placeholder="Value" style="display:none;">
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
 									<div class="col-xs-10">
@@ -291,13 +334,12 @@
 									</div>
 								</div>
 								<input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >
-								<input type="hidden" id="adminPasswordMainSlide" class="form-control" name="password" value='{{$adminPassword}}'  placeholder="Value" >
 								<input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
 					
 
 								<div class="form-group">
 									<div class="col-xs-offset-2 col-xs-10">
-										<a1 href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
+										<a1 href="#"  class="btn btn-default text-center" data-password="{{$adminPassword}}" data-url = "{{ $homeCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
 									</div>
 								</div>
 							 </form>
@@ -321,82 +363,93 @@
 									<div class="col-lg-15" style='text-align:center;'>
 										 @foreach ($mainSlides as $mainSlide)
 											<div style="position:relative;display:inline-block;">
+											<div class='well' style="height:210px;">
 											<p>
 												<img src="{{$easyShopLink}}/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
 											</p>
 
-											<a href="#myMain{{ $mainSlideId }}" data-toggle="modal" class="btn btn-default" style="position:absolute;top:110px;left:105px;">Edit</a>
-											 
-											<a href="#"  class="btn btn-default" 
+											<a href="#myMain{{ $mainSlideId }}" data-toggle="modal" style="position:absolute;top:180px;left:135px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+											<a class="btn btn-default" 
+												id="deleteMainSlide" 
+												data-index="{{$mainSlideId}}"  
+												data-nodename="mainSlide" 
+												style="position:absolute;top:2px;left:5px;"
+												data-url = "{{ $homeCmsLink }}/removeContent"
+											 ><font color='red'><b>X</b></font></a>
+
+											<a 
 												id="moveup" 
 												 data-action="up" 
 												 data-index="{{$mainSlideId}}" 
-												 data-userid="{{$userId}}" 
 												 data-value="{{$mainSlide->value}}" 
 												 data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
 												 data-target="{{$mainSlide->imagemap->target}}" 
 												 data-order="{{$mainSlideId}}" 
-												 data-password="{{$adminPassword}}"
-												 style="position:absolute;top:110px;left:5px;"
+												 style="position:absolute;top:180px;left:5px;"
 												 data-url = "{{ $homeCmsLink }}/setmainslide"
-											 ><<</a>
+											 ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
 
-											 <a href="#"  class="btn btn-default" 
+											 <a  
 												id="movedown" 
 												data-action="up" 
 												data-index="{{$mainSlideId}}" 
-												data-userid="{{$userId}}" 
+
 												data-value="{{$mainSlide->value}}" 
 												data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
 												data-target="{{$mainSlide->imagemap->target}}" 
 												data-order="{{$mainSlideId}}" 
 												data-count="{{$mainSlideCount}}" 
-												data-password="{{$adminPassword}}"
-												style="position:absolute;top:110px;right:5px;"
+												style="position:absolute;top:180px;right:5px;"
 												data-url = "{{ $homeCmsLink }}/setmainslide"
-											 >>></a>
-
+											 ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
+											 </div>
 											<div class="modal fade" id="myMain{{ $mainSlideId }}" role="dialog">
 												<div class="modal-dialog">
 													<div class="modal-content">
 															<div class="modal-header">
-															  <h4>Edit Main Slide</h4>
+																<button type="button" class="close" data-dismiss="modal" style='margin-top:2px;'><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+																<h4 class="modal-title" id="myModalLabel">Edit Main Slide</h4>
 															</div>
 														<div class="modal-body">
-									                     <form id='mainSlideForm' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
+															<form id='mainSlideForm{{$mainSlideId}}' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">
+								   								{{ Form::hidden('index', $mainSlideId) }}																	                      								
+																<div class="form-group">
+																	<label for="inputPassword" class="control-label col-xs-2">Choose File</label>
+																	<div class="col-xs-10">
+																		<input type="file" id="photoFile" name='myfile'> 
+																	</div>
+																</div>
+																<div class="form-group">
+																	<label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
+																	<div class="col-xs-10">
+																		{{ Form::text('coordinate', $mainSlide->imagemap->coordinate, array('id' => 'editMainSlideCoordinate','class' => 'form-control')) }}
+																	</div>
+																</div>
+																<div class="form-group">
+																	<label for="inputPassword" class="control-label col-xs-2">Target</label>
+																	<div class="col-xs-10">
+																		{{ Form::text('target', $mainSlide->imagemap->target, array('id' => 'editMainSlideTarget','class' => 'form-control')) }}
+																	</div>
+																</div>
+																{{ Form::hidden('hash', $mainSlide->imagemap->target, array('id' => 'hashEditMainSlide','class' => 'form-control')) }}
+                                								<input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >                    
 
-									                        <fieldset>
-									                        <!-- Form Name -->
-									                        {{ Form::hidden('index', $mainSlideId) }}
-									                        {{ Form::hidden('userid', $userId) }}
-									                        {{ Form::hidden('value', "$mainSlide->value", array('id' => 'mainSlideImage','class' => 'form-control')) }}
-									                        <div class="form-group ">
-									                       		  <label for="userId" class="col-sm-2 control-label">Value</label>
-										                          <div class="col-sm-10">
-										                           		{{ Form::text('coordinate', $mainSlide->value, array('id' => 'mainSlideValue','class' => 'form-control')) }}
-										                          </div>
-										                          <label for="userId" class="col-sm-2 control-label">Coordinate</label>
-										                          <div class="col-sm-10">
-										                           		{{ Form::text('coordinate', $mainSlide->imagemap->coordinate, array('id' => 'mainSlideCoordinate','class' => 'form-control')) }}
-										                          </div>
-										                           <label for="userId" class="col-sm-2 control-label">Target</label>
-										                          <div class="col-sm-10">
-										                          		{{ Form::text('target', $mainSlide->imagemap->target, array('id' => 'mainSlideTarget','class' => 'form-control')) }}
-										                          </div>
-									                        </div>
-									                        </fieldset>
-									                            <a href="" class="btn btn-primary"
-									                             data-index="{{$mainSlideId}}" 
-									                             data-userid="{{$userId}}" 
-									                             data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
-									                             data-target="{{$mainSlide->imagemap->target}}" 
-									                             data-order="{{$mainSlideId}}" 
-									                             data-count="{{$mainSlideCount}}"
-									                             data-password="{{$adminPassword}}"
-									                             data-url = "{{ $homeCmsLink }}/setmainslide"
 
-									                             data-dismiss = "modal" id='submit'>Submit</a>
-									                        </form> 
+																<div class="form-group">
+																	<div class="col-xs-offset-2 col-xs-10">
+											                            <a href="" class="btn btn-primary"
+											                             data-index="{{$mainSlideId}}" 
+											                             data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
+											                             data-target="{{$mainSlide->imagemap->target}}" 
+											                             data-order="{{$mainSlideId}}" 
+											                             data-count="{{$mainSlideCount}}"
+											                             data-url = "{{ $homeCmsLink }}/setmainslide"
+
+											                             data-dismiss = "modal" id='submit'>Submit</a>
+																	</div>
+																</div>
+															 </form>															
+
 														</div>
 													 </div>
 												</div>
@@ -414,7 +467,7 @@
 		  
 	   
     <div class="tab-pane fade" id="productSlideTitle">
-        <form method="post" action="https://easyshop.ph.feature/webservice/homewebservice/setProductSlide" onsubmit ="document.getElementById('hash1').value = hex_sha1(document.getElementById('slidetitle').value + document.getElementById('userId').value)">
+        <form method="post" \>
 			<fieldset>
 				  <!-- Form Name -->
 				<legend>Manage Product Slide Title</legend>
@@ -422,8 +475,6 @@
 					<label for="userId" class="col-sm-2 control-label">Product Slide Title</label>
 					<div class="col-sm-10">
 						{{ Form::text('productSlideTitle', "$productSlideTitle", array('id' => 'slidetitle','class' => 'form-control')) }}
-						{{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}    
-						{{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}
 						{{ Form::hidden('hash', "", array('id' => 'hash1')) }}
 					</div>
 				</div>
@@ -440,37 +491,46 @@
 
     <div class="tab-pane fade" id="addSectionMainPanel">
         <legend>Add Section Main Panel</legend>
-			<form class="form-horizontal" id="formSectionMainPanel" method='post' action = '{{$homeCmsLink}}/addSectionMainPanel'>
+			<form id='formSectionMainPanel' target="test" action="{{ $homeCmsLink }}/addSectionMainPanel" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">        
 				<div class="form-group">
 					<label for="inputEmail" class="control-label col-xs-2">Type of Main Panel</label>
 					<div class="col-xs-10">
 						<div class="btn-group">
-							<button data-toggle="dropdown" id="mybutton100001" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
+							<button data-toggle="dropdown" id="mybuttonsm" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="carete"></span></button>
 							<ul class="dropdown-menu">
 								@foreach($nodeTypes as $types)
-									<li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='100001' class='{{$types->value}}'>{{$types->value}}</span ></li>
+									<li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-node = "SectionMainPanel"  data-index='sm' class='{{$types->value}}'>{{$types->value}}</span ></li>
 								@endforeach
 							</ul>
 						</div>			  
 					</div>
 				</div>
-		  
+				<div class="form-group">
+					<label for="inputPassword" class="control-label col-xs-2">Section Head</label>
+					<div class="col-xs-10">
+							<button data-toggle="dropdown" id="mybuttonsh" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">--Choose Section Head--</span> <span class="carete"></span></button>
+							<ul class="dropdown-menu" id="dropSectionMainPanel">
+								<span style="display:none;">{{$sectionIndex = 0}}</span>
+								@foreach($sectionHeads as $types)
+
+									<li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='sh'  data-node = "SectionMainPanel" class='{{$types->value}}' data-sectionindex = "{{$sectionIndex}}">{{$types->value}}</span ></li>
+									<span style="display:none;"  data-node = "SectionMainPanel" >{{$sectionIndex++}}</span>							
+								@endforeach
+							</ul>						
+					</div>
+				</div>		  
 				<div class="form-group">
 					<label for="inputPassword" class="control-label col-xs-2">Type</label>
 					<div class="col-xs-10">
+						<input type="text" id="indexSectionMainPanel" class="form-control" name= 'index' readonly='readonly' placeholder="Value" value="none" style="display:none;">
 						<input type="text" id="typeSectionMainPanel" class="form-control" name= 'type' readonly='readonly' placeholder="Value" value="Product">
 					</div>
 				</div>  
-				<div class="form-group">
-					<label for="inputPassword" class="control-label col-xs-2">Index</label>
-					<div class="col-xs-10">
-						<input type="text" id="indexSectionMainPanel" class="form-control" name= 'index' placeholder="Value" value=""/>
-					</div>
-				</div>   
+   
 				<div class="form-group">
 					<label for="inputPassword" class="control-label col-xs-2">Value</label>
-					<div class="col-xs-10">
-						<input type="text" id="valueSectionMainPanel" class="form-control" name='value'  placeholder="Value" value="">
+					<div class="col-xs-10" id="replacesectionMainPanel">
+						<input type="text" class="form-control" id="photoFile" name='myfile'  placeholder="Value" value="">
 					</div>
 				</div>
 				<div class="form-group">
@@ -479,11 +539,11 @@
 						<input type="text" id="productindexSectionMainPanel" class="form-control" name='productindex' placeholder="Product Index" value="">
 					</div>
 				</div>
-				<div id='imagetype100' style="display:none;">
+				<div id='imagetypesm' style="display:none;">
 				  <div class="form-group">
 						<label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
 						<div class="col-xs-10">
-							<input type="text" id="coordinateSectionMainPanel" class="form-control" name='coordinate' placeholder="0,0,0,0" value="">
+							<input type="text" id="coordinateSectionMainPanel" class="form-control" name='coordinate' value="">
 						</div>
 				  </div>
 			  
@@ -494,9 +554,8 @@
 						</div>
 				  </div>
 			    </div>
-
-				<input type="hidden" id="userIdSectionMainPanel" class="form-control" name= 'userid' readonly='readonly' placeholder="Value" value="{{$userId}}"/>
-				<input type="hidden" id="passwordSectionMainPanel" class="form-control" name= 'password' readonly='readonly' placeholder="Value" value="{{$adminPassword}}"/>
+				<input type="text" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" style="display:none;">
+				<input type="hidden" id="hashAddSectionMainPanel" class="form-control" name = 'hash' value=''  placeholder="Value" >			    
 
 			  	<div class="form-group">
 					<div class="col-xs-offset-2 col-xs-10">
@@ -508,16 +567,14 @@
     <div class="tab-pane fade" id="AddSectionProduct">
         <legend> Add Section Product</legend>
 
-			<form class="form-horizontal" id='formSectionProduct'  method='post' action = '{{$homeCmsLink}}/addSectionProduct'>
+            <form id='formSectionProduct' target="test" action="{{ $homeCmsLink }}/addSectionProduct" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">        
 
-
-				<input type="text" id="typeSectionProduct" class="form-control" name= 'type' readonly='readonly' placeholder="Value" value="Product" style='display:none'/>
 		
 				<div class="form-group">
 					<label for="inputPassword" class="control-label col-xs-2">Type</label>
 					<div class="col-xs-10">
 						<div class="btn-group" >
-							<button data-toggle="dropdown" id="mybutton20000001" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="caret"></span></button>
+							<button data-toggle="dropdown" id="mybutton20000001" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">Product</span> <span class="carete"></span></button>
 							<ul class="dropdown-menu" id='sectionProductDrop'>
 								@foreach($nodeTypes as $types)
 									<li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index = "20000001"class='{{$types->value}}'>{{$types->value}}</span ></li>
@@ -529,13 +586,24 @@
 				<div class="form-group">
 					<label for="inputPassword" class="control-label col-xs-2">Index</label>
 					<div class="col-xs-10">
-						<input type="text" id="indexSectionProduct" class="form-control" name="index" placeholder="Value" />
-					</div>
+							<button data-toggle="dropdown" id="mybuttonsp" class="btn btn-default dropdown-toggle"><span id="btntext{{$panelMainId}}">--Choose Section Head--</span> <span class="carete"></span></button>
+							<ul class="dropdown-menu">
+								<span style="display:none">{{$sectionIndex=0}}</span>
+								@foreach($sectionHeads as $types)
+
+									<li>&nbsp;&nbsp;&nbsp;<span style='cursor:pointer;' data-index='sp' class='{{$types->value}}' data-sectionindex = "{{$sectionIndex}}">{{$types->value}}</span ></li>
+									<span style="display:none;">{{$sectionIndex++}}</span>							
+								@endforeach
+							</ul>						
+					</div>					
 				</div>	
 				<div class="form-group">
 					<label for="inputPassword" class="control-label col-xs-2">Value</label>
 					<div class="col-xs-10">
-						<input type="text" id="valueSectionProduct" class="form-control" name="value" placeholder="Value" />
+				<input type="text" id="typeSectionProduct" class="form-control" name= 'type' readonly='readonly' placeholder="Value" value="Product" style="display:none;"sss/>
+
+						<input type="hidden" id="indexSectionProduct" class="form-control" name="index" placeholder="Value" />						
+                        <input type="text" class="form-control" id="photoFile" name='myfile'  placeholder="Value" value="">
 					</div>
 				</div>	
 
@@ -545,9 +613,8 @@
 						<input type="text" id="productIndexSectionProduct" name="productindex" class="form-control"  placeholder="Product Index" />
 					</div>
 				</div>
-
-				<input type="hidden" id="userIdSectionProduct" class="form-control" name= "userid" readonly='readonly' placeholder="Value" value="{{$userId}}"/>
-				<input type="hidden" id="passwordSectionProduct" class="form-control" name= "password" value='{{ $adminPassword}}' readonly='readonly' placeholder="Value" value="{{$userId}}">
+                <input type="text" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" style="display:none;">
+                <input type="hidden" id="hashAddSectionProduct" class="form-control" name = 'hash' value=''  placeholder="Value" >                				
 
 				<div class="form-group">
 					<div class="col-xs-offset-2 col-xs-10">
@@ -569,7 +636,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
-					<a href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/addType" data-userid="{{$userId}}" data-password = "{{$adminPassword}}" id="btnAddType" >Submit</a>
+					<a href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/addType"  id="btnAddType" >Submit</a>
 				</div>
 			</div>
 		</form>
@@ -605,9 +672,19 @@
 			</div>
         </div>
     </div>
+    <div class="modal fade" id="customerror" >
+        <div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body" style='text-align:center;'>
+					<img src="{{{ asset('images/img_alert.png') }}}">
+					<h3 id="errorTexts">Product slug does not exist</h3>        
+				</div>
+			</div>
+        </div>
+    </div>    
 
     <div class="tab-pane fade" id="productSideBanner">
-        <form method="post" action="https://easyshop.ph.feature/webservice/homewebservice/setproductSideBanner" onsubmit ="document.getElementById('hash2').value = hex_sha1(document.getElementById('sidebanner').value + document.getElementById('userId').value)">     
+        <form method="post" >     
 			<fieldset>
 				<!-- Form Name -->
 				<legend>Manage Product Side Banner</legend>
@@ -615,8 +692,6 @@
 					<label for="userId" class="col-sm-2 control-label">Product Side Banner</label>
 					<div class="col-sm-10">
 						{{ Form::text('productSideBanner', "$productSideBanner", array('id' => 'sidebanner','class' => 'form-control')) }}
-						{{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}
-						{{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}
 						{{ Form::hidden('hash', "", array('id' => 'hash2')) }}
 					</div>
 				</div>
@@ -643,7 +718,7 @@
 					</div>
 					<div id="addProductSlide" class="panel-collapse collapse in">
 						<div class="panel-body">
-							<form action="{{$homeCmsLink}}/addproductslide" id="addProductForm" class="form-horizontal" method="post" enctype="multipart/form-data">
+							<form action="#" id="addProductForm" class="form-horizontal" method="post" enctype="multipart/form-data">
 								<div class="form-group">
 									<label for="inputPassword" class="control-label col-xs-2">Value</label>
 									<div class="col-xs-10">
@@ -652,7 +727,7 @@
 								</div>
 								<div class="form-group">
 									<div class="col-xs-offset-2 col-xs-10">
-										<a href="#"  class="btn btn-default text-center" data-userid="{{$userId}}" data-password="{{$adminPassword}}" data-url = "{{ $homeCmsLink }}/addproductslide" id="submitAddProduct">Submit</a>
+										<a  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/addproductslide" id="submitAddProduct">Submit</a>
 									</div>
 								</div>
 							 </form>
@@ -662,12 +737,12 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+							<a data-toggle="collapse" data-parent="#accordion" href="#manageproductslide">
 							Manage Product Slide
 							</a>
 						</h4>
 					</div>
-					<div id="collapseTwo" class="panel-collapse collapse in">
+					<div id="manageproductslide" class="panel-collapse collapse in">
 						<div class="panel-body">
 							<div class="form-group "> 
 								<div class="col-lg-15" style='text-align:center'>
@@ -676,62 +751,64 @@
 										@for($y=0;$y < 1;$y++)
 		  
 											<div style="position:relative; display:inline-block;">
-
+											<div class='well' style="height:210px;">
 													<p><img src="{{$easyShopLink}}/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive' ></p>
+													<a class="btn btn-default" 
+														id="deleteMainSlide" 
+														data-index="{{$i}}"  
+														data-nodename="productSlide" 
+														style="position:absolute;top:2px;left:5px;"
+														data-url = "{{ $homeCmsLink }}/removeContent"
+													 ><font color='red'><b>X</b></font></a>
 
 
-													 <a href="#"  class="btn btn-default" id="moveUpProductSlide" 
+													 <a  id="moveUpProductSlide" 
 													  data-index='{{$i}}'
-													  data-password = '{{ $adminPassword }}'
-													  data-userid="{{$userId}}" 
 													  data-order='{{$i}}'
 													  data-count="{{$productSlideCount}}" 
 													  data-value="{{$productTypes[$i]['value']}}" 
 													  data-type="{{$productTypes[$i]['type']}}" 
 													  data-url = "{{ $homeCmsLink }}/setproductslide"
 
-													 style="position:absolute;top:110px;left:5px;"><<</a>
-														  <button class="btn btn-default" data-toggle="modal" data-target="#myModal{{$i}}"  style="position:absolute;top:110px;left:105px;">
-													  Edit
-													</button>
+													 style="position:absolute;top:180px;left:5px;"><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
+														  <a href="#myModal{{$i}}" data-toggle="modal" style="position:absolute;top:180px;left:135px;">
+														  	<span class="glyphicon glyphicon-edit" style="font-size:16px;"></span>
+														  </a>
 
-													  <a href="#"  class="btn btn-default" id="moveDownProductSlide" 
+													  <a  id="moveDownProductSlide" 
 													  data-index='{{$i}}'
-													  data-password = '{{ $adminPassword }}'
-													  data-userid="{{$userId}}" 
 													  data-order='{{$i}}'
 													  data-count="{{$productSlideCount}}" 
 													  data-value="{{$productTypes[$i]['value']}}" 
 													  data-type="{{$productTypes[$i]['type']}}" 
 													  data-url = "{{ $homeCmsLink }}/setproductslide"
 
-													 style="position:absolute;top:110px;right:5px;">>></a>
-
+													 style="position:absolute;top:180px;right:5px;"><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
+											</div>
 													<!-- Modal -->
 												<div class="modal fade" id="myModal{{$i}}" >
 												  <div class="modal-dialog">
 														<div class="modal-content">
 															<div class="modal-header">
+																<button type="button" class="close" data-dismiss="modal" style='margin-top:2px;'><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
 																<h4 class="modal-title" id="myModalLabel">Edit Product Slide</h4>
 															</div>
 															  <div class="modal-body">
 
-																	<form method="post" id='productSlideForm' action="https://easyshop.ph.feature/webservice/homewebservice/addmainslide" onsubmit ="document.getElementById('hash2').value = hex_sha1(document.getElementById('sidebanner').value + document.getElementById('userId').value)">       
+																	<form method="post" id='productSlideForm'  >       
 																		<fieldset>
 																		<label for="userId" class="col-sm-2 control-label">Value</label>
 																		<div class="col-sm-10">
-																			{{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}
 																			{{ Form::text('value', $productTypes[$i]['value'], array('id' => 'productSlideValue','class' => 'form-control')) }}
 																		</div>
 																		<label for="userId" class="col-sm-2 control-label">Type</label>
 																		<div class="col-sm-10">
-																			{{ Form::text('type', $productTypes[$i]['type'], array('id' => 'productSlideType','class' => 'form-control')) }}
+																			{{ Form::text('type', $productTypes[$i]['type'], array('id' => 'productSlideType','class' => 'form-control','readonly' => 'readonly')) }}
 																		</div>
 																		</fieldset>
 																	<br/>
 																	  <a href="" class="btn btn-primary" data-dismiss = "modal"
 																		data-index='{{$i}}'
-																		data-userid="{{$userId}}" 
 																		data-order='{{$i}}'
 																		data-count="{{$productSlideCount}}" 
 																		data-url = "{{ $homeCmsLink }}/setproductslide"
@@ -754,6 +831,8 @@
 		</div>		 
 	</div>
 	</div>
+
+
 
 @stop
 @section('page_js') 

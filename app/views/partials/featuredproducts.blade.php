@@ -1,11 +1,4 @@
-    <script type="text/javascript">
-        $(document).ready(function(){
 
-            $("#loading").modal('hide');
-            $("#success").modal('show');
-        });
-
-    </script>  
         <div class="tab-pane fade active in" id="addFeaturedProduct">
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
@@ -56,7 +49,7 @@
                                 @foreach($feedFeaturedProduct as $products)
                                     <div class='col-md-4'>
                                         <div class='well' >
-                                            <a href="#" id="moveDownFeaturedProduct"
+                                            <a id="moveDownFeaturedProduct"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
                                                 data-userid="{{$userId}}" 
@@ -69,7 +62,7 @@
                                                 <span class="glyphicon glyphicon-chevron-right pull-right" style='font-size:16px;'></span>
                                             </a>
 
-                                            <a href='#' id="moveUpFeaturedProduct"
+                                            <a id="moveUpFeaturedProduct"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
                                                 data-userid="{{$userId}}" 
@@ -87,6 +80,17 @@
                                                 <a href='#modal{{$indexForEach}}' data-toggle="modal">
                                                     <span class="glyphicon glyphicon-edit" style='font-size:16px;'></span>
                                                 </a>
+                                                <a 
+                                                    id="productslide" 
+                                                    data-index="{{$indexForEach}}"  
+                                                    data-nodename="map/feedFeaturedProduct/product" 
+                                                    data-userid="{{$userId}}"                                                
+                                                    data-password="{{$adminPassword}}"
+                                                    data-url = "{{ $contentCmsLink }}/removeContent"
+                                                 >
+                                                    <span class="glyphicon glyphicon-remove" style='font-size:16px;'></span>
+
+                                                </a>                                                  
                                             </center>
                                         </div>                                            
                                     </div>
