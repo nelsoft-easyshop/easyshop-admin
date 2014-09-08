@@ -56,26 +56,23 @@
               </div>
             </div>
 
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                    Manage Main Slide
-                  </a>
-                </h4>
-              </div>
-              <div id="collapseTwo" class="panel-collapse collapse in">
-                <div class="panel-body">
-
-                  <fieldset>
-                      <!-- Form Name -->
-                      <div class="form-group ">
-                      
-                          <div class="col-lg-15" style='text-align:center;'>
-                               @foreach ($mainSlides as $mainSlide)
-                              <div style="position:relative;
-                                  display:inline-block;">
-                    <div class='well' style="height:210px;">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+              Manage Main Slide
+              </a>
+            </h4>
+          </div>
+          <div id="collapseTwo" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <fieldset>
+                <!-- Form Name -->
+                <div class="form-group ">
+                  <div class="col-lg-15" style='text-align:center;'>
+                     @foreach ($mainSlides as $mainSlide)
+                      <div style="position:relative;display:inline-block;">
+                      <div class='well' style="height:210px;">
                       <p>
                         <img src="{{$easyShopLink}}/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
                       </p>
@@ -85,8 +82,6 @@
                         id="deleteMainSlide" 
                         data-index="{{$mainSlideId}}"  
                         data-nodename="mainSlide" 
-                        data-userid="{{$userId}}"                        
-                        data-password="{{$adminPassword}}"
                         style="position:absolute;top:2px;left:5px;"
                         data-url = "{{ $homeCmsLink }}/removeContent"
                        ><font color='red'><b>X</b></font></a>
@@ -95,91 +90,87 @@
                         id="moveup" 
                          data-action="up" 
                          data-index="{{$mainSlideId}}" 
-                         data-userid="{{$userId}}" 
                          data-value="{{$mainSlide->value}}" 
                          data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
                          data-target="{{$mainSlide->imagemap->target}}" 
                          data-order="{{$mainSlideId}}" 
-                         data-password="{{$adminPassword}}"
                          style="position:absolute;top:180px;left:5px;"
                          data-url = "{{ $homeCmsLink }}/setmainslide"
                        ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
 
-                       <a 
+                       <a  
                         id="movedown" 
                         data-action="up" 
                         data-index="{{$mainSlideId}}" 
-                        data-userid="{{$userId}}" 
+
                         data-value="{{$mainSlide->value}}" 
                         data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
                         data-target="{{$mainSlide->imagemap->target}}" 
                         data-order="{{$mainSlideId}}" 
                         data-count="{{$mainSlideCount}}" 
-                        data-password="{{$adminPassword}}"
                         style="position:absolute;top:180px;right:5px;"
                         data-url = "{{ $homeCmsLink }}/setmainslide"
                        ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                        </div>
+                      <div class="modal fade" id="myMain{{ $mainSlideId }}" role="dialog">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" style='margin-top:2px;'><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Edit Main Slide</h4>
+                              </div>
+                            <div class="modal-body">
+                              <form id='mainSlideForm{{$mainSlideId}}' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
+                                  {{ Form::hidden('index', $mainSlideId) }}                                                                       
+                                <div class="form-group">
+                                  <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
+                                  <div class="col-xs-10">
+                                    <input type="file" id="photoFile" name='myfile'> 
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
+                                  <div class="col-xs-10">
+                                    {{ Form::text('coordinate', $mainSlide->imagemap->coordinate, array('id' => 'editMainSlideCoordinate','class' => 'form-control')) }}
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label for="inputPassword" class="control-label col-xs-2">Target</label>
+                                  <div class="col-xs-10">
+                                    {{ Form::text('target', $mainSlide->imagemap->target, array('id' => 'editMainSlideTarget','class' => 'form-control')) }}
+                                  </div>
+                                </div>
+                                {{ Form::hidden('hash', $mainSlide->imagemap->target, array('id' => 'hashEditMainSlide','class' => 'form-control')) }}
+                                                <input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$userId}}'  placeholder="Value" >                    
 
 
-                                  <div class="modal fade" id="myMain{{ $mainSlideId }}" role="dialog">
-                                      <div class="modal-dialog">
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                              <button type="button" class="close" data-dismiss="modal" style='margin-top:2px;'><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                                              <h4 class="modal-title" id="myModalLabel">Edit Main Slide</h4>
-                                          </div>
-                                          <div class="modal-body">
-                     <form id='mainSlideForm' target="test" action="{{ $homeCmsLink}}/addmainslide" class="form-horizontal" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                  <div class="col-xs-offset-2 col-xs-10">
+                                                  <a href="" class="btn btn-primary"
+                                                   data-index="{{$mainSlideId}}" 
+                                                   data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
+                                                   data-target="{{$mainSlide->imagemap->target}}" 
+                                                   data-order="{{$mainSlideId}}" 
+                                                   data-count="{{$mainSlideCount}}"
+                                                   data-url = "{{ $homeCmsLink }}/setmainslide"
 
-                        <fieldset>
-                        <!-- Form Name -->
-                        {{ Form::hidden('index', $mainSlideId) }}
-                        {{ Form::hidden('userid', $userId) }}
-                        {{ Form::hidden('value', "$mainSlide->value", array('id' => 'mainSlideImage','class' => 'form-control')) }}
-                                          <div class="form-group ">
-                                              <label for="userId" class="col-sm-2 control-label">Value</label>
-                                              <div class="col-sm-10">
-                                                  {{ Form::text('coordinate', $mainSlide->value, array('id' => 'mainSlideValue','class' => 'form-control')) }}
-                                              </div>
-                                              <label for="userId" class="col-sm-2 control-label">Coordinate</label>
-                                              <div class="col-sm-10">
-                                                  {{ Form::text('coordinate', $mainSlide->imagemap->coordinate, array('id' => 'mainSlideCoordinate','class' => 'form-control')) }}
-                                              </div>
-                                               <label for="userId" class="col-sm-2 control-label">Target</label>
-                                              <div class="col-sm-10">
-                                                  {{ Form::text('target', $mainSlide->imagemap->target, array('id' => 'mainSlideTarget','class' => 'form-control')) }}
-                                              </div>
-                                          </div>
-                        </fieldset>
-                            <a href="" class="btn btn-primary"
-                             data-index="{{$mainSlideId}}" 
-                             data-userid="{{$userId}}" 
-                             data-value="{{$mainSlide->value}}" 
-                             data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
-                             data-target="{{$mainSlide->imagemap->target}}" 
-                             data-order="{{$mainSlideId}}" 
-                             data-count="{{$mainSlideCount}}"
-                             data-password="{{$adminPassword}}"
-                             data-url = "{{ $homeCmsLink }}/setmainslide"
+                                                   data-dismiss = "modal" id='submit'>Submit</a>
+                                  </div>
+                                </div>
+                               </form>                              
 
-                             data-dismiss = "modal" id='submit'>Submit</a>
-                        </form> 
-                                                  
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                              </div><span style="display:none;">{{$mainSlideId++}}</span>
-                                               @endforeach
-
-                          </div>
-                      </div>
-                      
-                  </fieldset>
+                            </div>
+                           </div>
+                        </div>
+                        </div>
+                      </div><span style="display:none;">{{$mainSlideId++}}</span>
+                    @endforeach
+                  </div>
                 </div>
-              </div>
+              </fieldset>
             </div>
+          </div>
+        </div>
 
           </div>    
 
