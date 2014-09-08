@@ -17,7 +17,8 @@
     <link type="text/css" href="{{{ asset('css/homecms.css') }}}" rel="stylesheet"  media="screen"/>
 
    <div class="row">
-
+        <span id="userIdSpan" style="display:none;">{{ $userId }}</span>
+        <span id="adminPasswordSpan" style="display:none;">{{ $adminPassword }}</span>
     <section id="tabs">
         <ul id="myTab" class="nav nav-tabs" role="tablist">
             <li class="dropdown ">
@@ -243,7 +244,7 @@
                                                 <a 
                                                     id="productslide" 
                                                     data-index="{{$indexForEach}}"  
-                                                    data-nodename="map/feedFeaturedProduct/product" 
+                                                    data-nodename="/map/feedFeaturedProduct/product" 
                                                     data-userid="{{$userId}}"                                                
                                                     data-password="{{$adminPassword}}"
                                                     data-url = "{{ $contentCmsLink }}/removeContent"
@@ -381,7 +382,7 @@
                                                 <a 
                                                     id="productslide" 
                                                     data-index="{{$indexForEach}}"  
-                                                    data-nodename="map/feedPopularItems/product" 
+                                                    data-nodename="/map/feedPopularItems/product" 
                                                     data-userid="{{$userId}}"                                                
                                                     data-password="{{$adminPassword}}"
                                                     data-url = "{{ $contentCmsLink }}/removeContent"
@@ -519,7 +520,7 @@
                                                 <a 
                                                     id="productslide" 
                                                     data-index="{{$indexForEach}}"  
-                                                    data-nodename="map/feedPromoItems/product" 
+                                                    data-nodename="/map/feedPromoItems/product" 
                                                     data-userid="{{$userId}}"                                                
                                                     data-password="{{$adminPassword}}"
                                                     data-url = "{{ $contentCmsLink }}/removeContent"
