@@ -1,11 +1,4 @@
-  <script type="text/javascript">
-      $(document).ready(function(){
-
-        $("#loading").modal('hide');
-
-      });
-
-  </script>       
+   
      <div class="tab-pane fade active in" id="productSlide" onload = "success">
     
         <div class="panel-group" id="accordion">
@@ -29,7 +22,7 @@
                         </div>
                         <div class="form-group">
                           <div class="col-xs-offset-2 col-xs-10">
-                            <a href="#"  class="btn btn-default text-center" data-userid="{{$userId}}" data-password="{{$adminPassword}}" data-url = "{{ $homeCmsLink }}/addproductslide" id="submitAddProduct">Submit</a>
+                            <a  class="btn btn-default text-center" data-userid="{{$userId}}" data-password="{{$adminPassword}}" data-url = "{{ $homeCmsLink }}/addproductslide" id="submitAddProduct">Submit</a>
                           </div>
                         </div>
                        </form>
