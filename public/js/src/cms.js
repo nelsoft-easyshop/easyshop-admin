@@ -1,11 +1,12 @@
 (function () {
-
-    $("form").submit(function(e){
-        if($(this).attr("id") != "mainSlideForm" && $(this).attr("id") != "left" && $(this).attr("id") != "right" && $(this).attr("id") != "mid") {
+    var globalUserId = $('#userIdSpan').html();
+    var globalPassword = $('#adminPasswordSpan').html();
+   $("form").submit(function(e){
+        if($(this).attr("id") != "mainSlideForm" && $(this).attr("id") != "left" && $(this).attr("id") != "right" && $(this).attr("id") != "mid" && $(this).attr("class") != "form-horizontal submit-test") {
                     return false;
         }
     
-    });
+    })
 
     $('#myTab a').click(function (e) {
         e.preventDefault();
@@ -16,8 +17,8 @@
     $("#productSlide").on('click','#submitAddProduct',function (e) { 
           
         var value = $(this).closest("form").find("#valueProductSlide").val();
-        var userid = $(this).data('userid');
-        var password = $(this).data('password');
+        var userid = globalUserId;
+        var password = globalPassword;
         var url = $(this).data('url');
         if(value == "") {
             $("#error").modal('show');
@@ -27,87 +28,198 @@
             data = {value:value, userid:userid , hash:hash};
             addDataProductSlide(data, url);            
         }
-
-
     });   
 
     $('#AddSectionProduct').on('click','#submitSectionProduct',function (e) { 
         e.preventDefault();
-  
+        var form = "#formSectionProduct";
         var typeSectionProduct = $("#typeSectionProduct").val();
         var indexSectionProduct = $("#indexSectionProduct").val();
-        var valueSectionProduct =  $("#valueSectionProduct").val();
+        var valueSectionProduct =  $(this).closest("form").find("#photoFile").val();
         var productIndexSectionProduct = $("#productIndexSectionProduct").val();
-        var userIdSectionProduct = $("#userIdSectionProduct").val();
-        var passwordSectionProduct = $("#passwordSectionProduct").val();
+        var userIdSectionProduct = globalUserId;
+        var passwordSectionProduct = globalPassword;
         var url = $(this).data('url');
         var hash = hex_sha1(typeSectionProduct + indexSectionProduct + valueSectionProduct + productIndexSectionProduct + userIdSectionProduct + passwordSectionProduct);
+        $(this).closest("form").find("#hashAddSectionProduct").val(hash);        
 
-        if(indexSectionProduct < 0 || indexSectionProduct == "" || value == "" || productIndexSectionProduct < 0 || productIndexSectionProduct == "" || indexSectionMainPanel == "Product") {
+        if(indexSectionProduct < 0 || indexSectionProduct == "" || valueSectionProduct == "" || productIndexSectionProduct < 0 || productIndexSectionProduct == "" || indexSectionMainPanel == "Product") {
             $("#error").modal('show'); 
         }
         else {
-            data = {type:typeSectionProduct, index:indexSectionProduct, value:valueSectionProduct, productindex:productIndexSectionProduct, userid:userIdSectionProduct, hash:hash};
-            AddSectionProduct(data,url);            
+            data = {type:typeSectionProduct, index:indexSectionProduct, myfile:valueSectionProduct, productindex:productIndexSectionProduct, userid:userIdSectionProduct, password:passwordSectionProduct ,hash:hash};
+            if(typeSectionProduct.toLowerCase() == "image") {
+
+                AddSectionProductImage(data,url,form);            
+            } 
+            else {
+                AddSectionProduct(data,url);            
+            }
         }
 
     });   
+    function AddSectionProduct(data,url) {
+        $("#loading").modal('show');
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#loading").modal('hide');
 
+                if(json.sites[0]["success"] != "success") {
+                    if(json.sites[0]["slugerror"]) {
+                        console.log(json.sites[0]["slugerror"]);                        
+                        $("#errorTexts").html(json.sites[0]["slugerror"]);         
+                    }
+                    else if(json.sites[0]["bounds"]){
+                        console.log(json.sites[0]["bounds"]);                       
+                        $("#errorTexts").html(json.sites[0]["bounds"]);
+                    }
+                        $("#loading").modal('hide');
+                        $("#customerror").modal('show');     
+                }
+                else {
+                    $("#success").modal('show');                   
+                }
+             
+            },
+            error: function(e) {
+                $("#errorTexts").html("You are not authorized for this action");
+                $("#loading").modal('hide');
+                $("#customerror").modal('show');
+  
+            }
+        });
+    }
 
-    $("#mainSlide").on('click','#submitAddMainSlide',function (e) { 
-        e.preventDefault();
-        var url = $(this).data('url');
-        var value = $("#valueMainSlide").val();
-        var myvalue = $("#photoFile").val();
-        var mainSlideCoordinate = $("#mainSlideCoordinate").val();
-        var mainSlideTarget = $("#mainSlideTarget").val();
-        var useridMainSlide = $("#userIdMainSlide").val();
-        var passwordMainSlide = $(this).data('password');
-        var hash = myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide;
-        $("#hashMainSlide").val(hash);
+    function AddSectionProductImage(data,url,form) {
+        $("#loading").modal('show');
+        $(form).ajaxForm({
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
 
-        if( myvalue == "" || myvalue == "undefined" || value == "" || mainSlideCoordinate == "" || mainSlideTarget == "")
-        {
-            $("#error").modal('show');         
-        }
-        else
-        {
-            addMainSlide(url);
-        }
-    });  
+                $("#loading").modal('hide');
+                $("#success").modal('show');                   
+               
+            },
+            error: function(e) {
+                $("#loading").modal('hide');
+                $("#success").modal('show');                   
+
+            }
+        }); 
+        $(form).submit();
+    }
 
     $('#addSectionMainPanel').on('click','#submitSectionMainPanel',function (e) { 
         e.preventDefault();
-  
+        var form = "#formSectionMainPanel";
         var typeSectionMainPanel = $("#typeSectionMainPanel").val();
-        var valueSectionMainPanel = $("#valueSectionMainPanel").val();
+        var valueSectionMainPanel = $(this).closest("form").find("#photoFile").val();
         var productindexSectionMainPanel = $("#productindexSectionMainPanel").val();
         var coordinateSectionMainPanel = $("#coordinateSectionMainPanel").val();
         var targetSectionMainPanel = $("#targetSectionMainPanel").val();
         var indexSectionMainPanel = $("#indexSectionMainPanel").val();
-        var userIdSectionMainPanel = $("#userIdSectionMainPanel").val();
-        var passwordSectionMainPanel = $("#passwordSectionMainPanel").val();
+        var userIdSectionMainPanel = globalUserId;
+        var passwordSectionMainPanel = globalPassword;
         var url = $(this).data('url');
-        var hash = hex_sha1(typeSectionMainPanel + indexSectionMainPanel + valueSectionMainPanel + productindexSectionMainPanel + coordinateSectionMainPanel + targetSectionMainPanel + userIdSectionMainPanel + passwordSectionMainPanel);
-        if(type == "image" || type == "Image"){
-            if(value == "" || coordinate == "" || target == "" || indexSectionMainPanel < 0 || productindexSectionMainPanel < 0 || index == "" || productindexSectionMainPanel == "" || indexSectionMainPanel == "Product") {
+        var hash = hex_sha1(indexSectionMainPanel + typeSectionMainPanel + valueSectionMainPanel + productindexSectionMainPanel + coordinateSectionMainPanel + targetSectionMainPanel + userIdSectionMainPanel + passwordSectionMainPanel);
+        $(this).closest("form").find("#hashAddSectionMainPanel").val(hash);        
+
+        if(typeSectionMainPanel == "image" || typeSectionMainPanel == "Image"){
+            if(valueSectionMainPanel == "" || coordinate == "" || target == "" || indexSectionMainPanel =="none" || indexSectionMainPanel =="product" || indexSectionMainPanel =="Product" || productindexSectionMainPanel < 0 || productindexSectionMainPanel == "") {
                 $("#error").modal('show');                
             }
             else {
+                alert();                
                 data = {type:typeSectionMainPanel, index:indexSectionMainPanel, value:valueSectionMainPanel, productindex:productindexSectionMainPanel, coordinate:coordinateSectionMainPanel, target:targetSectionMainPanel, userid:userIdSectionMainPanel, hash:hash};
-                addSectionMainPanel(data,url);       
+                addSectionMainPanel(data,url,form, typeSectionMainPanel);       
             }
         }
         else {
-            if(value == "" ||  indexSectionMainPanel < 0 || productindexSectionMainPanel < 0 || indexSectionMainPanel == "" || productindexSectionMainPanel == "" || indexSectionMainPanel == "Product") {
+            if(value == "" || productindexSectionMainPanel < 0  || indexSectionMainPanel =="none" || indexSectionMainPanel =="product" || indexSectionMainPanel =="Product" || productindexSectionMainPanel == "") {
                 $("#error").modal('show');                
             } 
             else {
-                data = {type:typeSectionMainPanel, index:indexSectionMainPanel, value:valueSectionMainPanel, productindex:productindexSectionMainPanel, coordinate:coordinateSectionMainPanel, target:targetSectionMainPanel, userid:userIdSectionMainPanel,password:passwordSectionMainPanel, hash:hash};
-                addSectionMainPanel(data,url);                 
+                data = { index:indexSectionMainPanel, type:typeSectionMainPanel, myfile:valueSectionMainPanel, productindex:productindexSectionMainPanel, coordinate:coordinateSectionMainPanel, target:targetSectionMainPanel, userid:userIdSectionMainPanel,password:passwordSectionMainPanel, hash:hash};
+                addSectionMainPanelProduct(data,url,form, typeSectionMainPanel);                 
             }
         }
     });
+    function addSectionMainPanelProduct(data,url) {
+        $("#loading").modal('show');
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#loading").modal('hide');
+
+                if(json.sites[0]["success"] != "success") {
+                    if(json.sites[0]["slugerror"]) {
+
+                        $("#errorTexts").html(json.sites[0]["slugerror"]);         
+                    }
+                    else if(json.sites[0]["bounds"]){
+
+                        $("#errorTexts").html(json.sites[0]["bounds"]);
+                    }
+
+                        $("#customerror").modal('show');     
+                }
+                else {
+                    $("#success").modal('show');                   
+                }
+             
+            },
+            error: function(e) {
+                $("#errorTexts").html("Product index out of bounds");
+                $("#loading").modal('hide');
+                $("#customerror").modal('show');
+  
+            }
+        });
+    }
+
+    function addSectionMainPanel(data,url,form, typeSectionMainPanel) {
+        $("#loading").modal('show');
+        $(form).ajaxForm({
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+
+                $("#loading").modal('hide');
+                $("#success").modal('show');                   
+               
+            },
+            error: function(e) {
+                $("#loading").modal('hide');
+                $("#success").modal('show');                   
+
+            }
+        }); 
+        $(form).submit();
+    }
 
  
 
@@ -115,8 +227,8 @@
     $("#mainSlide").on('click','#movedown',function () {       
 
         var index = $(this).data('index');
-        var userid = $(this).data('userid');
-        var password = $(this).data('password');
+        var userid = globalUserId;
+        var password = globalPassword;
         var value = $(this).data('value');
         var coordinate = $(this).data('coordinate');
         var target = $(this).data('target');
@@ -139,12 +251,12 @@
     $("#mainSlide").on('click','#moveup',function () { 
 
         var index = $(this).data('index');
-        var userid = $(this).data('userid');
+        var userid = globalUserId;
         var value = $(this).data('value');
         var url = $(this).data('url');
         var coordinate = $(this).data('coordinate');
         var target = $(this).data('target');
-        var password = $(this).data('password');
+        var password = globalPassword;
         var order = index;
         var nodename = "mainSlide";
 
@@ -161,10 +273,10 @@
 
     $("#addFeaturedProduct").on('click','#moveDownFeaturedProduct',function () { 
         var index = $(this).data('index');
-        var userid = $(this).data('userid');
+        var userid = globalUserId;
         var order = $(this).data('order');
         var url = $(this).data('url');
-        var password = $(this).data('password');
+        var password = globalPassword;
         var nodeName = "feedFeaturedProduct";
         var value = $(this).data('value');
         var count = $(this).data('count');
@@ -175,18 +287,17 @@
         }
         var hash =  hex_sha1(index + nodeName + userid + order + value  + password);
         data = { index: index, nodename:nodeName, userid: userid, order:order, slug: value, hash:hash, callback:'?'};
-        console.log(index);
-        console.log(order);
+
         setFeedFeaturedProduct(data,order,url);        
     });
 
 
     $("#addPopularItemsDiv").on('click','#moveDownPopularItems',function () { 
         var index = $(this).data('index');
-        var userid = $(this).data('userid');
+        var userid = globalUserId;
         var order = $(this).data('order');
         var url = $(this).data('url');
-        var password = $(this).data('password');
+        var password = globalPassword;
         var nodeName = "feedFeaturedProduct";
         var value = $(this).data('value');
         var count = $(this).data('count');
@@ -202,10 +313,10 @@
 
     $("#addfeedPromoItems").on('click','#moveDownPromoItems',function () { 
         var index = $(this).data('index');
-        var userid = $(this).data('userid');
+        var userid = globalUserId;
         var order = $(this).data('order');
         var url = $(this).data('url');
-        var password = $(this).data('password');
+        var password = globalPassword;
         var nodeName = "feedPromoItems";
         var value = $(this).data('value');
         var count = $(this).data('count');
@@ -221,10 +332,10 @@
 
     $("#addfeedPromoItems").on('click','#moveUpPromoItems',function () { 
         var index = $(this).data('index');
-        var userid = $(this).data('userid');
+        var userid = globalUserId;
         var order = $(this).data('order');
         var url = $(this).data('url');
-        var password = $(this).data('password');
+        var password = globalPassword;
         var nodeName = "feedPromoItems";
         var value = $(this).data('value');
         var count = $(this).data('count');
@@ -245,8 +356,8 @@
         var nodeName = "feedPromoItems";
         var count = $(this).data('count');
         var value = $(this).closest("form").find("#promoItem").val();
-        var password = $(this).closest("form").find("#adminPassword").val();
-        var userid = $(this).closest("form").find("#userId").val();
+        var password = globalPassword;
+        var userid = globalUserId;
         var hash =  hex_sha1(index + nodeName + userid + order + value  + password);
         data = { index: index, nodename:nodeName, userid: userid, order:order, slug: value, hash:hash, callback:'?'};
         setFeedPromoItems(data,order,url);   
@@ -254,10 +365,10 @@
 
     $("#addPopularItemsDiv").on('click','#moveUpPopularItems',function () { 
         var index = $(this).data('index');
-        var userid = $(this).data('userid');
+        var userid = globalUserId;
         var order = $(this).data('order');
         var url = $(this).data('url');
-        var password = $(this).data('password');
+        var password = globalPassword;
         var nodeName = "feedFeaturedProduct";
         var value = $(this).data('value');
         var count = $(this).data('count');
@@ -278,8 +389,8 @@
         var nodeName = "feedPopularItems";
         var count = $(this).data('count');
         var value = $(this).closest("form").find("#popularItem").val();
-        var password = $(this).closest("form").find("#adminPassword").val();
-        var userid = $(this).closest("form").find("#userId").val();
+        var password = globalPassword;
+        var userid = globalUserId;
 
         var hash =  hex_sha1(index + nodeName + userid + order + value  + password);
         data = { index: index, nodename:nodeName, userid: userid, order:order, slug: value, hash:hash, callback:'?'};
@@ -290,10 +401,10 @@
 
     $("#addFeaturedProduct").on('click','#moveUpFeaturedProduct',function () { 
         var index = $(this).data('index');
-        var userid = $(this).data('userid');
+        var userid = globalUserId;
         var order = $(this).data('order');
         var url = $(this).data('url');
-        var password = $(this).data('password');
+        var password = globalPassword;
         var nodeName = "feedFeaturedProduct";
         var value = $(this).data('value');
         var count = $(this).data('count');
@@ -316,8 +427,8 @@
         var nodeName = "feedFeaturedProduct";
         var count = $(this).data('count');
         var value = $(this).closest("form").find("#featuredProduct").val();
-        var password = $(this).closest("form").find("#adminPassword").val();
-        var userid = $(this).closest("form").find("#userId").val();
+        var password = globalPassword;
+        var userid = globalUserId;
 
         var hash =  hex_sha1(index + nodeName + userid + order + value  + password);
         data = { index: index, nodename:nodeName, userid: userid, order:order, slug: value, hash:hash, callback:'?'};
@@ -328,12 +439,12 @@
         
         var checkuser = $(this).data('checkuser');
         var url = $(this).data('url');
-        var value = $(this).closest("form").find("#value").val();
+        var value = globalUserId;
         var id = $(this).closest("form").find("#id").val();
-        var password = $(this).closest("form").find("#adminPassword").val();
-        var userid = $(this).closest("form").find("#userId").val();
+        var password = globalPassword;
+        var userid = globalUserId;
         var hash =  hex_sha1(value + userid + id + password);
-        console.log(checkuser);
+
         if(value == "") {
             $("#error").modal('show');
         }
@@ -353,8 +464,8 @@
         var myvalue = $("#photoFile").val();
         var mainSlideCoordinate = $("#mainSlideCoordinate").val();
         var mainSlideTarget = $("#mainSlideTarget").val();
-        var useridMainSlide = $("#userIdMainSlide").val();
-        var passwordMainSlide = $(this).data('password');
+        var useridMainSlide = globalUserId;
+        var passwordMainSlide = globalPassword;
         var hash = hex_sha1(myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide);
         $("#hashMainSlide").val(hash);
 
@@ -375,8 +486,8 @@
         var img = $(this).closest("form").find("#photoFile").val();
         var target = $(this).closest("form").find("#target").val();
         var choice = $(this).closest("form").find("#choice").val();
-        var password = $(this).closest("form").find("#adminPassword").val();
-        var userid = $(this).closest("form").find("#userid").val();
+        var password = globalPassword;
+        var userid = globalUserId;
         var hash = hex_sha1(img  + choice + userid  + target + password);
         data = { img: img, choice:choice, userid: userid, hash:hash, target:target,   callback:'?'};
         var accessor = "#hash" + choice;
@@ -388,7 +499,7 @@
             var form = "#"+choice;
             $("#loading").modal('show');
             $(form).ajaxForm({
-                url: "https://easyshop.ph.local/webservice/feedwebservice/setFeedBanner",
+                url: url,
                 type: 'GET', 
                 dataType: 'jsonp',
                 async: false,
@@ -412,9 +523,9 @@
     $("#productSlide").on('click','#moveUpProductSlide',function () { 
 
         var index = $(this).data('index');
-        var userid = $(this).data('userid');
+        var userid = globalUserId;
         var order = $(this).data('order');
-        var password = $(this).data('password');
+        var password = globalPassword;
         var nodeName = "productSlide";
         var value = $(this).data('value');
         var type = $(this).data('type');   
@@ -435,10 +546,10 @@
     $("#productSlide").on('click','#moveDownProductSlide',function () { 
 
         var index = $(this).data('index');
-        var userid = $(this).data('userid');
+        var userid = globalUserId;
         var order = $(this).data('order');
         var url = $(this).data('url');
-        var password = $(this).data('password');
+        var password = globalPassword;
         var nodeName = "productSlide";
         var value = $(this).data('value');
         var type = $(this).data('type');
@@ -457,26 +568,27 @@
     });
 
     $("#myTabContent").on('click','#btnSetSectionMainPanel',function () { 
-
-        var index = $(this).data('index');
-        var userid = $(this).data('userid');
-        var productindex = $(this).data('productindex');
-        var password = $(this).data('password');
+        var index = $(this).closest("form").find("#index").val();   
+        var userid = globalUserId;
+        var productindex = $(this).closest("form").find("#productindex").val();
+        var form = "#formSetSectionMainPanel" + index +productindex;
+        var hashSetSectionMainPanel = "#hashSetSectionMainPanel" + index +productindex;
+        var password = globalPassword;
         var url = $(this).data('url');
         var type = $(this).closest("form").find("#type").val();
         var value = $(this).closest("form").find("#value").val();
         var coordinate = $(this).closest("form").find("#coordinate").val();
         var target = $(this).closest("form").find("#target").val();
         var nodeName = "product_panel_main";
-        var hash = hex_sha1(index + type + value + coordinate + target + productindex + nodeName + userid + password);
-        
+        var hash = hex_sha1(index + type  +  productindex + value +  coordinate + target  + userid + password);
+        $(hashSetSectionMainPanel).val(hash);             
         if(type == "image" || type == "Image"){
-            if(value == "" || coordinate == "" || target == "") {
+            if(coordinate == "" || target == "") {
                 $("#error").modal('show');                
             }
             else {
-                data = {index:index , type:type, value:value, coordinate:coordinate, target:target,  productindex:productindex, nodename: nodeName, userid:userid, hash:hash, callback:'?'};
-                setSectionMainPanel(data, url);               
+                data = {index:index , type:type, productindex:productindex, myfile:value, coordinate:coordinate, target:target,  userid:userid, hash:hash, callback:'?'};
+                setSectionMainPanelImage(data, url , form);               
             }
         }
         else {
@@ -484,38 +596,209 @@
                 $("#error").modal('show');                
             }
             else {
-                data = {index:index , type:type, value:value, coordinate:coordinate, target:target,  productindex:productindex, nodename: nodeName, userid:userid, password:password, hash:hash, callback:'?'};
-                setSectionMainPanel(data, url);               
+                data = {index:index , type:type, productindex:productindex, myfile:value, coordinate:coordinate, target:target,  userid:userid, hash:hash, callback:'?'};
+                setSectionMainPanel(data, url , form);               
             }
         }
 
     });
 
+    function setSectionMainPanelImage(data, url , form) {
+     $("#loading").modal('show');
+        $(form).ajaxForm({
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+
+                $("#loading").modal('hide');
+                $("#success").modal('show');                   
+               
+            },
+            error: function(e) {
+                $("#loading").modal('hide');
+                $("#success").modal('show');                   
+
+            }
+        }); 
+        $(form).submit();
+    }
+
+    function setSectionMainPanel(data, url , form) {
+
+        $("#loading").modal('show');
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#loading").modal('hide');
+
+                if(json.sites[0]["success"] != "success") {
+                    if(json.sites[0]["slugerror"]) {
+
+                        $("#errorTexts").html(json.sites[0]["slugerror"]);         
+                    }
+                    else if(json.sites[0]["bounds"]){
+
+                        $("#errorTexts").html(json.sites[0]["bounds"]);
+                    }
+
+                        $("#customerror").modal('show');     
+                }
+                else {
+                    $("#success").modal('show');                   
+                }
+            },
+            error: function(e) {
+                    $("#loading").modal('hide');
+                    $("#error").modal('show');
+            }
+        });
+    }
+
 
     $("#myTabContent").on('click','#btnSetSectionPanel',function () { 
 
-        var index = $(this).data('index');
-        var userid = $(this).data('userid');
-        var productindex = $(this).data('productindex');
-        var password = $(this).data('password');
+        var index = $(this).closest("form").find("#index").val();   
+        var userid = globalUserId;
+        var productindex =$(this).closest("form").find("#productindex").val();
+        var password = globalPassword;
         var url = $(this).data('url');
         var type = $(this).closest("form").find("#type").val();
         var value = $(this).closest("form").find("#value").val();
+        var hashSetProductPanel = "#hashSetProductPanel" + index +productindex;
+        var form = "#formSetSectionProduct" + index +productindex;        
+        var hash = hex_sha1(index + type + productindex + value + userid + password);
+        $(hashSetProductPanel).val(hash);    
         if(value == "") {
             $("#error").modal('show');                
         }
         else {
-            var hash = hex_sha1(index + type + productindex + value + userid + password);
-            data = {index:index, type:type, productindex:productindex,  value:value, userid:userid, hash:hash, callback:'?'};
-            setSectionPanel(data, url);            
+            if(type.toLowerCase() == "image") {
+                data = {index:index, type:type, productindex:productindex,  value:value, userid:userid, hash:hash, callback:'?'};                      
+                setSectionPanelImage(data, url, form);            
+            }
+            else {
+                data = {index:index, type:type, productindex:productindex,  myfile:value, userid:userid, hash:hash, callback:'?'};                                      
+                setSectionProduct(data, url, form);                            
+            }
         }
 
     });
 
+    function setSectionProduct(data, url, form) {
+
+
+        $("#loading").modal('show');
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#loading").modal('hide');
+
+                if(json.sites[0]["success"] != "success") {
+                    if(json.sites[0]["slugerror"]) {
+
+                        $("#errorTexts").html(json.sites[0]["slugerror"]);         
+                    }
+                    else if(json.sites[0]["bounds"]){
+
+                        $("#errorTexts").html(json.sites[0]["bounds"]);
+                    }
+
+                        $("#customerror").modal('show');     
+                }
+                else {
+                    $("#success").modal('show');                   
+                }
+            },
+            error: function(e) {
+                $("#errorTexts").html("Please try again");
+                $("#loading").modal('hide');
+                $("#customerror").modal('show');
+            }
+        });
+    }  
+
+    function setSectionPanelImage(data, url, form) {
+
+     $("#loading").modal('show');
+        $(form).ajaxForm({
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+
+                $("#loading").modal('hide');
+                $("#success").modal('show');                   
+               
+            },
+            error: function(e) {
+                $("#loading").modal('hide');
+                $("#success").modal('show');                   
+
+            }
+        }); 
+        $(form).submit();
+
+/*        $("#loading").modal('show');
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#loading").modal('hide');
+
+                if(json.sites[0]["success"] != "success") {
+                    if(json.sites[0]["slugerror"]) {
+
+                        $("#errorTexts").html(json.sites[0]["slugerror"]);         
+                    }
+                    else if(json.sites[0]["bounds"]){
+
+                        $("#errorTexts").html(json.sites[0]["bounds"]);
+                    }
+
+                        $("#customerror").modal('show');     
+                }
+                else {
+                    $("#success").modal('show');                   
+                }
+            },
+            error: function(e) {
+                $("#errorTexts").html("Please try again");
+                $("#loading").modal('hide');
+                $("#customerror").modal('show');
+            }
+        });*/
+    }  
+
     $("#addfeedPromoItems").on('click','#addPromoItemBtn',function () { 
 
-        var userid = $(this).closest("form").find("#userId").val();
-        var password =$(this).closest("form").find("#adminPassword").val();
+        var userid = globalUserId;
+        var password = globalPassword;
         var url = $(this).data('url');
         var slug = $(this).closest("form").find("#promoItem").val();
         var hash = hex_sha1(slug + userid + password); 
@@ -531,8 +814,8 @@
 
     $("#addPopularItemsDiv").on('click','#addPopularItemBtn',function () { 
 
-        var userid = $(this).closest("form").find("#userId").val();
-        var password =$(this).closest("form").find("#adminPassword").val();
+        var userid = globalUserId;
+        var password = globalPassword;
         var url = $(this).data('url');
         var slug = $(this).closest("form").find("#popularItem").val();
         var hash = hex_sha1(slug + userid + password); 
@@ -548,8 +831,8 @@
 
     $("#addFeaturedProduct").on('click','#addFeaturedProductBtn',function () { 
 
-        var userid = $(this).closest("form").find("#userId").val();
-        var password =$(this).closest("form").find("#adminPassword").val();
+        var userid = globalUserId;
+        var password = globalPassword;
         var url = $(this).data('url');
         var slug = $(this).closest("form").find("#featuredProduct").val();
         var hash = hex_sha1(slug + userid + password); 
@@ -565,8 +848,8 @@
 
     $("#nodeTypes").on('click','#btnAddType',function () { 
 
-        var userid = $(this).data('userid');
-        var password = $(this).data('password');
+        var userid = globalUserId;
+        var password = globalPassword;
         var url = $(this).data('url');
         var type = $(this).closest("form").find("#type").val();
         var hash = hex_sha1(type + userid + password); 
@@ -586,8 +869,8 @@
         $("#loading").modal('show');
         var sidebanner = $("#sidebanner").val();
         var url = $(this).data('url');
-        var userid = $("#userId").val();
-        var password = $("#adminPassword").val();
+        var userid = globalUserId;
+        var password = globalPassword;
         var hash = hex_sha1(sidebanner + userid + password);
         data = { value:sidebanner, userid:userid, hash: hash, callback: '?'};
         if(value == "") {
@@ -621,8 +904,8 @@
 
         $("#loading").modal('show');
         var slidetitle = $("#slidetitle").val();
-        var password = $("#adminPassword").val();
-        var userid = $("#userId").val();
+        var password = globalPassword;
+        var userid = globalUserId;
         var url = $(this).data('url');
         var hash = hex_sha1(slidetitle + userid + password);    
         data = { productslidetitle:slidetitle, userid:userid, hash:hash, callback: '?'};
@@ -659,8 +942,8 @@
         $("#loading").modal('show');
         var url = $(this).data('url');
         var bannertext = $("#bannertext").val();
-        var userid = $("#userId").val();
-        var password = $("#adminPassword").val();
+        var userid = globalUserId;
+        var password = globalPassword;
         var string = bannertext + userid + password;
         var hashed = hex_sha1(string);
         data = { value:bannertext , userid:userid, hash:hashed, callback: '?'};
@@ -696,8 +979,8 @@
 
     $("#myTabContent").on('click','#btnSectionHead',function () {   
         var index = $(this).data('index');
-        var userid = $(this).data('userid');
-        var password = $(this).data('password');
+        var userid = globalUserId;
+        var password = globalPassword;
         var url = $(this).data('url');
         var type = $(this).closest("form").find("#type").val();
         var value = $(this).closest("form").find("#value").val();
@@ -715,11 +998,13 @@
 
     });
 
-    $(".dropdown-menu span").click(function(){
+
+    $("#AddSectionProduct .dropdown-menu span").click(function(){
 
         var text = $(this).text().toLowerCase();
 
         var index = $(this).data('index');
+        var node = $(this).data('node');
         var sectionindex = $(this).data('sectionindex');
         var selector = "#mybutton" + index;
         var selector_for_button = "#btntext" + index;
@@ -727,31 +1012,106 @@
         $(selector_for_button).text(text);
         var imagetype = "imagetype";
         var divselector = "#imagetype" + index;
+        var replace = "#value" + node;
         if(text == "image") {
             var type = $(this).closest("form").find(divselector).css('display','block');
+            $(this).closest("form").find("#photoFile").attr('type','file');   
+            $("#typeSectionProduct").val(text);                
 
-        } else {
+        } else if(text == "product"){
             var type = $(this).closest("form").find(divselector).css('display','none');
+            $(this).closest("form").find("#photoFile").attr('type','text');        
+            $("#typeSectionProduct").val(text);                            
         }
 
-        if(text == "image" || text == "product") {
-            var inputtext = $(this).closest("form").find(":input[type='text']:first").val(text);            
+        if(text != "image" && text != "product") {
+            var inputtext = $(this).closest("form").find("#indexSectionProduct").val(sectionindex);                        
         }
-        else {
-            var inputtext = $(this).closest("form").find(":input[type='hidden']:first").val(sectionindex);                        
+
+        
+    });
+
+    $("#addSectionMainPanel .dropdown-menu span").click(function(){
+
+        var text = $(this).text().toLowerCase();
+
+        var index = $(this).data('index');
+        var node = $(this).data('node');
+        var sectionindex = $(this).data('sectionindex');
+        var selector = "#mybutton" + index;
+        var selector_for_button = "#btntext" + index;
+        $(selector).text(text);
+        $(selector_for_button).text(text);
+        var imagetype = "imagetype";
+        var divselector = "#imagetype" + index;
+        var replace = "#value" + node;
+        if(text == "image") {
+            var type = $(this).closest("form").find(divselector).css('display','block');
+            $(this).closest("form").find("#photoFile").attr('type','file');   
+            $("#typeSectionMainPanel").val(text);                
+
+        } else if(text == "product"){
+            var type = $(this).closest("form").find(divselector).css('display','none');
+            $(this).closest("form").find("#photoFile").attr('type','text');        
+            $("#typeSectionMainPanel").val(text);                            
         }
+
+        if(text != "image" && text != "product") {
+            var inputtext = $(this).closest("form").find("#indexSectionMainPanel").val(sectionindex);                        
+        }
+
+        
+    });
+
+
+
+    $("#dropme span").click(function(){
+
+        var text = $(this).text().toLowerCase();
+
+        var index = $(this).data('index');
+        var node = $(this).data('node');
+
+        var selector = "#mybutton" + index ;
+        var selector_for_button = "#btntext" + index;
+        $(selector).text(text);
+        $(selector_for_button).text(text);
+        var imagetype = "imagetype";
+        var divselector = "#imagetype" + index;
+        var imgwell = "#imgwell" + index;
+        var replace = node == "sectionMainPanel" ? node : "productPanel";
+        var replace = "#replace" + replace;
+        if(text == "image") {
+            $(this).closest("form").find(divselector).css('display','block');
+            $(this).closest("form").find(imgwell).css('display','block');
+            $(this).closest("form").find("#value").attr('type','file');      
+        } else {
+            $(this).closest("form").find(divselector).css('display','none');
+            $(this).closest("form").find(imgwell).css('display','none');
+            $(this).closest("form").find("#value").attr('type','text');      
+
+        }
+        $(this).closest("form").find("#type").val(text);      
+
+
+/*                if(text == "image" && text == "product") {
+            alert(text);
+        }
+else {
+            var inputtext = $(this).closest("form").find(":input[type='text']:first").val(sectionindex);                        
+        }*/
         
     });
 
     $("#productSlide").on('click','#submitProductSlide',function () {     
 
         var index = $(this).data('index');
-        var userid = $(this).data('userid');
+        var userid = globalUserId;
         var order = $(this).data('order');
         var url = $(this).data('url');
         var value = $(this).closest("form").find("#productSlideValue").val();
         var type = $(this).closest("form").find("#productSlideType").val();
-        var password = $(this).closest("form").find("#adminPassword").val();
+        var password = globalPassword;
         var nodeName = "productSlide";
         if(value == "" || type == "") {
             $("#error").modal('show');
@@ -769,8 +1129,8 @@
         var index = $(this).data('index');
         var nodename = $(this).data('nodename');
         var nodename = nodename == "map/feedFeaturedProduct/product" ? nodename : (nodename == "map/feedPopularItems/product" ? nodename : "map/feedPromoItems/product");
-        var userid = $(this).data('userid');
-        var password = $(this).data('password');
+        var userid = globalUserId;
+        var password = globalPassword;
         var url = $(this).data('url');
         index += 1;
         var hash = hex_sha1(index +nodename + userid + password);
@@ -800,12 +1160,55 @@
             });
     }); 
 
+    $("#myTabContent").on('click','#btnRemoveSetSection',function (e) { 
+        e.preventDefault();
+        var index = $(this).data('index');
+        var nodename = $(this).data('nodename');
+        var productindex = $(this).data('productindex');
+        var userid = globalUserId;
+        var password = globalPassword;
+        var url = $(this).data('url');
+
+        div = nodename == "product_panel_main" ? "formSetSectionMainPanel" : "formSetSectionProduct";
+        div = "#" + div + index + productindex;
+
+        index = (index == 0 ? 1 : index + 1);
+        productindex = (productindex == 0 ? 1 : productindex + 1);
+                 
+        var hash = hex_sha1(index +nodename + userid + productindex + password);
+        data = { index: index, nodename:nodename, userid: userid, productindex: productindex, hash:hash, callback:'?'};         
+
+        $("#loading").modal('show');
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    $("#loading").modal('hide');     
+                    $(div).remove();                    
+                 
+      
+                },
+                error: function(e) {
+                    $("#loading").modal('hide');                       
+       
+      
+                }
+            });
+
+    }); 
+
     $("#myTabContent").on('click','#deleteMainSlide',function (e) { 
         e.preventDefault();
         var index = $(this).data('index');
         var nodename = $(this).data('nodename');
-        var userid = $(this).data('userid');
-        var password = $(this).data('password');
+        var userid = globalUserId;
+        console.log(nodename);
+        var password = globalPassword;
         var url = $(this).data('url');
         nodename = nodename == "mainSlide" ? "mainSlide" : "productSlide";   
         index += 1;
@@ -826,9 +1229,11 @@
                     div = nodename == "mainSlide" ? "mainSlide" : "productSlide";
                     load = nodename == "mainSlide" ? "slides" : "productslides";
                     div += "#" + div;
+
                     $("#" + div).load(load);               
                 },
                 error: function(e) {
+                    console.log('success');                    
                     $("#loading").modal('hide');                    
                     $("#error").modal('show');
       
@@ -851,18 +1256,18 @@
                 $("#loading").modal('hide');                
                 if(json.sites[0]["success"] != "success") {
                     if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
                         $("#errorTexts").html(json.sites[0]["slugerror"]);         
                     }
                     else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
+
                         $("#errorTexts").html(json.sites[0]["bounds"]);
                     }
                         $("#customerror").modal('show');     
                         $("#loading").modal('hide');   
                 }
                 else {
-                    $("#addPopularItemsDiv").load('popularItem');           
+                    $("#addPopularItemsDiv").load('popularItem');   
+                    $("#loading").modal('hide');                            
                 }                
             },
             error: function(e) {
@@ -887,11 +1292,11 @@
                 $("#loading").modal('hide');
                 if(json.sites[0]["success"] != "success") {
                     if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
+
                         $("#errorTexts").html(json.sites[0]["slugerror"]);         
                     }
                     else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
+
                         $("#errorTexts").html(json.sites[0]["bounds"]);
                     }
 
@@ -899,7 +1304,8 @@
                         $("#loading").modal('hide');      
                 }
                 else {
-                    $("#addfeedPromoItems").load('promoItems');       
+                    $("#addfeedPromoItems").load('promoItems');   
+                    $("#loading").modal('hide');
                 }                   
 
             },
@@ -925,11 +1331,11 @@
                 $("#loading").modal('hide');
                 if(json.sites[0]["success"] != "success") {
                     if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
+
                         $("#errorTexts").html(json.sites[0]["slugerror"]);         
                     }
                     else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
+
                         $("#errorTexts").html(json.sites[0]["bounds"]);
                     }
 
@@ -937,7 +1343,8 @@
                         $("#loading").modal('hide');    
                 }
                 else {
-                    $("#addFeaturedProduct").load('featuredProduct');    
+                    $("#addFeaturedProduct").load('featuredProduct'); 
+                    $("#loading").modal('hide');
                 }                   
 
             },
@@ -963,7 +1370,7 @@
                 $("#loading").modal('hide');
 
                 if(json.sites[0]["success"] != "success") {
-                    console.log(json.sites[0]["usererror"]);
+
                     if(json.sites[0]["usererror"]){
                         $("#errorTexts").html(json.sites[0]["usererror"]);
                     }
@@ -1018,11 +1425,11 @@
                 $("#loading").modal('hide');
                 if(json.sites[0]["success"] != "success") {
                     if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
+
                         $("#errorTexts").html(json.sites[0]["slugerror"]);         
                     }
                     else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
+
                         $("#errorTexts").html(json.sites[0]["bounds"]);
                     }
 
@@ -1054,11 +1461,11 @@
                 $("#loading").modal('hide');
                 if(json.sites[0]["success"] != "success") {
                     if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
+
                         $("#errorTexts").html(json.sites[0]["slugerror"]);         
                     }
                     else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
+
                         $("#errorTexts").html(json.sites[0]["bounds"]);
                     }
 
@@ -1090,11 +1497,11 @@
                 $("#loading").modal('hide');
                 if(json.sites[0]["success"] != "success") {
                     if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
+
                         $("#errorTexts").html(json.sites[0]["slugerror"]);         
                     }
                     else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
+
                         $("#errorTexts").html(json.sites[0]["bounds"]);
                     }
 
@@ -1133,78 +1540,9 @@
         });
     }                                
 
-    function setSectionPanel(data, url) {
-        $("#loading").modal('show');
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#loading").modal('hide');
 
-                if(json.sites[0]["success"] != "success") {
-                    if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
-                        $("#errorTexts").html(json.sites[0]["slugerror"]);         
-                    }
-                    else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
-                        $("#errorTexts").html(json.sites[0]["bounds"]);
-                    }
 
-                        $("#customerror").modal('show');     
-                }
-                else {
-                    $("#success").modal('show');                   
-                }
-            },
-            error: function(e) {
-                $("#errorTexts").html("Please try again");
-                $("#loading").modal('hide');
-                $("#customerror").modal('show');
-            }
-        });
-    }  
 
-    function setSectionMainPanel(data, url) {
-        $("#loading").modal('show');
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#loading").modal('hide');
-
-                if(json.sites[0]["success"] != "success") {
-                    if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
-                        $("#errorTexts").html(json.sites[0]["slugerror"]);         
-                    }
-                    else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
-                        $("#errorTexts").html(json.sites[0]["bounds"]);
-                    }
-
-                        $("#customerror").modal('show');     
-                }
-                else {
-                    $("#success").modal('show');                   
-                }
-            },
-            error: function(e) {
-                    $("#loading").modal('hide');
-                    $("#error").modal('show');
-            }
-        });
-    }
 
     function setDataSectionHead(data,url) {
         $("#loading").modal('show');
@@ -1239,7 +1577,34 @@
         });
     }
 
-    function addSectionMainPanel(data,url) {
+
+
+
+
+    function setPositionProductSlide(data,order, url) {
+        $("#loading").modal('show');
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {          
+                    $("#productSlide").load('productslides');
+                    $("#loading").modal('hide');
+
+            },
+            error: function(e) {
+                    $("#loading").modal('hide');                
+                    $("#error").modal('show');
+  
+            }
+        });
+    }
+
+    function setDataProductSlide(data,order,url) {
         $("#loading").modal('show');
         $.ajax({
             type: 'GET',
@@ -1250,33 +1615,55 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $("#loading").modal('hide');
-
+                $("#loading").modal('hide');                  
                 if(json.sites[0]["success"] != "success") {
                     if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
+
                         $("#errorTexts").html(json.sites[0]["slugerror"]);         
                     }
                     else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
+
                         $("#errorTexts").html(json.sites[0]["bounds"]);
                     }
 
                         $("#customerror").modal('show');     
+                        $("#loading").modal('hide');     
                 }
                 else {
-                    $("#success").modal('show');                   
-                }
-             
+                    $("#productSlide").load('productslides'); 
+                    $("#loading").modal('hide');                                       
+                }                    
             },
             error: function(e) {
-                $("#errorTexts").html("Product index out of bounds");
+                $("#errorTexts").html("Please try again");
                 $("#loading").modal('hide');
                 $("#customerror").modal('show');
   
             }
         });
     }
+
+    $("#mainSlide").on('click','#submitAddMainSlide',function (e) { 
+        e.preventDefault();
+        var url = $(this).data('url');
+        var value = $("#valueMainSlide").val();
+        var myvalue = $("#photoFile").val();
+        var mainSlideCoordinate = $("#mainSlideCoordinate").val();
+        var mainSlideTarget = $("#mainSlideTarget").val();
+        var useridMainSlide = globalUserId;
+        var passwordMainSlide = globalPassword;
+        var hash = myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide;
+        $("#hashMainSlide").val(hash);
+
+        if( myvalue == "" || myvalue == "undefined" || value == "" || mainSlideCoordinate == "" || mainSlideTarget == "")
+        {
+            $("#error").modal('show');         
+        }
+        else
+        {
+            addMainSlide(url);
+        }
+    });  
 
     function addMainSlide(url) {
         $("#loading").modal('show');
@@ -1301,66 +1688,47 @@
 
     }
 
-    function setPositionProductSlide(data,order, url) {
+ $("#mainSlide").on('click','#submit',function () {    
+        var index = $(this).data('index');
+        var userid = globalUserId;
+        var value = $(this).closest("form").find("#photoFile").val();
+        var password = globalPassword;
+        var coordinate = $(this).closest("form").find("#editMainSlideCoordinate").val();
+        var target = $(this).closest("form").find('#editMainSlideTarget').val();
+        var count = $(this).data('count');
+        var url = $(this).data('url');
+        var order = index;
+        var mainSlideForm = "#mainSlideForm" + index;
+        var hashMainSlide = "#hashEditMainSlide" + index;
+       
+        var hash =  hex_sha1(index + value + coordinate + target  + userid + password);
+        $(this).closest("form").find("#hashEditMainSlide").val(hash);
+        data = { index: index, value: value, coordinate:coordinate,  target:target,  password:password, hash:hash, callback:'?'};
+
+        setDataMainSlide(url, data,order,mainSlideForm);
+    });    
+
+    function setDataMainSlide(url, data,order, mainSlideForm) {
         $("#loading").modal('show');
-        $.ajax({
-            type: 'GET',
+        $(mainSlideForm).ajaxForm({
             url: url,
-            data:data,
+            type: 'GET', 
+            dataType: 'jsonp',
             async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                    $("#productSlide").load('productslides');
+                    $("#mainSlide").load('slides');
+                    $("#success").modal('show');                    
             },
             error: function(e) {
-                     $("#error").modal('show');
-  
+                    $("#mainSlide").load('slides');
+                    $("#loading").modal('hide');
             }
-        });
-    }
-
-    function setDataProductSlide(data,order,url) {
-        $("#loading").modal('show');
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#loading").modal('hide');                  
-                if(json.sites[0]["success"] != "success") {
-                    if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
-                        $("#errorTexts").html(json.sites[0]["slugerror"]);         
-                    }
-                    else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
-                        $("#errorTexts").html(json.sites[0]["bounds"]);
-                    }
-
-                        $("#customerror").modal('show');     
-                }
-                else {
-                    $("#productSlide").load('productslides');                    
-                }                    
-            },
-            error: function(e) {
-                $("#errorTexts").html("Please try again");
-                $("#loading").modal('hide');
-                $("#customerror").modal('show');
-  
-            }
-        });
-    }
-
-    function setDataMainSlide(url, data,order) {
-        $("#loading").modal('show');
-        $.ajax({
+        }); 
+        $(mainSlideForm).submit();
+/*        $.ajax({
             type: 'GET',
             url: url,
             data:data,
@@ -1375,7 +1743,7 @@
                      $("#error").modal('show');
                      $("#loading").modal('hide');
             }
-        });
+        });*/
     }
 
 
@@ -1393,18 +1761,19 @@
 
                 if(json.sites[0]["success"] != "success") {
                     if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
+
                         $("#errorTexts").html(json.sites[0]["slugerror"]);         
                     }
                     else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
+
                         $("#errorTexts").html(json.sites[0]["bounds"]);
                     }
                         $("#customerror").modal('show');     
                         $("#loading").modal('hide');                        
                 }
                 else {
-                    $("#productSlide").load('productslides');                
+                    $("#productSlide").load('productslides');  
+                    $("#loading").modal('hide');
                 }                 
             },
             error: function(e) {
@@ -1416,44 +1785,7 @@
         });
     }
 
-    function AddSectionProduct(data,url) {
-        $("#loading").modal('show');
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#loading").modal('hide');
 
-                if(json.sites[0]["success"] != "success") {
-                    if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
-                        $("#errorTexts").html(json.sites[0]["slugerror"]);         
-                    }
-                    else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
-                        $("#errorTexts").html(json.sites[0]["bounds"]);
-                    }
-                        $("#loading").modal('hide');
-                        $("#customerror").modal('show');     
-                }
-                else {
-                    $("#success").modal('show');                   
-                }
-             
-            },
-            error: function(e) {
-                $("#errorTexts").html("You are not authorized for this action");
-                $("#loading").modal('hide');
-                $("#customerror").modal('show');
-  
-            }
-        });
-    }
 
     function setPositionMainSlide(data,order,url) {
         $("#loading").modal('show');
@@ -1467,6 +1799,7 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
+                 $("#loading").modal('hide');                
                  $("#mainSlide").load('slides');
             },
             error: function(e) {
