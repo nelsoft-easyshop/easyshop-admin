@@ -3075,7 +3075,6 @@ table.dataTable.hover tbody tr:hover  .brand_op_lnk, table.dataTable.hover tbody
 }
 
 .disp_error{
-    display: none;
     color:#b70000;
 }
 
