@@ -73,11 +73,9 @@
 
                 if(json.sites[0]["success"] != "success") {
                     if(json.sites[0]["slugerror"]) {
-                        console.log(json.sites[0]["slugerror"]);                        
                         $("#errorTexts").html(json.sites[0]["slugerror"]);         
                     }
                     else if(json.sites[0]["bounds"]){
-                        console.log(json.sites[0]["bounds"]);                       
                         $("#errorTexts").html(json.sites[0]["bounds"]);
                     }
                         $("#loading").modal('hide');
@@ -1208,7 +1206,6 @@ else {
         var index = $(this).data('index');
         var nodename = $(this).data('nodename');
         var userid = globalUserId;
-        console.log(nodename);
         var password = globalPassword;
         var url = $(this).data('url');
         nodename = nodename == "mainSlide" ? "mainSlide" : "productSlide";   
@@ -1234,7 +1231,6 @@ else {
                     $("#" + div).load(load);               
                 },
                 error: function(e) {
-                    console.log('success');                    
                     $("#loading").modal('hide');                    
                     $("#error").modal('show');
       
