@@ -439,7 +439,7 @@
         
         var checkuser = $(this).data('checkuser');
         var url = $(this).data('url');
-        var value = globalUserId;
+        var value = $(this).closest("form").find("#value").val();
         var id = $(this).closest("form").find("#id").val();
         var password = globalPassword;
         var userid = globalUserId;
@@ -510,6 +510,7 @@
                         $("#loading").modal('hide');
                 },
                 error: function(e) {
+                        $("#loading").modal('success');
                         $("#loading").modal('hide');
                 }
             }); 
