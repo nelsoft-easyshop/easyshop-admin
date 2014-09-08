@@ -1,11 +1,4 @@
-    <script type="text/javascript">
-        $(document).ready(function(){
 
-            $("#loading").modal('hide');
-            $("#success").modal('show');
-        });
-
-    </script>    
         <div class="tab-pane fade active in" id="addPopularItemsDiv">
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
