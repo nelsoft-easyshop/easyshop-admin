@@ -29,7 +29,7 @@
             <ul>
                 <li>{{{ $username }}}</li>
                 <li>|</li>
-                <li><a href="logout">Sign-out</a></li>
+                <li><a href="/logout">Sign-out</a></li>
             <ul>
 
         </div>

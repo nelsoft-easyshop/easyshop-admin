@@ -15,9 +15,10 @@ class CategoryRepository
     public function insert($data)
     {
         $category = new Category();
-        $category->insert($data);
+        $category->fill($data);
+        $category->save();
 
-        return $this->getById(DB::getPdo()->lastInsertId());
+        return $category;
     }
 
     /**
@@ -125,8 +126,9 @@ class CategoryRepository
      */
     public function generateSlug($product)
     {
+        $slug = $product;
         $category = new Category();
-        $count = $category->where('es_cat.slug', 'LIKE', '%' . $product . '%')->count();
+        $count = $category->where('es_cat.slug', 'LIKE', '%' . $slug . '%')->count();
         if($count >= 1){
             $slug = $product.$count;
         }

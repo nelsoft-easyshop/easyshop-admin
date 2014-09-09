@@ -10,54 +10,18 @@
 @section('content')
 
 <div id="mainsection">
-<!--  START  -->
-
-    <div class="modal fade user_modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-list-alt"></span> RECORD OF TRANSACTIONS</h4>
-                </div>
-                <div class="modal-body">
-                    {{ Form::open(array('url' => 'transactionRecord')) }}
-                    <div class="form-group">
-                        <label for="date_timepicker_start">Start Date</label>
-                        <div class="inner-addon left-addon">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                            {{ Form::text('trans_startdate', Input::old('trans_startdate'), array('id' => 'date_timepicker_start', 'class' => 'form-control' ) ) }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="date_timepicker_end">End Date</label>
-                        <div class="inner-addon left-addon">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                            {{ Form::text('trans_enddate', Input::old('trans_enddate'), array('id' => 'date_timepicker_end', 'class' => 'form-control' ) ) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    {{ Form::submit(' Download File ', array('id' => 'btn_download', 'class' => 'btn btn-primary')) }}
-                </div>
-                {{ Form::close() }}
-            </div>
-        </div>
-    </div>
-<!--  END. -->
-<!--  NOTE : This is not the proper place of this feature, this will be included on sam's transaction page  -->
     <div class="filter-container ">
         <div id="srch_container">
             <h4 class="tbl-title">
                 <span class="glyphicon glyphicon-zoom-in"></span>
                 ADVANCE SEARCH
             </h4>
-            {{ Form::open(array('url' => 'items', 'id' => 'searchForm')) }}
+            {{ Form::open(array('url' => 'items', 'id' => 'searchForm', 'method' => 'get')) }}
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Item</label>
-                        {{ Form::text('item', Input::old('item'), array('id' => 'src_item', 'class' => 'form-control', 'placeholder' => 'Enter Item' ) ) }}
+                        {{ Form::text('item', Input::old('item'), array('id' => 'src_item', 'class' => 'form-control search-string', 'placeholder' => 'Enter Item' ) ) }}
                     </div>
                 </div>
                 <div class="col-md-4 ">
@@ -65,7 +29,7 @@
                         <label for="date_timepicker_start">Start Date</label>
                         <div class="inner-addon left-addon">
                             <i class="glyphicon glyphicon-calendar"></i>
-                            {{ Form::text('startdate', Input::old('startdate'), array('id' => 'date_timepicker_start', 'class' => 'form-control' ) ) }}
+                            {{ Form::text('startdate', Input::old('startdate'), array('id' => 'date_timepicker_start', 'class' => 'form-control search-string' ) ) }}
                         </div>
                     </div>
                 </div>
@@ -74,7 +38,7 @@
                         <label for="date_timepicker_end">End Date</label>
                         <div class="inner-addon left-addon">
                             <i class="glyphicon glyphicon-calendar"></i>
-                            {{ Form::text('enddate', Input::old('enddate'), array('id' => 'date_timepicker_end', 'class' => 'form-control' ) ) }}
+                            {{ Form::text('enddate', Input::old('enddate'), array('id' => 'date_timepicker_end', 'class' => 'form-control search-string' ) ) }}
                         </div>
                     </div>
                 </div>
@@ -83,13 +47,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="src_category">Category</label>
-                        {{ Form::text('category', Input::old('category'), array('id' => 'src_category', 'class' => 'form-control', 'placeholder' => 'Enter category' ) ) }}
+                        {{ Form::text('category', Input::old('category'), array('id' => 'src_category', 'class' => 'form-control search-string', 'placeholder' => 'Enter category' ) ) }}
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="src_condition">Condition</label>
-                        {{ Form::text('condition', Input::old('condition'), array('id' => 'src_condition', 'class' => 'form-control', 'placeholder' => 'Enter condition' ) ) }}
+                        {{ Form::text('condition', Input::old('condition'), array('id' => 'src_condition', 'class' => 'form-control search-string', 'placeholder' => 'Enter condition' ) ) }}
                     </div>
                 </div>
             </div>
@@ -97,13 +61,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="src_brand">Brand</label>
-                        {{ Form::text('brand', Input::old('brand'), array('id' => 'src_brand', 'class' => 'form-control', 'placeholder' => 'Enter brand' ) ) }}
+                        {{ Form::text('brand', Input::old('brand'), array('id' => 'src_brand', 'class' => 'form-control search-string', 'placeholder' => 'Enter brand' ) ) }}
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="src_seller">Seller</label>
-                        {{ Form::text('seller', Input::old('seller'), array('id' => 'src_seller', 'class' => 'form-control', 'placeholder' => 'Enter name' ) ) }}
+                        {{ Form::text('seller', Input::old('seller'), array('id' => 'src_seller', 'class' => 'form-control search-string', 'placeholder' => 'Enter name' ) ) }}
                     </div>
                 </div>
                 <div class="col-md-1 col-md-offset-2">
@@ -119,6 +83,7 @@
                     </div>
                 </div>
             </div>
+            {{ Form::hidden('single_search', Input::old('sd'), array('id' => 'single_search')) }}
             {{ Form::close() }}
         </div>
     </div>
@@ -167,7 +132,7 @@
                 <tbody>
                 @foreach($list_of_items as $item)
                 <tr>
-                    <td>{{{ $item->created_at }}}</td>
+                    <td>{{{ $item->createddate }}}</td>
                     <td>{{{ $item->name }}}</td>
                     <td>{{{ $item->Member->username }}}</td>
                     <td>{{{ $item->Category->name }}}</td>

@@ -19,6 +19,12 @@ class OrderProductHistory extends Eloquent
 
     
     /**
+     * Disable timestamps
+     *
+     */
+    public $timestamps = false;
+    
+    /**
      * One-to-one Relationship to orderProductStatus table
      *
      */

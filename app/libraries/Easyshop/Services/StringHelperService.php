@@ -4,7 +4,7 @@ class StringHelperService
 {
 
     /**
-     *  Remove symbols and replace spaces with "-".
+     *  Remove symbols and replace spaces with hyphens.
      *
      *  @param string
      *  @return string

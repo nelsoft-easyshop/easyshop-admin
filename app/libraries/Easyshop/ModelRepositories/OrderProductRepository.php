@@ -77,8 +77,8 @@ class OrderProductRepository extends AbstractRepository
             
             $query->where(function ($query) use ($dateFrom, $dateTo){
                 $query->where(function ($query) use ($dateFrom, $dateTo){
-                    $query->where('es_order_product_history.created_at', '>=', $dateFrom);
-                    $query->where('es_order_product_history.created_at', '<', $dateTo);
+                    $query->where('es_order_product_history.date_added', '>=', $dateFrom);
+                    $query->where('es_order_product_history.date_added', '<', $dateTo);
                 });
                 
                 $query->orWhere(function ($query) use ($dateFrom, $dateTo) {
@@ -160,8 +160,8 @@ class OrderProductRepository extends AbstractRepository
             $dateTo = $dateTo->format('Y-m-d H:i:s');
         
             $query->where(function ($query) use ($dateFrom, $dateTo){
-                $query->where('es_order_product_history.created_at', '>=', $dateFrom);
-                $query->where('es_order_product_history.created_at', '<', $dateTo);
+                $query->where('es_order_product_history.date_added', '>=', $dateFrom);
+                $query->where('es_order_product_history.date_added', '<', $dateTo);
             });
         }
         
