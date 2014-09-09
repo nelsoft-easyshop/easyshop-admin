@@ -32,6 +32,7 @@ class CategoryController extends BaseController
         $data['slug'] = $categoryRepository->generateSlug(
             StringHelperService::clean(strtolower($data['name']))
         );
+
         $category = $categoryRepository->insert($data);
 
         echo json_encode($category);

@@ -30,7 +30,9 @@ class CategoryRepository
      */
     public function update($category,$data)
     {
-        return $category->update($data);
+        $category->update($data);
+
+        return $category;
     }
 
     /**
@@ -121,19 +123,18 @@ class CategoryRepository
 
     /**
      * Generate unique Slug
-     * @param $slug
+     * @param $product
      * @return string
      */
     public function generateSlug($product)
     {
-        $slug = $product;
         $category = new Category();
-        $count = $category->where('es_cat.slug', 'LIKE', '%' . $slug . '%')->count();
+        $count = $category->where('es_cat.slug', 'LIKE', '%' . $product . '%')->count();
         if($count >= 1){
-            $slug = $product.$count;
+            $product = $product.$count;
         }
 
-        return $slug;
+        return $product;
     }
 
 }
