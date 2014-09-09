@@ -31,9 +31,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('OrderProductRepository', function($app){
             return new OrderProductRepository();
         });
+
         $this->app->bind('ProductRepository', function($app){   
             return new ProductRepository();
         });
+
         $this->app->bind('AdminMemberRepository', function($app){   
             return new AdminMemberRepository();
         });
@@ -67,12 +69,16 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('BankInfoRepository', function($app){  
             return new BankInfoRepository();
         });
+
+        $this->app->bind('CategoryRepository', function($app){
+            return new CategoryRepository();
+        });
         
         $this->app->bind('OrderBillingInfoRepository', function($app){  
             return new OrderBillingInfoRepository();
         });
 
-        $this->app->bind('OrderHistoryRepository', function($app){  
+        $this->app->bind('OrderHistoryRepository', function($app){
             return new OrderHistoryRepository();
         });
         
@@ -80,8 +86,5 @@ class RepositoryServiceProvider extends ServiceProvider
             return new PaymentMethodRepository();
         });
 
-                      
-
     }
 }
-

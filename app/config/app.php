@@ -192,6 +192,7 @@
         'Validator'       => 'Illuminate\Support\Facades\Validator',
         'View'            => 'Illuminate\Support\Facades\View',
         'NumberFormatter' => 'NumberFormatterFacade',
+        'StringHelper' => 'StringHelperFacade',
     ),
 
 );
