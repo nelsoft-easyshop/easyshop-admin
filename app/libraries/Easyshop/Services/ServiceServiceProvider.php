@@ -53,6 +53,10 @@ class ServiceServiceProvider extends ServiceProvider
             return new AdminMemberManagerService();
         });
 
+        $this->app->bind('RaffleManagerService', function(){
+            return new RaffleManagerService();
+        });        
+
     }
 }
 
