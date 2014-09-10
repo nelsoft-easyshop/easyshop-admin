@@ -304,8 +304,8 @@ class OrderProductController extends BaseController
     {
         $orderRepository = App::make('OrderRepository');
 
-        $dateFrom = Carbon::createFromFormat('Y/m/d',  Input::get('dateFrom'));
-        $dateTo = Carbon::createFromFormat('Y/m/d',  Input::get('dateTo'));
+        $dateFrom = Carbon::createFromFormat('Y/m/d',  Input::get('dateFrom'))->startOfDay();
+        $dateTo = Carbon::createFromFormat('Y/m/d',  Input::get('dateTo'))->endOfDay();
         $transactionRecord = $orderRepository->getTransactionRecord(
                                             $dateFrom,
                                             $dateTo, 

@@ -46,8 +46,14 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('showRaffleList', array('uses' => 'RaffleManagerController@showRaffleList'));    
     Route::post('deleteRaffle', array('uses' => 'RaffleManagerController@deleteRaffle'));    
 
+    Route::get('category', array('uses' => 'CategoryController@showAllCategory'));
+    Route::post('category', array('uses' => 'CategoryController@doSearchCategory'));
+    Route::put('categoryUpdate', array('uses' => 'CategoryController@ajaxUpdateCategory'));
+    Route::put('categoryAdd', array('uses' => 'CategoryController@ajaxAddCategory'));
+
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
     Route::get('items', array('uses' => 'ProductController@doSearchItem'));
+
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
     Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));
     Route::get('orderproduct/pay', array('uses' => 'OrderProductController@getOrderProductsToPay'));

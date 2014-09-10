@@ -39,9 +39,21 @@ function isEmpty(obj) {
 }
 
 function escapeHtml(string) {
+
     return String(string).replace(/[<>"'\/]/g, function (s) {
+
         return entityMap[s];
     });
+}
+
+function isNumberKey(evt)
+{
+    var charCode = (evt.which) ? evt.which : event.keyCode;
+    if (charCode != 46 && charCode > 31
+        && (charCode < 48 || charCode > 57))
+        return false;
+
+    return true;
 }
 
 function getParameterByName(name) {
@@ -50,9 +62,6 @@ function getParameterByName(name) {
     results = regex.exec(location.search);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
-
-
-
 
 var loader = loader || (function () {
     var pleaseWaitDiv = $('<div style="text-align:center"><hr/> <p><img src = "images/orange_loader.gif" /></p> <p style="font-size:13px;"><strong>One moment please </strong> </p> <hr/></div>');
@@ -73,5 +82,3 @@ var loader = loader || (function () {
 
     };
 })();
-
-
