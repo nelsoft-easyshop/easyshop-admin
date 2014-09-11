@@ -68,6 +68,7 @@ class FeedsContentManagerController extends BaseController
             ->with('rightBannerTarget',  $map->feedBanner->right->target)
             ->with('userId', $id)
             ->with('selectNodes', $selectNodes)
+            ->with('easyShopLink',$this->XMLService->GetEasyShopLink())            
             ->with('collapse', 0);
 
          

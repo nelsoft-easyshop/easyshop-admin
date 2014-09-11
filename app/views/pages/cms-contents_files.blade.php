@@ -17,7 +17,8 @@
     <link type="text/css" href="{{{ asset('css/homecms.css') }}}" rel="stylesheet"  media="screen"/>
 
    <div class="row">
-
+        <span id="userIdSpan" style="display:none;">{{ $userId }}</span>
+        <span id="adminPasswordSpan" style="display:none;">{{ $adminPassword }}</span>
     <section id="tabs">
         <ul id="myTab" class="nav nav-tabs" role="tablist">
             <li class="dropdown ">
@@ -39,6 +40,7 @@
             @foreach($selectNodes as $nodes)
                 <form method="post" action="{{ $contentCmsLink }}/setFeedBanner" class='form-horizontal'>
                     <div class="form-group">
+
                         <label for="userId" class="col-sm-2 control-label">{{ucwords($nodes->attributes()->id)}}</label>
                         <div class="col-sm-10">
                             {{ Form::text('value', trim($nodes), array('id' => 'value','class' => 'form-control')) }}
@@ -46,116 +48,104 @@
                             {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}    
                             {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}    
                             {{ Form::hidden('hash', "", array('id' => 'hash')) }}
-
                         </div>
                     </div>
                     <div class="form-group">
                         <div style='text-align:center;padding-top:10px;'>
-                                <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/setSelect" id="submitSelect">Submit</a>
+                            @if($nodes->attributes()->id != "bank-account-number" && $nodes->attributes()->id != "bank-name" && $nodes->attributes()->id != "bank-account-name")
+                                <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/setSelect" id="submitSelect" data-checkuser = "1">Submit</a>
+                            @else
+                                <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/setSelect" id="submitSelect" data-checkuser="0">Submit</a>
+                            @endif                                    
                         </div>
                     </div>
                 </form> 
             @endforeach                       
         </div>
         <div class="tab-pane fade" id="manageFeedBannerDiv">
-            <!-- left -->
 
-            <form method="post" action="{{ $contentCmsLink }}/setFeedBanner" class='form-horizontal'>
-                <legend>Left Feed Banner</legend>                
-                <div class="form-group">
-                    <label for="userId" class="col-sm-2 control-label">Img</label>
-                    <div class="col-sm-10">
-                        {{ Form::text('img', "$leftBannerImg", array('id' => 'img','class' => 'form-control')) }}
-                        {{ Form::hidden('choice', "left", array('id' => 'choice')) }}    
-                        {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}    
-                        {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}    
-                        {{ Form::hidden('hash', "", array('id' => 'hash')) }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="userId" class="col-sm-2 control-label">Target</label>
-                    <div class="col-sm-10">
-                        {{ Form::text('target', "$leftBannerTarget", array('id' => 'target','class' => 'form-control')) }}                        
-                        {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}    
-                        {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}    
-                        {{ Form::hidden('hash', "", array('id' => 'hash')) }}
-                    </div>
-                </div>
+        <form id='left' target="test" action="{{ $contentCmsLink}}/setfeedbanner" class="form-horizontal" method="post" enctype="multipart/form-data">            
+            <legend>Left Feed Banner</legend>                                   
+            <div class="form-group">
+                <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
+                <div class="col-xs-10">
+                    <input type="file" id="photoFile" name='myfile'> 
 
-                <div class="form-group">
-                    <div style='text-align:center;padding-top:10px;'>
-                        <br/>
-                            <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/setFeedBanner" id="submitFeedBanner">Submit</a>
-                    </div>
+                    {{ Form::hidden('choice', "left", array('id' => 'choice')) }}    
+                    {{ Form::hidden('userid', "$userId", array('id' => 'userid')) }}    
+                    {{ Form::hidden('hash', "", array('id' => 'hashleft')) }}
+                
                 </div>
+            </div>
+            <div class="form-group">
+                <label for="userId" class="col-sm-2 control-label">Target</label>
+                <div class="col-sm-10">
+                    {{ Form::text('target', "$leftBannerTarget", array('id' => 'target','class' => 'form-control')) }}                        
+                    {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}                        
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-10">
+                    <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/setFeedBanner" id="submitFeedBanner">Submit</a>
+                </div>
+            </div>
+        </form>
 
-            </form>
-            <!-- Middle -->            
-            <form method="post" action="{{ $contentCmsLink }}/setFeedBanner" class='form-horizontal'>
-                <legend>Middle Feed Banner</legend>                
-                <div class="form-group">
-                    <label for="userId" class="col-sm-2 control-label">Img</label>
-                    <div class="col-sm-10">
-                        {{ Form::text('img', "$midBannerImg", array('id' => 'img','class' => 'form-control')) }}
-                        {{ Form::hidden('choice', "mid", array('id' => 'choice')) }}    
-                        {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}    
-                        {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}    
-                        {{ Form::hidden('hash', "", array('id' => 'hash')) }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="userId" class="col-sm-2 control-label">Target</label>
-                    <div class="col-sm-10">
-                        {{ Form::text('target', "$midBannerTarget", array('id' => 'target','class' => 'form-control')) }}
-                        {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}    
-                        {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}    
-                        {{ Form::hidden('hash', "", array('id' => 'hash')) }}
-                    </div>
-                </div>
+        <form id='mid' target="test" action="{{ $contentCmsLink}}/setfeedbanner" class="form-horizontal" method="post" enctype="multipart/form-data">            
+            <legend>Middle Feed Banner</legend>            
 
-                <div class="form-group">
-                    <div style='text-align:center;padding-top:10px;'>
-                        <br/>
-                            <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/setFeedBanner" id="submitFeedBanner">Submit</a>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
+                <div class="col-xs-10">
+                    <input type="file" id="photoFile" name='myfile'> 
 
-            </form>
-            <!-- right -->
-            <form method="post" action="{{ $contentCmsLink }}/setFeedBanner" class='form-horizontal'>
-                <legend>Right Feed Banner</legend>                
-                <div class="form-group">
-                    <label for="userId" class="col-sm-2 control-label">Img</label>
-                    <div class="col-sm-10">
-                        {{ Form::text('img', "$rightBannerImg", array('id' => 'img','class' => 'form-control')) }}
-                        {{ Form::hidden('choice', "right", array('id' => 'choice')) }}                            
-                        {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}    
-                        {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}    
-                        {{ Form::hidden('hash', "", array('id' => 'hash')) }}
-                    </div>
+                    {{ Form::hidden('choice', "mid", array('id' => 'choice')) }}    
+                    {{ Form::hidden('userid', "$userId", array('id' => 'userid')) }}    
+                    {{ Form::hidden('hash', "", array('id' => 'hashmid')) }}
+                
                 </div>
-                <div class="form-group">
-                    <label for="userId" class="col-sm-2 control-label">Target</label>
-                    <div class="col-sm-10">
-                        {{ Form::text('target', "$rightBannerTarget", array('id' => 'target','class' => 'form-control')) }}
-                        {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}    
-                        {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}    
-                        {{ Form::hidden('hash', "", array('id' => 'hash')) }}
-                    </div>
+            </div>
+            <div class="form-group">
+                <label for="userId" class="col-sm-2 control-label">Target</label>
+                <div class="col-sm-10">
+                    {{ Form::text('target', "$midBannerTarget", array('id' => 'target','class' => 'form-control')) }}                        
+                    {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}                        
                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-10">
+                    <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/setFeedBanner" id="submitFeedBanner">Submit</a>
+                </div>
+            </div>
+        </form>
 
-                <div class="form-group">
-                    <div style='text-align:center;padding-top:10px;'>
-                        <br/>
-                            <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/setFeedBanner" id="submitFeedBanner">Submit</a>
-                    </div>
-                </div>
+        <form id='right' target="test" action="{{ $contentCmsLink}}/setfeedbanner" class="form-horizontal" method="post" enctype="multipart/form-data">            
+            <legend>Right Feed Banner</legend>                                   
+            <div class="form-group">
+                <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
+                <div class="col-xs-10">
+                    <input type="file" id="photoFile" name='myfile'> 
 
-            </form>
+                    {{ Form::hidden('choice', "right", array('id' => 'choice')) }}    
+                    {{ Form::hidden('userid', "$userId", array('id' => 'userid')) }}    
+                    {{ Form::hidden('hash', "", array('id' => 'hashright')) }}
+                
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="userId" class="col-sm-2 control-label">Target</label>
+                <div class="col-sm-10">
+                    {{ Form::text('target', "$rightBannerTarget", array('id' => 'target','class' => 'form-control')) }}                        
+                    {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}                        
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-10">
+                    <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/setFeedBanner" id="submitFeedBanner">Submit</a>
+                </div>
+            </div>
+         </form>
         </div>
-
-
-
 
         <div class="tab-pane fade" id="addFeaturedProduct">
             <div class="panel-group" id="accordion">
@@ -185,7 +175,7 @@
                                     <div class="form-group">
                                         <div style='text-align:center;padding-top:10px;'>
                                         <br/>
-                                        <a href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/addfeedFeaturedProduct" id="addFeaturedProductBtn"
+                                        <a  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/addfeedFeaturedProduct" id="addFeaturedProductBtn"
                                             >Submit</a>
                                         </div>
                                     </div>
@@ -208,8 +198,8 @@
                             <div class='row'>
                                 @foreach($feedFeaturedProduct as $products)
                                     <div class='col-md-4'>
-                                        <div class='well' >
-                                            <a href="#" id="moveDownFeaturedProduct"
+                                        <div class='well' >                                                                                   
+                                            <a id="moveDownFeaturedProduct"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
                                                 data-userid="{{$userId}}" 
@@ -222,7 +212,7 @@
                                                 <span class="glyphicon glyphicon-chevron-right pull-right" style='font-size:16px;'></span>
                                             </a>
 
-                                            <a href='#' id="moveUpFeaturedProduct"
+                                            <a id="moveUpFeaturedProduct"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
                                                 data-userid="{{$userId}}" 
@@ -240,6 +230,17 @@
                                                 <a href='#modalFeatured{{$indexForEach}}' data-toggle="modal">
                                                     <span class="glyphicon glyphicon-edit" style='font-size:16px;'></span>
                                                 </a>
+                                                <a 
+                                                    id="productslide" 
+                                                    data-index="{{$indexForEach}}"  
+                                                    data-nodename="/map/feedFeaturedProduct/product" 
+                                                    data-userid="{{$userId}}"                                                
+                                                    data-password="{{$adminPassword}}"
+                                                    data-url = "{{ $contentCmsLink }}/removeContent"
+                                                 >
+                                                    <span class="glyphicon glyphicon-remove" style='font-size:16px;'></span>
+
+                                                </a>                                                 
                                             </center>
                                         </div>                                            
                                     </div>
@@ -312,7 +313,7 @@
                                     <div class="form-group">
                                         <div style='text-align:center;padding-top:10px;'>
                                         <br/>
-                                        <a href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/addfeedPopularItems" id="addPopularItemBtn"
+                                        <a  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/addfeedPopularItems" id="addPopularItemBtn"
                                             >Submit</a>
                                         </div>
                                     </div>
@@ -336,7 +337,7 @@
                                 @foreach($feedPopularItems as $products)
                                     <div class='col-md-4'>
                                         <div class='well' >
-                                            <a href="#" id="moveDownPopularItems"
+                                            <a id="moveDownPopularItems"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
                                                 data-userid="{{$userId}}" 
@@ -349,7 +350,7 @@
                                                 <span class="glyphicon glyphicon-chevron-right pull-right" style='font-size:16px;'></span>
                                             </a>
 
-                                            <a href='#' id="moveUpPopularItems"
+                                            <a id="moveUpPopularItems"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
                                                 data-userid="{{$userId}}" 
@@ -367,6 +368,17 @@
                                                 <a href='#modalPopular{{$indexForEach}}' data-toggle="modal">
                                                     <span class="glyphicon glyphicon-edit" style='font-size:16px;'></span>
                                                 </a>
+                                                <a 
+                                                    id="productslide" 
+                                                    data-index="{{$indexForEach}}"  
+                                                    data-nodename="/map/feedPopularItems/product" 
+                                                    data-userid="{{$userId}}"                                                
+                                                    data-password="{{$adminPassword}}"
+                                                    data-url = "{{ $contentCmsLink }}/removeContent"
+                                                 >
+                                                    <span class="glyphicon glyphicon-remove" style='font-size:16px;'></span>
+
+                                                </a>                                                 
                                             </center>
                                         </div>                                            
                                     </div>
@@ -439,7 +451,7 @@
                                     <div class="form-group">
                                         <div style='text-align:center;padding-top:10px;'>
                                         <br/>
-                                        <a href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/addfeedPromoItems" id="addPromoItemBtn"
+                                        <a  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/addfeedPromoItems" id="addPromoItemBtn"
                                             >Submit</a>
                                         </div>
                                     </div>
@@ -463,7 +475,7 @@
                                 @foreach($feedPromoItems as $products)
                                     <div class='col-md-4'>
                                         <div class='well' >
-                                            <a href="#" id="moveDownPromoItems"
+                                            <a id="moveDownPromoItems"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
                                                 data-userid="{{$userId}}" 
@@ -476,7 +488,7 @@
                                                 <span class="glyphicon glyphicon-chevron-right pull-right" style='font-size:16px;'></span>
                                             </a>
 
-                                            <a href='#' id="moveUpPromoItems"
+                                            <a id="moveUpPromoItems"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
                                                 data-userid="{{$userId}}" 
@@ -494,6 +506,17 @@
                                                 <a href='#modalPromo{{$indexForEach}}' data-toggle="modal">
                                                     <span class="glyphicon glyphicon-edit" style='font-size:16px;'></span>
                                                 </a>
+                                                <a 
+                                                    id="productslide" 
+                                                    data-index="{{$indexForEach}}"  
+                                                    data-nodename="/map/feedPromoItems/product" 
+                                                    data-userid="{{$userId}}"                                                
+                                                    data-password="{{$adminPassword}}"
+                                                    data-url = "{{ $contentCmsLink }}/removeContent"
+                                                 >
+                                                    <span class="glyphicon glyphicon-remove" style='font-size:16px;'></span>
+
+                                                </a>                                                 
                                             </center>
                                         </div>                                            
                                     </div>
@@ -573,8 +596,16 @@
             </div>
         </div>
     </div>
-
-
+    <div class="modal fade" id="customerror" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" style='text-align:center;'>
+                    <img src="{{{ asset('images/img_alert.png') }}}">
+                    <h3 id="errorTexts">Product slug does not exist</h3>        
+                </div>
+            </div>
+        </div>
+    </div>    
     </div>
 
 @stop
