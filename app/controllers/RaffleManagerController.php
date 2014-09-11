@@ -40,7 +40,6 @@ class RaffleManagerController extends BaseController
      */
     public function doRaffle()
     {   
-
         $count = 0;
         $raffleEntity = App::make('RaffleRepository');
         $validator = new RaffleValidator( App::make('validator') );
@@ -49,41 +48,35 @@ class RaffleManagerController extends BaseController
 
         if($validator->with(Input::get())->passes()){
             if(Input::get("winnerType") == "upload") {
-                if (Input::hasFile('uploadPoolOfWinner')) {
 
-                    $excel = App::make('excel');
-                    $file            = Input::file( 'uploadPoolOfWinner');
-                    $destinationPath = public_path().'/misc/';
-                    $filename        = str_random(6) . '_' . $file->getClientOriginalName();
-                    $extension        = str_random(6) . '_' . $file->getClientOriginalExtension();
-                    $uploadSuccess   = $file->move($destinationPath, $filename);
-                    
-                    $reader = $excel->selectSheetsByIndex(0)->load("./public/misc/$filename");                        
-                    $data = $reader->noHeading()->get();
+                $excel = App::make('excel');
+                $file            = Input::file( 'uploadPoolOfWinner');
+                $destinationPath = public_path().'/misc/';
+                $filename        = str_random(6) . '_' . $file->getClientOriginalName();
+                $extension        = str_random(6) . '_' . $file->getClientOriginalExtension();
+                $uploadSuccess   = $file->move($destinationPath, $filename);
+                
+                $reader = $excel->load("./public/misc/$filename");                    
+                $data = $reader->noHeading()->get();
 
-                    $userDataCount = count($data);
+                $userDataCount = count($data);
 
-                    if(Input::get("numberOfWinners") > $userDataCount) {
-                        return Response::json(array('errors' => array("userDataCount" => "The number of winners to generate do not match the members in the excel file"))); 
-                    }
-                    else {
-                        $possibleWinnerArr = $this->RaffleManagerService->getPossibleWinners($data);
-                    }
-                }
-
+                $possibleWinnerArr = $this->RaffleManagerService->getPossibleWinners($data);
+                
             } 
             else {
 
                 $possibleWinnerArr = explode(",", Input::get("poolOfWinner"));
                 $userDataCount = count($possibleWinnerArr);
-                if(Input::get("numberOfWinners") > $userDataCount) {
-                    return Response::json(array('errors' => array("userDataCount" => "The number of winners to generate do not match the members in the excel file"))); 
-                }                
+              
             }
 
-                $uniques = $this->RaffleManagerService->getUniqueIndexes($possibleWinnerArr, $userDataCount, $numberOfWinners);
+            if(Input::get("numberOfWinners") > $userDataCount) {
+                return Response::json(array('errors' => array("userDataCount" => "The number of winners to generate do not match the members in the excel file"))); 
+            }
+            else {
 
-                $winners = implode(",",array_map('trim',$this->RaffleManagerService->getWinnerPools($uniques, $possibleWinnerArr)));
+                $winners = implode(",",array_map('trim',$this->RaffleManagerService->getWinners($possibleWinnerArr, $userDataCount, $numberOfWinners)));
                 $members = implode(",", array_map('trim', $possibleWinnerArr));
                 $trimmedPrices = implode(",",array_map('trim', explode(",", Input::get("listOfPrices"))));
 
@@ -92,8 +85,10 @@ class RaffleManagerController extends BaseController
                                                     $members,
                                                     $trimmedPrices);
                 if($raffleEntity) {                        
-                    return Response::json(array('data' => "success"));
-                }             
+                    
+                }                    
+            }                  
+             
         }
         else {
             return Response::json(array('errors' => $validator->errors())); 
