@@ -13,7 +13,7 @@ class SearchKeyWordsController extends BaseController
     public function showSearchKeyWords()
     {
         return View::make('pages.searchkeywords')
-            ->with('list_of_keywords', SearchKeywords::paginate(3));
+            ->with('list_of_keywords', SearchKeywords::paginate(50));
 
     }
 
