@@ -54,22 +54,22 @@ class AdminMemberManagerService
         $this->adminMemberRepo = new AdminMemberRepository;
 
         if($currentRole == $this->adminMemberRepo->getRoleNames("CONTENT")) {
-            $pages = array("/test","/cms/feeds");
+            $pages = array("cms","users");
         }
         else if($currentRole == $this->adminMemberRepo->getRoleNames("CSR")) {
-            $pages = array("/cms/home","/cms/feeds");
+            $pages = array("cms/home","cms/feeds");
         }
         else if($currentRole == $this->adminMemberRepo->getRoleNames("MARKETING")) {
-            $pages = array("/cms/home","/cms/feeds");
+            $pages = array("cms/home","cms/feeds");
         }
         else if($currentRole == $this->adminMemberRepo->getRoleNames("SUPER-USER")) {
-            $pages = array("/cms/home","/cms/feeds");
+            $pages = array("cms/home","cms/feeds");
         }
         else if($currentRole == $this->adminMemberRepo->getRoleNames("SUPER-USER")) {
-            $pages = array("/cms/home","/cms/feeds");
+            $pages = array("cms/home","cms/feeds");
         }     
         else if($currentRole == $this->adminMemberRepo->getRoleNames("GUEST")) {
-            $pages = array("/cms/home","/cms/feeds");
+            $pages = array("cms/home","cms/feeds");
         }                
         return $pages;              
     }

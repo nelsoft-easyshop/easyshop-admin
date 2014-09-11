@@ -46,6 +46,9 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('showRaffleList', array('uses' => 'RaffleManagerController@showRaffleList'));    
     Route::post('deleteRaffle', array('uses' => 'RaffleManagerController@deleteRaffle'));    
 
+    Route::get('searchkeywords', array('uses' => 'SearchKeyWordsController@showSearchKeyWords'));    
+    Route::post('customsearchkeywords', array('uses' => 'SearchKeyWordsController@customSearch'));    
+
     Route::get('category', array('uses' => 'CategoryController@showAllCategory'));
     Route::post('category', array('uses' => 'CategoryController@doSearchCategory'));
     Route::put('categoryUpdate', array('uses' => 'CategoryController@ajaxUpdateCategory'));
