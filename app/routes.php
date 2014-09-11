@@ -41,6 +41,9 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
     Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));    
 
+    Route::get('searchkeywords', array('uses' => 'SearchKeyWordsController@showSearchKeyWords'));    
+    Route::post('customsearchkeywords', array('uses' => 'SearchKeyWordsController@customSearch'));    
+
     Route::get('category', array('uses' => 'CategoryController@showAllCategory'));
     Route::post('category', array('uses' => 'CategoryController@doSearchCategory'));
     Route::put('categoryUpdate', array('uses' => 'CategoryController@ajaxUpdateCategory'));
