@@ -140,7 +140,6 @@
                 $("#error").modal('show');                
             }
             else {
-                alert();                
                 data = {type:typeSectionMainPanel, index:indexSectionMainPanel, value:valueSectionMainPanel, productindex:productindexSectionMainPanel, coordinate:coordinateSectionMainPanel, target:targetSectionMainPanel, userid:userIdSectionMainPanel, hash:hash};
                 addSectionMainPanel(data,url,form, typeSectionMainPanel);       
             }
@@ -1092,13 +1091,6 @@
         }
         $(this).closest("form").find("#type").val(text);      
 
-
-/*                if(text == "image" && text == "product") {
-            alert(text);
-        }
-else {
-            var inputtext = $(this).closest("form").find(":input[type='text']:first").val(sectionindex);                        
-        }*/
         
     });
 
