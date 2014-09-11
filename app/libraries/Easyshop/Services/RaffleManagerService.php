@@ -9,49 +9,35 @@ class RaffleManagerService
      * @param array $data
      * @return array
      */
-    public function getPossibleWinners(&$data)
+    public function getPossibleWinners($data)
     {
-        foreach($data as $datas => $values) {
-            foreach($values as $value) {
-                $possibleWinnerArr[] =  $value;
-            } 
-        }
+        $values = array_flatten($data);
+        foreach($values[1] as $value) {
+           $possibleWinnerArr[] = $value[1];
+        } 
+
         return $possibleWinnerArr;
     }
 
     /**
-     * Produces unique numbers from the indicated numberofwinners
+     * Returns winners
      *
      * @param array $possibleWinnerArr
      * @param int $userDataCount
      * @param numberOfWinners
      * @return array
      */
-    public function getUniqueIndexes(&$possibleWinnerArr, $userDataCount, $numberOfWinners) {
+    public function getWinners($possibleWinnerArr, $userDataCount, $numberOfWinners) {
         foreach ($possibleWinnerArr as $members) {
             $uniques = range(0, $userDataCount - 1);
             shuffle($uniques);
             $uniques = array_slice($uniques, 0, $numberOfWinners);
         }
-        return $uniques;
-    }
-
-    /**
-     * Produces the winners
-     *
-     * @param array $possibleWinnerArr
-     * @param int $uniques
-     *
-     * @return array
-     */
-    public function getWinnerPools($uniques, &$possibleWinnerArr) 
-    {
-        $winnerPool = array();
-        for ($i=0; $i <= count($uniques) - 1; $i++) { 
-            $id = $uniques[$i];
-            $winnerPool[] = $possibleWinnerArr[$id];
+        foreach ($uniques as $unique => $key) {
+            $winnerPool[] = $possibleWinnerArr[$key];
         }
         return $winnerPool;
     }
+
 
 }
