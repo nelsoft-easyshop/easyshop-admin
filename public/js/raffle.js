@@ -1,5 +1,5 @@
-jQuery.browser = {};
 (function () {
+    jQuery.browser = {};
 
     jQuery.browser.msie = false;
     jQuery.browser.version = 0;
