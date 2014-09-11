@@ -63,8 +63,6 @@
             @endforeach                       
         </div>
         <div class="tab-pane fade" id="manageFeedBannerDiv">
-            <!-- left -->
-<!-- Test -->
 
         <form id='left' target="test" action="{{ $contentCmsLink}}/setfeedbanner" class="form-horizontal" method="post" enctype="multipart/form-data">            
             <legend>Left Feed Banner</legend>                                   
@@ -91,13 +89,7 @@
                     <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/setFeedBanner" id="submitFeedBanner">Submit</a>
                 </div>
             </div>
-         </form>
-
-<!-- Test -->
-
-            <!-- Middle -->   
-
-
+        </form>
 
         <form id='mid' target="test" action="{{ $contentCmsLink}}/setfeedbanner" class="form-horizontal" method="post" enctype="multipart/form-data">            
             <legend>Middle Feed Banner</legend>            
@@ -125,8 +117,8 @@
                     <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $contentCmsLink }}/setFeedBanner" id="submitFeedBanner">Submit</a>
                 </div>
             </div>
-         </form>
-            <!-- right -->
+        </form>
+
         <form id='right' target="test" action="{{ $contentCmsLink}}/setfeedbanner" class="form-horizontal" method="post" enctype="multipart/form-data">            
             <legend>Right Feed Banner</legend>                                   
             <div class="form-group">
@@ -154,9 +146,6 @@
             </div>
          </form>
         </div>
-
-
-
 
         <div class="tab-pane fade" id="addFeaturedProduct">
             <div class="panel-group" id="accordion">
@@ -617,9 +606,6 @@
             </div>
         </div>
     </div>    
-
-
-
     </div>
 
 @stop
