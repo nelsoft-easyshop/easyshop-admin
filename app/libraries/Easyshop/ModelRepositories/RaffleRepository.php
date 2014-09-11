@@ -23,9 +23,7 @@ class RaffleRepository
         $raffle->winners = $winners;
         $raffle->members = $members;
         $raffle->prices = $prices;
-        $isSuccessful = $raffle->save();
-        
-        return $isSuccessful;
+        return $raffle->save();
     }
 
     /**
@@ -38,6 +36,12 @@ class RaffleRepository
         return Raffle::orderBy('raffle_id', 'desc')->get();
     }
 
+    /**
+     * Deletes a raffle
+     *
+     * @param int $raffle_id
+     * @return Entity
+     */
     public function deleteRaffle($raffle_id)    
     {
 
