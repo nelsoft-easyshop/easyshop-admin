@@ -85,6 +85,12 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('PaymentMethodRepository', function($app){  
             return new PaymentMethodRepository();
         });
+        
+        $this->app->bind('SearchKeyWordsRepository', function($app){  
+            return new SearchKeyWordsRepository();
+        });        
+
+        
 
     }
 }
