@@ -70,11 +70,7 @@
                 $("#error").modal('show');                 
             }
         }); 
-        
-       
-
     }); 
-
 
     /*Only accepts numeric input for numberOfWinners field*/
     $("#numberOfWinners").keydown(function(event) {
@@ -89,7 +85,6 @@
             }   
         }
     });
-
 
     $("#registration_form").on('click','.dropdown-menu a',function(){
         var id = $(this).attr("id");
@@ -113,8 +108,7 @@
 
     $(document).on('click','#delete',function(){
         var id = $(this).data("id");    
-
-           $.ajax({
+            $.ajax({
                 type: 'post',
                 url: "deleteRaffle",
                 data:{id:id},
@@ -129,10 +123,5 @@
                 }
             });
     });    
-
-
-
-
-
-
 })(jQuery);    
+
