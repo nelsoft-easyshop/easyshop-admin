@@ -160,5 +160,14 @@ class AccountController extends BaseController
 
     }    
 
+    /** 
+     *  Render prohibited page
+     *
+     */
+    public function prohibited()
+    {
+        return View::make('pages.prohibited');
+    }    
+
 
 }

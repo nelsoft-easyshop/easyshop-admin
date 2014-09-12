@@ -70,4 +70,5 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('order-void', array('uses' => 'OrderController@voidOrder'));
     Route::put('order-product-void', array('uses' => 'OrderProductController@voidOrderProduct'));
 
+    Route::get('prohibited', array('uses' => 'AccountController@prohibited'));
 });
