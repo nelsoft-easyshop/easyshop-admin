@@ -14,15 +14,13 @@ App::before(function($request)
 {
 	if(Auth::check()) {
         if(!Request::ajax()) {
-            if(!Request::ajax() && !Request::isMethod('post') && !Request::isMethod('get')) {
-                $AdminMemberService = App::make("AdminMemberManagerService");
-                $isAuthorized = $AdminMemberService->getPrivilege(Request::segment(1));
+            $AdminMemberService = App::make("AdminMemberManagerService");
+            $isAuthorized = $AdminMemberService->getPrivilege(Request::segment(1));
                 if($isAuthorized === FALSE) {
                         // Comment out the code below to activate the page access feature
-                        //return Redirect::to("/");
+                        //return Redirect::to("prohibited");
                 }                
-            }          
-        }
+        }          
     }
 });
 
