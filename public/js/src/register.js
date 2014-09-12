@@ -7,34 +7,6 @@
         register(data);
     });
 
-    $('.btn-toggle').click(function() {
-        var adminId = $(this).data('admin');
-        $(this).find('.btn').toggleClass('active');  
-        
-        if ($(this).find('.btn-primary').size()>0) {
-            $(this).find('.btn').toggleClass('btn-primary');
-        }
-        var text = $(this).find('.active').text();
-        var IsActive = text == "Enabled" ? 1 : 0;
-
-        data = {_method: 'put', adminid:adminId, activation:IsActive};
-        $.ajax({
-            type: 'post',
-            dataType: 'JSON', 
-            url: "adminactivation",
-            data:data,
-            success: function(json) {
-                if(json[0] == true) {
-                     loader.hidePleaseWait();                     
-                 }
-            },
-            error: function(e) {
-                loader.hidePleaseWait();   
-            }
-        });
-        
-    });    
-
     function register(data) {
         var errors;
         $("#loading").modal('show');
@@ -55,7 +27,7 @@
 
                         $.each(json.errors, function (i, v) {
                             if(json.errors[i] != "undefined") {
-                                errors += "<h4>" + json.errors[i] + "</h4>";
+                                errors += "<br/><h4>" + json.errors[i] + "</h4>";
                             }
                         });
                         errors = errors.replace("undefined","");
@@ -75,6 +47,34 @@
         });
     }
 
+    $("#rolesDiv").on('click','#toggleMe',function (e) {         
+        var adminId = $(this).data('admin');
+
+        $(this).closest('.btn-toggle').find('.btn').toggleClass('active');  
+        
+        if ($(this).closest('.btn-toggle').find('.btn-primary').size()>0) {
+           $(this).closest('.btn-toggle').find('.btn').toggleClass('btn-primary');
+        }
+        var text = $(this).closest('.btn-toggle').find('.active').text();
+        var IsActive = text == "Enabled" ? 1 : 0;
+
+        data = {_method: 'put', adminid:adminId, activation:IsActive};
+        $.ajax({
+            type: 'post',
+            dataType: 'JSON', 
+            url: "adminactivation",
+            data:data,
+            success: function(json) {
+                if(json[0] == true) {
+                     loader.hidePleaseWait();                     
+                 }
+            },
+            error: function(e) {
+                loader.hidePleaseWait();   
+            }
+        });
+        
+    });  
 
     $("#rolesDiv").on('click','#rolesLink',function (e) { 
 
