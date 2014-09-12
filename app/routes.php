@@ -39,7 +39,12 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('register', array('uses' => 'AccountController@doRegister'));    
     Route::get('managerole', array('uses' => 'AccountController@showAdminLists'));    
     Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
-    Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));    
+    Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));   
+
+    Route::get('raffle', array('uses' => 'RaffleManagerController@showRaffle'));    
+    Route::post('doRaffle', array('uses' => 'RaffleManagerController@doRaffle'));    
+    Route::get('showRaffleList', array('uses' => 'RaffleManagerController@showRaffleList'));    
+    Route::post('deleteRaffle', array('uses' => 'RaffleManagerController@deleteRaffle'));    
 
     Route::get('searchkeywords', array('uses' => 'SearchKeyWordsController@showSearchKeyWords'));    
     Route::post('customsearchkeywords', array('uses' => 'SearchKeyWordsController@customSearch'));    
