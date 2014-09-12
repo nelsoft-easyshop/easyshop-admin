@@ -1,19 +1,45 @@
 <?php namespace Easyshop\ModelRepositories;
 
 use SearchKeywords;
+use Illuminate\Support\Facades\DB;
 
 class SearchKeyWordsRepository
 {
 
     /**
-     *  Returns search results
+     *  Renders all keywords
      *
      *  @return Entity
      */
-    public function searchKey($keyword, $row, $order)
+    public function listAllKeyWords($row)
     {
-        return SearchKeywords::where('keywords', 'LIKE', "%$keyword%")->orderBy("id_keywords_temp",$order)->paginate($row);   
+
+        $keywords = DB::table('es_keywords_temp')
+                         ->select('keywords', DB::raw('count(*) as hits'))
+                         ->groupBy('keywords')
+                         ->orderBy('hits','desc')                         
+                         ->paginate($row);
+        return $keywords;          
     }
+
+    /**
+     *  Returns custom search
+     *
+     *  @return Entity
+     */
+    public function searchKey($keyword, $row)
+    {
+   
+        $keywords = DB::table('es_keywords_temp')
+                         ->select('keywords', DB::raw('count(*) as hits'))
+                         ->groupBy('keywords')
+                         ->orderBy('hits','desc')
+                         ->where('keywords', 'LIKE', "%$keyword%")
+                         ->paginate($row);
+        return $keywords;          
+    }
+
+
     
 }
 

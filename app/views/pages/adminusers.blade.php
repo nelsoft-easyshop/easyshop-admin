@@ -7,6 +7,7 @@
                             <th>Username</th>
                             <th>Fullname</th>
                             <th>Role</th>
+                            <th>Activation</th>
                         </tr>
                     </thead>
                     <span style="display:none">{{$accessor=0}}</span>   
@@ -32,6 +33,17 @@
                                   </ul>
                                 </div>
                             </td>
+                            <td class="td_activation" style="width:20%;">
+                                <div class="btn-group btn-toggle" data-admin="{{$adminUsers->id_admin_member}}"> 
+                                    @if($adminUsers->is_active == 0)
+                                        <button class="btn btn-sm btn-default">Enabled</button>
+                                        <button class="btn btn-sm btn-primary active" >Disabled</button>
+                                    @else
+                                        <button class="btn btn-sm btn-primary active" >Enabled</button>
+                                        <button class="btn btn-sm btn-default">Disabled</button>                                    
+                                    @endif
+                                </div>
+                            </td>                           
                         </tr>
                     <span style="display:none">{{$accessor++}}</span>                    
                     @endforeach 
