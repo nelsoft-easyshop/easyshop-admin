@@ -31,14 +31,14 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Search Key Words</th>
+                            <th>Number of Hits</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($list_of_keywords as $words)
                             <tr >
-                                <td>{{{ $words->id_keywords_temp }}}</td>
-                                <td>{{{ $words->keywords }}}</td>                    
+                                <td>{{{ $words->keywords }}}</td>
+                                <td>{{{ $words->hits }}}</td>                    
                             </tr>
                         @endforeach
                         </tbody>
