@@ -49,27 +49,28 @@ class AdminMemberManagerService
      * @return array
      */    
     public function getPages($currentRole) {
-        //change the values of $pages array for the accessbile pages per admin role
-
+        /**
+         * $pages = array("first_url_segment_of_accessible_page_of_a_particular_role")
+         */          
         $this->adminMemberRepo = new AdminMemberRepository;
 
         if($currentRole == $this->adminMemberRepo->getRoleNames("CONTENT")) {
             $pages = array("cms","users");
         }
         else if($currentRole == $this->adminMemberRepo->getRoleNames("CSR")) {
-            $pages = array("cms/home","cms/feeds");
+            $pages = array("cms","users");
         }
         else if($currentRole == $this->adminMemberRepo->getRoleNames("MARKETING")) {
-            $pages = array("cms/home","cms/feeds");
+            $pages = array("cms","users");
         }
         else if($currentRole == $this->adminMemberRepo->getRoleNames("SUPER-USER")) {
-            $pages = array("cms/home","cms/feeds");
+            $pages = array("cms","users");
         }
         else if($currentRole == $this->adminMemberRepo->getRoleNames("SUPER-USER")) {
-            $pages = array("cms/home","cms/feeds");
+            $pages = array("cms","users");
         }     
         else if($currentRole == $this->adminMemberRepo->getRoleNames("GUEST")) {
-            $pages = array("cms/home","cms/feeds");
+            $pages = array("cms","users");
         }                
         return $pages;              
     }
