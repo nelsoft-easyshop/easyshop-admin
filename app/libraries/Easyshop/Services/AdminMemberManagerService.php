@@ -51,26 +51,27 @@ class AdminMemberManagerService
     public function getPages($currentRole) {
         /**
          * $pages = array("first_url_segment_of_accessible_page_of_a_particular_role")
+         * "" and "prohibited" pages that must be accessble by all admin roles
          */          
         $this->adminMemberRepo = new AdminMemberRepository;
 
         if($currentRole == $this->adminMemberRepo->getRoleNames("CONTENT")) {
-            $pages = array("cms","users");
+            $pages = array("cms","register","users","prohibited","");
         }
         else if($currentRole == $this->adminMemberRepo->getRoleNames("CSR")) {
-            $pages = array("cms","users");
+            $pages = array("prohibited","");
         }
         else if($currentRole == $this->adminMemberRepo->getRoleNames("MARKETING")) {
-            $pages = array("cms","users");
+            $pages = array("prohibited","");
         }
         else if($currentRole == $this->adminMemberRepo->getRoleNames("SUPER-USER")) {
-            $pages = array("cms","users");
+            $pages = array("prohibited","");
         }
         else if($currentRole == $this->adminMemberRepo->getRoleNames("SUPER-USER")) {
-            $pages = array("cms","users");
+            $pages = array("prohibited","");
         }     
         else if($currentRole == $this->adminMemberRepo->getRoleNames("GUEST")) {
-            $pages = array("cms","users");
+            $pages = array("prohibited","/");
         }                
         return $pages;              
     }
