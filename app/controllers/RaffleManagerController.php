@@ -85,7 +85,7 @@ class RaffleManagerController extends BaseController
                                                     $members,
                                                     $trimmedPrices);
                 if($raffleEntity) {                        
-                    
+                    return Response::json(array('success' => 'success')); 
                 }                    
             }                  
              
