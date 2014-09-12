@@ -14,7 +14,7 @@ class SearchKeyWordsController extends BaseController
     {
         $searchkeywordRepository = App::make('SearchKeyWordsRepository');
         return View::make('pages.searchkeywords')
-            ->with('list_of_keywords', $searchkeywordRepository->listAll(50));
+            ->with('list_of_keywords', $searchkeywordRepository->listAllKeyWords(50));
 
     }
 
