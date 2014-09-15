@@ -87,6 +87,7 @@
     });
 
     $("#registration_form").on('click','.dropdown-menu a',function(){
+
         var id = $(this).attr("id");
         var text = $(this).text();
         $("#action").text(text);
@@ -107,6 +108,7 @@
     });
 
     $(document).on('click','#delete',function(){
+        loader.showPleaseWait();            
         var id = $(this).data("id");    
             $.ajax({
                 type: 'post',
@@ -114,7 +116,7 @@
                 data:{id:id},
                 dataType: 'json',
                 success: function(json) {
-
+                    loader.hidePleaseWait();    
                     $("#rolesDiv").load('showRaffleList');                 
                 },
                 error: function(e) {
@@ -122,6 +124,15 @@
                     $("#error").modal('show');     
                 }
             });
-    });    
+    }); 
+
+    $( "td #winnersDisplay, td #pricesDisplay" ).each(function() {
+        $(this).shorten({
+            "showChars" :"30",
+            "moreText"  : "Show More",
+            "lessText"  : "Show Less",
+        }); 
+    });
+
 })(jQuery);    
 
