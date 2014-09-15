@@ -59,9 +59,10 @@ class RaffleManagerController extends BaseController
                 $reader = $excel->load("./public/misc/$filename");                    
                 $data = $reader->noHeading()->get();
 
-                $userDataCount = count($data);
+
 
                 $possibleWinnerArr = $this->RaffleManagerService->getPossibleWinners($data);
+                $userDataCount = count($possibleWinnerArr);
                 
             } 
             else {
