@@ -46,7 +46,9 @@ body{
 .clear {
     clear: both;
 }
-
+a.morelink{
+    color:blue !important;
+}
 a {
     text-decoration: none;
     color: #494949;
