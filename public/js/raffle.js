@@ -116,8 +116,8 @@
                 data:{id:id},
                 dataType: 'json',
                 success: function(json) {
-                    $("#rolesDiv").load('showRaffleList');                 
                     loader.hidePleaseWait();    
+                    $("#rolesDiv").load('showRaffleList');                 
                 },
                 error: function(e) {
                     $("#changeTextError").html("<h4>Please try again</h4>");
@@ -126,7 +126,7 @@
             });
     }); 
 
-    $( "td #winnersDisplay" ).each(function() {
+    $( "td #winnersDisplay, td #pricesDisplay" ).each(function() {
         $(this).shorten({
             "showChars" :"30",
             "moreText"  : "Show More",
