@@ -9,7 +9,7 @@ class RaffleValidator extends AbstractLaravelValidator
     * @var array
     */
     protected $rules = array(
-            'raffleName' => 'required|unique:es_raffle,raffle_name', 
+            'raffleName' => 'required|unique:es_raffle,raffle_name|min:5|max:40', 
             'poolOfWinner' => 'required', 
             'numberOfWinners' => 'required', 
 
