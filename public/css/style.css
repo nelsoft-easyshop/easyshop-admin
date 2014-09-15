@@ -2,6 +2,9 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300);
 
 
+.allcontent{
+    word-break:break-all;
+}
 
 .loader-dialog .modal-dialog {
     width: 300px;
@@ -3665,4 +3668,5 @@ width: 1200px;
 #changeTextError h4 {
     padding-top: 10px;
 }
+
 
