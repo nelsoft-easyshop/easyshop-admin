@@ -54,7 +54,7 @@ class MemberRepository extends AbstractRepository
         $query->leftJoin('es_order_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_billing_info.id_order_billing_info');
         $query->join('es_member','es_order_product.seller_id', '=', 'es_member.id_member');
         $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
-        $query->join('es_order_product_history', function($join){
+        $query->leftJoin('es_order_product_history', function($join){
             $join->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
             $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_FORWARD_SELLER));
         });
