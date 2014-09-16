@@ -1,9 +1,11 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,300italic,600);
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300);
 
-
 .allcontent{
     word-break:break-all;
+}
+a.morelink{
+    color:blue !important;
 }
 
 .loader-dialog .modal-dialog {
@@ -49,9 +51,7 @@ body{
 .clear {
     clear: both;
 }
-a.morelink{
-    color:blue !important;
-}
+
 a {
     text-decoration: none;
     color: #494949;
@@ -85,9 +85,9 @@ color: #b70000;
     line-height: 35px;
     text-align: center;
     -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: 	all 0.3s ease-in-out;
-    -o-transition:	    all 0.3s ease-in-out;
-    transition: 		all 0.3s ease-in-out;
+    -moz-transition:    all 0.3s ease-in-out;
+    -o-transition:      all 0.3s ease-in-out;
+    transition:         all 0.3s ease-in-out;
 }
 
 .orange_btn:hover {
@@ -108,9 +108,9 @@ color: #b70000;
     line-height: 40px;
     text-align: center;
     -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: 	all 0.3s ease-in-out;
-    -o-transition:	    all 0.3s ease-in-out;
-    transition: 		all 0.3s ease-in-out;
+    -moz-transition:    all 0.3s ease-in-out;
+    -o-transition:      all 0.3s ease-in-out;
+    transition:         all 0.3s ease-in-out;
 }
 
 .orange_btn2:hover {
@@ -126,9 +126,9 @@ color: #b70000;
     padding:8px 10px;
     text-align: center;
     -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: 	all 0.3s ease-in-out;
-    -o-transition:	    all 0.3s ease-in-out;
-    transition: 		all 0.3s ease-in-out;	
+    -moz-transition:    all 0.3s ease-in-out;
+    -o-transition:      all 0.3s ease-in-out;
+    transition:         all 0.3s ease-in-out;   
 }
 
 .orange_btn3:hover {
@@ -326,7 +326,7 @@ nav ul > li {
 nav ul > li > a {
 
     display: block;
-/*	height: 54px;*/
+/*  height: 54px;*/
     padding: 0px 0px 0px 45px;
     /*line-height: 20px;*/
     font-size: 12px;
@@ -362,7 +362,7 @@ nav ul > li > p span {
 }*/
 
 .category_item:hover p {
-/*	width: 187px;*/
+/*  width: 187px;*/
     position: relative;
     z-index: 9999;
 -webkit-box-shadow: -5px 3px 6px -2px rgba(50, 50, 50, 0.3);
@@ -375,11 +375,11 @@ box-shadow: -5px 3px 6px -2px rgba(50, 50, 50, 0.3);
 }
 
 .category_item:hover a:hover {
-/*	background-color: #fff;*/
+/*  background-color: #fff;*/
     color: #494949;
-/*	position: relative;*/
+/*  position: relative;*/
 /*    width: 130px;*/
-    z-index: 999;	
+    z-index: 999;   
 }
 
 .category_item:hover .clothing,
@@ -391,7 +391,7 @@ box-shadow: -5px 3px 6px -2px rgba(50, 50, 50, 0.3);
     position: relative;
 /*    width: 130px;*/
     z-index: 999;
-/*    padding: 10px 0 10px 38px;	*/
+/*    padding: 10px 0 10px 38px;    */
 }
 
 .clothing {
@@ -526,14 +526,14 @@ nav ul > li:hover > div {
     line-height: 25px;
     margin-right: 10px;
     padding:5px 0;
-    width: 167px;	
+    width: 167px;   
 }
 
 .category_product_types li:hover {
     
     -webkit-box-shadow: none;
     -moz-box-shadow:    none;
-    box-shadow:         none;	
+    box-shadow:         none;   
 }
 
 
@@ -637,7 +637,7 @@ nav ul > li:hover > div {
 .secure_payment {
     text-align: center;
     padding:10px;
-/*	margin:10px;*/
+/*  margin:10px;*/
 }
 
 .secure_payment p {
@@ -684,7 +684,7 @@ nav ul > li:hover > div {
 }
 .product_title {
     width: 100% !important;
-/*	margin-bottom: 8px;*/
+/*  margin-bottom: 8px;*/
 }
 
 .product_title h2 {
@@ -747,7 +747,7 @@ nav ul > li:hover > div {
 /*** Electronics Panel ***/
 .electronics_products div {
     float: left;
-/*    width: 510px;	*/
+/*    width: 510px; */
 }
 
 div.electronics_product_sides {
@@ -756,7 +756,7 @@ div.electronics_product_sides {
 
 .electronics_product_sides > div {
     width: 222px;
-    text-align: center;	
+    text-align: center; 
 }
 
 .product_slide {
@@ -836,14 +836,14 @@ div.electronics_product_sides {
 }
 
 .category_nav ul li a {
-/*	padding:8px 10px;*/
+/*  padding:8px 10px;*/
     color: #fff;
     display: block;
     padding:0px 10px;
     -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: 	all 0.3s ease-in-out;
-    -o-transition:	    all 0.3s ease-in-out;
-    transition: 		all 0.3s ease-in-out;
+    -moz-transition:    all 0.3s ease-in-out;
+    -o-transition:      all 0.3s ease-in-out;
+    transition:         all 0.3s ease-in-out;
 
 }
 
@@ -944,7 +944,7 @@ div.reg_step1 ul li:first-child,
 div.reg_step2 ul li:nth-child(2),
 div.reg_step3 ul li:nth-child(3) {
     color: #f8f6f6;
-    font-weight: bold;	
+    font-weight: bold;  
 }
 
 .reg_steps ul {
@@ -1109,7 +1109,7 @@ div.pass-hint {
 }
 
 .profile_top_nav ul li:hover a {
-    color: #fff;	
+    color: #fff;    
 }
 
 .profile_top_nav ul li a {
@@ -1208,7 +1208,7 @@ div.pass-hint {
 
 .bottom_save input[type="submit"]:hover {
     background-color: #FF6600;
-    border: 1px solid #FF4400;	
+    border: 1px solid #FF4400;  
 }
 /**profile left style **/
 
@@ -1334,7 +1334,7 @@ div.pass-hint {
     border-top: 1px solid #EDEDED;
     height: 30px;
     line-height: 30px;
-    padding: 3px;	
+    padding: 3px;   
 } 
 
 .member_side_nav li a:hover {
@@ -1432,14 +1432,14 @@ div.pass-hint {
     padding:5px 10px;
     width: 80px;
     -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: 	all 0.2s ease-in-out;
-    -o-transition:	    all 0.2s ease-in-out;
-    transition: 		all 0.2s ease-in-out;
+    -moz-transition:    all 0.2s ease-in-out;
+    -o-transition:      all 0.2s ease-in-out;
+    transition:         all 0.2s ease-in-out;
 
 }
 
 .profile_fields input[type="submit"]:hover {
-    background-color: #ff4400;	
+    background-color: #ff4400;  
 }
 
 .cancel {
@@ -1464,7 +1464,7 @@ div.pass-hint {
 .inner_profile_fields input[type="checkbox"] {
     border: none;
     width: 30px;
-/*	vertical-align: middle;*/
+/*  vertical-align: middle;*/
     margin:0;
 }
 
@@ -1481,7 +1481,7 @@ padding: 8px 0;
 }
 
 .edit_profile {
-/*	border-bottom: 1px solid #cecece;
+/*  border-bottom: 1px solid #cecece;
     height: 25px;
     line-height: 25px;
     margin: 0 0 0 30px;
@@ -1733,9 +1733,9 @@ padding: 8px 0;
 .login_box input[type="checkbox"] {
     border:none;
     height: 15px;
-    width: 30px;	
+    width: 30px;    
     vertical-align: middle;
-/*   	margin-left: 100px;*/
+/*      margin-left: 100px;*/
 }
 
 .login_box div + div p {
@@ -1783,16 +1783,16 @@ padding: 8px 0;
     width: 240px;
     text-align: center;
     -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: 	all 0.2s ease-in-out;
-    -o-transition:	    all 0.2s ease-in-out;
-    transition: 		all 0.2s ease-in-out;
+    -moz-transition:    all 0.2s ease-in-out;
+    -o-transition:      all 0.2s ease-in-out;
+    transition:         all 0.2s ease-in-out;
 
     vertical-align: middle;
 }
 
 .login_box input[type="submit"]:hover {
     border: 1px solid #ff4400;
-    background-color: #ff6600;	
+    background-color: #ff6600;  
 }
 
 
@@ -1812,7 +1812,7 @@ padding: 8px 0;
 
 .address_label {
     display: inline-block;
-/*	float: left;*/
+/*  float: left;*/
 }
 
 .delivery_address_content {
@@ -1864,9 +1864,9 @@ padding: 8px 0;
     -moz-border-radius: 3px;
     border-radius: 3px;
     -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: 	all 0.3s ease-in-out;
-    -o-transition:	    all 0.3s ease-in-out;
-    transition: 		all 0.3s ease-in-out;
+    -moz-transition:    all 0.3s ease-in-out;
+    -o-transition:      all 0.3s ease-in-out;
+    transition:         all 0.3s ease-in-out;
 }
 
 .fill_out_form input[type="submit"]:hover, .fill_out_form  button:hover {
@@ -1883,13 +1883,13 @@ padding: 8px 0;
     margin-right: 10px;
     padding:5px 10px;
     -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: 	all 0.2s ease-in-out;
-    -o-transition:	    all 0.2s ease-in-out;
-    transition: 		all 0.2s ease-in-out;
+    -moz-transition:    all 0.2s ease-in-out;
+    -o-transition:      all 0.2s ease-in-out;
+    transition:         all 0.2s ease-in-out;
 }
 
 .profile_fields input[type="submit"]:hover {
-    background-color: #ff4400;	
+    background-color: #ff4400;  
 }
 
 #terms{
@@ -1958,7 +1958,7 @@ padding: 8px 0;
 }
 
 .ui-datepicker-prev:hover {
-    background-position: -2px -33px;	
+    background-position: -2px -33px;    
 }
 
 .ui-datepicker-next {
@@ -1967,7 +1967,7 @@ padding: 8px 0;
 }
 
 .ui-datepicker-next:hover {
-    background-position: -32px -33px;	
+    background-position: -32px -33px;   
 }
 
 .ui-datepicker-current-day {
@@ -2035,8 +2035,8 @@ padding: 8px 0;
 
 .post_items li a:hover {
     background-color: #FF4400;
-    color: #FFFFFF;	
-    margin-right: 1px;	
+    color: #FFFFFF; 
+    margin-right: 1px;  
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -2101,7 +2101,7 @@ div.post_item_content_left {
     font-size: 16px;
     font-weight: 300;
 font-family: 'Roboto',sans-serif;
-width: 420px;	
+width: 420px;   
 word-wrap:break-word;
 }
 
@@ -2243,7 +2243,7 @@ div.post_item_content_right p:nth-child(4) span {
     color: #ff4400;
 }
 
-.post_items_content div.post_item_content_right {	
+.post_items_content div.post_item_content_right {   
     font-size: 14px;
 }
 
@@ -2273,7 +2273,7 @@ div.post_item_content_right p:nth-child(4) span {
 }
 .manage_lnk:hover {
     background-color: #ff4400;
-    color: #fff;	
+    color: #fff;    
 }
 
 .delete_lnk {
@@ -2424,7 +2424,7 @@ div.post_item_content_right p:nth-child(4) span {
 }
 
 .page_underconstruction_container input[type="submit"]:hover {
-    background-color: #ff8800;	
+    background-color: #ff8800;  
     border:1px solid #ff8800;
 }
 
@@ -2443,7 +2443,7 @@ div.post_item_content_right p:nth-child(4) span {
 
 .page_underconstruction_container .bottom_content div:last-child {
     display: inline-block;
-    text-align: left;	
+    text-align: left;   
 }
 
 .page_underconstruction_container .bottom_content div:last-child h3 {
@@ -2483,7 +2483,7 @@ div.post_item_content_right p:nth-child(4) span {
     border-bottom: 1px dotted  #0191C8;
 }
 
-/**	VENDOR VIEW CSS	**/
+/** VENDOR VIEW CSS **/
 .vendor-avatar{
     margin-bottom: 5px;
 }
@@ -2541,7 +2541,7 @@ div.post_item_content_right p:nth-child(4) span {
 }
 
 div.feedback_container {
-/*	float: right;*/
+/*  float: right;*/
 border-bottom: 1px dotted #CECECE;
     display: block;
     min-height: 140px;
@@ -2586,7 +2586,7 @@ border-bottom: 1px dotted #CECECE;
 .transac-feedback-btn,
 .feedback-submit,
 .feedback-cancel {
-    cursor: pointer;	
+    cursor: pointer;    
 }
 
 .feedback-submit {
@@ -2777,8 +2777,8 @@ span.transac_title_date:after {
 .feedbacks_tabs li a {
     padding: 5px 11px;
     background-color: #EBE9E9;
-    border: 1px solid #EBE9E9;	
-    border-right: 1px solid #fff;		
+    border: 1px solid #EBE9E9;  
+    border-right: 1px solid #fff;       
     display: inline-block;
     margin-bottom: -1px;
 }
@@ -2787,7 +2787,7 @@ span.transac_title_date:after {
     background-color: #fff;
     border-top: 2px solid #ff4400;
     color: #ff4400;
-    border-left: 1px solid #EBE9E9;	
+    border-left: 1px solid #EBE9E9; 
     border-right: 1px solid #EBE9E9;
     border-bottom: 1px solid #fff;
 }
@@ -3084,9 +3084,7 @@ table.dataTable.hover tbody tr:hover  .brand_op_lnk, table.dataTable.hover tbody
 }
 
 /*LOGIN FORM END*/
-.orange-header{
-    background-color: #F18200;
-}
+
 
 div#header_banner{
 background-color: #fff;
@@ -3186,7 +3184,6 @@ div#mainsection{
 }
 .tbl-title{
     color: #6f6f6f;
-    margin-top: 7px;
 }
 .filter-container{
 
@@ -3245,25 +3242,6 @@ top:0px !important;
 }
 #srch_container .tbl-title{margin-bottom: 3%}
 /* end */
-.breadcrumb
-{
-    background-color:white;
-    margin-bottom: 0px;
-}
-.breadcrumb .active
-{
-    color: #ff6600;
-}
-#mdl_title{
-    color: #f5f5f5;
-}
-.table-clickable > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th
-{
-    background-color: #FFF2C3;
-}
-.tbl-breadcrumb
-{
-    margin-top: 4%;
 .address_div div{
     display: inline-block;
     width: 29%;
@@ -3668,5 +3646,4 @@ width: 1200px;
 #changeTextError h4 {
     padding-top: 10px;
 }
-
 
