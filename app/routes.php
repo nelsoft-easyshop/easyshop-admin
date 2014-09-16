@@ -39,7 +39,12 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('register', array('uses' => 'AccountController@doRegister'));    
     Route::get('managerole', array('uses' => 'AccountController@showAdminLists'));    
     Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
-    Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));    
+    Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));  
+    
+    Route::get('raffle', array('uses' => 'RaffleManagerController@showRaffle'));    
+    Route::post('doRaffle', array('uses' => 'RaffleManagerController@doRaffle'));    
+    Route::get('showRaffleList', array('uses' => 'RaffleManagerController@showRaffleList'));    
+    Route::post('deleteRaffle', array('uses' => 'RaffleManagerController@deleteRaffle'));    
 
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
     Route::get('items', array('uses' => 'ProductController@doSearchItem'));
@@ -60,5 +65,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('order-detail', array('uses' => 'OrderController@getOrderDetail'));
     Route::put('order-void', array('uses' => 'OrderController@voidOrder'));
     Route::put('order-product-void', array('uses' => 'OrderProductController@voidOrderProduct'));
+    
+    
 
 });

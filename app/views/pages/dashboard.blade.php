@@ -118,6 +118,14 @@
             
             </li>                                 
             
+            <li>    
+                <a href="/raffle">
+                    <img src="{{{ asset('images/icon_list.png') }}}"/> 
+                    <span>Add Raffle</span>
+                </a>
+                <p> Add and view raffles. Upload raffle member CSV files or manually input pool of members for the raffle.</p>
+            </li>   
+            
         </ul>
     </div>
 
