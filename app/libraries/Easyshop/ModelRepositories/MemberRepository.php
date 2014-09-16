@@ -74,9 +74,9 @@ class MemberRepository extends AbstractRepository
                 $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING);
                 $query->where('es_order_product.is_reject', '=', '0');
                 $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
-                $query->where(DB::raw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15"));
+                $query->whereRaw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15");
                 $query->setBindings(array_merge($query->getBindings(),array($formattedDateTo)));
-                $query->where(DB::raw(" DATE_ADD(es_product_shipping_comment.`delivery_date`, INTERVAL 15 DAY) BETWEEN ? AND ?"));
+                $query->whereRaw(" DATE_ADD(es_product_shipping_comment.`delivery_date`, INTERVAL 15 DAY) BETWEEN ? AND ?");
                 $query->setBindings(array_merge($query->getBindings(),array($formattedDateFrom, $formattedDateTo)));
             });
         });
@@ -94,6 +94,8 @@ class MemberRepository extends AbstractRepository
                                        'es_order_billing_info.account_number', 
                                         DB::raw('SUM(es_order_product.net) as net')
                                     ]);
+        $queries = DB::getQueryLog();
+
 
         return $completedOrders;
     }
