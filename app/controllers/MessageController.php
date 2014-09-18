@@ -24,7 +24,6 @@ class MessageController extends BaseController
     public function showMessages()
     {
         $partnersIds = $this->MessagesService->getPartnersId();
-
         foreach ($partnersIds as $ids) {
             $messages[] = $this->messagesRepository->getAllMessages($ids);
         }        
@@ -43,6 +42,7 @@ class MessageController extends BaseController
     public function getConversation()
     {
         $messages = $this->messagesRepository->getConversation(Input::get("to_id"),Input::get("from_id"));
+        $this->messagesRepository->updateMessage(Input::get("messageid"));        
         $partnersIds = $this->MessagesService->getPartnersId();
 
         $html =  View::make('partials.messagespartial')
