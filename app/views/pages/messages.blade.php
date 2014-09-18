@@ -53,7 +53,12 @@
     <tbody >
 
                 @foreach($list_of_messages as $messages)
+                @if($messages->opened == "")
+                        <tr id="testing" style="font-weight:bold;">
+                @else
                         <tr id="testing">
+                @endif
+
                             <td class="id" >{{{ $messages->id_msg }}}</td>
                             <td class="to_id" >{{{ $messages->to_id }}}</td>
                             <td class="from_id" >{{{ $messages->from_id }}}</td>
