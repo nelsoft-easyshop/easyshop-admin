@@ -82,6 +82,18 @@ class MessagesRepository extends AbstractRepository
 
     }
 
+    /**
+     *  Updates is_opened
+     *  @param int $id
+     *  @return Entity
+     */
+    public function updateMessage($id)
+    {
+        $message = Messages::find($id);
+        $message->opened = "1";
+        return $message->save();        
+    }    
+
 
 
 }
