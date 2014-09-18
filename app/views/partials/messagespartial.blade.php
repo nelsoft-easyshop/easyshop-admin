@@ -34,7 +34,7 @@
                         <input type="hidden" id="to_idForm" value="{{$posted['to_id']}}">
                         <input type="hidden" id="from_idForm" value="{{$posted['from_id']}}">
                         <label>User's Message:</label>                        
-                        <textarea class='form-control' id="messageForm"  readonly="readonly">{{strip_tags($posted['message'])}}</textarea><br/>
+                        <textarea class='form-control'  readonly="readonly">{{strip_tags($posted['message'])}}</textarea><br/>
                         <label>Reply</label>
                         <textarea class='form-control' id="messageForm" rows="5" cols="5"></textarea>
                     </div>    
