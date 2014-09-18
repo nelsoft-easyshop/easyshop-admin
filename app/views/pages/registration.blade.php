@@ -136,7 +136,7 @@
 @stop
 
 @section('page_js') 
-  {{ HTML::script('js/src/register.js') }}
+  {{ HTML::script('js/register.js') }}
   {{ HTML::script('js/src/ladda/spin.js') }}
   {{ HTML::script('js/src/ladda/ladda.js') }}
 @stop
