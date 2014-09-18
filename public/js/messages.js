@@ -71,8 +71,8 @@
     $( "td #messageDisplay").each(function() {
         $(this).shorten({
             "showChars" :"30",
-            "moreText"  : "Show More",
-            "lessText"  : "Show Less",
+            "moreText"  : "",
+            "lessText"  : "",
         }); 
     });      
 
