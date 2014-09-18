@@ -1,5 +1,5 @@
 <?php namespace Easyshop\ModelRepositories;
-
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Member, OrderStatus, OrderProductStatus;
 
