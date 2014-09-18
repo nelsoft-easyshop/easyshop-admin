@@ -65,7 +65,7 @@ class OrderProductRepository extends AbstractRepository
                         ->join('es_member as buyer','es_order.buyer_id', '=', 'buyer.id_member')
                         ->join('es_product','es_order_product.product_id','=','es_product.id_product')
                         ->join('es_order_product_status','es_order_product.status','=','es_order_product_status.id_order_product_status')
-                        ->join('es_order_product_history', function($join){
+                        ->leftJoin('es_order_product_history', function($join){
                                 $join->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
                                 $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_FORWARD_SELLER));
                          })->leftJoin('es_product_shipping_comment','es_product_shipping_comment.order_product_id', '=', 'es_order_product.id_order_product')

@@ -2,6 +2,13 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300);
 
 
+.allcontent{
+    word-break:break-all;
+}
+a.morelink{
+    color:blue !important;
+}
+
 
 .loader-dialog .modal-dialog {
     width: 300px;
