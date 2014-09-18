@@ -38,7 +38,7 @@
                     <div class='col-md-10'>
                         <div id="mainContent">
                             <div class="table-responsive table-payment"> 
-                                <table id="table_id" class="display">
+                                <table id="table_id" class="display" style="max-width:100%;">
     <thead>
                                         <tr id="heading">
                                             <th>Message ID</th>
@@ -46,7 +46,7 @@
                                             <th>Sender ID</th>
                                             <th>Recipient</th>
                                             <th>Sender</th>
-                                            <th>Message</th>
+                                            <th style="max-width:200px;">Message</th>
                                             <th>Time Sent</th>
                                         </tr>
     </thead>
@@ -59,7 +59,7 @@
                             <td class="from_id" >{{{ $messages->from_id }}}</td>
                             <td class="recipient">{{{ $messages->recipient }}}</td>
                             <td class="sender">{{{ $messages->sender }}}</td>
-                            <td class="message">{{{ $messages->message }}}</td>
+                            <td class="message" style="max-width:200px;word-wrap: break-word;"><div id="messageDisplay">{{{ $messages->message }}}</div></td>
                             <td class="time_sent">{{{ $messages->time_sent }}}</td>                          
                         </tr>
                     @endforeach
@@ -116,6 +116,9 @@
 @section('page_js')
  
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.js"></script>
+  {{ HTML::script('js/src/jquery.shorten.js') }}
+
 {{ HTML::script('js/messages.js') }}
+
 
 @stop
