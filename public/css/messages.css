@@ -30,7 +30,12 @@
   border-right: 10px solid #ccc;
   margin: 5px 429px;
   padding: 0.5em 10px;
-background-image: -webkit-linear-gradient(bottom, #f2f2f2, #fff);
+  background-image: -webkit-linear-gradient(bottom, #f2f2f2, #fff);
+}
+#quoteRight p {
+  max-width: auto;
+  text-align: right;
+  word-wrap: break-word;  
 }
 
 th:hover{
