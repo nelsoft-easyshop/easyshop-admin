@@ -130,7 +130,17 @@
                     <span>View Search Keywords</span>
                 </a>
                 <p> View search keywords used by the users.</p>
-            </li>                                                  
+            </li> 
+           <li>
+                <a href='/messages'>
+                    <img src="{{{ asset('images/icon_category.png') }}}"/> 
+                    <span >Partner Messaging</span>
+                </a>
+                <p>Centralize all incoming messages from partner accounts that we're handling to a central account.</p>
+
+            
+            </li>               
+
             
         </ul>
     </div>
