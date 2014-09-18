@@ -7,7 +7,9 @@
 
 @section('page_header')
     @include('includes.header')
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.2/css/jquery.dataTables.css">
     <link type="text/css" href="{{{ asset('css/messages.css') }}}" rel="stylesheet"  media="screen"/>
+
 @stop
 
 @section('content')
@@ -24,7 +26,7 @@
                         <div id='messages_tabs'>
                             <ul class="nav nav-pills nav-stacked" style="max-width: 260px;">
                                 <li class="active">
-                                    <a id="unread" href="javascript:void(0)">
+                                    <a id="unread" href="/messages">
 
                                       Inbox
                                     </a>
@@ -36,30 +38,35 @@
                     <div class='col-md-10'>
                         <div id="mainContent">
                             <div class="table-responsive table-payment"> 
-                                <table class="table table-hover tableSection" >
-                                    <thead>
-                                        <tr>
-                                            <th data="recipient">Recipient</th>
-                                            <th data="sender">Sender</th>
-                                            <th data="message">Message</th>
-                                            <th data="time_sent">Time Sent</th>
+                                <table id="table_id" class="display">
+    <thead>
+                                        <tr id="heading">
+                                            <th>Message ID</th>
+                                            <th>Recipient ID</th>
+                                            <th>Sender ID</th>
+                                            <th>Recipient</th>
+                                            <th>Sender</th>
+                                            <th>Message</th>
+                                            <th>Time Sent</th>
                                         </tr>
-                                    </thead>
+    </thead>
+    <tbody >
 
-                                        <tbody id="messageList">
+                @foreach($list_of_messages as $messages)
+                        <tr id="testing">
+                            <td class="id" >{{{ $messages->id_msg }}}</td>
+                            <td class="to_id" >{{{ $messages->to_id }}}</td>
+                            <td class="from_id" >{{{ $messages->from_id }}}</td>
+                            <td class="recipient">{{{ $messages->recipient }}}</td>
+                            <td class="sender">{{{ $messages->sender }}}</td>
+                            <td class="message">{{{ $messages->message }}}</td>
+                            <td class="time_sent">{{{ $messages->time_sent }}}</td>                          
+                        </tr>
+                    @endforeach
 
-                                    @foreach($list_of_messages as $messages)
-                                            <tr class="messages_detail">
-                                                <td class="id" style="display:none;">{{{ $messages->id_msg }}}</td>
-                                                <td class="to_id" style="display:none;">{{{ $messages->to_id }}}</td>
-                                                <td class="from_id" style="display:none;">{{{ $messages->from_id }}}</td>
-                                                <td class="recipient">{{{ $messages->recipient }}}</td>
-                                                <td class="sender">{{{ $messages->sender }}}</td>
-                                                <td class="message">{{{ $messages->message }}}</td>
-                                                <td class="time_sent">{{{ $messages->time_sent }}}</td>                          
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
+    </tbody>
+</table>
+
                             </div>    
                         </div>                    
                     </div>                        
@@ -107,5 +114,8 @@
 @stop
 
 @section('page_js')
+ 
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.js"></script>
 {{ HTML::script('js/messages.js') }}
+
 @stop
