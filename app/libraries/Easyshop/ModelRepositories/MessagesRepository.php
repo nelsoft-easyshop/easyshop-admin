@@ -80,13 +80,6 @@ class MessagesRepository extends AbstractRepository
 
     }
 
-    public function updateMessage($id)
-    {
-        $message = Messages::find($id);
-        $message->opened = "1";
-        return $message->save();        
-    }
-
 
 
 }
