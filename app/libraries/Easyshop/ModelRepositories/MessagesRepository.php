@@ -30,7 +30,9 @@ class MessagesRepository extends AbstractRepository
                             ON a.`from_id` = b.`id_member` 
                           LEFT JOIN `es_member` AS c 
                             ON a.`to_id` = c.`id_member` 
-                          WHERE a.`to_id` = $ids"));
+                          WHERE a.`to_id` = $ids
+                          ORDER BY a.`time_sent` desc
+                          "));
         return $messages;
     }
   
