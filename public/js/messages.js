@@ -1,6 +1,10 @@
 (function ($) {
 
-    $(document.body).on('click','.messages_detail',function (e) {   
+    $("#table_id").DataTable({
+            "order": [6,'desc']
+        } );
+
+    $(document).on('click','tr:not(#heading)',function (e) {   
         loader.showPleaseWait();
         var $this = $(this);
         var messageid = $this.find('.id').html();
@@ -22,40 +26,29 @@
         });            
     });
 
-    $(document.body).on('click','#unread',function (e) { 
-        loader.showPleaseWait();        
-        $.ajax({
-            url: "getInbox",
-            type: 'post',
-            dataType: 'JSON',                      
-            success: function(result){
-                $("#mainContent").html(result.html);
-                loader.hidePleaseWait();            
-
-            }
-                
-        });  
-    }); 
-
     $(document.body).on('click','#submitMessage',function (e) { 
         var to_id = $("#to_idForm").val();
         var from_id = $("#from_idForm").val();
-        var message = $("#messageForm").val();
-        loader.showPleaseWait();        
-        $.ajax({
-            url: "sendMessage",
-            type: 'post',
-            data: {to_id:to_id, from_id:from_id, message:message},
-            dataType: 'JSON',                      
-            success: function(result){
-                var url = "refreshConversation/" + to_id + "/" + from_id;
-                $("#conversations").load(url);
-                $("#messageForm").val("");
-                loader.hidePleaseWait();                   
+        var message = $.trim($("#messageForm").val());
 
-            }
-                
-        });          
+        if(message != "") {
+            loader.showPleaseWait();        
+            $.ajax({
+                url: "sendMessage",
+                type: 'post',
+                data: {to_id:to_id, from_id:from_id, message:message},
+                dataType: 'JSON',                      
+                success: function(result){
+                    var url = "refreshConversation/" + to_id + "/" + from_id;
+                    $("#conversations").load(url);
+                    $("#messageForm").val("");
+                    loader.hidePleaseWait();                   
+
+                }
+                    
+            });             
+        }
+         
     }); 
 
     $(document.body).on('click','#refreshHistory',function (e) { 
