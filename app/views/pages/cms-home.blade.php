@@ -837,7 +837,7 @@
 @stop
 @section('page_js') 
 {{ HTML::script('js/src/sha1.js') }}
-{{ HTML::script('js/src/cms.js') }}
+{{ HTML::script('js/cms.js') }}
 {{ HTML::script('js/src/jquery.form.js') }}
 
 @stop
