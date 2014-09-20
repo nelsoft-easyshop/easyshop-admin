@@ -13,7 +13,6 @@ class MessagesRepository extends AbstractRepository
      */
     public function getAllMessages($ids)
     {
-
         $messages = DB::select(DB::raw("SELECT 
                           a.`id_msg`,
                           a.`to_id`,
@@ -30,9 +29,8 @@ class MessagesRepository extends AbstractRepository
                             ON a.`from_id` = b.`id_member` 
                           LEFT JOIN `es_member` AS c 
                             ON a.`to_id` = c.`id_member` 
-                          WHERE a.`to_id` = $ids
-                          ORDER BY a.`time_sent` desc
-                          "));
+                          WHERE a.`to_id` = :ids
+                          ORDER BY a.`time_sent` desc"), array("ids" => $ids));
         return $messages;
     }
   
@@ -58,9 +56,9 @@ class MessagesRepository extends AbstractRepository
                             ON a.`from_id` = b.`id_member` 
                           LEFT JOIN `es_member` AS c 
                             ON a.`to_id` = c.`id_member` 
-                        where (a.`to_id` = '$to_id' AND a.`from_id` = '$from_id') 
-                               OR (a.`to_id` = '$from_id' AND a.`from_id` = '$to_id')
-                        ORDER BY time_sent DESC "));
+                        where (a.`to_id` = :to_reciever AND a.`from_id` = :from_reciever) OR (a.`to_id` = :from_recipient AND a.`from_id` = :to_recipient)
+                        ORDER BY time_sent DESC "), array("to_reciever" => $to_id,"from_reciever" => $from_id, 
+                                                          "to_recipient" => $to_id,"from_recipient" => $from_id));
 
         return $messages;
     }
@@ -77,8 +75,8 @@ class MessagesRepository extends AbstractRepository
         $message->from_id = $from_id;
         $message->time_sent = Carbon::now();
         $message->message = $messages;
-
-        return $message->save();
+        $message->save();
+        return $messages;
 
     }
 
@@ -87,11 +85,12 @@ class MessagesRepository extends AbstractRepository
      *  @param int $id
      *  @return Entity
      */
-    public function updateMessage($id)
+    public function updateMessageAsRead($id)
     {
         $message = Messages::find($id);
         $message->opened = "1";
-        return $message->save();        
+        $message->save();        
+        return $message;
     }    
 
 
