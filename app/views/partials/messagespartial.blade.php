@@ -8,16 +8,16 @@
 
                 <div style="padding-top:5px;min-">
                     <blockquote  id="quoteLeft">    
-                        <p>{{$message->message}}</p>
-                        <footer>{{$message->sender}} <cite title="Source Title">{{$message->time_sent}} </cite></footer>
+                        <p>{{{$message->message}}}</p>
+                        <footer>{{{$message->sender}}} <cite title="Source Title">{{{$message->time_sent}}} </cite></footer>
                     </blockquote>
                 </div>
 
             @else
                 <div style="padding-top:5px;">
                     <blockquote class="blockquote-reverse" id="quoteRight">
-                        <p>{{$message->message}}</p>
-                        <footer>{{$message->sender}} <cite title="Source Title">{{$message->time_sent}} </cite></footer>
+                        <p>{{{$message->message}}}</p>
+                        <footer>{{{$message->sender}}} <cite title="Source Title">{{{$message->time_sent}}} </cite></footer>
                     </blockquote>    
                 </div>
             @endif
@@ -34,7 +34,7 @@
                         <input type="hidden" id="to_idForm" value="{{$posted['to_id']}}">
                         <input type="hidden" id="from_idForm" value="{{$posted['from_id']}}">
                         <label>User's Message:</label>                        
-                        <textarea class='form-control'  readonly="readonly">{{strip_tags($posted['message'])}}</textarea><br/>
+                        <textarea class='form-control'  readonly="readonly">{{{strip_tags($posted['message'])}}}</textarea><br/>
                         <label>Reply</label>
                         <textarea class='form-control' id="messageForm" rows="5" cols="5"></textarea>
                     </div>    
