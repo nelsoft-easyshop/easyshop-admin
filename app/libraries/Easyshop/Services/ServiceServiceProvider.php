@@ -59,6 +59,10 @@ class ServiceServiceProvider extends ServiceProvider
             return new RaffleManagerService();
         });        
 
+        $this->app->bind('MessagesService', function(){
+            return new MessagesService();
+        });         
+
     }
 }
 

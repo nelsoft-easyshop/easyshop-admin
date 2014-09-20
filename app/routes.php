@@ -44,7 +44,13 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('raffle', array('uses' => 'RaffleManagerController@showRaffle'));    
     Route::post('doRaffle', array('uses' => 'RaffleManagerController@doRaffle'));    
     Route::get('showRaffleList', array('uses' => 'RaffleManagerController@showRaffleList'));    
-    Route::post('deleteRaffle', array('uses' => 'RaffleManagerController@deleteRaffle'));    
+    Route::post('deleteRaffle', array('uses' => 'RaffleManagerController@deleteRaffle'));  
+
+    Route::get('messages', array('uses' => 'MessageController@showMessages'));    
+    Route::post('getmessage', array('uses' => 'MessageController@getConversation'));    
+    Route::post('getInbox', array('uses' => 'MessageController@getAllMessages'));    
+    Route::post('sendMessage', array('uses' => 'MessageController@sendMessage'));    
+    Route::get("refreshConversation/{to_id}/{from_id}", array('uses' => 'MessageController@refreshConversation'));    
 
     Route::get('searchkeywords', array('uses' => 'SearchKeyWordsController@showSearchKeyWords'));    
     Route::post('customsearchkeywords', array('uses' => 'SearchKeyWordsController@customSearch'));    

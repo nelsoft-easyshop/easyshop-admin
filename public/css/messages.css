@@ -1,0 +1,53 @@
+#messages_tabs, #mainContent {
+    margin-top:25px;
+
+}
+* {
+    font-size:inherit;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+    background-color: #f18200 !important;
+}
+
+
+
+
+#quoteLeft, #quoteRight{
+    font-size: 14px;
+    width:50%;
+}
+#quoteLeft  {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 5px 10px;
+  padding: 0.5em 10px;
+  background-image: -webkit-linear-gradient(bottom, #c7defe, #e7f1fe);
+
+}
+#quoteRight  {
+  background: #f9f9f9;
+  border-right: 10px solid #ccc;
+  margin: 5px 429px;
+  padding: 0.5em 10px;
+  background-image: -webkit-linear-gradient(bottom, #f2f2f2, #fff);
+}
+#quoteRight p{
+  max-width: auto;
+  text-align: right;
+  word-wrap: break-word;  
+}
+ #quoteLeft p {
+  max-width: auto;
+  text-align: left;
+  word-wrap: break-word;  
+}
+
+th:hover{
+  cursor: pointer;
+}
+
+
+
+
+
