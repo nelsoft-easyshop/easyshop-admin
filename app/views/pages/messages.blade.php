@@ -7,7 +7,7 @@
 
 @section('page_header')
     @include('includes.header')
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.2/css/jquery.dataTables.css">
+    <link type="text/css" href="{{{ asset('css/src/jquery.dataTables.css') }}}" rel="stylesheet"  media="screen"/>
     <link type="text/css" href="{{{ asset('css/messages.css') }}}" rel="stylesheet"  media="screen"/>
 
 @stop
@@ -120,9 +120,8 @@
 
 @section('page_js')
  
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.js"></script>
-  {{ HTML::script('js/src/jquery.shorten.js') }}
-
+{{ HTML::script('js/src/jquery.dataTables.js') }}
+{{ HTML::script('js/src/jquery.shorten.js') }}
 {{ HTML::script('js/messages.js') }}
 
 
