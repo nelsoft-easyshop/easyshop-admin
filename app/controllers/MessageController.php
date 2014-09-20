@@ -1,18 +1,18 @@
 <?php
 
-use Easyshop\Services\MessagesService as MessagesService;
+use Easyshop\Services\XMLContentGetterService as XMLService;
 
 class MessageController extends BaseController
 {
 
     /**
-     *  Constructor declaration for MessagesService and MessagesRepostory 
+     *  Constructor declaration for XMLService
      */
-    protected $MessagesService;
+    protected $XMLService;
 
-    public function __construct(MessagesService $MessagesService) 
+    public function __construct(XMLService $XMLService) 
     {   
-        $this->MessagesService = $MessagesService;
+        $this->XMLService = $XMLService;
         $this->messagesRepository = App::make('MessagesRepository');
     }
 
@@ -23,7 +23,7 @@ class MessageController extends BaseController
      */
     public function showMessages()
     {
-        $partnersIds = $this->MessagesService->getPartnersId();
+        $partnersIds = $this->getPartnersId();
         foreach ($partnersIds as $ids) {
             $messages[] = $this->messagesRepository->getAllMessages($ids);
         }        
@@ -33,7 +33,6 @@ class MessageController extends BaseController
 
     }
 
-
     /**
      *  Retrieves conversation of a partner and a customer
      *
@@ -42,37 +41,16 @@ class MessageController extends BaseController
     public function getConversation()
     {
         $messages = $this->messagesRepository->getConversation(Input::get("to_id"),Input::get("from_id"));
-        $this->messagesRepository->updateMessage(Input::get("messageid"));        
-        $partnersIds = $this->MessagesService->getPartnersId();
+        $this->messagesRepository->updateMessageAsRead(Input::get("messageid"));        
 
         $html =  View::make('partials.messagespartial')
                     ->with('data',$messages)
-                    ->with('partnerIds',$partnersIds)
+                    ->with('partnerIds',$this->getPartnersId())
                     ->with('posted',Input::all())                    
                     ->render();
 
         return Response::json(array('html' => $html));   
-    } 
-
-    /**
-     *  Returns messages for the partial views
-     *
-     *  @return json
-     */
-    public function getAllMessages()
-    {
-        $partnersIds = $this->MessagesService->getPartnersId();
-
-        foreach ($partnersIds as $ids) {
-            $messages[] = $this->messagesRepository->getAllMessages($ids);
-        }        
-        $html = View::make('partials.messageslistpartial')
-                    ->with('list_of_messages',array_flatten($messages))
-                    ->render();
-
-        return Response::json(array('html' => $html));                       
-
-    }    
+    }  
 
     /**
      *  Insert messages to the database
@@ -83,7 +61,7 @@ class MessageController extends BaseController
     {
         if(Input::has("message")) {
             $this->messagesRepository->insertMessages(Input::get('to_id'),
-                Input::get('from_id'), htmlspecialchars(Input::get('message')));  
+                Input::get('from_id'), Input::get('message'));  
         }
 
         return Response::json(array('success' => 'success'));                                           
@@ -97,12 +75,24 @@ class MessageController extends BaseController
     public function refreshConversation($toid, $fromid)
     {
         $messages = $this->messagesRepository->getConversation($toid,$fromid);
-        $partnersIds = $this->MessagesService->getPartnersId();
 
         return View::make('partials.conversations')
                     ->with('data',$messages)
-                    ->with('partnerIds',$partnersIds);
+                    ->with('partnerIds',$this->getPartnersId());
     } 
+
+    /**
+     *  Retrieves Partners ID
+     *
+     *  @return array
+     */
+    public function getPartnersId()
+    {
+        $map = simplexml_load_string(trim($this->XMLService->GetXmlContentFiles()));
+        $target = current($map->xpath("/map/select[@id='partners-member-id']")); 
+        return array_map('trim', explode(",",$target));
+    }
+
     
 }
 
