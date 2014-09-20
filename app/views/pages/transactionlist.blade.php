@@ -48,9 +48,11 @@
                         <th>Buyer</th>
                         <th>Status</th>
                         <th>Date of Transaction</th>
+                        <th>Type of Payment Method</th>
                      </tr>
                 </thead>
-                @foreach($orders as $order)
+
+                @foreach($orders as $order) 
                     <tr>
                         <td class='order-id'>{{{ $order->id_order }}}</td>
                         <td>{{{ $order->invoice_no }}}</td>
@@ -60,6 +62,7 @@
                         <td>{{{ $order->orderStatus->name }}}</td>
 
                         <td>{{{ $order->dateadded }}}</td>
+                        <td>{{{ $order->name }}}</td>
                     </tr>
                 @endforeach
             </table>
