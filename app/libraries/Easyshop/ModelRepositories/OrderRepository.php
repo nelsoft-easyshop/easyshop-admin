@@ -31,7 +31,7 @@ class OrderRepository extends AbstractRepository
     {
         $statusDraft = OrderStatus::STATUS_DRAFT;
         $query = Order::where('order_status', '!=', $statusDraft);
-        
+        $query->leftJoin('es_payment_method','es_order.payment_method_id','=','es_payment_method.id_payment_method');
         if($dateFrom){
             $query->where('dateadded', '>=', $dateFrom);
         }
