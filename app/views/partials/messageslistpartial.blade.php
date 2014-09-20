@@ -1,3 +1,4 @@
+                            
                             <div class="table-responsive table-payment"> 
                                 <table class="table table-hover">
                                     <thead>
@@ -10,13 +11,13 @@
                                     </thead>
                                     @foreach($list_of_messages as $messages)
                                             <tr class="messages_detail">
-                                                <td class="id" style="display:none;">{{ $messages->id_msg }}</td>        
-                                                <td class="to_id" style="display:none;">{{ $messages->to_id }}</td>
-                                                <td class="from_id" style="display:none;">{{ $messages->from_id }}</td>
-                                                <td class="recipient">{{ $messages->recipient }}</td>
-                                                <td class="sender">{{ $messages->sender }}</td>
-                                                <td class="message">{{ $messages->message }}</td>
-                                                <td class="time_sent">{{ $messages->time_sent }}</td>                          
+                                                <td class="id" style="display:none;">{{{ $messages->id_msg }}}</td>        
+                                                <td class="to_id" style="display:none;">{{{ $messages->to_id }}}</td>
+                                                <td class="from_id" style="display:none;">{{{ $messages->from_id }}}</td>
+                                                <td class="recipient">{{{ $messages->recipient }}}</td>
+                                                <td class="sender">{{{ $messages->sender }}}</td>
+                                                <td class="message">{{{ $messages->message }}}</td>
+                                                <td class="time_sent">{{{ $messages->time_sent }}}</td>                          
                                             </tr>
                                         @endforeach
                                 </table>
