@@ -36,6 +36,7 @@ class SearchKeyWordsRepository
                          ->orderBy('hits','desc')
                          ->where('keywords', 'LIKE', "%$keyword%")
                          ->paginate($row);
+        $keywords->setBaseUrl("searchkeywords");
         return $keywords;          
     }
 
