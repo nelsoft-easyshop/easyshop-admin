@@ -1,6 +1,8 @@
 (function ($) {
 
-
+    $("form").submit({
+        return false;
+    });
     $( "#searchBox" ).keyup(function() {
         var keyword = $(this).val();
         var order = $("#order").val();

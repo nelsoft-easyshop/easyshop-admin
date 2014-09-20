@@ -7,22 +7,22 @@
         register(data);
     });
 
-    $('.btn-toggle').click(function() {
+    $("#rolesDiv").on('click','#toggleMe',function () {         
         var adminId = $(this).data('admin');
-        $(this).find('.btn').toggleClass('active');  
+
+        $(this).closest('.btn-toggle').find('.btn').toggleClass('active');  
         
-        if ($(this).find('.btn-primary').size()>0) {
-            $(this).find('.btn').toggleClass('btn-primary');
+        if ($(this).closest('.btn-toggle').find('.btn-primary').size()>0) {
+           $(this).closest('.btn-toggle').find('.btn').toggleClass('btn-primary');
         }
-        var text = $(this).find('.active').text();
+        var text = $(this).closest('.btn-toggle').find('.active').text();
         var IsActive = text == "Enabled" ? 1 : 0;
 
-        data = {_method: 'put', adminid:adminId, activation:IsActive};
         $.ajax({
             type: 'post',
             dataType: 'JSON', 
             url: "adminactivation",
-            data:data,
+            data:{_method: 'put', adminid:adminId, activation:IsActive},
             success: function(json) {
                 if(json[0] == true) {
                      loader.hidePleaseWait();                     
@@ -33,48 +33,7 @@
             }
         });
         
-    });    
-
-    function register(data) {
-        var errors;
-        $("#loading").modal('show');
-
-        $.ajax({
-            type: 'post',
-            dataType: 'JSON', 
-            url: "/register",
-            data:data,
-            success: function(json) {
-                if(json == "success") {
-                    $("#success").modal('show');  
-                    $("#loading").modal('hide');
-                        
-                }
-                else {
-                    if((json.errors.username) != null || (json.errors.password) != null || (json.errors.fullname) != null) {
-
-                        $.each(json.errors, function (i, v) {
-                            if(json.errors[i] != "undefined") {
-                                errors += "<h4>" + json.errors[i] + "</h4>";
-                            }
-                        });
-                        errors = errors.replace("undefined","");
-                        $("#changeTextError").html(errors);
-                        $("#error").modal('show');  
-                        $("#loading").modal('hide');
-                   
-                    }
-                }
-
-                $("#rolesDiv").load('managerole'); 
-            },
-            error: function(e) {
-                 $("#error").modal('show');  
-                 $("#loading").modal('hide');
-            }
-        });
-    }
-
+    });  
 
     $("#rolesDiv").on('click','#rolesLink',function (e) { 
 
@@ -103,5 +62,45 @@
         }); 
 
     });    
+
+    function register(data) {
+        var errors;
+        $("#loading").modal('show');
+
+        $.ajax({
+            type: 'post',
+            dataType: 'JSON', 
+            url: "/register",
+            data:data,
+            success: function(json) {
+                if(json == "success") {
+                    $("#success").modal('show');  
+                    $("#loading").modal('hide');
+                        
+                }
+                else {
+                    if((json.errors.username) != null || (json.errors.password) != null || (json.errors.fullname) != null) {
+
+                        $.each(json.errors, function (i, v) {
+                            if(json.errors[i] != "undefined") {
+                                errors += "<br/><h4>" + json.errors[i] + "</h4>";
+                            }
+                        });
+                        errors = errors.replace("undefined","");
+                        $("#changeTextError").html(errors);
+                        $("#error").modal('show');  
+                        $("#loading").modal('hide');
+                   
+                    }
+                }
+
+                $("#rolesDiv").load('managerole'); 
+            },
+            error: function(e) {
+                 $("#error").modal('show');  
+                 $("#loading").modal('hide');
+            }
+        });
+    }    
 
 })(jQuery);
