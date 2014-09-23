@@ -98,7 +98,12 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->bind('MessagesRepository', function($app){  
             return new MessagesRepository();
-        });            
+        });   
+
+        $this->app->bind('ProductCSVRepository', function($app){  
+            return new ProductCSVRepository();
+        });          
+                 
 
         
 
