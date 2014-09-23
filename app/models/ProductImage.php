@@ -15,11 +15,7 @@ class ProductImage extends Eloquent {
     */
 
     protected $primaryKey = 'id_product_image';
-
-    public function productimage()
-    {
-        return $thi->belongs_to('Product');
-    }
+    public $timestamps = false;    
 
 
 }
