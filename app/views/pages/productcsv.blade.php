@@ -62,7 +62,6 @@
 @section('page_js')
  
 {{ HTML::script('js/productcsv.js') }}
-{{ HTML::script('js/src/jquery.dataTables.js') }}
 {{ HTML::script('js/src/fileinput.js') }}
 {{ HTML::script('js/src/jquery.form.js') }}
 
