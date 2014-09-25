@@ -16,13 +16,11 @@ class ProductCSVController extends BaseController
     }
 
     /**
-     * Retrieves the data from the csv file
-     * @return VIEW
+     * Checks if all of the uploaded files satisfies the MIME type (csv/excel)
+     * @return JSON
      */ 
     public function doUpload()
     {
-        $productCSVRepo = App::make('ProductCSVRepository');        
-        $excel = App::make('excel');        
         if (Input::hasFile('image')) {
             Input::flash();
             $MIME = array('xlsx', 'xls', 'csv');            
@@ -31,41 +29,55 @@ class ProductCSVController extends BaseController
 
                     $extension = $file->getClientOriginalExtension();
                     if(!in_array($extension, $MIME)) {
-
-                        $errors = new MessageBag(['noinput' => ['Upload .xlsx, .xls and .csv file types only']]);             
+                        $filename        = str_random(12) . date("ymdhs") . '_' . $file->getClientOriginalName(); 
                         return false;
-
                     }
                     else {
                         $destinationPath = public_path().'/misc/';
                         $filename        = str_random(12) . date("ymdhs") . '_' . $file->getClientOriginalName();
-                        $uploadSuccess   = $file->move($destinationPath, $filename);                        
-                        $reader = $excel->load("./public/misc/$filename"); 
-                        $result = $productCSVRepo->checkData($reader->get());
-
-                        $data[]  = $result;
+                        $uploadSuccess   = $file->move($destinationPath, $filename);           
+                        $test[] = $filename;
                     }
 
-                    if (File::exists($destinationPath.$filename)) {
-                        File::delete($destinationPath.$filename);
-                    }
             }
-
-            if($data[0]!= "error") {
-                if(!array_key_exists("existing", $data[0])){
-                    return Response::json(array('html' => $data));    
-                }
-                else {
-                    return Response::json(array('existing' => $data));  
-                }
-            }
-            else {
-                return false;
-            }            
+            return $this->insertData($destinationPath, $test);
         }
         else {
-                return false;
+            return false;
         } 
+    }
+
+    /**
+     * Retrieves the data from the csv file
+     * @return JSON
+     */ 
+    public function insertData($destinationPath,$files)
+    {
+        $productCSVRepo = App::make('ProductCSVRepository');        
+        $excel = App::make('excel');           
+        foreach($files as $file) {
+
+                    $reader = $excel->load("./public/misc/$file"); 
+                    $result = $productCSVRepo->checkData($reader->get());
+                    $data[]  = $result;
+                    if (File::exists($destinationPath.$file)) {
+                        File::delete($destinationPath.$file);
+                    }                    
+        }
+
+        if($data[0]!= "error") {
+            if(!array_key_exists("existing", $data[0])){
+                return Response::json(array('html' => $data));    
+            }
+            else {
+                return Response::json(array('existing' => $data));  
+            }
+        }
+        else {
+            return false;
+        }            
+        
+
     }
 
 }
