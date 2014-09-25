@@ -56,21 +56,15 @@ class ProductCSVController extends BaseController
                         $uploadSuccess   = $file->move($destinationPath, $filename);                        
                         $reader = $excel->load("./public/misc/$filename"); 
                         $result = $productCSVRepo->inserData($reader->get());
-/*                        $html =  View::make('partials.productcsv')
-                                    ->with('result', $reader->get())
-                                    ->render();*/
 
-                        return Response::json(array('html' => $result));                             
-
+                        $data[]  = $result;
+                          
                     }                    
             }
 
             if($data[0]!= "error") {
 
-                $errors = new MessageBag(['noinput' => ['Success!']]);       
-                return View::make('pages.productcsv')
-                    ->with("result", array_flatten($data))   
-                    ->withErrors($errors);
+                return Response::json(array('html' => $data));  
             }
             else {
 
