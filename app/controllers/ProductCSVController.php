@@ -1,21 +1,10 @@
 <?php
 use Illuminate\Support\MessageBag;
 use Maatwebsite\Excel\Facades\Excel;
-use Easyshop\Services\XMLContentGetterService as XMLService;
+
 
 class ProductCSVController extends BaseController
 {
-    /**
-     *  Constructor declaration for XMLService  
-     *
-     *  
-     */
-    protected $XMLService;
-
-    public function __construct(XMLService $XMLService) 
-    {   
-        $this->XMLService = $XMLService;
-    }
 
     /**
      * Render CSV Upload interface
@@ -23,8 +12,7 @@ class ProductCSVController extends BaseController
      */    
     public function showCSVupload()
     {
-        return View::make("pages.productcsv")
-                ->with("serviceLink",$this->XMLService->GetEasyShopLink());
+        return View::make("pages.productcsv");
     }
 
     /**
@@ -45,9 +33,7 @@ class ProductCSVController extends BaseController
                     if(!in_array($extension, $MIME)) {
 
                         $errors = new MessageBag(['noinput' => ['Upload .xlsx, .xls and .csv file types only']]);             
-                        return View::make('pages.productcsv')
-                            ->withErrors($errors)
-                            ->with("serviceLink",$this->XMLService->GetEasyShopLink());
+                        return false;
 
                     }
                     else {
