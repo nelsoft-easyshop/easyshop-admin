@@ -110,7 +110,7 @@
                 error: function(jqXHR, textStatus, errorThrown) 
                 {
                     loader.hidePleaseWait();
-
+                    showErrorModal("Error Occured. Kindly check for missing data in your excel files and duplicated entries."); 
                     $( "input#productIds" ).remove();                                          
                 }
             });
