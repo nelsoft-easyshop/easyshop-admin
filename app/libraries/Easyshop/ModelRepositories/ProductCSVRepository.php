@@ -7,22 +7,53 @@ class ProductCSVRepository extends AbstractRepository
 {    
 
     /**
+     * Check first the values of the excel if the product names and slugs do not exist in the database
+     * @param object $values
+     * @return array
+     */
+    public function checkData($values)
+    {
+        $existing = array();
+        foreach($values as $value) {
+            $checkIfProductExist = Product::where("name","=",$value->product_name)
+                                            ->orWhere("slug","=",$value->slug)->first();
+
+            if($checkIfProductExist){
+                $existing[] = $checkIfProductExist->name;
+            }
+            else {
+                continue;
+            }
+        }       
+
+        if(empty($existing)) {
+            $data = $this->insertData($values);
+            return $data;
+        }
+        else {
+            $array = array("existing" => $existing);
+            return $array;
+        }
+    }
+
+    /**
      * Insert data to the database from the passed csv values
      * @param object $values
      * @return array
      */ 
-    public function inserData($values)
+    public function insertData($values)
     {
         $images = array();
         foreach($values as $value) {
-            try{
-                $category = Category::where("name",$value->category_name)->first();
-                $brand = Brand::where("name",$value->brand_name)->first();
-                $style = Style::where("name",$value->style)->first();
-                $member = Member::where("username",$value->seller)->first();
 
-                $product = new Product;
-           
+            $category = Category::where("name",$value->category_name)->first();
+            $brand = Brand::where("name",$value->brand_name)->first();
+            $style = Style::where("name",$value->style)->first();
+            $member = Member::where("username",$value->seller)->first();
+
+            $product = new Product;
+
+            try{
                 $product->name = $value->product_name;
                 $product->brief = $value->brief_description;
                 $product->description = $value->product_description;
@@ -59,17 +90,17 @@ class ProductCSVRepository extends AbstractRepository
                 $attrDetail->product_img_id = $productImage->id_product_image;
                 $attrDetail->save();                       
 
-                $images[] = $product->id_product;
-
-            }               
+                $images[] = $product->id_product; 
+            } 
             catch(\Exception $e) {
-                return $images[] = "error";
+                    return $images[] = "error";
             }
-        }
-
+        }               
         return $images;
-    }   
+    }
 
-}
+}   
+
+
 
 
