@@ -25,7 +25,7 @@
                     {{ Form::file('image[]', ['multiple' => true, 'class' => 'file ', 'id' => 'uploadCSV','data-preview-file-type' => 'any']) }}
                 </div>
             {{ Form::close() }}
-            <a href="{{{ asset('misc/CSV_Upload.xlsx') }}}" class="btn btn-default btn-sm" id="download-btn"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Download Template</a>
+            <a href="{{{ asset('misc/CSV_Upload.xlsx') }}}" class="btn btn-default btn-sm" id="download-btn"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Download CSV Template</a>
         </div>
         <div class='help-block text-center disp_error'><h5>{{ $errors->first('noinput') }}</h5></div>
         @if(isset($queryError))
