@@ -41,10 +41,9 @@ class ProductCSVController extends BaseController
                         $filename        = str_random(12) . date("ymdhs") . '_' . $file->getClientOriginalName();
                         $uploadSuccess   = $file->move($destinationPath, $filename);                        
                         $reader = $excel->load("./public/misc/$filename"); 
-                        $result = $productCSVRepo->inserData($reader->get());
+                        $result = $productCSVRepo->checkData($reader->get());
 
                         $data[]  = $result;
-                          
                     }
 
                     if (File::exists($destinationPath.$filename)) {
@@ -53,8 +52,12 @@ class ProductCSVController extends BaseController
             }
 
             if($data[0]!= "error") {
-
-                return Response::json(array('html' => $data));  
+                if(!array_key_exists("existing", $data[0])){
+                    return Response::json(array('html' => $data));    
+                }
+                else {
+                    return Response::json(array('existing' => $data));  
+                }
             }
             else {
                 return false;
