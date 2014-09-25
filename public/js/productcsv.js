@@ -42,7 +42,7 @@
             }        
             else{
                 loader.hidePleaseWait();
-                showErrorModal("Products " + json.existing[0].existing + " already exists in the database<br/>**product names and slugs must be unique");
+                showErrorModal("Product Name/Slug Name: " + json.existing[0].existing + " already exists in the database<br/>**product names and slugs must be unique");
 
             }
 
