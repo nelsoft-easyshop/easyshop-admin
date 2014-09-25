@@ -34,16 +34,14 @@
 
 
             <div class='registration_form' id="imageforms">
-                {{ Form::open(array('url' => "https://easyshop.ph.local/webservice/productimages",'enctype'=>'multipart/form-data','id'=>'uploadphoto','method'=>'get')) }}
-                    <legend>Upload Product Images</legend>
-                        <div class="form-group">
-                            {{ Form::file('image[]', ['multiple' => true, 'class' => 'file file-loading', 'id' => 'uploadImageOnly','data-preview-file-type' => 'any','accept' => "image/*"]) }}
-                        </div>
+    {{ Form::open(array('url' => "#",'enctype'=>'multipart/form-data','id'=>'uploadphoto','method'=>'post')) }}
+                     <legend>Upload Product Images</legend>
+                    <div class="form-group">
+                        {{ Form::file('image[]', ['multiple' => true, 'class' => 'file file-loading', 'id' => 'uploadImageOnly','data-preview-file-type' => 'any','accept' => "image/*"]) }}
+                    </div>
                 {{ Form::close() }}
             </div>        
-
-
-        <div class="modal fade" id="success" >
+         <div class="modal fade" id="success" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body" style='text-align:center;'>
@@ -53,6 +51,16 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="customerror" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body" style='text-align:center;'>
+                        <img src="{{{ asset('images/img_alert.png') }}}">
+                        <h3 id="errorTexts">Product slug does not exist</h3>        
+                    </div>
+                </div>
+            </div>
+        </div>           
 </div>
 
 @stop
