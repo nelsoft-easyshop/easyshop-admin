@@ -43,7 +43,7 @@ class ProductCSVController extends BaseController
             return $this->insertData($destinationPath, $test);
         }
         else {
-            return false;
+            return Response::json(array('error' => "Error in CSV")); 
         } 
     }
 
@@ -74,7 +74,7 @@ class ProductCSVController extends BaseController
             }
         }
         else {
-            return false;
+            return Response::json(array('error' => "Error in CSV")); 
         }            
         
 
