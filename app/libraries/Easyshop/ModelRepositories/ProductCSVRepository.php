@@ -7,36 +7,6 @@ class ProductCSVRepository extends AbstractRepository
 {    
 
     /**
-     * Check first the values of the excel if the product names and slugs do not exist in the database
-     * @param object $values
-     * @return array
-     */
-    public function checkData($values)
-    {
-        $existing = array();
-        foreach($values as $value) {
-            $checkIfProductExist = Product::where("name","=",$value->product_name)
-                                            ->orWhere("slug","=",$value->slug)->first();
-
-            if($checkIfProductExist){
-                $existing[] = $checkIfProductExist->name;
-            }
-            else {
-                continue;
-            }
-        }       
-
-        if(empty($existing)) {
-            $data = $this->insertData($values);
-            return $data;
-        }
-        else {
-            $array = array("existing" => $existing);
-            return $array;
-        }
-    }
-
-    /**
      * Insert data to the database from the passed csv values
      * @param object $values
      * @return array
@@ -52,7 +22,11 @@ class ProductCSVRepository extends AbstractRepository
             $member = Member::where("username",$value->seller)->first();
 
             $product = new Product;
-
+            $checkIfProductExist = Product::where("name","=",$value->product_name)
+                                            ->orWhere("slug","=",$value->slug)->first();
+            if($checkIfProductExist){
+                return array("existing" => $checkIfProductExist->name);
+            }                                           
             try{
                 $product->name = $value->product_name;
                 $product->brief = $value->brief_description;
