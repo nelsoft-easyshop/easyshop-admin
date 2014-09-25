@@ -1,29 +1,71 @@
-$(document).ready(function () {
-    var success = getParameterByName('success');
-    if(success == 1){
-        $("#success").modal("show");
-    }
+(function () {
 
     $("#uploadImageOnly").fileinput({
         previewFileType: ['image'],
-        
+        'showUpload':true,
     });
+    $('#success, #customerror').bind('hidden.bs.modal', function () {
+            window.location.href = location.href;  
+    })  
+
+
+    $(document.body).delegate('#uploadphoto', 'submit', function(event) {
+        loader.showPleaseWait();
+        if($("#uploadImageOnly").val() == "")   {
+            loader.hidePleaseWait();
+
+            showErrorModal("Please select a file to upload");
+            $("#success").css("display","none");
+        }
+        event.preventDefault();
+
+     
+    });
+
     $('#uploadData').ajaxForm({
         url: 'productcsv',
         type: 'post', 
         dataType: 'json',            
         success: function(json) { 
-        
-            $.each(json.html, function (i, v) {
-                $("#sendToWebservice").append('<input type="text" name="product[]" class = "removeme" id="productIds" value="' + json.html[i] +'"/>');                
+        $.each(json.html , function( index, obj ) {
+            $.each(obj, function( key, value ) {
+                $("#sendToWebservice").append('<input type="hidden" name="product[]" class = "removeme" id="productIds" value="' + value +'"/>');                
             });
+        });            
+
             submitToWebService();
         },
         error: function(e) {
-            alert("Error CSV");
+            showErrorModal("Error in CSV File");                                        
+            $( "input#productIds" ).remove();
             loader.hidePleaseWait();             
         }
     }); 
+    
+    $("#uploadphoto").ajaxForm({
+        url: "https://easyshop.ph.local/webservice/synccsvImage",
+        type: 'GET', 
+        dataType: 'jsonp',
+        async: false,
+        jsonpCallback: 'jsonCallback',
+        contentType: "application/json",
+        dataType: 'jsonp',
+        success: function(json) {
+            loader.hidePleaseWait();             
+            $("#success").modal("show");   
+        },
+        error: function(e) {
+            loader.hidePleaseWait();             
+            $("#success").modal("show");
+        }
+    }); 
+
+    $(document.body).delegate('#uploadData', 'submit', function(event) {
+        loader.showPleaseWait();   
+        event.preventDefault();
+
+    });
+
 
     function submitToWebService(){
 
@@ -42,55 +84,36 @@ $(document).ready(function () {
                 contentType: "application/json",
                 success:function(data, textStatus, jqXHR) 
                 {
-
                     loader.hidePleaseWait();  
-                    $( "input#productIds" ).remove();
-                    //alert(data.sites[0]["success"]);
+                    if(data.sites[0].success != "success") {
+                        showErrorModal(data.sites[0].success);                                     
+                        $( "input#productIds" ).remove();
+                    }
+                    else {
+                        $("#success").modal('show');                                         
+                    }
+
+
                 },
                 error: function(jqXHR, textStatus, errorThrown) 
                 {
-                    loader.hidePleaseWait();                      
-                    //alert("error");
+                    loader.hidePleaseWait();
+
+                    $( "input#productIds" ).remove();                                          
                 }
             });
 
 
         });
          
-        $("#sendToWebservice").submit(); //Submit  the FORM
+        $("#sendToWebservice").submit(); 
         $("#sendToWebservice").unbind();
     }
 
-    $(document).delegate('#uploadData', 'submit', function(event) {
-        loader.showPleaseWait();   
-        event.preventDefault();
-
-    });
-
-
-/*
-    $(document).delegate('#uploadphoto', 'submit', function(event) {
-        loader.showPleaseWait();   
-        event.preventDefault();
-
-    });
-
-    $("#uploadphoto").ajaxForm({
-        url: "https://easyshop.ph.local/webservice/productimages",
-        type: 'GET', 
-        dataType: 'jsonp',
-        async: false,
-        jsonpCallback: 'jsonCallback',
-        contentType: "application/json",
-        dataType: 'jsonp',
-        success: function(json) {
-            window.location.href = location.href + "?success=1";                     
-        },
-        error: function(e) {
-            window.location.href = location.href + "?success=1";     
-
+    function showErrorModal(messages) {
+            $("#success").modal('hide');  
+            $("#errorTexts").html(messages); 
+            $("#customerror").modal('show');  
         }
-    }); 
-    */
-    
-}); 
+
+})(jQuery);
