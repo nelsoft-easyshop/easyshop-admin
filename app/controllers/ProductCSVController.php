@@ -59,7 +59,11 @@ class ProductCSVController extends BaseController
 
                         $data[]  = $result;
                           
-                    }                    
+                    }
+
+                    if (File::exists($destinationPath.$filename)) {
+                        File::delete($destinationPath.$filename);
+                    }
             }
 
             if($data[0]!= "error") {
@@ -67,17 +71,11 @@ class ProductCSVController extends BaseController
                 return Response::json(array('html' => $data));  
             }
             else {
-
-                return View::make('pages.productcsv')
-                    ->with("queryError",$data); 
+                return false;
             }            
         }
         else {
-            Input::flash();
-            $errors = new MessageBag(['noinput' => ['Nothing was selected']]);             
-            return View::make('pages.productcsv')
-                ->with("serviceLink",$this->XMLService->GetEasyShopLink())
-                ->withErrors($errors);
+                return false;
         } 
     }
 
