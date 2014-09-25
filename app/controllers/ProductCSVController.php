@@ -30,7 +30,7 @@ class ProductCSVController extends BaseController
                     $extension = $file->getClientOriginalExtension();
                     if(!in_array($extension, $MIME)) {
                         $filename        = str_random(12) . date("ymdhs") . '_' . $file->getClientOriginalName(); 
-                        return false;
+                        return Response::json(array('error' => "Error in CSV")); 
                     }
                     else {
                         $destinationPath = public_path().'/misc/';
