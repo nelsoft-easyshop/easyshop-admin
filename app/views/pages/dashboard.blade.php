@@ -139,7 +139,7 @@
                 <p>Centralize all incoming messages from partner accounts that we're handling to a central account.</p>
             </li> 
             <li>
-                <a href='/users'>
+                <a href='/productcsv'>
                     <img src="{{{ asset('images/icon_people.png') }}}"/> 
                     <span >Product CSV Upload</span>
                 </a>
