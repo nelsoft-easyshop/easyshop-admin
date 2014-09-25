@@ -46,7 +46,7 @@ class ProductCSVRepository extends AbstractRepository
            
                 $productImage = new ProductImage;
                 $productImage->product_image_path = "assets/product/".$value->product_image_file;
-                $extension = substr($value->option_image, strpos($value->product_image_file, "."));
+                $extension = substr($value->product_image_file, strpos($value->product_image_file, ".") + 1);
                 $productImage->product_image_type = $extension;
                 $productImage->product_id = $product->id_product;
                 $productImage->is_primary = "1";
@@ -69,6 +69,7 @@ class ProductCSVRepository extends AbstractRepository
 
         return $images;
     }   
+
 }
 
 
