@@ -56,7 +56,7 @@
                 <div class="modal-content">
                     <div class="modal-body" style='text-align:center;'>
                         <img src="{{{ asset('images/img_alert.png') }}}">
-                        <h3 id="errorTexts">Product slug does not exist</h3>        
+                        <h4 id="errorTexts">Product slug does not exist</h4>        
                     </div>
                 </div>
             </div>
