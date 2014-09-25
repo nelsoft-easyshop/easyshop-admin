@@ -8,7 +8,6 @@
             window.location.href = location.href;  
     })  
 
-
     $(document.body).delegate('#uploadphoto', 'submit', function(event) {
         loader.showPleaseWait();
         if($("#uploadImageOnly").val() == "")   {
@@ -27,13 +26,23 @@
         type: 'post', 
         dataType: 'json',            
         success: function(json) { 
-        $.each(json.html , function( index, obj ) {
-            $.each(obj, function( key, value ) {
-                $("#sendToWebservice").append('<input type="hidden" name="product[]" class = "removeme" id="productIds" value="' + value +'"/>');                
-            });
-        });            
 
+        if(json.html){    
+            $.each(json.html , function( index, obj ) {
+                $.each(obj, function( key, value ) {
+                    $("#sendToWebservice").append('<input type="hidden" name="product[]" class = "removeme" id="productIds" value="' + value +'"/>');                
+                });
+            });     
             submitToWebService();
+        }
+        else {
+            loader.hidePleaseWait();
+            showErrorModal("Products " + json.existing[0].existing + " already exists in the database<br/>**product names and slugs must be unique");
+
+        }
+        
+
+            //submitToWebService();
         },
         error: function(e) {
             showErrorModal("Error in CSV File");                                        
