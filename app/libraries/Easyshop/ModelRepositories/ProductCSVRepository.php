@@ -25,7 +25,7 @@ class ProductCSVRepository extends AbstractRepository
             $checkIfProductExist = Product::where("name","=",$value->product_name)
                                             ->orWhere("slug","=",$value->slug)->first();
             if($checkIfProductExist){
-                return array("existing" => $checkIfProductExist->name);
+                return array("existing" => $checkIfProductExist->name."/".$checkIfProductExist->slug);
             }                                           
             try{
                 $product->name = $value->product_name;
