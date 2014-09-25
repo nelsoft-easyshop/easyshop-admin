@@ -131,15 +131,21 @@
                 </a>
                 <p> View search keywords used by the users.</p>
             </li> 
-           <li>
+            <li>
                 <a href='/messages'>
                     <img src="{{{ asset('images/icon_category.png') }}}"/> 
                     <span >Partner Messaging</span>
                 </a>
                 <p>Centralize all incoming messages from partner accounts that we're handling to a central account.</p>
-
+            </li> 
+            <li>
+                <a href='/users'>
+                    <img src="{{{ asset('images/icon_people.png') }}}"/> 
+                    <span >Product CSV Upload</span>
+                </a>
+                <p> Enables the administrator to upload multiple product images and product info through csv/excel files.</p>
             
-            </li>               
+            </li>                          
 
             
         </ul>
