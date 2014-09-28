@@ -7,6 +7,28 @@ class ProductCSVRepository extends AbstractRepository
 {    
 
     /**
+     * Scans all of the slugs in csv files if not each one of those already exists in the database
+     * @param object $values
+     * @return array
+     */ 
+    public function checkData($values){
+        $foo = array();
+        foreach($values as $value) {
+            $checkIfProductExist = Product::where("slug","=",$value->slug)->first();
+
+            if($checkIfProductExist){
+                $foo[] =  $checkIfProductExist->slug;
+            }
+        }
+        if(empty($foo)){
+            return $this->insertData($values);
+        }
+        else {
+            return array("existing" => $foo);            
+        }
+    }
+
+    /**
      * Insert data to the database from the passed csv values
      * @param object $values
      * @return array
@@ -22,10 +44,12 @@ class ProductCSVRepository extends AbstractRepository
             $member = Member::where("username",$value->seller)->first();
 
             $product = new Product;
-            $checkIfProductExist = Product::where("name","=",$value->product_name)
-                                            ->orWhere("slug","=",$value->slug)->first();
+            $checkIfProductExist = Product::where("slug","=",$value->slug)->first();
+
+            //If only one of the slugs already exists in the database upon the insertion of other product, the action will be cancelled
             if($checkIfProductExist){
-                return array("existing" => $checkIfProductExist->name."/".$checkIfProductExist->slug);
+                $this->removeErrorData($values);                
+                return array("existing" => $checkIfProductExist->slug);
             }                                           
             try{
                 $product->name = $value->product_name;
@@ -72,6 +96,27 @@ class ProductCSVRepository extends AbstractRepository
         }               
         return $images;
     }
+
+    /**
+     * Removes data from the current csv files that was detected to have multiple the same product slugs
+     * @param object $values
+     */ 
+    public function removeErrorData($values){
+        foreach ($values as $value ) {
+            $product = Product::where("slug",$value->slug)->first();
+            if($product) {
+                $headId = OptionalAttrHead::where('product_id','=',$product->id_product)->first();
+                OptionalAttrDetail::where('head_id','=',$headId->id_optional_attrhead)->delete();
+                OptionalAttrHead::where('product_id','=',$product->id_product)->delete();
+                ProductImage::where('product_id','=',$product->id_product)->delete();
+                Product::find($product->id_product)->delete();                
+            }
+            else {
+                continue;
+            }
+
+        }
+    }    
 
 }   
 
