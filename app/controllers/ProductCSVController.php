@@ -57,12 +57,12 @@ class ProductCSVController extends BaseController
         $excel = App::make('excel');           
         foreach($files as $file) {
 
-                    $reader = $excel->load("./public/misc/$file"); 
-                    $result = $productCSVRepo->insertData($reader->get());
-                    $data[]  = $result;
-                    if (File::exists($destinationPath.$file)) {
-                        File::delete($destinationPath.$file);
-                    }                    
+            $reader = $excel->load("./public/misc/$file"); 
+            $result = $productCSVRepo->checkData($reader->get());
+            $data[]  = $result;
+            if (File::exists($destinationPath.$file)) {
+                File::delete($destinationPath.$file);
+            }                    
         }
 
         if($data[0]!= "error") {
