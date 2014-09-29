@@ -55,7 +55,7 @@ class MemberRepository extends AbstractRepository
         $query->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=', 'es_bank_info.id_bank');
         $query->join('es_member','es_order_product.seller_id', '=', 'es_member.id_member');
         $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
-        $query->leftJoin('es_order_product_history', function($join){
+        $query->join('es_order_product_history', function($join){
             $join->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
             $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_FORWARD_SELLER));
         });
@@ -75,9 +75,9 @@ class MemberRepository extends AbstractRepository
                 $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING);
                 $query->where('es_order_product.is_reject', '=', '0');
                 $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
-                $query->whereRaw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15");
+                $query->where(DB::raw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15"));
                 $query->setBindings(array_merge($query->getBindings(),array($formattedDateTo)));
-                $query->whereRaw(" DATE_ADD(es_product_shipping_comment.`delivery_date`, INTERVAL 15 DAY) BETWEEN ? AND ?");
+                $query->where(DB::raw(" DATE_ADD(es_product_shipping_comment.`delivery_date`, INTERVAL 15 DAY) BETWEEN ? AND ?"));
                 $query->setBindings(array_merge($query->getBindings(),array($formattedDateFrom, $formattedDateTo)));
             });
         });

@@ -13,19 +13,15 @@
 App::before(function($request)
 {
 	if(Auth::check()) {
-        if(Request::url() != URL::to('/')) {
+        if(!Request::ajax()) {
             $AdminMemberService = App::make("AdminMemberManagerService");
-            $isAuthorized = $AdminMemberService->getPrivilege(Request::url());
-            if($isAuthorized === FALSE) {
-                /*
-                    Comment out the code below to activate the page access feature
-                    return Redirect::to("/");
-                */
-            }                
-        }
+            $isAuthorized = $AdminMemberService->getPrivilege(Request::segment(1));
+                if($isAuthorized === FALSE) {
+                        // Comment out the code below to activate the page access feature
+                        //return Redirect::to("prohibited");
+                }                
+        }          
     }
-
-
 });
 
 

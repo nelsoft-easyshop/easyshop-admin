@@ -1,20 +1,18 @@
 <?php
 
-class Raffle extends Eloquent 
+class SearchKeywords extends Eloquent 
 {
-
 
    /**
     * The database table used by the model.
     *
     * @var string
     */
-    protected $table = 'es_raffle';
+    protected $table = 'es_keywords_temp';
 
    /**
     * The primary key of the table
     *
     */
-    protected $primaryKey = 'raffle_id';
-
+    protected $primaryKey = 'id_keywords_temp';
 }

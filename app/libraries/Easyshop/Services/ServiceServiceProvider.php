@@ -38,24 +38,30 @@ class ServiceServiceProvider extends ServiceProvider
         $this->app->bind('EmailService', function(){
             return new EmailService();
         });
-        
-        
+
         $this->app->bind('NumberFormatter', function(){
             return new NumberFormatterService();
         });
 
+        $this->app->bind('StringHelperService', function(){
+            return new StringHelperService();
+        });
 
         $this->app->bind('XMLContentGetterService', function(){
             return new XMLContentGetterService();
         });
-        
+
         $this->app->bind('AdminMemberManagerService', function(){
             return new AdminMemberManagerService();
         });
-    
+
         $this->app->bind('RaffleManagerService', function(){
             return new RaffleManagerService();
         });        
+
+        $this->app->bind('MessagesService', function(){
+            return new MessagesService();
+        });         
 
     }
 }

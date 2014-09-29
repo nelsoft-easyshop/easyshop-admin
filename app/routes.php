@@ -39,15 +39,30 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('register', array('uses' => 'AccountController@doRegister'));    
     Route::get('managerole', array('uses' => 'AccountController@showAdminLists'));    
     Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
-    Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));  
-    
+    Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));   
+
     Route::get('raffle', array('uses' => 'RaffleManagerController@showRaffle'));    
     Route::post('doRaffle', array('uses' => 'RaffleManagerController@doRaffle'));    
     Route::get('showRaffleList', array('uses' => 'RaffleManagerController@showRaffleList'));    
-    Route::post('deleteRaffle', array('uses' => 'RaffleManagerController@deleteRaffle'));    
+    Route::post('deleteRaffle', array('uses' => 'RaffleManagerController@deleteRaffle'));  
+
+    Route::get('messages', array('uses' => 'MessageController@showMessages'));    
+    Route::post('getmessage', array('uses' => 'MessageController@getConversation'));    
+    Route::post('getInbox', array('uses' => 'MessageController@getAllMessages'));    
+    Route::post('sendMessage', array('uses' => 'MessageController@sendMessage'));    
+    Route::get("refreshConversation/{to_id}/{from_id}", array('uses' => 'MessageController@refreshConversation'));    
+
+    Route::get('searchkeywords', array('uses' => 'SearchKeyWordsController@showSearchKeyWords'));    
+    Route::post('customsearchkeywords', array('uses' => 'SearchKeyWordsController@customSearch'));    
+
+    Route::get('category', array('uses' => 'CategoryController@showAllCategory'));
+    Route::post('category', array('uses' => 'CategoryController@doSearchCategory'));
+    Route::put('categoryUpdate', array('uses' => 'CategoryController@ajaxUpdateCategory'));
+    Route::put('categoryAdd', array('uses' => 'CategoryController@ajaxAddCategory'));
 
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
     Route::get('items', array('uses' => 'ProductController@doSearchItem'));
+
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
     Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));
     Route::get('orderproduct/pay', array('uses' => 'OrderProductController@getOrderProductsToPay'));
@@ -65,7 +80,6 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('order-detail', array('uses' => 'OrderController@getOrderDetail'));
     Route::put('order-void', array('uses' => 'OrderController@voidOrder'));
     Route::put('order-product-void', array('uses' => 'OrderProductController@voidOrderProduct'));
-    
-    
 
+    Route::get('prohibited', array('uses' => 'AccountController@prohibited'));
 });

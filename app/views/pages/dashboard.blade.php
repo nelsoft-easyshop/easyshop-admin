@@ -116,8 +116,7 @@
                 </a>
                 <p>Registers an administrator user of the site. View and updates its site privileges and account status.</p>
             
-            </li>                                 
-            
+            </li>      
             <li>    
                 <a href="/raffle">
                     <img src="{{{ asset('images/icon_list.png') }}}"/> 
@@ -125,6 +124,23 @@
                 </a>
                 <p> Add and view raffles. Upload raffle member CSV files or manually input pool of members for the raffle.</p>
             </li>   
+            <li>    
+                <a href="/searchkeywords">
+                    <img src="{{{ asset('images/icon_list.png') }}}"/> 
+                    <span>View Search Keywords</span>
+                </a>
+                <p> View search keywords used by the users.</p>
+            </li> 
+           <li>
+                <a href='/messages'>
+                    <img src="{{{ asset('images/icon_category.png') }}}"/> 
+                    <span >Partner Messaging</span>
+                </a>
+                <p>Centralize all incoming messages from partner accounts that we're handling to a central account.</p>
+
+            
+            </li>               
+
             
         </ul>
     </div>

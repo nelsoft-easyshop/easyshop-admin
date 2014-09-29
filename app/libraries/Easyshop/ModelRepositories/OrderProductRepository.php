@@ -90,9 +90,9 @@ class OrderProductRepository extends AbstractRepository
                     $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING);
                     $query->where('es_order_product.is_reject', '=', '0');
                     $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
-                    $query->whereRaw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15");
+                    $query->where(DB::raw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15"));
                     $query->setBindings(array_merge($query->getBindings(),array($dateTo)));
-                    $query->whereRaw(" DATE_ADD(es_product_shipping_comment.`delivery_date`, INTERVAL 15 DAY) BETWEEN ? AND ?");
+                    $query->where(DB::raw(" DATE_ADD(es_product_shipping_comment.`delivery_date`, INTERVAL 15 DAY) BETWEEN ? AND ?"));
                     $query->setBindings(array_merge($query->getBindings(),array($dateFrom, $dateTo)));
                 }); 
             

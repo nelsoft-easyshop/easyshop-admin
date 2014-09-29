@@ -135,3 +135,4 @@
   {{ HTML::script('js/raffle.js') }}
   {{ HTML::script('js/src/ladda/ladda.js') }}
 @stop
+
