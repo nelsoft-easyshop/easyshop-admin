@@ -91,6 +91,7 @@ class ProductCSVRepository extends AbstractRepository
                 $images[] = $product->id_product; 
             } 
             catch(\Exception $e) {
+                    $this->removeErrorData($values);                    
                     return $images[] = "error";
             }
         }               
