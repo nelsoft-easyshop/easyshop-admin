@@ -466,7 +466,7 @@
         var hash = hex_sha1(myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide);
         $("#hashMainSlide").val(hash);
 
-        if( myvalue == "" || myvalue == "undefined" || value == "" || mainSlideCoordinate == "" || mainSlideTarget == "")
+        if( myvalue == "" || myvalue == "undefined" || value == "")
         {
             $("#error").modal('show');         
         }
@@ -1631,28 +1631,6 @@
             }
         });
     }
-
-    $("#mainSlide").on('click','#submitAddMainSlide',function (e) { 
-        e.preventDefault();
-        var url = $(this).data('url');
-        var value = $("#valueMainSlide").val();
-        var myvalue = $("#photoFile").val();
-        var mainSlideCoordinate = $("#mainSlideCoordinate").val();
-        var mainSlideTarget = $("#mainSlideTarget").val();
-        var useridMainSlide = globalUserId;
-        var passwordMainSlide = globalPassword;
-        var hash = myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide;
-        $("#hashMainSlide").val(hash);
-
-        if( myvalue == "" || myvalue == "undefined" || value == "" || mainSlideCoordinate == "" || mainSlideTarget == "")
-        {
-            $("#error").modal('show');         
-        }
-        else
-        {
-            addMainSlide(url);
-        }
-    });  
 
     function addMainSlide(url) {
         $("#loading").modal('show');
