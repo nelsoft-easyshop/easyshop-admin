@@ -13,34 +13,67 @@
 @stop
 
 @section('content')
+
 <div id="mainsection">
 
         <div class='registration_form' id="registration_form">
-        <div id="data" >
-            <form id="sendToWebservice"></form>
-        </div>            
-            {{ Form::open(array('url' => 'productcsv','enctype'=>'multipart/form-data', "id" => "uploadData", 'method'=>'post')) }}
-                <legend>Upload Product Excel/CSV Data </legend>
-                <div class="form-group">
-                    {{ Form::file('image[]', ['multiple' => true, 'class' => 'file ', 'id' => 'uploadCSV','data-preview-file-type' => 'any']) }}
-                </div>
-            {{ Form::close() }}
-            <a href="{{{ asset('misc/CSV_Upload.xlsx') }}}" class="btn btn-default btn-sm" id="download-btn"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Download CSV Template</a>
-        </div>
-        <div class='help-block text-center disp_error'><h5>{{ $errors->first('noinput') }}</h5></div>
-        @if(isset($queryError))
-            <div style="color:red;text-align:center;"><h5>Kindly check and fill up all fields with approriate values in the file</h5></div>
-        @endif
+            {{ Form::input('hidden', 'productCSVwebservice', $productCSVwebservice, array("id" => "webServiceLink")) }}
+            <div class="bs-example bs-example-tabs">
+                <ul id="myTab" class="nav nav-tabs" role="tablist">
+                    <li class=""><a href="#home" role="tab" data-toggle="tab">Upload Product CSV</a></li>
+                    <li class="active"><a href="#profile" role="tab" data-toggle="tab">Upload Product Images</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade" id="home">
+                        <div class='registration_form'>
+                            <div id="data" >
+                                <form id="sendToWebservice"></form>
+                            </div>            
+                            {{ Form::open(array('url' => 'productcsv','enctype'=>'multipart/form-data', "id" => "uploadData", 'method'=>'post')) }}
+                                <legend>Upload Product Excel/CSV Data </legend>
+                                <div class="form-group">
+                                    {{ Form::file('image[]', ['multiple' => true, 'class' => 'file ', 'id' => 'uploadCSV','data-preview-file-type' => 'any']) }}
+                                </div>
+                            {{ Form::close() }}
+                            <a href="{{{ asset('misc/CSV_Upload.xlsx') }}}" class="btn btn-default btn-sm" id="download-btn"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Download CSV Template</a>
 
-
-            <div class='registration_form' id="imageforms">
-    {{ Form::open(array('url' => "#",'enctype'=>'multipart/form-data','id'=>'uploadphoto','method'=>'post')) }}
-                     <legend>Upload Product Images</legend>
-                    <div class="form-group">
-                        {{ Form::file('image[]', ['multiple' => true, 'class' => 'file file-loading', 'id' => 'uploadImageOnly','data-preview-file-type' => 'any','accept' => "image/*"]) }}
+                        </div>
                     </div>
-                {{ Form::close() }}
-            </div>        
+                    <div class="tab-pane fade active in" id="profile">
+                        <div class='registration_form' id="imageforms">
+                            {{ Form::open(array('url' => "#",'enctype'=>'multipart/form-data','id'=>'uploadphoto','method'=>'post')) }}
+                                 <legend>Upload Product Images</legend>
+                                <div class="form-group">
+                                    {{ Form::file('image[]', ['multiple' => true, 'class' => 'file file-loading', 'id' => 'uploadImageOnly','data-preview-file-type' => 'any','accept' => "image/*"]) }}
+                                </div>
+                            {{ Form::close() }}
+                                <legend>Images uploaded by the administrator</legend>
+                                <div class="form-group">
+                                    <div class="col-lg-15" style='text-align:center;width:100% !important;overflow-x: scroll; height:500px !important;'>
+                                        @foreach($adminImages as $images)
+                                            <div style="position:relative;display:inline-block;">
+                                                <div class='well' style="height: 250px;" >
+                                                    <div style="width: 200px; height: 200px;max-width: 200px; max-height: 200px; display: table-cell; vertical-align: middle;">
+                                                        <img src="{{{$easyShopLink}}}/assets/admin/{{{$images->image_name}}}" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                        <p>{{{$images->image_name}}}</p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>                            
+                        </div>  
+
+                    </div>
+
+                </div>
+            </div>            
+        </div>
+
+
+
+      
          <div class="modal fade" id="success" >
             <div class="modal-dialog">
                 <div class="modal-content">
