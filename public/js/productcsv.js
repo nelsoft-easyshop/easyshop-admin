@@ -1,5 +1,6 @@
 (function () {
 
+    var urlLink = $("#webServiceLink").val();
     $("#uploadImageOnly").fileinput({
         previewFileType: ['image'],
         'showUpload':true,
@@ -55,7 +56,7 @@
     }); 
     
     $("#uploadphoto").ajaxForm({
-        url: "https://easyshop.ph.local/webservice/synccsvImage",
+        url: urlLink,
         type: 'GET', 
         dataType: 'jsonp',
         async: false,
@@ -87,7 +88,7 @@
             var postData = $(this).serializeArray();
             $.ajax(
             {
-                url : "https://easyshop.ph.local/webservice/synccsvImage",
+                url : urlLink,
                 type: 'GET', 
                 dataType: 'jsonp',
                 async: false,
