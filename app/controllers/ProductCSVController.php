@@ -57,23 +57,26 @@ class ProductCSVController extends BaseController
         $excel = App::make('excel');           
         foreach($files as $file) {
 
-            $reader = $excel->load("./public/misc/$file"); 
-            $result = $productCSVRepo->checkData($reader->get());
+            $product = $excel->selectSheets("Products")->load("./public/misc/$file"); 
+            $attributes = $excel->selectSheets("Attributes")->load("./public/misc/$file"); 
+            $shipments = $excel->selectSheets("Shipment")->load("./public/misc/$file"); 
+
+            $productsObject = $product->ignoreEmpty()->get();
+            $optionalAttributesObject = $attributes->ignoreEmpty()->get();
+            $shipmentObject = $shipments->ignoreEmpty()->get();
+            $result = $productCSVRepo->insertData($productsObject, $optionalAttributesObject, $shipmentObject);
+            
             $data[]  = $result;
             if (File::exists($destinationPath.$file)) {
                 File::delete($destinationPath.$file);
             }                    
         }
 
-        if($data[0]!= "error") {
-            if(!array_key_exists("existing", $data[0])){
-                return Response::json(array('html' => $data));    
-            }
-            else {
-                return Response::json(array('existing' => $data));  
-            }
+        if(!array_search("error", $data)) {
+            return Response::json(array('html' => $data));    
         }
         else {
+            $productCSVRepo->removeErrorData($productsObject);
             return Response::json(array('error' => "Error in CSV")); 
         }            
         
