@@ -3,6 +3,7 @@ use Illuminate\Support\MessageBag;
 use Maatwebsite\Excel\Facades\Excel;
 
 
+
 class ProductCSVController extends BaseController
 {
 
@@ -12,7 +13,11 @@ class ProductCSVController extends BaseController
      */    
     public function showCSVupload()
     {
-        return View::make("pages.productcsv");
+        $productCSVRepo = App::make('AdminImagesRepository');   
+        return View::make("pages.productcsv")
+                ->with("easyShopLink",\Config::get('easyshop/webservice.easyShopLink'))
+                ->with("productCSVwebservice",\Config::get('easyshop/webservice.productCSVwebservice'))
+                ->with("adminImages",$productCSVRepo->getAllAdminImages());
     }
 
     /**
