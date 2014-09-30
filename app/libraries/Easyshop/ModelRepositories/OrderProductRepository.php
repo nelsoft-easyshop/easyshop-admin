@@ -59,7 +59,7 @@ class OrderProductRepository extends AbstractRepository
     public function getOrderProductsToPay($username, $accountname, $accountno, $bankname, $dateFrom = null, $dateTo = null)
     {       
 
-        $query = OrderProduct::leftJoin('es_order_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_billing_info.id_order_billing_info')
+        $query = OrderProduct::leftJoin('es_billing_info', 'es_order_product.seller_billing_id', '=', 'es_billing_info.id_billing_info')
                         ->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member')
                         ->join('es_order', 'es_order.id_order', '=', 'es_order_product.order_id')
                         ->join('es_member as buyer','es_order.buyer_id', '=', 'buyer.id_member')
@@ -69,6 +69,7 @@ class OrderProductRepository extends AbstractRepository
                                 $join->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
                                 $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_FORWARD_SELLER));
                          })->leftJoin('es_product_shipping_comment','es_product_shipping_comment.order_product_id', '=', 'es_order_product.id_order_product')
+                        ->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=',  'es_bank_info.id_bank')
                         ->where('seller.username', '=', $username);
 
         if($dateFrom && $dateTo){
@@ -100,20 +101,20 @@ class OrderProductRepository extends AbstractRepository
         }
 
         if(trim($accountname) !== ""){
-            $query->where('es_order_billing_info.account_name', '=', $accountname);
+            $query->where('es_billing_info.bank_account_name', '=', $accountname);
         }else{
-            $query->whereNull('es_order_billing_info.account_name');
+            $query->whereNull('es_billing_info.bank_account_name');
         }
         
         if(trim($accountno) !== ""){
-            $query->where('es_order_billing_info.account_number', '=', $accountno);
+            $query->where('es_billing_info.bank_account_number', '=', $accountno);
         }else{
-            $query->whereNull('es_order_billing_info.account_number');
+            $query->whereNull('es_billing_info.bank_account_number');
         }    
         if(trim($bankname) !== ""){
-            $query->where('es_order_billing_info.bank_name', '=', $bankname);
+            $query->where('es_bank_info.bank_name', '=', $bankname);
         }else{
-            $query->whereNull('es_order_billing_info.bank_name');
+            $query->whereNull('es_bank_info.bank_name');
         }    
         
         
