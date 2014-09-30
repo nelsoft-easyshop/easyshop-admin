@@ -6,6 +6,13 @@ use LocationLookUp, ProductItem, OptionalAttrDetail, OptionalAttrHead, Product, 
 class ProductCSVRepository extends AbstractRepository
 {    
 
+
+    /**
+     * Inserts Data 
+     * @param object $productsObject
+     * @param object $optionalAttributesObject
+     * @param object $shipmentObject
+     */ 
     public function insertData($productsObject, $optionalAttributesObject, $shipmentObject)
     {
         $images = array();
