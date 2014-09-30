@@ -65,11 +65,13 @@ class ProductCSVController extends BaseController
             $product = $excel->selectSheets("Products")->load("./public/misc/$file"); 
             $attributes = $excel->selectSheets("Attributes")->load("./public/misc/$file"); 
             $shipments = $excel->selectSheets("Shipment")->load("./public/misc/$file"); 
+            $images = $excel->selectSheets("Images")->load("./public/misc/$file"); 
 
-            $productsObject = $product->ignoreEmpty()->get();
-            $optionalAttributesObject = $attributes->ignoreEmpty()->get();
-            $shipmentObject = $shipments->ignoreEmpty()->get();
-            $result = $productCSVRepo->insertData($productsObject, $optionalAttributesObject, $shipmentObject);
+            $productsObject = $product->get();
+            $optionalAttributesObject = $attributes->get();
+            $shipmentObject = $shipments->get();
+            $imagesObject = $images->ignoreEmpty()->get();
+            $result = $productCSVRepo->insertData($productsObject, $optionalAttributesObject, $shipmentObject, $imagesObject);
             
             $data[]  = $result;
             if (File::exists($destinationPath.$file)) {
@@ -78,6 +80,7 @@ class ProductCSVController extends BaseController
         }
 
         if(!array_search("error", $data)) {
+
             return Response::json(array('html' => $data));    
         }
         else {
