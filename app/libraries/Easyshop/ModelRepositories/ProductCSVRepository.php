@@ -13,7 +13,7 @@ class ProductCSVRepository extends AbstractRepository
      * @param object $optionalAttributesObject
      * @param object $shipmentObject
      */ 
-    public function insertData($productsObject, $optionalAttributesObject, $shipmentObject)
+    public function insertData($productsObject, $optionalAttributesObject, $shipmentObject, $imagesObject)
     {
         $images = array();
         $attrHeadArray = array();
@@ -23,6 +23,7 @@ class ProductCSVRepository extends AbstractRepository
             $brand = Brand::where("name",$value->brand_name)->first();
             $style = Style::where("name",$value->style)->first();
             $member = Member::where("username",$value->seller)->first();
+
 
                                         
             try{
@@ -42,6 +43,8 @@ class ProductCSVRepository extends AbstractRepository
                 $product->keywords = $value->keywords;
                 $product->price = $value->price;
                 $product->save(); 
+
+                $resultsIDS[] = $product->id_product; 
               
                 $productItem = new ProductItem;
                 $productItem->product_id = $product->id_product;
@@ -55,6 +58,18 @@ class ProductCSVRepository extends AbstractRepository
                 $productImage->product_id = $product->id_product;
                 $productImage->is_primary = "1";
                 $productImage->save();  
+
+                foreach($imagesObject as $images) {
+                    if($value->number === $images->product_number) {
+                        $productImage = new ProductImage;
+                        $productImage->product_image_path = "assets/product/".$images->product_image_file;
+                        $extension = substr($images->product_image_file, strpos($images->product_image_file, ".") + 1);
+                        $productImage->product_image_type = $extension;
+                        $productImage->product_id = $product->id_product;
+                        $productImage->is_primary = "0";
+                        $productImage->save();  
+                    }
+                }                
 
                 foreach($optionalAttributesObject as $attributes){
                     if($value->number === $attributes->product_number) {
@@ -70,7 +85,7 @@ class ProductCSVRepository extends AbstractRepository
                         $attrDetail->head_id = $attrHead->id_optional_attrhead;
                         $attrDetail->value_name = $attributes->option_value;
                         $attrDetail->value_price = $attributes->option_price;
-                        $attrDetail->product_img_id = $productImage->id_product_image;
+                        // $attrDetail->product_img_id = $productImage->id_product_image;
                         $attrDetail->save();   
                     }
                 }
@@ -91,13 +106,12 @@ class ProductCSVRepository extends AbstractRepository
                         $shippingDetail->save();                        
                     }
                 }
-                $images[] = $product->id_product; 
             } 
             catch(\Exception $e) {
-                return $images[] = "error";
+                return $resultsIDS[] = "error";
             }
         }   
-        return $images;
+        return $resultsIDS;
     }
 
     /**
