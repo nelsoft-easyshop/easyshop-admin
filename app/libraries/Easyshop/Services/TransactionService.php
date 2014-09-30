@@ -183,7 +183,7 @@ class TransactionService
         $month = ($month < 1) ? 12 : $month;
         $year = $currentYear - (($currentMonth === 1 && !$hasExceededFirstCutOff)?1:0  ); 
         
-        return Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$day);
+        return Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$day)->endOfDay();
     }
     
     
@@ -211,7 +211,7 @@ class TransactionService
         $month = ($month <= 0) ? 12 : $month;
         $year = $yearFilter - (($month === 12 && $isPreviousMonth) ? 1 : 0); 
 
-        return Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$startDay);
+        return Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$startDay)->startOfDay();
     }
     
     
