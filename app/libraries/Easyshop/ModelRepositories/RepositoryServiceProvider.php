@@ -102,10 +102,11 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->bind('ProductCSVRepository', function($app){  
             return new ProductCSVRepository();
-        });          
+        });   
+
+        $this->app->bind('AdminImagesRepository', function($app){  
+            return new AdminImagesRepository();
+        });                 
                  
-
-        
-
     }
 }
