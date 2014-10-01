@@ -69,8 +69,8 @@ class ProductCSVRepository extends AbstractRepository
                         $productImage->is_primary = "0";
                         $productImage->save();  
                     }
+                    $imagesArr[] = $productImage->product_image_path;
                 }                
-
                 foreach($optionalAttributesObject as $attributes){
                     if($value->number === $attributes->product_number) {
                         if(!in_array($attributes->option_name, $attrHeadArray)) {
@@ -85,7 +85,14 @@ class ProductCSVRepository extends AbstractRepository
                         $attrDetail->head_id = $attrHead->id_optional_attrhead;
                         $attrDetail->value_name = $attributes->option_value;
                         $attrDetail->value_price = $attributes->option_price;
-                        // $attrDetail->product_img_id = $productImage->id_product_image;
+
+                        $insertedImages = ProductImage::all();
+                        foreach($insertedImages as $images) {
+                            if(strtolower(str_replace("assets/product/", "", $images->product_image_path)) === $attributes->option_image){
+                                 $attrDetail->product_img_id = $images->id_product_image;
+                                 break;
+                            }
+                        }
                         $attrDetail->save();   
                     }
                 }
