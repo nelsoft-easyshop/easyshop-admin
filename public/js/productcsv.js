@@ -6,20 +6,33 @@
         'showUpload':true,
     });
     $('#success, #customerror').bind('hidden.bs.modal', function () {
+
             window.location.href = location.href;  
     })  
 
-    $(document.body).delegate('#uploadphoto', 'submit', function(event) {
-        loader.showPleaseWait();
-        if($("#uploadImageOnly").val() == "")   {
-            loader.hidePleaseWait();
 
+    $("button:nth-child(2)").attr('id', 'uploadPhotosSubmit');      
+    $(document.body).delegate('#uploadPhotosSubmit', 'click', function(event) {
+        var files = $('#uploadImageOnly').prop("files");
+        var proceed = 1;
+        if($("#uploadImageOnly").val() == "")   {
             showErrorModal("Please select a file to upload");
-            $("#success").css("display","none");
+            proceed = 0;
+        }
+        else {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                if (!file.type.match('image.*')) {
+                    proceed = 0;
+                    showErrorModal("Images only are allowed");                                        
+                }
+            }
+        }
+        if(proceed == 1) {
+            loader.showPleaseWait();
+            submitPhotos();
         }
         event.preventDefault();
-
-     
     });
 
     $('#uploadData').ajaxForm({
@@ -55,23 +68,7 @@
         }
     }); 
     
-    $("#uploadphoto").ajaxForm({
-        url: urlLink,
-        type: 'GET', 
-        dataType: 'jsonp',
-        async: false,
-        jsonpCallback: 'jsonCallback',
-        contentType: "application/json",
-        dataType: 'jsonp',
-        success: function(json) {
-            loader.hidePleaseWait();             
-            $("#success").modal("show");   
-        },
-        error: function(e) {
-            loader.hidePleaseWait();             
-            $("#success").modal("show");
-        }
-    }); 
+
 
     $(document.body).delegate('#uploadData', 'submit', function(event) {
         loader.showPleaseWait();   
@@ -79,6 +76,26 @@
 
     });
 
+    function submitPhotos(){
+        $("#uploadphoto").ajaxForm({
+                url: urlLink,
+                type: 'GET', 
+                dataType: 'jsonp',
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();             
+                    $("#success").modal("show");   
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();             
+                    $("#success").modal("show");
+                }
+            }); 
+            $("#uploadphoto").submit();
+    }
 
     function submitToWebService(){
 
