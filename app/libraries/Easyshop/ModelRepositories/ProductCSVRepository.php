@@ -122,7 +122,7 @@ class ProductCSVRepository extends AbstractRepository
     }
 
     /**
-     * Removes data from the current csv files that was detected to have multiple the same product slugs
+     * Removes data from the current csv files that was detected to have errors in table dependencies
      * @param object $values
      */ 
     public function removeErrorData($productsObject)
