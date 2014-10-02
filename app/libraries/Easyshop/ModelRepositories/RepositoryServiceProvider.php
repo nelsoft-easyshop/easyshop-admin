@@ -85,12 +85,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('PaymentMethodRepository', function($app){  
             return new PaymentMethodRepository();
         });
-
    
         $this->app->bind('RaffleRepository', function($app){  
             return new RaffleRepository();
         });     
-
         
         $this->app->bind('SearchKeyWordsRepository', function($app){  
             return new SearchKeyWordsRepository();
@@ -98,10 +96,6 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->bind('MessagesRepository', function($app){  
             return new MessagesRepository();
-        });   
-
-        $this->app->bind('ProductCSVRepository', function($app){  
-            return new ProductCSVRepository();
         });   
 
         $this->app->bind('AdminImagesRepository', function($app){  
