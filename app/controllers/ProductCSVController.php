@@ -1,12 +1,19 @@
 <?php
 use Illuminate\Support\MessageBag;
 use Maatwebsite\Excel\Facades\Excel;
-
-
+use Easyshop\Services\ProductCSVService as ProductCSVService;
 
 class ProductCSVController extends BaseController
 {
+    /**
+     *  Constructor declaration for ProductCSVService  
+     */
+    protected $ProductCSVService;
 
+    public function __construct(ProductCSVService $ProductCSVService) 
+    {   
+        $this->ProductCSVService = $ProductCSVService;
+    }
     /**
      * Render CSV Upload interface
      * @return VIEW
@@ -58,7 +65,7 @@ class ProductCSVController extends BaseController
      */ 
     public function insertData($destinationPath,$files)
     {
-        $productCSVRepo = App::make('ProductCSVRepository');        
+        $productCSVRepo = App::make('ProductRepository');        
         $excel = App::make('excel');           
         foreach($files as $file) {
 
@@ -79,17 +86,13 @@ class ProductCSVController extends BaseController
             }                    
         }
 
-        if(!array_search("error", $data)) {
-
+        if($data[0] !== "error") {
             return Response::json(array('html' => $data));    
         }
         else {
-            $productCSVRepo->removeErrorData($productsObject);
+            $this->ProductCSVService->removeErrorData($productsObject);
             return Response::json(array('error' => "Error in CSV")); 
         }            
-        
-
     }
-
 }
 
