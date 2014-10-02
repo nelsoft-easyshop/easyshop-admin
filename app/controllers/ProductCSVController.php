@@ -78,7 +78,7 @@ class ProductCSVController extends BaseController
             $optionalAttributesObject = $attributes->get();
             $shipmentObject = $shipments->get();
             $imagesObject = $images->ignoreEmpty()->get();
-            $result = $productCSVRepo->insertData($productsObject, $optionalAttributesObject, $shipmentObject, $imagesObject);
+            $result = $this->ProductCSVService->insertData($productsObject, $optionalAttributesObject, $shipmentObject, $imagesObject);
             
             $data[]  = $result;
             if (File::exists($destinationPath.$file)) {
