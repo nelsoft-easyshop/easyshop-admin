@@ -61,7 +61,11 @@ class ServiceServiceProvider extends ServiceProvider
 
         $this->app->bind('MessagesService', function(){
             return new MessagesService();
-        });         
+        });      
+
+        $this->app->bind('ProductCSVService', function(){
+            return new ProductCSVService();
+        });            
 
     }
 }

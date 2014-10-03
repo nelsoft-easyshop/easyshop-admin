@@ -52,6 +52,9 @@ Route::group(array('before' => 'auth'), function(){
     Route::post('sendMessage', array('uses' => 'MessageController@sendMessage'));    
     Route::get("refreshConversation/{to_id}/{from_id}", array('uses' => 'MessageController@refreshConversation'));    
 
+    Route::get("productcsv", array('uses' => 'ProductCSVController@showCSVupload'));    
+    Route::post("productcsv", array('uses' => 'ProductCSVController@doUpload'));    
+
     Route::get('searchkeywords', array('uses' => 'SearchKeyWordsController@showSearchKeyWords'));    
     Route::post('customsearchkeywords', array('uses' => 'SearchKeyWordsController@customSearch'));    
 

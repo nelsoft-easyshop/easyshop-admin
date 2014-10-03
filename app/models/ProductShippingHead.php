@@ -1,21 +1,19 @@
 <?php
 
-class ProductImage extends Eloquent {
+class ProductShippingHead extends Eloquent 
+{
 
    /**
     * The database table used by the model.
     *
     * @var string
     */
-    protected $table = 'es_product_image';
+    protected $table = 'es_product_shipping_head';
 
-   /*
+   /**
     * The primary key of the table
     *
     */
-
-    protected $primaryKey = 'id_product_image';
+    protected $primaryKey = 'id_shipping';
     public $timestamps = false;    
-
-
 }

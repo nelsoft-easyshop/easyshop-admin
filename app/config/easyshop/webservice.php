@@ -17,6 +17,7 @@ return array(
     'feedCmsLink' => "$baseUrl/webservice/feedwebservice",
     'getHomeXML'=> "$baseUrl/webservice/homewebservice/getContents/",
     'getFeedXML'=> "$baseUrl/webservice/feedwebservice/getcontents/",
+    'productCSVwebservice'=> "$baseUrl/webservice/synccsvImage",
     'easyShopLink'=> "$baseUrl",
 );
 
