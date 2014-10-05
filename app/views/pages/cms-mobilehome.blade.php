@@ -17,7 +17,7 @@
    <div class="row">
         <section id="tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#manageMainSlide" role="tab" data-toggle="tab">Manage Box Content</a></li>
+                <li class="active"><a href="#manageMainSlide" role="tab" data-toggle="tab">Manage Main Slides</a></li>
                 <li class="dropdown">
                     <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Manage Section Nodes<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
@@ -37,7 +37,165 @@
 
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade active in" id="manageMainSlide">
-                    Test
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Add Main Slide</a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <form id='mainSlideForm' target="test" action="{{ $mobileCmsLink}}/addMainSlide" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
+                                        <div class="col-xs-10">
+                                            <input type="file" id="photoFile" name='myfile'> 
+                                        </div>
+                                    </div>
+                                        <input type="text" id="valueMainSlide" class="form-control" readonly='readonly' value='Image' name='value'  placeholder="Value" style="display:none;">
+                                    <div class="form-group">
+                                        <label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
+                                        <div class="col-xs-10">
+                                            <input type="text" id="mainSlideCoordinate" class="form-control" name='coordinate' value="0,0,589,352" placeholder="0,0,0,0" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword" class="control-label col-xs-2">Target</label>
+                                        <div class="col-xs-10">
+                                            <input type="text" id="mainSlideTarget" class="form-control" name='target' value="target" placeholder="Value" >
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userid}}'  placeholder="Value" >
+                                    <input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
+                        
+
+                                    <div class="form-group">
+                                        <div class="col-xs-offset-2 col-xs-10">
+                                            <a1 href="#"  class="btn btn-default text-center" data-password="{{$password}}" data-url = "{{ $mobileCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
+                                        </div>
+                                    </div>
+                                 </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Manage Main Slide</a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                            <fieldset>
+                                <!-- Form Name -->
+                                <div class="form-group ">
+                                    <div class="col-lg-15" style='text-align:center;'>
+                                         @foreach ($mainSlides as $mainSlide)
+                                            <div style="position:relative;display:inline-block;">
+                                            <div class='well' style="height:210px;">
+                                            <p>
+                                                <img src="{{$easyShopLink}}/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
+                                            </p>
+
+                                            <a href="#myMain{{ $mainSlideId }}" data-toggle="modal" style="position:absolute;top:180px;left:135px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                            <a class="btn btn-default" 
+                                                id="deleteMainSlide" 
+                                                data-index="{{$mainSlideId}}"  
+                                                data-nodename="mainSlide" 
+                                                style="position:absolute;top:2px;left:5px;"
+                                                data-url = "{{ $mobileCmsLink }}/removeContent"
+                                             ><font color='red'><b>X</b></font></a>
+
+                                            <a 
+                                                id="moveup" 
+                                                 data-action="up" 
+                                                 data-index="{{$mainSlideId}}" 
+                                                 data-value="{{$mainSlide->value}}" 
+                                                 data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
+                                                 data-target="{{$mainSlide->imagemap->target}}" 
+                                                 data-order="{{$mainSlideId}}" 
+                                                 style="position:absolute;top:180px;left:5px;"
+                                                 data-url = "{{ $mobileCmsLink }}/setmainslide"
+                                             ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
+
+                                             <a  
+                                                id="movedown" 
+                                                data-action="up" 
+                                                data-index="{{$mainSlideId}}" 
+
+                                                data-value="{{$mainSlide->value}}" 
+                                                data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
+                                                data-target="{{$mainSlide->imagemap->target}}" 
+                                                data-order="{{$mainSlideId}}" 
+                                                data-count="{{$mainSlideCount}}" 
+                                                style="position:absolute;top:180px;right:5px;"
+                                                data-url = "{{ $mobileCmsLink }}/setmainslide"
+                                             ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
+                                             </div>
+                                            <div class="modal fade" id="myMain{{ $mainSlideId }}" role="dialog">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" style='margin-top:2px;'><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title" id="myModalLabel">Edit Main Slide</h4>
+                                                            </div>
+                                                        <div class="modal-body">
+                                                            <form id='mainSlideForm{{$mainSlideId}}' target="test" action="{{ $mobileCmsLink}}/addmainslide" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">
+                                                                {{ Form::hidden('index', $mainSlideId) }}                                                                                                                       
+                                                                <div class="form-group">
+                                                                    <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
+                                                                    <div class="col-xs-10">
+                                                                        <input type="file" id="photoFile" name='myfile'> 
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
+                                                                    <div class="col-xs-10">
+                                                                        {{ Form::text('coordinate', $mainSlide->imagemap->coordinate, array('id' => 'editMainSlideCoordinate','class' => 'form-control')) }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputPassword" class="control-label col-xs-2">Target</label>
+                                                                    <div class="col-xs-10">
+                                                                        {{ Form::text('target', $mainSlide->imagemap->target, array('id' => 'editMainSlideTarget','class' => 'form-control')) }}
+                                                                    </div>
+                                                                </div>
+                                                                {{ Form::hidden('hash', $mainSlide->imagemap->target, array('id' => 'hashEditMainSlide','class' => 'form-control')) }}
+                                                                <input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$userid}}'  placeholder="Value" >                    
+
+
+                                                                <div class="form-group">
+                                                                    <div class="col-xs-offset-2 col-xs-10">
+                                                                        <a href="" class="btn btn-primary"
+                                                                         data-index="{{$mainSlideId}}" 
+                                                                         data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
+                                                                         data-target="{{$mainSlide->imagemap->target}}" 
+                                                                         data-order="{{$mainSlideId}}" 
+                                                                         data-count="{{$mainSlideCount}}"
+                                                                         data-url = "{{ $mobileCmsLink }}/setmainslide"
+
+                                                                         data-dismiss = "modal" id='submit'>Submit</a>
+                                                                    </div>
+                                                                </div>
+                                                             </form>                                                            
+
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                              </div>
+                                            </div><span style="display:none;">{{$mainSlideId++}}</span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </fieldset>
+                            </div>
+                        </div>
+                        
+                    </div>                    
+                </div>
             </div>
             <span style="display:none;">{{$index=0}}</span>
             @foreach($sectionContent as $section)
@@ -52,24 +210,25 @@
                         <div class="form-group">
                             <label for="userId" class="col-sm-2 control-label">Name</label>
                             <div class="col-sm-10">
-                                {{ Form::text('target', $section->name, array('id' => 'target','class' => 'form-control')) }}                        
+                                {{ Form::hidden('index', $index, array('id' => 'index','class' => 'form-control')) }}                        
+                                {{ Form::text('target', $section->name, array('id' => 'name','class' => 'form-control')) }}                        
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="userId" class="col-sm-2 control-label">BGColor</label>
                             <div class="col-sm-10">
-                                {{ Form::text('target', $section->bgcolor, array('id' => 'target','class' => 'form-control')) }}                        
+                                {{ Form::text('target', $section->bgcolor, array('id' => 'bgcolor','class' => 'form-control')) }}                        
                             </div>
                         </div> 
                         <div class="form-group">
                             <label for="userId" class="col-sm-2 control-label">Type</label>
                             <div class="col-sm-10">
-                                {{ Form::text('target', $section->type, array('id' => 'target','class' => 'form-control')) }}                        
+                                {{ Form::text('target', $section->type, array('id' => 'type','class' => 'form-control')) }}                        
                             </div>
                         </div>                                       
                         <div class="form-group">
                             <div class="col-xs-offset-2 col-xs-10">
-                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{ $mobileCmsLink }}/setFeedBanner" id="submitFeedBanner">Submit</a>
+                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{ $mobileCmsLink }}/setSectionHead" id="setSectionHead">Submit</a>
                             </div>
                         </div>                                      
                     </form>
