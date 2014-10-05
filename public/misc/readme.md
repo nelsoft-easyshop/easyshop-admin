@@ -1,4 +1,3 @@
-## CSV file storage for raffle
+## CSV file storage for Product CSV Upload
 
-Storage for csv files to be uploaded by the user when using raffle app
 

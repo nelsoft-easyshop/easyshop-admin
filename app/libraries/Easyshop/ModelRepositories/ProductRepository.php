@@ -2,7 +2,7 @@
 
 
 use Illuminate\Support\Facades\DB;
-use Product,ProductImage;
+use Product,ProductImage,  LocationLookUp, ProductItem, OptionalAttrDetail, OptionalAttrHead,Category, Brand, Style, Member, ProductShippingDetail, ProductShippingHead;
 
 
 class ProductRepository
@@ -62,6 +62,6 @@ class ProductRepository
          ->get();
 
         return $query;
-    }  
+    }    
 }
 

@@ -1,21 +1,19 @@
 <?php
 
-class ProductImage extends Eloquent {
+class AdminImages extends Eloquent 
+{
 
    /**
     * The database table used by the model.
     *
     * @var string
     */
-    protected $table = 'es_product_image';
+    protected $table = 'es_admin_images';
 
-   /*
+   /**
     * The primary key of the table
     *
     */
-
-    protected $primaryKey = 'id_product_image';
+    protected $primaryKey = 'id_admin_image';
     public $timestamps = false;    
-
-
 }
