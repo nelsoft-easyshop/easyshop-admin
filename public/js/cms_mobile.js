@@ -3,6 +3,223 @@
     var userid = $("#userid").val();
     var password = $("#password").val();
 
+    $(document.body).on('click','#setSectionHead',function () {    
+        var index = $(this).closest("form").find("#index").val();
+        var name = $(this).closest("form").find("#name").val();
+        var bgcolor = $(this).closest("form").find('#bgcolor').val();
+        var type = $(this).closest("form").find('#type').val();
+        var userid = $("#userid").val();
+        var password = $("#password").val();
+        var url = $(this).data('url');
+        loader.showPleaseWait();   
+        var hash =  hex_sha1(index + name + bgcolor + type  + userid + password);
+        data = { index: index, name:name, bgcolor:bgcolor, type:type, userid:userid,  password:password, hash:hash, callback:'?'};
+        setSectionHead(url,data);
+    }); 
+
+
+    function setSectionHead(url,data) {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                loader.hidePleaseWait();            
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+            }
+        });
+    }    
+
+    $("#manageMainSlide").on('click','#submitAddMainSlide',function (e) { 
+        e.preventDefault();
+        var url = $(this).data('url');
+        var value = $("#valueMainSlide").val();
+        var myvalue = $("#photoFile").val();
+        var mainSlideCoordinate = $("#mainSlideCoordinate").val();
+        var mainSlideTarget = $("#mainSlideTarget").val();
+        var useridMainSlide = userid;
+        var passwordMainSlide = password;
+        var hash = hex_sha1(myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide);
+        $("#hashMainSlide").val(hash);
+
+        loader.showPleaseWait();    
+        addMainSlide(url);
+
+    });
+
+    $("#manageMainSlide").on('click','#movedown',function () {       
+
+        var index = $(this).data('index');
+        var userid = $("#userid").val();
+        var password = $("#password").val();
+        var value = $(this).data('value');
+        var coordinate = $(this).data('coordinate');
+        var target = $(this).data('target');
+        var count = $(this).data('count');
+        var order = index;
+        var nodename = "mainSlide";
+        var url = $(this).data('url');
+
+        loader.showPleaseWait();
+
+        if(order == (count - 1)) {
+            order = order;
+        } else {
+             order = order + 1;
+        }
+        var hash = hex_sha1(index + value + coordinate + target + order + nodename + userid + password);
+        data = { index: index, value: value, coordinate:coordinate, target:target, order:order, nodename:nodename,  userid: userid, hash:hash, callback:'?'};
+        setPositionMainSlide(data,order, url);
+    });   
+
+    $("#myTabContent").on('click','#deleteMainSlide',function (e) { 
+        e.preventDefault();
+        var index = $(this).data('index');
+        var nodename = $(this).data('nodename');
+        var userid = $("#userid").val();
+        var password = $("#password").val();
+        var url = $(this).data('url');
+        nodename = nodename == "mainSlide" ? "mainSlide" : "productSlide";   
+        index += 1;
+        var hash = hex_sha1(index +nodename + userid + password);
+        data = { index: index, nodename:nodename, userid: userid, hash:hash, callback:'?'};         
+        loader.showPleaseWait();
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();
+                    $("#manageMainSlide").load('mobileSlides');                
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                    $("#manageMainSlide").load('mobileSlides');  
+          
+                }
+            });
+
+    });   
+
+    $("#manageMainSlide").on('click','#moveup',function () { 
+        loader.showPleaseWait();
+
+        var index = $(this).data('index');
+        var userid = $("#userid").val();
+        var value = $(this).data('value');
+        var url = $(this).data('url');
+        var coordinate = $(this).data('coordinate');
+        var target = $(this).data('target');
+        var password = $("#password").val();
+        var order = index;
+        var nodename = "mainSlide";
+
+        if(order > 0) {
+            order = order - 1;
+        } else {
+           order = 0;
+        }
+            
+        var hash = hex_sha1(index + value + coordinate + target + order + nodename + userid + password);
+        data = { index: index, value: value,  coordinate:coordinate, target:target, order:order, nodename:nodename, userid: userid, hash:hash, callback:'?'};
+        setPositionMainSlide(data,order, url);
+    });     
+
+    $("#manageMainSlide").on('click','#submit',function () {    
+        var index = $(this).data('index');
+        var userid = $("#userid").val();
+        var value = $(this).closest("form").find("#photoFile").val();
+        var password = $("#password").val();
+        var coordinate = $(this).closest("form").find("#editMainSlideCoordinate").val();
+        var target = $(this).closest("form").find('#editMainSlideTarget').val();
+        var count = $(this).data('count');
+        var url = $(this).data('url');
+        var order = index;
+        var mainSlideForm = "#mainSlideForm" + index;
+        var hashMainSlide = "#hashEditMainSlide" + index;
+        var hash =  hex_sha1(index + value + coordinate + target  + userid + password);
+        $(this).closest("form").find("#hashEditMainSlide").val(hash);
+        data = { index: index, value: value, coordinate:coordinate,  target:target,  password:password, hash:hash, callback:'?'};
+
+        setDataMainSlide(url, data,order,mainSlideForm);
+    }); 
+
+    function setPositionMainSlide(data,order,url) {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                loader.hidePleaseWait();
+                $("#manageMainSlide").load('mobileSlides');  
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+                $("#manageMainSlide").load('mobileSlides');  
+            }
+        });
+    }
+
+
+    function setDataMainSlide(url, data,order, mainSlideForm) {
+        loader.showPleaseWait();
+        $(mainSlideForm).ajaxForm({
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                loader.hidePleaseWait();
+                $("#manageMainSlide").load('mobileSlides');                
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+                $("#manageMainSlide").load('mobileSlides');
+            }
+        }); 
+        $(mainSlideForm).submit();
+    }
+
+    function addMainSlide(url) {
+        loader.hidePleaseWait();
+        $('#mainSlideForm').ajaxForm({
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                loader.hidePleaseWait();
+                $("#manageMainSlide").load('mobileSlides');
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+                $("#manageMainSlide").load('mobileSlides');
+            }
+        }); 
+        $('#mainSlideForm').submit();
+
+    } 
+
     $(document.body).on('click','.btn-danger',function (e) { 
         var dataNode = $(this).attr("data");
         var data = $.parseJSON(dataNode);
