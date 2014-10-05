@@ -1,11 +1,39 @@
 <?php
 
+use Easyshop\Services\XMLContentGetterService as XMLService;
+
 class MobileContentManagerController extends BaseController
 {
+    /**
+     *  Constructor declaration for XMLService  
+     */
+    protected $XMLService;
+
+    public function __construct(XMLService $XMLService) 
+    {   
+        $this->XMLService = $XMLService;
+        $xmlString = $this->XMLService->getMobileHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
+
+    }
+
     public function showMobileCms()
     {
-        return View::make('pages.cms-mobilehome');
+
+        $adminEntity = App::make('AdminMemberRepository');        
+
+        foreach($this->map->section as $map) {
+            $section[] = $map;
+        }
+
+        return View::make('pages.cms-mobilehome')
+                    ->with('userid', Auth::id())
+                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))
+                    ->with('sectionContent', $section)
+                    ->with('mobileCmsLink', $this->XMLService->getMobileCmsLink());
     }
+
 
 }
 
