@@ -144,7 +144,12 @@
         $(this).closest("form").find("#hashEditMainSlide").val(hash);
         data = { index: index, value: value, coordinate:coordinate,  target:target,  password:password, hash:hash, callback:'?'};
 
-        setDataMainSlide(url, data,order,mainSlideForm);
+        if(coordinate == "") {
+            showErrorModal("Please supply a coordinate");
+        }
+        else {
+            setDataMainSlide(url, data,order,mainSlideForm);
+        }
     }); 
 
     function setSectionHead(url,data) {
