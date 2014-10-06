@@ -11,30 +11,18 @@
         var userid = $("#userid").val();
         var password = $("#password").val();
         var url = $(this).data('url');
-        loader.showPleaseWait();   
         var hash =  hex_sha1(index + name + bgcolor + type  + userid + password);
         data = { index: index, name:name, bgcolor:bgcolor, type:type, userid:userid,  password:password, hash:hash, callback:'?'};
-        setSectionHead(url,data);
-    }); 
+        
+        if(name == "" || bgcolor == "" || type == "") {
+             showErrorModal("Please fill up the required fields");    
+        }
+        else {
+            loader.showPleaseWait();   
+            setSectionHead(url,data);          
+        }
 
-
-    function setSectionHead(url,data) {
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();            
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });
-    }    
+    });   
 
     $("#manageMainSlide").on('click','#submitAddMainSlide',function (e) { 
         e.preventDefault();
@@ -48,8 +36,13 @@
         var hash = hex_sha1(myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide);
         $("#hashMainSlide").val(hash);
 
-        loader.showPleaseWait();    
-        addMainSlide(url);
+        if( myvalue == "" || myvalue == "undefined" || value == ""){
+            showErrorModal("Please upload an image");         
+        }
+        else {
+            loader.showPleaseWait();    
+            addMainSlide(url);
+        }
 
     });
 
@@ -154,6 +147,24 @@
         setDataMainSlide(url, data,order,mainSlideForm);
     }); 
 
+    function setSectionHead(url,data) {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                loader.hidePleaseWait();            
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+            }
+        });
+    }      
+
     function setPositionMainSlide(data,order,url) {
         $.ajax({
             type: 'GET',
@@ -257,13 +268,20 @@
         data = { sectionIndex:sectionIndex, value:value, type:type, target:target, actionType:actionType, userid:userid , password:password,hash:hash};
 
         var boxIndex = $(".boxContentCount_" + sectionIndex).last().val();
-        addBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType);
+
+        if(value == "" || type == "") {
+            showErrorModal("Please fill up the required fields");
+        }
+        else {
+            loader.showPleaseWait();
+            addBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType);
+        }
 
     });    
 
     function addBoxContent(data, url, boxIndex,sectionIndex, value, type, target, actionType)
     {
-        loader.showPleaseWait();        
+  
         $.ajax({
             type: 'GET',
             url: url,
@@ -350,5 +368,11 @@
 
         $("#data_"+ sectionIndex + "_" + boxIndex).attr('data', obj);
     }
+
+    function showErrorModal(messages) {
+            loader.hidePleaseWait();
+            $("#errorTexts").html(messages); 
+            $("#customerror").modal('show');  
+    }    
 
 })(jQuery);    
