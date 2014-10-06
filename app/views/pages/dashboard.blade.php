@@ -110,7 +110,7 @@
             
             </li>  
             <li>
-                <a href='/Mobile'>
+                <a href='/mobile'>
                     <img src="{{{ asset('images/icon_category.png') }}}"/> 
                     <span >Mobile Page Manager</span>
                 </a>
