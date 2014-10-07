@@ -1,9 +1,9 @@
 @extends('layouts.default')
 
-@section('description', 'Users and Products Reports Manager - Home Page')
+@section('description', 'Reports Manager - Home Page')
 @section('keywords', '')
-@section('title', 'Users and Products Report Manage | Easyshop Admin')
-@section('header_tagline', 'Users and Products Report Manager')
+@section('title', 'Reports Manager | Easyshop Admin')
+@section('header_tagline', 'Reports Manager')
 
 @section('page_header')
     @include('includes.header')
