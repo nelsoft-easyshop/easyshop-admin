@@ -145,7 +145,15 @@
                 </a>
                 <p> Enables the administrator to upload multiple product images and product info through csv/excel files.</p>
             
-            </li>                          
+            </li>     
+            <li>
+                <a href='/reports'>
+                    <img src="{{{ asset('images/icon_people.png') }}}"/> 
+                    <span >Reports Manager</span>
+                </a>
+                <p> View Users and Products overall statistics</p>
+            
+            </li>                                  
 
             
         </ul>
