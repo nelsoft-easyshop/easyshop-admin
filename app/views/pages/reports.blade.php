@@ -12,6 +12,7 @@
 @section('content')
 
     <link type="text/css" href="{{{ asset('css/src/jquery.dataTables.css') }}}" rel="stylesheet"  media="screen"/>
+    <link type="text/css" href="{{{ asset('css/src/dataTables.tableTools.css') }}}" rel="stylesheet"  media="screen"/>
     <link type="text/css" href="{{{ asset('css/dashboard.css') }}}" rel="stylesheet"  media="screen"/>
 
     <div class="row">
@@ -31,7 +32,7 @@
                         <table id="table1" class="display" style="max-width:100%;">
                                 <thead>
                                     <tr id="heading">
-                                        <th style="display:none">Id</th>
+                                        <th style="display:none;">Id</th>
                                         <th>Month</th>
                                         <th>Sign-up Count</th>
 
@@ -40,7 +41,7 @@
                                 <tbody >
                                     @foreach($numberOfSignUps as $key => $signups)
                                         <tr>
-                                            <td style="display:none;"></td>
+                                            <td style="display:none;">{{{ $key }}}</td>
                                             <td>{{{ $listOfMonths[$key] }}}</td>
                                             <td>{{{ $signups }}}</td>
                                         </tr>
@@ -220,6 +221,7 @@
 @stop
 @section('page_js') 
 {{ HTML::script('js/src/jquery.dataTables.js') }}
+{{ HTML::script('js/src/dataTables.tableTools.min.js') }}
 {{ HTML::script('js/src/jquery.datetimepicker.js') }}
 {{ HTML::script('js/src/jquery.form.js') }}
 {{ HTML::script('js/reports.js') }}
