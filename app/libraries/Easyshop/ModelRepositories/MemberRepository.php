@@ -1,12 +1,62 @@
 <?php namespace Easyshop\ModelRepositories;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Member, OrderStatus, OrderProductStatus;
+use Member, OrderStatus, OrderProductStatus, Product;
 
 class MemberRepository extends AbstractRepository
 {
     private $transactionService;
 
+    /**
+     * Get Number of uploaded products by users
+     * @return Array
+     */  
+    public function getNumberOfUploadedProductsPerAccount()
+    {
+
+        foreach(Member::all() as $member) {
+            $findProductOfUsers = Product::where("member_id",$member->id_member)->orderBy("member_id","desc")->get();
+            $memberArr[] = $member->username;
+            $productCountArr[] = count($findProductOfUsers);
+        }
+        return array("members" => $memberArr, "productCount" => $productCountArr);
+    }
+
+    /**
+     * Get Number users with and without uploaded products
+     * @return Array
+     */  
+    public function getUsersWithOrWithoutUploadedProduct()
+    {
+        $withProducts = 0;
+        $withoutProducts = 0;
+        foreach(Member::all() as $member)
+        {
+
+            $findProductOfUsers = Product::where("member_id",$member->id_member)->count();
+            if($findProductOfUsers === 0) {
+                $withProducts++;
+            }
+            else {
+                $withoutProducts++;
+            }
+        }
+        $withArr[] = $withProducts;
+        $withOutArr[] = $withoutProducts;
+        return array_merge($withArr,$withOutArr);
+    }
+
+    /**
+     * Get number of monthly users signup
+     * @return Entity
+     */  
+    public function getMonthlySignUp($month)
+    {
+        $dt = Carbon::create(2014, ++$month, 1);
+        return Member::whereBetween("datecreated",array((string)$dt->startOfMonth(),(string)$dt->endOfMonth()))->orderBy("datecreated","asc")->count();
+
+    }
     /**
      * Update the member entity
      *
