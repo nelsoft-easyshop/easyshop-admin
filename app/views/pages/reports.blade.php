@@ -73,15 +73,17 @@
                             <table id="table3" class="display" style="max-width:100%;">
                                 <thead>
                                     <tr id="heading">
-                                        <th>Users w/ Uploaded Products</th>
-                                        <th>Users w/out Uploaded Products</th>
+                                        <th>Username</th>
+                                        <th># of Uploaded Products</th>
                                     </tr>
                                 </thead>
                                 <tbody >
-                                    <tr>
-                                        <td>{{{$usersWithUploadProducts[0]}}} users</td>
-                                        <td>{{{ $usersWithUploadProducts[1] }}} users</td>
-                                    </tr>
+                                    @foreach($membersWithProducts as $key => $member)
+                                        <tr>
+                                            <td>{{{$member}}}</td>
+                                            <td>{{{ $membersProductCounts[$key] }}}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
