@@ -1,6 +1,6 @@
 <?php namespace Easyshop\ModelRepositories;
 
-
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Product,ProductImage,  LocationLookUp, ProductItem, OptionalAttrDetail, OptionalAttrHead,Category, Brand, Style, Member, ProductShippingDetail, ProductShippingHead;
 
@@ -17,6 +17,17 @@ class ProductRepository
         return Product::where('is_delete', '=', 0)
             ->where('is_draft', '=', 0, 'AND')
             ->paginate($row);
+    }
+
+    /**
+     * Get number of products uploaded per month
+     * @return Entity
+     */ 
+    public function getProductsUploadedPerMonth($month)
+    {
+        $dt = Carbon::create(2014, ++$month, 1);
+        return Product::whereBetween("createddate",array((string)$dt->startOfMonth(),(string)$dt->endOfMonth()))->orderBy("createddate","asc")->count();
+
     }
 
     public function search($userData,$row=50)
