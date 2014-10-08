@@ -24,8 +24,8 @@
         }); 
     $("#table3").DataTable({
             "order": [0,'desc'],
-            "bProcessing": true,          
-            "iDisplayLength": 50,       
+            "bProcessing": true,            
+            "bPaginate": false,                                   
             "dom": 'T<"clear">lfrtip',
             "tableTools": {
                 "sSwfPath": "misc/TableTools/copy_csv_xls_pdf.swf",
