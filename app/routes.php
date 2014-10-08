@@ -34,6 +34,9 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('cms/featuredProduct', array('uses' => 'FeedsContentManagerController@getFeaturedProducts'));
     Route::get('cms/popularItem', array('uses' => 'FeedsContentManagerController@getPopularItems'));
     Route::get('cms/promoItems', array('uses' => 'FeedsContentManagerController@getPromoItems'));
+    
+    Route::get('mobile', array('uses' => 'MobileContentManagerController@showMobileCms'));
+    Route::get('mobileSlides', array('uses' => 'MobileContentManagerController@getMainSlides'));
 
     Route::get('register', array('uses' => 'AccountController@showRegistration'));
     Route::put('register', array('uses' => 'AccountController@doRegister'));    

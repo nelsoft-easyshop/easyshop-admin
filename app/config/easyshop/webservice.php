@@ -15,10 +15,12 @@ return array(
     */
     'homeCmsLink' => "$baseUrl/webservice/homewebservice",
     'feedCmsLink' => "$baseUrl/webservice/feedwebservice",
+    'mobileCmsLink' => "$baseUrl/webservice/mobilewebservice",
     'getHomeXML'=> "$baseUrl/webservice/homewebservice/getContents/",
     'getFeedXML'=> "$baseUrl/webservice/feedwebservice/getcontents/",
     'productCSVwebservice'=> "$baseUrl/webservice/synccsvImage",
     'easyShopLink'=> "$baseUrl",
+    'getMobileXml'=> "$baseUrl/webservice/mobilewebservice/getcontents",
 );
 
 
