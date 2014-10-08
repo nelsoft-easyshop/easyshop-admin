@@ -21,22 +21,17 @@ class CategoryRepository
      * @param $parentIds
      * @return Array
      */
-    public function getItemsPerParentCategory($parentIds)
+    public function getProductCountPerParentCategory($parentIds)
     {   
-       $count = 0;
         foreach ($parentIds as $parentId) {
-            $total = 0;
             if($parentId->name === "PARENT"){
                 continue;
             }
             $categoryname[] = $parentId->name;
-            $childs = DB::select(DB::raw("select `easyshop`.`GetFamilyTree`(:prodid) as childs"),array("prodid" => $parentId->id_cat));
-            foreach($childs as $category) {
-                foreach(explode(",",$category->childs) as $id) {
-                    $total = $total + Product::where("cat_id",$id)->count();
-                }
-                $productCountPerCategory[] = $total;
-            }
+            $childsList = DB::select(DB::raw("select`GetFamilyTree`(:prodid) as childs"),array("prodid" => $parentId->id_cat));
+            $count = DB::table("es_product")
+                        ->whereIn("cat_id",explode(",",$childsList[0]->childs))->count();
+            $productCountPerCategory[] = $count;
         }
         return array("parentNames" => $categoryname, "productCount" => $productCountPerCategory);
     }
