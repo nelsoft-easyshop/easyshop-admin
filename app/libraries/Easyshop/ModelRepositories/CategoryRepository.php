@@ -28,7 +28,7 @@ class CategoryRepository
                 continue;
             }
             $categoryname[] = $parentId->name;
-            $childsList = DB::select(DB::raw("select`GetFamilyTree`(:prodid) as childs"),array("prodid" => $parentId->id_cat));
+            $childsList = DB::select(DB::raw("select `GetFamilyTree`(:prodid) as childs"),array("prodid" => $parentId->id_cat));
             $count = DB::table("es_product")
                         ->whereIn("cat_id",explode(",",$childsList[0]->childs))->count();
             $productCountPerCategory[] = $count;
