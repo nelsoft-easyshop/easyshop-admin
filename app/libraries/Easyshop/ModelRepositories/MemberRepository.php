@@ -15,10 +15,10 @@ class MemberRepository extends AbstractRepository
     public function getNumberOfUploadedProductsPerAccount()
     {
         $findProductOfUsers = DB::table('es_member')
-                        ->leftJoin("es_product","es_product.member_id","=","es_member.id_member")
-                         ->select(DB::raw("es_member.username as username, COUNT(es_product.id_product) as uploadCount"))
-                         ->groupBy('username')
-                         ->paginate(50);
+                            ->leftJoin("es_product","es_product.member_id","=","es_member.id_member")
+                            ->select(DB::raw("es_member.username as username, COUNT(es_product.id_product) as uploadCount"))
+                            ->groupBy('username')
+                            ->paginate(50);
     
         return $findProductOfUsers;
     }
