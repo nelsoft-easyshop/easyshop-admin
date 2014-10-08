@@ -110,6 +110,14 @@
             
             </li>  
             <li>
+                <a href='/mobile'>
+                    <img src="{{{ asset('images/icon_category.png') }}}"/> 
+                    <span >Mobile Page Manager</span>
+                </a>
+                <p>Content Manager for Mobile Home page. View and edit Box Contents and home page main slides</p>
+
+            </li>              
+            <li>
                 <a href='/register'>
                     <img src="{{{ asset('images/icon_category.png') }}}"/> 
                     <span >Manage Administrator </span>

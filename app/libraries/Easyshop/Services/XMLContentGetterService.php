@@ -37,6 +37,17 @@ class XMLContentGetterService
     }
 
     /**
+     * Returns the link https://easyshop.ph.local/webservice/mobilewebservice
+     *
+     * @return $link
+     */
+    public function getMobileCmsLink()
+    {
+        $link = \Config::get('easyshop/webservice.mobileCmsLink');
+        return $link;
+    }    
+
+    /**
      *  Returns the the link https://www.easyshop.ph
      *
      *  @return string $link
@@ -59,4 +70,16 @@ class XMLContentGetterService
         $xmlString = file_get_contents(\Config::get('easyshop/webservice.getFeedXML'));
         return $xmlString;
     }
+
+    /**
+     *  Returns the the link https://easyshop.ph.local/webservice/contentwebservice/getContents/
+     *
+     *  @return string $link
+     */
+    public function getMobileHomeXml()
+    {
+
+        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getMobileXml'));
+        return $xmlString;
+    }    
 }

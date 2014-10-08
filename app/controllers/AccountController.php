@@ -37,7 +37,7 @@ class AccountController extends BaseController
 
         // create our user data for the authentication
         $userdata = array(
-            'username' 	=> Input::get('username'),
+            'username'  => Input::get('username'),
             'password'  => Input::get('password'),
             'is_active' => '1'
         );
@@ -120,14 +120,15 @@ class AccountController extends BaseController
         foreach($adminEntity->getAllAdminUsers() as $users)
         {
             $allUsers[] = $users;
-            $specificRoles[] = $adminEntity->getAdminRoleById($users->role_id);
+            $specificRoles[] = $adminEntity->getAdminRoleById($users->id_admin_member);
 
         }
-            return View::make("pages.adminusers")
-                    ->with("users",$adminEntity->getAllAdminUsers())
-                    ->with("index",1)
-                    ->with("roles",$adminEntity->getAllAdminRoles())
-                    ->with("specificRoles",$specificRoles);
+
+        return View::make('pages.adminusers')
+                ->with("users",$adminEntity->getAllAdminUsers())
+                ->with("index",1)
+                ->with("roles",$adminEntity->getAllAdminRoles())
+                ->with("specificRoles",$specificRoles);    
     }
 
     /**
