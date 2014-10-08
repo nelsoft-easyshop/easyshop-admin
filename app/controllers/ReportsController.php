@@ -47,12 +47,9 @@ class ReportsController extends BaseController
             $uploadedProductsPerMonth[] = $this->productRepository->getProductsUploadedPerMonth($this->listOfMonths, $year);
             $year--;
         }
-
         $uploadedProductsSummary = $this->memberRepository->getNumberOfUploadedProductsPerAccount();
-
         return View::make("pages.reports")
-                ->with("membersWithProducts",$uploadedProductsSummary["members"])
-                ->with("membersProductCounts",$uploadedProductsSummary["productCount"])
+                ->with("membersProductCounts",$uploadedProductsSummary)
                 ->with("numberOfSignUps",$signupsArr)
                 ->with("yearsOfOperation",$yearsArr)
                 ->with("usersWithUploadProducts",$this->memberRepository->getNumberOfUsersWithUploadedProduct())
