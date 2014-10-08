@@ -29,22 +29,25 @@
             <div id="myTabContent" class="tab-content">
                 <div class="tab-pane fade in active" id="home">
                     <div class="table-responsive table-payment"> 
-                        <table id="table1" class="display" style="max-width:100%;">
+                        <table id="table1" class="display" >
                                 <thead>
                                     <tr id="heading">
-                                        <th style="display:none;">Id</th>
-                                        <th>Month</th>
-                                        <th>Sign-up Count</th>
+                                        <th width="45%">Month</th>
+                                        <th width="10%"></th>
+                                        <th width="45%">Sign-up Count</th>
 
                                     </tr>
                                 </thead>
                                 <tbody >
-                                    @foreach($numberOfSignUps as $key => $signups)
-                                        <tr>
-                                            <td style="display:none;">{{{ $key }}}</td>
-                                            <td>{{{ $listOfMonths[$key] }}}</td>
-                                            <td>{{{ $signups }}}</td>
-                                        </tr>
+                                    @foreach($numberOfSignUps as $row => $signups)
+                                        <tr style="height:50px;"><td></td><td style="font-weight:bold;"><font size="5px">{{$yearsOfOperation[$row]}}</font></td><td></td></tr>
+                                        @foreach($signups as $key => $data)
+                                            <tr>
+                                                <td>{{{ $listOfMonths[$key] }}}</td>
+                                                <td >&nbsp;</td>
+                                                <td>{{{ $data }}}</td>
+                                            </tr>
+                                        @endforeach
                                     @endforeach
                                 </tbody>
                         </table>
@@ -70,11 +73,11 @@
                     </div>
                     <div class="tab-pane fade" id="profile2">
                         <div class="table-responsive table-payment"> 
-                            <table id="table3" class="display" style="max-width:100%;">
+                            <table id="table3" class="display">
                                 <thead>
                                     <tr id="heading">
-                                        <th>Username</th>
-                                        <th># of Uploaded Products</th>
+                                        <th width="50%">Username</th>
+                                        <th width="50%"># of Uploaded Products</th>
                                     </tr>
                                 </thead>
                                 <tbody >
@@ -90,24 +93,27 @@
                     </div>                    
                     <div class="tab-pane fade" id="profile3">
                         <div class="table-responsive table-payment"> 
-                            <table id="table4" class="display" style="max-width:100%;">
+                            <table id="table4" class="display">
                                 <thead>
                                     <tr id="heading">
-                                        <th style="display:none">Id</th>                                        
-                                        <th>Month</th>
-                                        <th>Number of Uploaded Items</th>
+                                        <th width="45%">Month</th>
+                                        <th width="10%"></th>
+                                        <th width="45%">Sign-up Count</th>
+
                                     </tr>
                                 </thead>
                                 <tbody >
-                                    @foreach($uploadedItemsPerMonth as $key => $uploadedItems)
-                                        <tr>
-                                            <td style="display:none;">$key</td>
-                                            <td>{{{ $listOfMonths[$key] }}}</td>
-                                            <td>{{{ $uploadedItems }}} </td>
-                                        </tr>
+                                    @foreach($uploadedItemsPerMonth as $row => $products)
+                                        <tr style="height:50px;"><td></td><td style="font-weight:bold;"><font size="5px">{{$yearsOfOperation[$row]}}</font></td><td></td></tr>
+                                        @foreach($products as $key => $data)
+                                            <tr>
+                                                <td>{{{ $listOfMonths[$key] }}}</td>
+                                                <td >&nbsp;</td>
+                                                <td>{{{ $data }}}</td>
+                                            </tr>
+                                        @endforeach
                                     @endforeach
                                 </tbody>
-
                             </table>
                         </div>
                     </div> 
