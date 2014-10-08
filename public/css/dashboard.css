@@ -1,3 +1,7 @@
+.DTTT_button embed {
+    width: 50px;
+    height: 24px;
+}
 a{
   cursor:pointer;
 }

@@ -1,11 +1,41 @@
 <?php namespace Easyshop\ModelRepositories;
 
-use Category;
+use Category, Product;
 use Easyshop\Services\StringHelperService;
 use Illuminate\Support\Facades\DB;
 
 class CategoryRepository
 {
+    /**
+     * Get parent Categories
+     * @return Entity
+     */    
+    public function getParentCategories()
+    {
+        return Category::where("parent_id","1")->get();
+    }
+
+    /**
+     * Get total number of items per parent category
+     *
+     * @param $parentIds
+     * @return Array
+     */
+    public function getProductCountPerParentCategory($parentIds)
+    {   
+        foreach ($parentIds as $parentId) {
+            if($parentId->name === "PARENT"){
+                continue;
+            }
+            $categoryname[] = $parentId->name;
+            $childsList = DB::select(DB::raw("select `GetFamilyTree`(:prodid) as childs"),array("prodid" => $parentId->id_cat));
+            $count = DB::table("es_product")
+                        ->whereIn("cat_id",explode(",",$childsList[0]->childs))->count();
+            $productCountPerCategory[] = $count;
+        }
+        return array("parentNames" => $categoryname, "productCount" => $productCountPerCategory);
+    }
+
     /**
      * Create category
      *

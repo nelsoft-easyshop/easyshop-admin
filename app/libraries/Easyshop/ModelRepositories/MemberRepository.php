@@ -1,11 +1,69 @@
 <?php namespace Easyshop\ModelRepositories;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Member, OrderStatus, OrderProductStatus;
+use Member, OrderStatus, OrderProductStatus, Product;
 
 class MemberRepository extends AbstractRepository
 {
     private $transactionService;
+
+    /**
+     * Get Number of uploaded products by users
+     * @return Array
+     */  
+    public function getNumberOfUploadedProductsPerAccount()
+    {
+
+        foreach(Member::all() as $member) {
+            $findProductOfUsers = Product::where("member_id",$member->id_member)
+                                        ->where("is_draft","=","0")
+                                        ->where("is_delete","=","0")
+                                        ->get();
+            $memberArr[] = $member->username;
+            $productCountArr[] = count($findProductOfUsers);
+        }
+        return array("members" => $memberArr, "productCount" => $productCountArr);
+    }
+
+    /**
+     * Get Number users with and without uploaded products
+     * @return Array
+     */  
+    public function getNumberOfUsersWithUploadedProduct()
+    {
+        $users = Member::all()->count();
+        $usersWithUpload = DB::select(DB::raw("SELECT COUNT(*) as userWithUpload FROM 
+                                        (
+                                        SELECT 
+                                            m.id_member as id_member, COUNT(p.id_product) as uploadCount
+                                        FROM
+                                            es_member m
+                                                LEFT JOIN
+                                            es_product p ON p.member_id = m.id_member AND p.is_draft = 0 AND is_delete = 0
+                                        GROUP BY m.username 
+                                        ) A 
+                                        WHERE uploadCount > 0;
+                                        "));
+
+        $withArr[] = $usersWithUpload[0]->userWithUpload;
+        $withOutArr[] = $users - $usersWithUpload[0]->userWithUpload;
+        return array_merge($withArr,$withOutArr);
+    }
+
+    /**
+     * Get number of monthly users signup
+     * @return Entity
+     */  
+    public function getMonthlySignUp($month, $year)
+    {
+        foreach ($month as $key => $value) {
+            $dt = Carbon::create($year, ++$key, 1);
+            $signups[] = Member::whereBetween("datecreated",array((string)$dt->startOfMonth(),(string)$dt->endOfMonth()))->orderBy("datecreated","asc")->count();
+        }
+        return $signups;
+
+    }
 
     /**
      * Update the member entity

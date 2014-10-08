@@ -58,6 +58,8 @@ Route::group(array('before' => 'auth'), function(){
     Route::get("productcsv", array('uses' => 'ProductCSVController@showCSVupload'));    
     Route::post("productcsv", array('uses' => 'ProductCSVController@doUpload'));    
 
+    Route::get("reports", array('uses' => 'ReportsController@showReportsConsole'));    
+
     Route::get('searchkeywords', array('uses' => 'SearchKeyWordsController@showSearchKeyWords'));    
     Route::post('customsearchkeywords', array('uses' => 'SearchKeyWordsController@customSearch'));    
 
