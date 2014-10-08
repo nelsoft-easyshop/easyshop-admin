@@ -18,7 +18,7 @@ class MemberRepository extends AbstractRepository
                         ->leftJoin("es_product","es_product.member_id","=","es_member.id_member")
                          ->select(DB::raw("es_member.username as username, COUNT(es_product.id_product) as uploadCount"))
                          ->groupBy('username')
-                         ->paginate(10);
+                         ->paginate(50);
     
         return $findProductOfUsers;
     }
