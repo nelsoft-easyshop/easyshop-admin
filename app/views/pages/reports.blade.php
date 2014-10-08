@@ -44,7 +44,7 @@
                                         @foreach($signups as $key => $data)
                                             <tr>
                                                 <td>{{{ $listOfMonths[$key] }}}</td>
-                                                <td >&nbsp;</td>
+                                                <td ></td>
                                                 <td>{{{ $data }}}</td>
                                             </tr>
                                         @endforeach
@@ -108,7 +108,7 @@
                                         @foreach($products as $key => $data)
                                             <tr>
                                                 <td>{{{ $listOfMonths[$key] }}}</td>
-                                                <td >&nbsp;</td>
+                                                <td > </td>
                                                 <td>{{{ $data }}}</td>
                                             </tr>
                                         @endforeach
