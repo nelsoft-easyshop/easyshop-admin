@@ -40,12 +40,12 @@ class ReportsController extends BaseController
     public function showReportsConsole()
     {
         $productsPerCategory = $this->categoryRepository->getProductCountPerParentCategory($this->categoryRepository->getParentCategories());
-        $year =  Carbon::parse( \Config::get('transaction.startOfOperation'))->year;
-        while($year < Carbon::now()->addYears(1)->year) {
+        $year =  Carbon::now()->year;
+        while($year >= Carbon::parse( \Config::get('transaction.startOfOperation'))->year) {
             $yearsArr[] = $year;
             $signupsArr[] = $this->memberRepository->getMonthlySignUp($this->listOfMonths, $year);
             $uploadedProductsPerMonth[] = $this->productRepository->getProductsUploadedPerMonth($this->listOfMonths, $year);
-            $year++;
+            $year--;
         }
 
         $uploadedProductsSummary = $this->memberRepository->getNumberOfUploadedProductsPerAccount();
