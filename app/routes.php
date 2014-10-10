@@ -27,6 +27,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('user', array('uses' => 'MemberController@ajaxUpdateUsers'));
 
     Route::get('cms/home', array('uses' => 'HomeContentManagerController@getHomeContent'));
+    Route::get('home', array('uses' => 'NewHomeContentManagerController@getHomeContent'));
     Route::get('cms/slides', array('uses' => 'HomeContentManagerController@getMainSlides'));
     Route::get('cms/productslides', array('uses' => 'HomeContentManagerController@getProductSlides'));
 
