@@ -296,8 +296,14 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                loader.hidePleaseWait();   
-                appendDataContainer(url, boxIndex, sectionIndex, value, type, target, actionType);
+                if(json.sites[0]["success"] != "success") {
+                    loader.hidePleaseWait();    
+                    showErrorModal("Slug Does Not Exist");
+                }
+                else {
+                    loader.hidePleaseWait();   
+                    appendDataContainer(url, boxIndex, sectionIndex, value, type, target, actionType);           
+                }
             },
             error: function(e) {
                 loader.hidePleaseWait();   
@@ -335,7 +341,6 @@
 
     function setBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType) 
     {
-        console.log(actionType);
         loader.showPleaseWait();        
         $.ajax({
             type: 'GET',
@@ -346,8 +351,16 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                loader.hidePleaseWait();   
-                updateDataContainer(url, boxIndex, sectionIndex, value, type, target, actionType);
+                if(json.sites[0]["success"] != "success") {
+                    loader.hidePleaseWait();    
+                    showErrorModal("Slug Does Not Exist");
+                }
+                else {
+                    loader.hidePleaseWait();   
+                    updateDataContainer(url, boxIndex, sectionIndex, value, type, target, actionType);             
+                }
+
+
             },
             error: function(e) {
                 loader.hidePleaseWait();   
@@ -362,7 +375,6 @@
         $("#type_" + sectionIndex + "_" + boxIndex).html(type);
         $("#target_" + sectionIndex + "_" + boxIndex).html(target);
         $("#actionType_" + sectionIndex + "_" + boxIndex).html(actionType);
-        console.log("#actionType_" + sectionIndex + "_" + boxIndex);
         var obj = '{"url":"' + url +
             '","sectionIndex":"' +  sectionIndex +
             '","boxIndex":"' + boxIndex +
