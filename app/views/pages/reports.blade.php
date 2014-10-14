@@ -18,16 +18,16 @@
     <div class="row">
             <section id="tabs">
                 <ul id="myTab" class="nav nav-tabs" role="tablist">
-                    <li class="active"><a href="#home" role="tab" data-toggle="tab">Monthly Sign Up Statistics</a></li>
+                    <li  class="active"><a href="#profile2" role="tab" data-toggle="tab"># of uploaded products per account</a></li>
+                    <li><a href="#home" role="tab" data-toggle="tab">Monthly Sign Up Statistics</a></li>
                     <li><a href="#profile1" role="tab" data-toggle="tab">Users w/ & w/out Products</a></li>
-                    <li><a href="#profile2" role="tab" data-toggle="tab"># of uploaded products per account</a></li>
                     <li><a href="#profile3" role="tab" data-toggle="tab"># of uploaded items per month</a></li>
                     <li><a href="#profile4" role="tab" data-toggle="tab"># of items items per parent category</a></li>
                 </ul>
             </section>
 
             <div id="myTabContent" class="tab-content">
-                <div class="tab-pane fade in active" id="home">
+                <div class="tab-pane fade" id="home">
                     <div class="table-responsive table-payment"> 
                         <table id="table1" class="display" >
                                 <thead>
@@ -71,7 +71,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="profile2">
+                    <div class="tab-pane fade  in active" id="profile2">
                         <div class="table-responsive table-payment"> 
                             <table id="table3" class="display">
                                 <thead>
@@ -81,15 +81,16 @@
                                     </tr>
                                 </thead>
                                 <tbody >
-                                    @foreach($membersWithProducts as $key => $member)
+                                    @foreach($membersProductCounts as $member)
                                         <tr>
-                                            <td>{{{$member}}}</td>
-                                            <td>{{{ $membersProductCounts[$key] }}}</td>
+                                            <td>{{{$member->username}}}</td>
+                                            <td>{{{ $member->uploadCount }}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
+                        {{$membersProductCounts->links()}}                         
                     </div>                    
                     <div class="tab-pane fade" id="profile3">
                         <div class="table-responsive table-payment"> 
