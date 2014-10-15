@@ -191,27 +191,6 @@
       
     });  
 
-    function setCategoryProductPosition(url,data, tableSelector, reloadurl)
-    {
-
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $(tableSelector).load(reloadurl);
-                loader.hidePleaseWait();  
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-                showErrorModal("Please try again");
-            }
-        });  
-    }
 
     $(document.body).on('click','#moveup, #movedown',function (e) { 
         loader.showPleaseWait();          
@@ -243,47 +222,6 @@
     
     }); 
 
-    function setSliderPosition(url,data)
-    {
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#manageSliderSection").load("getSlideSection");    
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                $("#manageSliderSection").load("getSlideSection");   
-                loader.hidePleaseWait();                   
-            }
-        }); 
-    }    
-
-    function setPositionAdsSection(url,data)
-    {
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#adsSectionDiv").load("getAdsSection");      
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                $("#adsSectionDiv").load("getAdsSection");     
-                loader.hidePleaseWait();                   
-            }
-        }); 
-    }
 
     $(document.body).on('click','#moveupAdsSection, #movedownAdsSection',function (e) { 
         loader.showPleaseWait();          
@@ -314,26 +252,7 @@
     
     }); 
 
-    function setPositionAdsSection(url,data)
-    {
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#adsSectionDiv").load("getAdsSection");      
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                $("#adsSectionDiv").load("getAdsSection");     
-                loader.hidePleaseWait();                   
-            }
-        }); 
-    }
+
 
 
     $(document.body).on('click','#addCategoryProductPanel',function (e) { 
@@ -459,28 +378,7 @@
 
     }); 
 
-    function editAdsSectionForm(form,url)
-    {
-        $(form).ajaxForm({
 
-            url: url,
-            type: 'GET', 
-            dataType: 'jsonp',
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#adsSectionDiv").load("getAdsSection");                
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                $("#adsSectionDiv").load("getAdsSection");          
-                loader.hidePleaseWait();   
-            }
-        }); 
-        $(form).submit(); 
-    }
 
     $(document.body).on('click','#editSubSlider',function (e) { 
 
@@ -504,30 +402,7 @@
 
     }); 
 
-    function editSubSlider(editSlideForm_, url, tableSelector, reloadurl)
-    {
-        $(editSlideForm_).ajaxForm({
 
-            url: url,
-            type: 'GET', 
-            dataType: 'jsonp',
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $(tableSelector).load(reloadurl);                
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                $(tableSelector).load(reloadurl);                
-                loader.hidePleaseWait();   
-            }
-        }); 
-        $(editSlideForm_).submit(); 
-    }
-
-    /*here*/
     $(document.body).on('click', '#addAdSection',function (e) { 
         
         loader.showPleaseWait();     
@@ -545,29 +420,6 @@
             addAds(form, url);
         }
     }); 
-
-    function addAds(form, url)
-    {
-        $(form).ajaxForm({
-
-            url: url,
-            type: 'GET', 
-            dataType: 'jsonp',
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#adsSectionDiv").load("getAdsSection");                  
-                loader.hidePleaseWait();  
-            },
-            error: function(e) {
-                $("#adsSectionDiv").load("getAdsSection");                   
-                loader.hidePleaseWait(); 
-            }
-        }); 
-        $(form).submit();        
-    }    
 
     $(document.body).on('click','#changeSellerBannerSubmit, #changeSellerLogoSubmit, #changeSellerSlug',function (e) { 
         
@@ -627,26 +479,7 @@
 
     }); 
 
-    function changeSellerBanner(form, url)
-    {
-        $(form).ajaxForm({
 
-            url: url,
-            type: 'GET', 
-            dataType: 'jsonp',
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                loader.hidePleaseWait();   
-            }
-        }); 
-        $(form).submit();        
-    }
     $(document.body).on('click','#editProductPanel',function (e) { 
         loader.showPleaseWait();           
         var url = $(this).data("url");
@@ -744,27 +577,6 @@
       
     });
 
-    function setPositionAdsSection(url,data)
-    {
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#adsSectionDiv").load("getAdsSection");      
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                $("#adsSectionDiv").load("getAdsSection");     
-                loader.hidePleaseWait();                   
-            }
-        }); 
-    }
-
     $(document.body).on('click','#movedownProductPanel, #moveupProductPanel',function (e) { 
         loader.showPleaseWait();          
         var action = $(this).data('action').toString();
@@ -794,26 +606,7 @@
     
     });  
 
-    function setPositionProductPanel(url,data)
-    {
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#productPanelDiv").load("getProductPanel");    
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                $("#productPanelDiv").load("getProductPanel");    
-                loader.hidePleaseWait();                   
-            }
-        }); 
-    }    
+  
 
     $(document.body).on('click','#addSubSlider',function (e) { 
         
@@ -841,28 +634,6 @@
 
     });  
 
-    function addSubSlider(mainSlideForm, url, tableSelector, reloadurl)
-    {
-        $(mainSlideForm).ajaxForm({
-
-            url: url,
-            type: 'GET', 
-            dataType: 'jsonp',
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $(tableSelector).load(reloadurl);              
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                $(tableSelector).load(reloadurl);             
-                loader.hidePleaseWait();   
-            }
-        }); 
-        $(mainSlideForm).submit();        
-    }
     $(document.body).on('click','#addMainSlider',function (e) { 
         loader.showPleaseWait();          
         var template = $(this).closest("form").find("#drop_actionType").val();
@@ -1125,17 +896,7 @@
 
     });      
 
-    function updateDateContainer(index, subIndex, value, url)
-    {
 
-        $("#value_" + index + "_" + subIndex).html(value);
-        var obj = '{"url":"' + url +
-            '","index":"' +  index +
-            '","subIndex":"' + subIndex +
-            '","value":"' +value +'"}';
-
-        $("#data_"+ index + "_" + subIndex).attr('data', obj);        
-    }
 
     $(document.body).on('click','#setSliderDesignTemplate',function (e) { 
         loader.showPleaseWait();          
@@ -1216,6 +977,263 @@
 
     });  
 
+
+    function setCategoryProductPosition(url,data, tableSelector, reloadurl)
+    {
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $(tableSelector).load(reloadurl);
+                loader.hidePleaseWait();  
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+                showErrorModal("Please try again");
+            }
+        });  
+    }
+
+
+    function setSliderPosition(url,data)
+    {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#manageSliderSection").load("getSlideSection");    
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                $("#manageSliderSection").load("getSlideSection");   
+                loader.hidePleaseWait();                   
+            }
+        }); 
+    }    
+
+    function setPositionAdsSection(url,data)
+    {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#adsSectionDiv").load("getAdsSection");      
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                $("#adsSectionDiv").load("getAdsSection");     
+                loader.hidePleaseWait();                   
+            }
+        }); 
+    }
+
+    function setPositionAdsSection(url,data)
+    {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#adsSectionDiv").load("getAdsSection");      
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                $("#adsSectionDiv").load("getAdsSection");     
+                loader.hidePleaseWait();                   
+            }
+        }); 
+    }
+
+    function editAdsSectionForm(form,url)
+    {
+        $(form).ajaxForm({
+
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#adsSectionDiv").load("getAdsSection");                
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                $("#adsSectionDiv").load("getAdsSection");          
+                loader.hidePleaseWait();   
+            }
+        }); 
+        $(form).submit(); 
+    }
+
+    function editSubSlider(editSlideForm_, url, tableSelector, reloadurl)
+    {
+        $(editSlideForm_).ajaxForm({
+
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $(tableSelector).load(reloadurl);                
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                $(tableSelector).load(reloadurl);                
+                loader.hidePleaseWait();   
+            }
+        }); 
+        $(editSlideForm_).submit(); 
+    }
+
+
+    function addAds(form, url)
+    {
+        $(form).ajaxForm({
+
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#adsSectionDiv").load("getAdsSection");                  
+                loader.hidePleaseWait();  
+            },
+            error: function(e) {
+                $("#adsSectionDiv").load("getAdsSection");                   
+                loader.hidePleaseWait(); 
+            }
+        }); 
+        $(form).submit();        
+    }    
+
+
+    function changeSellerBanner(form, url)
+    {
+        $(form).ajaxForm({
+
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                loader.hidePleaseWait();   
+            }
+        }); 
+        $(form).submit();        
+    }
+
+    function setPositionAdsSection(url,data)
+    {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#adsSectionDiv").load("getAdsSection");      
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                $("#adsSectionDiv").load("getAdsSection");     
+                loader.hidePleaseWait();                   
+            }
+        }); 
+    }
+
+    function setPositionProductPanel(url,data)
+    {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#productPanelDiv").load("getProductPanel");    
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                $("#productPanelDiv").load("getProductPanel");    
+                loader.hidePleaseWait();                   
+            }
+        }); 
+    }  
+
+
+    function addSubSlider(mainSlideForm, url, tableSelector, reloadurl)
+    {
+        $(mainSlideForm).ajaxForm({
+
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $(tableSelector).load(reloadurl);              
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                $(tableSelector).load(reloadurl);             
+                loader.hidePleaseWait();   
+            }
+        }); 
+        $(mainSlideForm).submit();        
+    }
+
+    function updateDateContainer(index, subIndex, value, url)
+    {
+
+        $("#value_" + index + "_" + subIndex).html(value);
+        var obj = '{"url":"' + url +
+            '","index":"' +  index +
+            '","subIndex":"' + subIndex +
+            '","value":"' +value +'"}';
+
+        $("#data_"+ index + "_" + subIndex).attr('data', obj);        
+    }
+
     function appendDataContainer(index, newSubIndex, subIndex, categoryName, url, removeCategoryLink, editCategoryLink)
     {
         var obj = '{"url":"' + editCategoryLink +
@@ -1240,7 +1258,7 @@
             loader.hidePleaseWait();
             $("#errorTexts").html(messages); 
             $("#customerror").modal('show');  
-    }    
+    }                                            
 
 })(jQuery);    
 
