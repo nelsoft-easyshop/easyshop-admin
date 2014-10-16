@@ -250,7 +250,7 @@
                         <div class="form-group">
                             <label for="userId" class="col-sm-2 control-label">Type</label>
                             <div class="col-sm-10">
-                                {{ Form::text('Type', "", array('id' => 'type','class' => 'form-control')) }}                        
+                                {{ Form::text('Type', "product", array('id' => 'type','class' => 'form-control', 'readonly' => 'readonly')) }}                        
                             </div>
                         </div> 
                         <div class="form-group">
@@ -365,7 +365,7 @@
                         </div>
                         <div class="form-group">
                             <label>Type</label>
-                            <input type="text" class="form-control" id="edit_type" placeholder="Enter contact number">
+                            <input type="text" class="form-control" id="edit_type" readonly="readonly" placeholder="Enter contact number">
                         </div>
                         <div class="form-group">
                             <label>Target</label>
