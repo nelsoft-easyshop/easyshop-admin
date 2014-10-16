@@ -33,6 +33,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('getAllSliders', array('uses' => 'NewHomeContentManagerController@getAllSliders'));
     Route::get('getProductPanel', array('uses' => 'NewHomeContentManagerController@getProductPanel'));
     Route::get('getAdsSection', array('uses' => 'NewHomeContentManagerController@getAdSection'));
+    Route::get('getOtherCategories', array('uses' => 'NewHomeContentManagerController@getOtherCategories'));
     Route::get('getSubCategoriesSection/{index}', array('uses' => 'NewHomeContentManagerController@getSubCategoriesSection'));
     Route::get('getCategoriesProductPanel/{index}', array('uses' => 'NewHomeContentManagerController@getCategoriesProductPanel'));
     Route::get('cms/slides', array('uses' => 'HomeContentManagerController@getMainSlides'));
