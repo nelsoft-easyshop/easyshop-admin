@@ -158,11 +158,10 @@
         var index = $(this).data("index");
         var nodename = $(this).data("nodename");
         var url = $(this).data("url");
-
         var hash =  hex_sha1(index  + nodename + userid + password);
 
         data = { index: index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};  
-        var count = parseInt($(".categoryProductPanelCount").last().text());        
+        var count = parseInt($(".categoryProductPanelCount_"+index).last().text());        
         var tableSelector = "#categorySectionProductPanel_" + index;
         var reloadurl = "getCategoriesProductPanel/" + index;
 
@@ -186,9 +185,7 @@
                     showErrorModal("Please try again");
                 }
             });    
-        }        
-          
-      
+        }          
     });  
 
 
@@ -252,9 +249,6 @@
     
     }); 
 
-
-
-
     $(document.body).on('click','#addCategoryProductPanel',function (e) { 
         loader.showPleaseWait();          
         var value = $(this).closest("form").find("#value").val().toString();
@@ -264,8 +258,8 @@
         var hash =  hex_sha1(index + value  + userid + password);
         data = { index: index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
 
-        var tableSelector = "#subCategoriesSection_" + index;
-        var reloadurl = "getSubCategoriesSection/" + index;
+        var tableSelector = "#categorySectionProductPanel_" + index;
+        var reloadurl = "getCategoriesProductPanel/" + index;
         if($.trim(value) == "") {
             showErrorModal("Please supply a slug");
         }
@@ -280,7 +274,7 @@
                 dataType: 'jsonp',
                 success: function(json) {
                     loader.hidePleaseWait();  
-                    //$(tableSelector).load(reloadurl);
+                    $(tableSelector).load(reloadurl);
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
@@ -851,6 +845,121 @@
                 loader.hidePleaseWait();
             }
         });   
+    });  
+
+    $(document.body).on('click','#addOtherCategoy',function (e) { 
+        loader.showPleaseWait();           
+        var url = $(this).data("url");
+        var value = $('#drop_otherCategories option:selected').val();      
+        var hash =  hex_sha1(value + userid + password);
+        data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        
+        var flag = 0;
+        var count = parseInt($(".otherCategoriesCount").last().text());
+        console.log(count);
+        if(count <= 5) {
+            $("#otherCategoriesTable" + " tbody tr").each(function(){
+                var valueRow = $(this).find(".otherCategoriesTD").text();
+                if(valueRow == value) {
+                    flag = 1;
+                }
+            }); 
+            if(flag == 0) {
+                  $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:data,
+                    async: false,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();   
+                        $("#otherCategoriesTable").load("getOtherCategories");
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });          
+            }
+            else {
+                showErrorModal("Category already exists");
+            }            
+        }
+        else {
+            showErrorModal("There are already " + count  +" other categories");
+        }
+    });  
+
+    $(document.body).on('click','#editOtherCategorySubmit',function (e) { 
+        loader.showPleaseWait();           
+        var index = $(this).closest("form").find("#editOtherIndex").val();
+        var url = $(this).closest("form").find("#editOtherUrl").val();
+        var value = $('#drop_otherCategories_edit option:selected').val();      
+        var hash =  hex_sha1(index + value + userid + password);
+        data = {index:index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                loader.hidePleaseWait();   
+                $("#otherCategoriesTable").load("getOtherCategories");
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+            }
+        });          
+
+        
+    });  
+    $(document.body).on('click','#editOtherCategoryBtn',function (e) { 
+        var dataNode = $(this).attr("data");
+        var data = $.parseJSON(dataNode);
+        console.log(data.value);
+        $('#drop_otherCategories_edit option[value="'+ data.value +'"]').attr("selected", "selected");
+        $("#editOtherIndex").val(data.index);
+        $("#editOtherUrl").val(data.url);
+
+    });  
+
+    $(document.body).on('click','.removeOtherCategory',function (e) { 
+     
+        var index = $(this).data("index").toString();
+        var nodename = $(this).data("nodename");
+        var url = $(this).data("url");
+
+        var hash =  hex_sha1(index + nodename + userid + password);
+        data = { index: index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
+
+        var flag = 0;
+        var count = parseInt($(".otherCategoriesCount").last().text());
+ 
+        if(count > 1) {
+            loader.showPleaseWait();     
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();   
+                    $("#otherCategoriesTable").load("getOtherCategories");
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });    
+        }     
+
     });  
 
     $(document.body).on('click','#mdl_save',function (e) { 
