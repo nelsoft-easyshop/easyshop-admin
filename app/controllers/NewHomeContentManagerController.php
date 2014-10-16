@@ -54,8 +54,6 @@ class NewHomeContentManagerController extends BaseController
             $adsSection[] = $ads;
         }     
 
-
-
         $productEntity = App::make('ProductRepository');
         foreach($this->map->sellerSection->productPanel as $productPanel)
         {
@@ -65,7 +63,6 @@ class NewHomeContentManagerController extends BaseController
         $index = 0;
         foreach($this->map->categorySection as $categoryPanel)
         {
-
             foreach($categoryPanel->productPanel as $productPanel)
             {
                 $categoryProductPanel[] = $productEntity->getProductBySlug($productPanel->slug);
@@ -75,6 +72,21 @@ class NewHomeContentManagerController extends BaseController
             $index++;
             $categoryProductPanel = array();
         }
+
+        foreach($this->map->menu->newArrivals[0] as $arrivals)
+        {
+            $newArrivals[] = $arrivals;
+        }
+
+        foreach($this->map->menu->topProducts as $tProducts)
+        {
+            $topProducts[] = $tProducts;
+        }   
+
+        foreach($this->map->menu->topSellers as $tSellers)
+        {
+            $topSellers[] = $tSellers;
+        }             
 
         return View::make('pages.cms-newhome')
                     ->with('userid', Auth::id())
@@ -88,6 +100,9 @@ class NewHomeContentManagerController extends BaseController
                     ->with('categoryNavigation', $categoryNavigation)
                     ->with('password', $adminEntity->getAdminMemberById(Auth::id()))
                     ->with('sliderSection', $sliders)
+                    ->with('topProducts', $topProducts)
+                    ->with('topSellers', $topSellers)
+                    ->with('newArrivals', $newArrivals)
                     ->with('adSection', array_flatten($adsSection))
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                                   
@@ -251,6 +266,63 @@ class NewHomeContentManagerController extends BaseController
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
     }
+
+    /**
+     *  Reloads contents of otherCategories nodes
+     */     
+    public function getTopSellers()
+    {
+        $adminEntity = App::make('AdminMemberRepository');          
+        foreach($this->map->menu->topSellers as $tSellers)
+        {
+            $topSellers[] = $tSellers;
+        }
+        
+        return View::make('partials.topsellers')
+                    ->with('userid', Auth::id())
+                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))                       
+                    ->with('topSellers', $topSellers)
+                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
+    } 
+
+    /**
+     *  Reloads contents of otherCategories nodes
+     */     
+    public function getTopProducts()
+    {
+        $adminEntity = App::make('AdminMemberRepository');          
+        foreach($this->map->menu->topProducts as $tProducts)
+        {
+            $topProducts[] = $tProducts;
+        }
+        
+        return View::make('partials.topproducts')
+                    ->with('userid', Auth::id())
+                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))                       
+                    ->with('topProducts', $topProducts)
+                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
+    }    
+
+    /**
+     *  Reloads contents of otherCategories nodes
+     */     
+    public function getNewArrivals()
+    {
+        $adminEntity = App::make('AdminMemberRepository');          
+        foreach($this->map->menu->newArrivals[0] as $arrivals)
+        {
+            $newArrivals[] = $arrivals;
+        }
+        
+        return View::make('partials.newarrivals')
+                    ->with('userid', Auth::id())
+                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))                       
+                    ->with('newArrivals', $newArrivals)
+                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
+    }    
 
     /**
      *  Reloads contents of categoriesSection nodes
