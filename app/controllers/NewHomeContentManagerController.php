@@ -23,9 +23,13 @@ class NewHomeContentManagerController extends BaseController
     public function getHomeContent()
     {
 
+        foreach($this->map->categoryNavigation->otherCategories as $map) {
+            $otherCategories[] = $map;
+        }        
+
         foreach($this->map->categoryNavigation->category as $map) {
             $categoryNavigation[] = $map;
-        }        
+        }         
 
         $adminEntity = App::make('AdminMemberRepository');          
         $categoryRepository = App::make('CategoryRepository');          
@@ -48,7 +52,9 @@ class NewHomeContentManagerController extends BaseController
 
         foreach($this->map->adSection as $ads) {
             $adsSection[] = $ads;
-        }                 
+        }     
+
+
 
         $productEntity = App::make('ProductRepository');
         foreach($this->map->sellerSection->productPanel as $productPanel)
@@ -72,6 +78,7 @@ class NewHomeContentManagerController extends BaseController
 
         return View::make('pages.cms-newhome')
                     ->with('userid', Auth::id())
+                    ->with('otherCategories', $otherCategories)
                     ->with('categorySection', $categorySection)
                     ->with('categoryLists', $categoryLists)
                     ->with('categoryProductPanelList', $categoryProductPanelList)
@@ -219,6 +226,30 @@ class NewHomeContentManagerController extends BaseController
                     ->with('templateLists', $templateLists)                    
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());  
+    }
+
+    /**
+     *  Reloads contents of otherCategories nodes
+     */     
+    public function getOtherCategories()
+    {
+        $adminEntity = App::make('AdminMemberRepository');          
+        $categoryRepository = App::make('CategoryRepository');              
+        foreach($this->map->categoryNavigation->otherCategories as $map) {
+            $otherCategories[] = $map;            
+        }   
+
+        foreach ($categoryRepository->getChildCategories() as $value) {
+            $childCategoryLists[] = array("slug" => $value->slug, "name" => $value->name);
+        }           
+
+        return View::make('partials.othercategories')
+                    ->with('userid', Auth::id())
+                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))                       
+                    ->with('otherCategories', $otherCategories)
+                    ->with('childCategoryLists', $childCategoryLists)
+                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
     }
 
     /**
