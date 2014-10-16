@@ -1292,7 +1292,7 @@
                                                 <div style="position:relative;display:inline-block;">
                                                     <div class='well' style="height:210px;">
                                                         <p>
-                                                            <img src="{{$easyShopLink}}/assets//cms/home/{{$subSlides->path}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
+                                                            <img src="{{$easyShopLink}}/assets/cms/home{{$subSlides->path}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
                                                         </p>
 
                                                         <a href="#myMain_{{$sliderIndex}}_{{$subSlideIndex}}" data-toggle="modal" style="position:absolute;top:180px;left:135px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
