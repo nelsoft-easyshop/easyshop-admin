@@ -19,14 +19,27 @@
                 <li><a href="#manageAdSection" role="tab"  data-toggle="tab">Manage Ad Section</a></li>                
                 <li><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
                 <li ><a href="#manageSellerSection" role="tab"  data-toggle="tab">Manage Seller Section</a></li>                
-                <li class="dropdown">
+                <li class="dropdown"  >
                     <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Manage Category Navigation<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+                        <li role="presentation" class="dropdown-header">Category Navigations</li>
                         <span style="display:none;">{{{ $nav = 0 }}}</span>
-                        @foreach($categoryNavigation as $navigation)
-                            <li><a href="#navigation_{{{$navigation->categorySlug}}}" id="mainNavigation_{{{$nav}}}" class="mainNavigation_{{{$navigation->categorySlug}}}" tabindex="-1" role="tab" data-toggle="tab">{{{$navigation->categorySlug}}}</a></li>
-                            <span style="display:none;">{{{ $nav++ }}}</span>
-                        @endforeach
+                            @foreach($categoryNavigation as $navigation)
+                                <li><a href="#navigation_{{{$navigation->categorySlug}}}" id="mainNavigation_{{{$nav}}}" class="mainNavigation_{{{$navigation->categorySlug}}}" tabindex="-1" role="tab" data-toggle="tab">{{{$navigation->categorySlug}}}</a></li>
+                                <span style="display:none;">{{{ $nav++ }}}</span>
+                            @endforeach
+                        <li class="divider"></li>
+                            <li  role="presentation" class="dropdown-header">New Arrivals</li>
+                            <li><a href="#manageNewArrivals" role="tab"  data-toggle="tab">Manage New Arrivals</a></li>                
+
+                        <li class="divider"></li>
+                            <li role="presentation" class="dropdown-header">Top Products</li>  
+                            <li><a href="#manageTopProducts" tabindex="-1" role="tab" data-toggle="tab">Manage Top Products</a></li>                
+
+                        <li class="divider"></li>
+                            <li role="presentation" class="dropdown-header">Top Sellers</li> 
+                            <li><a href="#manageTopSellers" tabindex="-1" role="tab" data-toggle="tab">Manage Top Sellers</a></li>                
+
                         <li class="divider"></li>
                         <li><a href="#navigation_others" tabindex="-1" role="tab" data-toggle="tab">Other Categories</a></li>
 
@@ -41,9 +54,315 @@
         {{ Form::hidden('removeCategoryLink', "$newHomeCmsLink/removeContent", array('id' => 'removeCategoryLink','class' => 'form-control')) }}           
         <div id="myTabContent" class="tab-content">
 
-            <div class="tab-pane fade active in" id="manageCategorySection">
 
-  
+
+
+          <div class="tab-pane fade" id="manageTopSellers">
+                    <legend>        
+                        <h4 class="tbl-title">
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                            Manage Top Sellers
+                        </h4>
+                    </legend>  
+
+                    <form id='left' target="test"  class="form-horizontal">                                          
+                        <div class="form-group">
+                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="value" name='value' class='form-control'> 
+                            </div>
+                        </div>                                                                                   
+                        <div class="form-group">
+                            <div class="col-xs-offset-2 col-xs-10">
+                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addTopSellers" id="addTopSellers">Add</a>
+                            </div>
+                        </div>                                      
+                    </form> 
+
+                    <table class="table table-striped table-hover tbl-my-style" id="addTopSellersTable">
+                        <thead>
+                        <tr>
+                            <th>/</th>
+                            <th>Product Slug</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody_boxContent">
+                        <span style="display:none;">{{$topSellersCount=1}}</span>                               
+                        <span style="display:none;">{{$topSellersIndex=0}}</span>                             
+                        @foreach($topSellers[0] as $sellers)
+                            <tr id="">
+                                <td>
+                                    <div class="btn-toolbar" role="toolbar">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-danger editTopSellers" id="editTopSellersBtn" 
+                                                data-toggle="modal" data-target="#editTopSellers"
+                                                data='{"url":"{{$newHomeCmsLink}}/setTopSellers","index":"{{$topSellersIndex}}","value":"{{$sellers}}" } '
+                                                >
+                                                <span class="glyphicon-center glyphicon glyphicon-cog"></span>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn edit_btn removeTopSellers"
+                                                    data-nodename="topSellers" data-url="{{$newHomeCmsLink}}/removeContent" data-index = "{{$topSellersIndex}}" 
+                                                >
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </div>                                                    
+                                    </div>
+                                </td>
+                                <td class="otherCategoriesTD">{{$sellers}}</td>
+                                <span style="display:none;"></span>                            
+                            </tr>
+                        <span style="display:none;" class="topSellersCount">{{$topSellersCount++}}</span>                               
+                        <span style="display:none;">{{$topSellersIndex++}}</span>                               
+                        @endforeach
+                        </tbody> 
+                    </table>
+
+                  <!--Start topProducts Modal -->
+                        <div class="modal fade user_modal" id="editTopSellers" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        <h4 class="modal-title white_header" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span>Edit Top Sellers</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal"> 
+                                            <div class="form-group">
+                                                <label for="userId" class="col-sm-2 control-label">Value</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" id="editTopSellersValue" name='value' value="/" class='form-control'> 
+                                                </div>
+                                            </div>                                               
+                                            {{ Form::hidden('index', "", array('id' => 'editTopSellersIndex','class' => 'form-control')) }}                                                                                              
+                                            {{ Form::hidden('url', "", array('id' => 'editTopSellersUrl','class' => 'form-control')) }}                                                                                              
+
+                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setTopSellers" id="editTopSellersSubmit">Edit</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                  <!--End topProducts Modal -->
+            </div> 
+
+
+
+
+
+
+
+
+
+
+            <div class="tab-pane fade" id="manageTopProducts">
+                    <legend>        
+                        <h4 class="tbl-title">
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                            Manage Top Products
+                        </h4>
+                    </legend>  
+
+                    <form id='left' target="test"  class="form-horizontal">                                          
+                        <div class="form-group">
+                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="value" name='value' class='form-control'> 
+                            </div>
+                        </div>                                                                                   
+                        <div class="form-group">
+                            <div class="col-xs-offset-2 col-xs-10">
+                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addTopProducts" id="addTopProducts">Add</a>
+                            </div>
+                        </div>                                      
+                    </form> 
+
+                    <table class="table table-striped table-hover tbl-my-style" id="addTopProductsTable">
+                        <thead>
+                        <tr>
+                            <th>/</th>
+                            <th>Product Slug</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody_boxContent">
+                        <span style="display:none;">{{$topProductsCount=1}}</span>                               
+                        <span style="display:none;">{{$topProductsIndex=0}}</span>                             
+                        @foreach($topProducts[0] as $products)
+                            <tr id="">
+                                <td>
+                                    <div class="btn-toolbar" role="toolbar">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-danger editTopProducts" id="editTopProductsBtn" 
+                                                data-toggle="modal" data-target="#editTopProducts"
+                                                data='{"url":"{{$newHomeCmsLink}}/setTopProducts","index":"{{$topProductsIndex}}","value":"{{$products}}" } '
+                                                >
+                                                <span class="glyphicon-center glyphicon glyphicon-cog"></span>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn edit_btn removeTopProducts"
+                                                    data-nodename="topProducts" data-url="{{$newHomeCmsLink}}/removeContent" data-index = "{{$topProductsIndex}}" 
+                                                >
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </div>                                                    
+                                    </div>
+                                </td>
+                                <td class="otherCategoriesTD">{{$products}}</td>
+                                <span style="display:none;"></span>                            
+                            </tr>
+                        <span style="display:none;" class="topProductsCount">{{$topProductsCount++}}</span>                               
+                        <span style="display:none;">{{$topProductsIndex++}}</span>                               
+                        @endforeach
+                        </tbody> 
+                    </table>
+
+                  <!--Start topProducts Modal -->
+                        <div class="modal fade user_modal" id="editTopProducts" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        <h4 class="modal-title white_header" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span>Edit Top Products</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal"> 
+                                            <div class="form-group">
+                                                <label for="userId" class="col-sm-2 control-label">Value</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" id="editTopProductsValue" name='value' value="/" class='form-control'> 
+                                                </div>
+                                            </div>                                               
+                                            {{ Form::hidden('index', "", array('id' => 'editTopProductsIndex','class' => 'form-control')) }}                                                                                              
+                                            {{ Form::hidden('url', "", array('id' => 'editTopProductsUrl','class' => 'form-control')) }}                                                                                              
+
+                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setTopProducts" id="editTopProductsSubmit">Edit</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                  <!--End topProducts Modal -->
+            </div> 
+
+            <div class="tab-pane fade" id="manageNewArrivals">
+                    <legend>        
+                        <h4 class="tbl-title">
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                            Manage New Arrivals
+                        </h4>
+                    </legend>  
+                    <form id='left' target="test"  class="form-horizontal">                                          
+                        <div class="form-group">
+                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="value" name='value' class='form-control'> 
+                            </div>
+                        </div>  
+                        <div class="form-group">
+                            <label for="userId" class="col-sm-2 control-label">Target</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="target" name='value' value="/" class='form-control'> 
+                            </div>
+                        </div>                                                                                 
+                        <div class="form-group">
+                            <div class="col-xs-offset-2 col-xs-10">
+                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addNewArrival" id="addNewArrival">Add</a>
+                            </div>
+                        </div>                                      
+                    </form> 
+
+                    <table class="table table-striped table-hover tbl-my-style" id="newArrivalsTable">
+                        <thead>
+                        <tr>
+                            <th>/</th>
+                            <th>Text</th>
+                            <th>Target</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody_boxContent">
+                        <span style="display:none;">{{$newArrivalsCount=1}}</span>                               
+                        <span style="display:none;">{{$newArrivalsIndex=0}}</span>                               
+                        @foreach($newArrivals as $arrivals)
+                            <tr id="">
+                                <td>
+                                    <div class="btn-toolbar" role="toolbar">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-danger editNewArrival" id="editNewArrivalBtn" 
+                                                data-toggle="modal" data-target="#editNewArrival"
+                                                data='{"url":"{{$newHomeCmsLink}}/setNewArrival","index":"{{$newArrivalsIndex}}","value":"{{$arrivals->text}}", "target":"{{$arrivals->target}}" } '
+                                                >
+                                                <span class="glyphicon-center glyphicon glyphicon-cog"></span>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn edit_btn removeNewArrival"
+                                                    data-nodename="newArrival" data-url="{{$newHomeCmsLink}}/removeContent" data-index = "{{$newArrivalsIndex}}" 
+                                                >
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </div>                                                    
+                                    </div>
+                                </td>
+                                <td class="otherCategoriesTD">{{$arrivals->text}}</td>
+                                <td class="otherCategoriesTD">{{$arrivals->target}}</td>
+                                <span style="display:none;"></span>                            
+                            </tr>
+                        <span style="display:none;" class="newArrivalsCount">{{$newArrivalsCount++}}</span>                               
+                        <span style="display:none;">{{$newArrivalsIndex++}}</span>                               
+                        @endforeach
+                        </tbody> 
+                    </table>
+
+                  <!--Start Edit New Arrival Modal -->
+                        <div class="modal fade user_modal" id="editNewArrival" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        <h4 class="modal-title white_header" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span>Edit Other Category</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal"> 
+                                            <div class="form-group">
+                                                <label for="userId" class="col-sm-2 control-label">Value</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" id="editNewArrivalValue" name='value' value="/" class='form-control'> 
+                                                </div>
+                                            </div>                                               
+                                            <div class="form-group">
+                                                <label for="userId" class="col-sm-2 control-label">Target</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" id="editNewArrivalTarget" name='value' value="/" class='form-control'> 
+                                                </div>
+                                            </div>                                                                                       
+                                          
+                                            {{ Form::hidden('index', "", array('id' => 'editNewArrivalIndex','class' => 'form-control')) }}                                                                                              
+                                            {{ Form::hidden('url', "", array('id' => 'editNewArrivalUrl','class' => 'form-control')) }}                                                                                              
+
+                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setOtherCategories" id="editNewArrivalSubmit">Edit</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                  <!--End Edit New Arrival Modal -->
+            </div> 
+
+            <div class="tab-pane fade  active in" id="manageCategorySection">
                     <form id='changeProductPanel' target="test" action="{{ $newHomeCmsLink}}/setSellerHead" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
                         <legend>        
                             <h4 class="tbl-title">
