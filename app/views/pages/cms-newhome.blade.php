@@ -231,8 +231,6 @@
                                                              ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                             <span class="categoryProductPanelCount" style="display:none;">{{$categoryProductPanelCount}}</span>
 
-
-
                                                         <!--Start Edit Slide Modal -->
                                                             <div class="modal fade user_modal" id="categoryProductPanel_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                 <div class="modal-dialog">
@@ -265,18 +263,14 @@
                                                             </div>
                                                         <!--End Edit Slide Modal -->                                                            
 
-
-
-
                                                         </div>
                                                     </div>
-                                                <span style="display:none;">{{$categoryProductPanelCount++}}</span>                                                                                                    
+                                                <span style="display:none;" class="categoryProductPanelCount_{{$categorySectionIndex}}">{{$categoryProductPanelCount++}}</span>                                                                                                    
                                                 <span style="display:none;">{{$subCategorySectionIndex++}}</span>                                                
                                                 @endforeach
                                             </div>
 
                                             <!-- End Product Panel Category Section -->
-
 
                                         </div>
                                     </div>
@@ -285,16 +279,7 @@
                         @endforeach
                     </div>
 
-
-
             </div>
-
-
-
-
-
-
-
 
             <div class="tab-pane fade" id="manageAdSection">
                     <form id='addAdsForm' target="test" action="{{ $newHomeCmsLink}}/addAdds" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
@@ -748,7 +733,7 @@
                     <legend>        
                         <h4 class="tbl-title">
                             <span class="glyphicon glyphicon-list-alt"></span>
-                            Manage Sub Category Navigation
+                            Manage Other Categories
                         </h4>
                     </legend>  
 
@@ -759,9 +744,9 @@
                             </div>
                         </div> 
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Sub Category Slug</label>
+                            <label for="userId" class="col-sm-2 control-label">Add Other Category</label>
                             <div class="col-sm-10">
-                                <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
+                                <select name="c_stateregion" id="drop_otherCategories"  class="form-control" data-status="">
                                     @foreach($childCategoryLists as $categories)
                                         <option value="{{{$categories['slug']}}}">{{{$categories["name"]}}}</option>
                                     @endforeach
@@ -770,13 +755,89 @@
                         </div>                                                           
                         <div class="form-group">
                             <div class="col-xs-offset-2 col-xs-10">
-                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addSubCategories" data-subcategories = "#subcategories_{{{$index}}}" id="addSubCategoryNavigation">Add Sub Category Navigation</a>
+                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addOtherotherCategories" id="addOtherCategoy">Add Other Category Navigation</a>
                             </div>
                         </div>                                      
                     </form> 
+
+                     <table class="table table-striped table-hover tbl-my-style" id="otherCategoriesTable">
+                        <thead>
+                        <tr>
+                            <th>/</th>
+                            <th>Categories</th>
+
+                        <!-- HERE -->
+                        </tr>
+                        </thead>
+                        <tbody id="tbody_boxContent">
+                        <span style="display:none;">{{$otherCategoriesCount=1}}</span>                               
+                        <span style="display:none;">{{$otherCategoriesIndex=0}}</span>                               
+                        @foreach($otherCategories[0]->categorySlug as $others)
+                            <tr id="row_">
+                                <td>
+                                    <div class="btn-toolbar" role="toolbar">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-danger editOtherCategory" id="editOtherCategoryBtn" 
+                                                data-toggle="modal" data-target="#editOtherCategory"
+                                                data='{"url":"{{$newHomeCmsLink}}/setOtherCategories","index":"{{$otherCategoriesIndex}}","value":"{{$others}}" } '
+                                                >
+                                                <span class="glyphicon-center glyphicon glyphicon-cog"></span>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn edit_btn removeOtherCategory"
+                                                    data-nodename="otherCategories" data-url="{{$newHomeCmsLink}}/removeContent" data-index = "{{$otherCategoriesIndex}}" 
+                                                >
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </div>                                                    
+                                    </div>
+                                </td>
+                                <td class="otherCategoriesTD">{{$others}}</td>
+                                <span style="display:none;"></span>                            
+                            </tr>
+                        <span style="display:none;" class="otherCategoriesCount">{{$otherCategoriesCount++}}</span>                               
+                        <span style="display:none;">{{$otherCategoriesIndex++}}</span>                               
+                        @endforeach
+                        </tbody> 
+                    </table>
+
+                  <!--Start Edit Other Category Modal -->
+                        <div class="modal fade user_modal" id="editOtherCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        <h4 class="modal-title white_header" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span>Edit Other Category</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal"> 
+                                            <div class="form-group">
+                                                <label for="userId" class="col-sm-2 control-label">Add Other Category</label>
+                                                <div class="col-sm-10">
+                                                    <select name="c_stateregion" id="drop_otherCategories_edit"  class="form-control" data-status="">
+                                                        @foreach($childCategoryLists as $categories)
+                                                            <option value="{{{$categories['slug']}}}">{{{$categories["name"]}}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>                                                                                    
+                                          
+                                            {{ Form::hidden('index', "", array('id' => 'editOtherIndex','class' => 'form-control')) }}                                                                                              
+                                            {{ Form::hidden('url', "", array('id' => 'editOtherUrl','class' => 'form-control')) }}                                                                                              
+
+                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setOtherCategories" id="editOtherCategorySubmit">Edit</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                  <!--End Edit Other Category Modal -->
             </div> 
-
-
 
 
             <div class="tab-pane fade" id="manageSliderSection">
