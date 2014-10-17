@@ -26,7 +26,7 @@
                         <li role="presentation" class="dropdown-header">Category Navigations</li>
                         <span style="display:none;">{{{ $nav = 0 }}}</span>
                             @foreach($categoryNavigation as $navigation)
-                                <li><a href="#navigation_{{{$navigation->categorySlug}}}" id="mainNavigation_{{{$nav}}}" class="mainNavigation_{{{$navigation->categorySlug}}}" tabindex="-1" role="tab" data-toggle="tab">{{{$navigation->categorySlug}}}</a></li>
+                                <li><a href="#navigation_{{{$navigation->categorySlug}}}_{{$nav}}" id="mainNavigation_{{{$nav}}}" class="mainNavigation_{{{$navigation->categorySlug}}}" tabindex="-1" role="tab" data-toggle="tab">{{{$navigation->categorySlug}}}</a></li>
                                 <span style="display:none;">{{{ $nav++ }}}</span>
                             @endforeach
                         <li class="divider"></li>
@@ -42,7 +42,8 @@
                             <li><a href="#manageTopSellers" tabindex="-1" role="tab" data-toggle="tab">Manage Top Sellers</a></li>                
 
                         <li class="divider"></li>
-                        <li><a href="#navigation_others" tabindex="-1" role="tab" data-toggle="tab">Other Categories</a></li>
+                            <li role="presentation" class="dropdown-header">Other Categories</li> 
+                            <li><a href="#navigation_others" tabindex="-1" role="tab" data-toggle="tab">Other Categories</a></li>
 
                     </ul>
                 </li>
@@ -1040,7 +1041,7 @@
             </div>            
             <span style="display:none;">{{{$index = 0}}}</span>                            
             @foreach($categoryNavigation as $navigation)
-                <div class="tab-pane fade" id="navigation_{{{$navigation->categorySlug}}}">
+                <div class="tab-pane fade" id="navigation_{{{$navigation->categorySlug}}}_{{$index}}">
                     <form id='left' target="test"  class="form-horizontal">            
                         <legend>        
                             <h4 class="tbl-title">
