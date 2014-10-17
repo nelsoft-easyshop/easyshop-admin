@@ -5,7 +5,7 @@
                                             <div style="position:relative;display:inline-block;">
                                                 <div class='well' style="height:auto;">
                                                     <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                        <img src="{{$easyShopLink}}{{$ads->img}}" class="img-responsive" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                        <img src="{{$easyShopLink}}/{{$ads->img}}" class="img-responsive" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                     </div>
 
                                                     <a href="#adsPanel{{$adsSectionIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
