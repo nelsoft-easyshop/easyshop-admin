@@ -212,10 +212,12 @@
             }
     
         }
+        var tableSelector = "#sliderReload_" + index;
+        var reloadurl = "getSlideSection/" + index;        
         order = order.toString();
         var hash =  hex_sha1(index + subindex  + order + userid + password);        
         data = { index: index, subIndex:subindex, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
-        setSliderPosition(url,data);
+        setSliderPosition(url,data, tableSelector, reloadurl);
     
     }); 
 
@@ -730,14 +732,14 @@
     $(document.body).on('click','#removeSubSlide',function (e) { 
             
         var index = $(this).data("index").toString();
-        var subindex = $(this).data("subindex").toString();
+        var subIndex = $(this).data("subindex").toString();
         var nodename = $(this).data("nodename").toString();
         var url = $(this).data("url");
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;
-        var hash =  hex_sha1(index + subindex + nodename + userid + password);
+        var hash =  hex_sha1(index + subIndex + nodename + userid + password);
 
-        data = { index: index, subIndex:subindex, nodename:nodename,userid:userid,  password:password, hash:hash, callback:'?'};  
+        data = { index: index, subIndex:subIndex, nodename:nodename,userid:userid,  password:password, hash:hash, callback:'?'};  
         var count = parseInt($(".slideCount_" + index).last().text());
 
         if(count > 1 ) {
@@ -1379,7 +1381,7 @@
     }
 
 
-    function setSliderPosition(url,data)
+    function setSliderPosition(url,data, tableSelector, reloadurl)
     {
         $.ajax({
             type: 'GET',
@@ -1390,11 +1392,11 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $("#manageSliderSection").load("getSlideSection");    
+                $(tableSelector).load(reloadurl);    
                 loader.hidePleaseWait();   
             },
             error: function(e) {
-                $("#manageSliderSection").load("getSlideSection");   
+                $(tableSelector).load(reloadurl);   
                 loader.hidePleaseWait();                   
             }
         }); 
