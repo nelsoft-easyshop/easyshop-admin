@@ -637,8 +637,6 @@
                             <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="panel-body" id="adsSectionDiv">
 
-
-
                                     <span style="display:none;">{{$adsSectionIndex = 0}}</span>
                                     <span style="display:none;">{{$adsCount = 1}}</span>
                                     <div class="col-lg-15" style='text-align:center;'>
@@ -955,9 +953,9 @@
                                     @foreach($categoryLists as $categories)
                                         @if($categories["name"] !== "PARENT")
                                             @if($categories["slug"] == $navigation->categorySlug)
-                                                <option value="{{{$categories['slug']}}}" selected>{{{$categories["name"]}}}</option>
+                                                <option value="{{{$categories['slug']}}}" selected>{{{$categories["name"]}}} - ({{{$categories['slug']}}})</option>
                                             @else$categories["slug"]
-                                                <option value="{{{$categories['slug']}}}">{{{$categories["name"]}}}</option>
+                                                <option value="{{{$categories['slug']}}}">{{{$categories["name"]}}} - ({{{$categories['slug']}}})</option>
                                             @endif
                                         @endif
                                     @endforeach
@@ -1003,7 +1001,7 @@
                                 </div>
                             </div>                                      
                         </form>                                                                  
-                        <table class="table table-striped table-hover tbl-my-style"  id="subcategories_{{{$index}}}">
+                        <table class="table table-striped"  id="tblSubcategories_{{{$index}}}">
                             <thead>
                             <tr>
                                 <th></th>
