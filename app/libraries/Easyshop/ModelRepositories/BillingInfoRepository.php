@@ -75,10 +75,10 @@ class BillingInfoRepository extends AbstractRepository
         $billingInfo->bank_id = $bankId;
         
         if($this->getDefaultAccount($memberId)->isEmpty()){
-            billingInfo->is_default = 1;
+            $billingInfo->is_default = 1;
         }
         else{
-            billingInfo->is_default = 0;
+            $billingInfo->is_default = 0;
         }
         
         $isSuccessful = $billingInfo->save();
