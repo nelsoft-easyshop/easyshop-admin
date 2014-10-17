@@ -410,7 +410,7 @@
         $(this).closest("form").find("#hashAddAds").val(hash);
         var form = "#addAdsForm";
         if(value == "") {
-            showErrorModal("Please upload na Image");
+            showErrorModal("Please upload na image");
         }
         else {
             addAds(form, url);
@@ -1692,38 +1692,6 @@
             }
         }); 
         $(mainSlideForm).submit();        
-    }
-
-    function updateDateContainer(index, subIndex, value, url)
-    {
-
-        $("#value_" + index + "_" + subIndex).html(value);
-        var obj = '{"url":"' + url +
-            '","index":"' +  index +
-            '","subIndex":"' + subIndex +
-            '","value":"' +value +'"}';
-
-        $("#data_"+ index + "_" + subIndex).attr('data', obj);        
-    }
-
-    function appendDataContainer(index, newSubIndex, subIndex, categoryName, url, removeCategoryLink, editCategoryLink)
-    {
-        var obj = '{"url":"' + editCategoryLink +
-            '","index":"' +  index +
-            '","subIndex":"' + newSubIndex +
-            '","value":"' +categoryName +'"}'; 
-
-        var valueData = "value_"+index+"_"+newSubIndex;                     
-        var rowData = "row_"+index+"_"+newSubIndex;                     
-
-        var dataToAppend = '<tr id="'+rowData+'"><td><div class="btn-toolbar" role="toolbar"><button type="button" class="btn btn-danger edit_btn" id="'+"data_"+index+"_"+subIndex+'"'+
-                                                    'data="" data-toggle="modal" data-target="#myModal"><span class="glyphicon-center glyphicon glyphicon-cog"></span</button>'+
-'<button type="button" class="btn edit_btn removeButton" id="'+"data_"+index+"_"+subIndex+'" data="" ><span class="glyphicon-center glyphicon glyphicon-remove"></span</button>'
-                                                    +'</div></td>'+
-                '<td id="'+valueData+'">'+categoryName+'</td></tr>';
-
-        $("#subcategories_"+index+" tr").last().after(dataToAppend);
-        $("#data_"+ index + "_" + subIndex +".edit_btn").attr("data",obj);
     }
 
     function showErrorModal(messages) {
