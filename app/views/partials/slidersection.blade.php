@@ -237,5 +237,7 @@
                             <span style="display:none;">{{$sliderIndex++}}</span>                            
                         </div>
                     @endforeach
-                <div>                    
+                <div>     
+
+                               
  
