@@ -3,12 +3,12 @@
                                     <div class="col-lg-15" style='text-align:center;'>
                                         @foreach($productList as $productPanel)
                                             <div style="position:relative;display:inline-block;">
-                                                <div class='well' style="height:210px;">
-                                                    <p>
-                                                        <img src="{{$easyShopLink}}{{ltrim($productPanel->product_image_path, '.')}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
-                                                    </p>
+                                                <div class='well' style="height:auto;">
+                                                    <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
+                                                        <img src="{{$easyShopLink}}{{ltrim($productPanel->product_image_path, '.')}}" class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                    </div>
 
-                                                    <a href="#productPanel{{$productPanelindex}}" data-toggle="modal" style="position:absolute;top:180px;left:135px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                                    <a href="#productPanel{{$productPanelindex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                     <a class="btn btn-default" 
                                                         id="removeProductPanel" 
                                                         data-index="{{$productPanelindex}}" 
@@ -22,7 +22,7 @@
                                                         data-action="up" 
                                                         data-index="{{$productPanelindex}}" 
                                                         data-order="{{$productPanelindex}}" 
-                                                        style="position:absolute;top:180px;left:5px;"
+                                                        style="position:absolute;top:235px;left:5px;"
                                                         data-url = "{{{$newHomeCmsLink}}}/setPositionProductPanel"
                                                      ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
 
@@ -31,7 +31,7 @@
                                                         data-action="down" 
                                                         data-index="{{$productPanelindex}}" 
                                                         data-order="{{$productPanelindex}}" 
-                                                        style="position:absolute;top:180px;right:5px;"
+                                                        style="position:absolute;top:235px;right:5px;"
                                                         data-url = "{{{$newHomeCmsLink}}}/setPositionProductPanel"
                                                      ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                  </div>
