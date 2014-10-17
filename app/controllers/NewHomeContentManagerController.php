@@ -171,7 +171,6 @@ class NewHomeContentManagerController extends BaseController
     public function getCategoriesProductPanel($index)
     {
         $index = (int) $index;
-        $adminEntity = App::make('AdminMemberRepository');   
         $productEntity = App::make('ProductRepository');
         $categoryIndex = 0;
         foreach($this->map->categorySection as $categoryPanel)
@@ -202,7 +201,6 @@ class NewHomeContentManagerController extends BaseController
     public function getSubCategoryNavigation($index)
     {
         $index = (int) $index;
-        $adminEntity = App::make('AdminMemberRepository');            
         foreach($this->map->categoryNavigation->category[$index]->sub as $subCategories)
         {
             $subCategoryNavigation[] = $subCategories;   
