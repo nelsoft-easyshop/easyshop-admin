@@ -100,7 +100,12 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->bind('AdminImagesRepository', function($app){  
             return new AdminImagesRepository();
-        });                 
+        }); 
+
+        $this->app->bind('BrandRepository', function($app){  
+            return new BrandRepository();
+        });                            
+         
                  
     }
 }
