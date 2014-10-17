@@ -765,6 +765,13 @@
         }        
     });  
 
+    $(document.body).on('click','.editBrands',function (e) { 
+        var dataNode = $(this).attr("data");
+        var data = $.parseJSON(dataNode);
+        $("#editBrandsUrl").val(data.url);
+        $("#editBrandsIndex").val(data.index);
+        $('#editBrandsDropDown option[value="'+ data.id_brand +'"]').attr("selected", "selected");
+    });  
 
     $(document.body).on('click','.btn-danger',function (e) { 
         var dataNode = $(this).attr("data");
@@ -889,6 +896,63 @@
             }
         });          
     }); 
+
+    $(document.body).on('click','.removeBrands',function (e) { 
+     
+        var index = $(this).data("index").toString();
+        var nodename = $(this).data("nodename");
+        var url = $(this).data("url");
+
+        var hash =  hex_sha1(index + nodename + userid + password);
+        data = { index: index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
+
+        var flag = 0;
+        var count = parseInt($(".brandsCount").last().text());
+        if(count > 1) {
+            loader.showPleaseWait();     
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();   
+                    $("#addBrandsTable").load("getBrandsSection");
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });    
+        }     
+    }); 
+
+    $(document.body).on('click','#addBrandsBtn',function (e) { 
+        loader.showPleaseWait();           
+        var value = $('#addBrandsDropDown option:selected').val();
+        var hash =  hex_sha1(value + userid + password);
+        data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        var url = $(this).data("url");
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                loader.hidePleaseWait();  
+                $("#addBrandsTable").load("getBrandsSection");
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+            }
+        });           
+
+    });    
 
     $(document.body).on('click','#addTopProducts',function (e) { 
         loader.showPleaseWait();           
@@ -1077,6 +1141,34 @@
 
         
     });  
+
+    $(document.body).on('click','#editBrandsSubmit',function (e) { 
+        loader.showPleaseWait();           
+        var index = $(this).closest("form").find("#editBrandsIndex").val();
+        var url = $(this).closest("form").find("#editBrandsUrl").val();
+        var value = $(this).closest("form").find("#editBrandsDropDown").val();     
+        var hash =  hex_sha1(index + value + userid + password);
+        data = {index:index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        console.log(url);
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                loader.hidePleaseWait();   
+                $("#addBrandsTable").load("getBrandsSection");
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+            }
+        });          
+        
+    }); 
+
 
     $(document.body).on('click','#editTopSellersSubmit',function (e) { 
         loader.showPleaseWait();           
