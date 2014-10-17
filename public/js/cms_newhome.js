@@ -662,10 +662,13 @@
         var nodename = "categorySubSlug";
         var hash =  hex_sha1(index + subIndex + nodename + userid + password);
         data = { index: index, subIndex:subIndex, nodename:nodename,userid:userid,  password:password, hash:hash, callback:'?'};  
-        var subcategories = "#subcategories_" + index;
+        var subcategories = "#tblSubcategories_" + index;
         var count = $(subcategories + " tbody tr").length;
         var editCategoryLink = $("#editCategoryLink").val();
         var removeCategoryLink = $("#removeCategoryLink").val();
+
+        var tableSelector = "#tblSubcategories_" + index;
+        var reloadurl = "getSubCategoryNavigation/" + index;
 
         if(count > 1 ) {
             loader.showPleaseWait();            
@@ -679,29 +682,8 @@
                 dataType: 'jsonp',
                 success: function(json) {
                     loader.hidePleaseWait();
-                    $("#row_"+index+"_"+subIndex).remove();
-
-                    var rowCount = 0;
-                    $(subcategories + " tbody tr").each(function(){
-                        var editBtnData = $(this).find(".edit_btn").attr("data");
-                        var valueRow = $(this).find(".subCategoryTD").text;
-                        var dataJSON = $.parseJSON(editBtnData);
-                        var obj1 = '{"url":"' + editCategoryLink +
-                            '","index":"' +  index +
-                            '","subIndex":"' + rowCount +
-                            '","value":"' +dataJSON.value +'"}';
-                        var obj2= '{"url":"' + removeCategoryLink +
-                            '","index":"' +  index +
-                            '","subIndex":"' + rowCount +
-                            '","value":"' +dataJSON.value +'"}';                            
-                        $(this).attr("id","row_"+index+"_"+rowCount);
-                        $(this).find(".subCategoryTD").attr("id","value_"+index+"_"+rowCount);
-                        $(this).find(".edit_btn").attr("data",obj1);
-                        $(this).find(".removeButton").attr("data",obj2);
-                        $(this).find(".edit_btn").attr("id","data_"+index + "_"+rowCount);
-                        rowCount++;
-                        
-                    });                    
+                    $(tableSelector).load(reloadurl);                  
+                    loader.hidePleaseWait();                 
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
@@ -1254,10 +1236,11 @@
         var value = $('#drop_actionTypeEdit option:selected').val();      
         var hash =  hex_sha1(index + subIndex + value + userid + password);
         data = { index: index, subIndex:subIndex, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
-
+        var tableSelector = "#tblSubcategories_" + index;
+        var reloadurl = "getSubCategoryNavigation/" + index;
         var flag = 0;
 
-        $("#subcategories_" + index + " tbody tr").each(function(){
+        $("#tblSubcategories_" + index + " tbody tr").each(function(){
             var valueRow = $(this).find(".subCategoryTD").text();
             if(valueRow == value) {
                 flag = 1;
@@ -1274,7 +1257,7 @@
                 contentType: "application/json",
                 dataType: 'jsonp',
                 success: function(json) {
-                    updateDateContainer(index, subIndex, value, url);
+                    $(tableSelector).load(reloadurl);         
                     loader.hidePleaseWait();   
                 },
                 error: function(e) {
@@ -1332,9 +1315,10 @@
         var newSubIndex = count + 1;
         var flag = 0;
 
-        var editCategoryLink = $("#editCategoryLink").val();
-        var removeCategoryLink = $("#removeCategoryLink").val();
-        $(subcategories + " tbody tr").each(function(){
+        var tableSelector = "#tblSubcategories_" + index;
+        var reloadurl = "getSubCategoryNavigation/" + index;
+
+        $("#tblSubcategories_" + " tbody tr").each(function(){
             var valueRow = $(this).find(".subCategoryTD").text();
             if(valueRow == categoryName) {
                 flag = 1;
@@ -1358,8 +1342,9 @@
                     contentType: "application/json",
                     dataType: 'jsonp',
                     success: function(json) {
-                        loader.hidePleaseWait();                       
-                        appendDataContainer(index, newSubIndex, subIndex, categoryName, url, removeCategoryLink, editCategoryLink);
+                        $(tableSelector).load(reloadurl);                  
+                        loader.hidePleaseWait();  
+
                     },
                     error: function(e) {
                         loader.hidePleaseWait();
