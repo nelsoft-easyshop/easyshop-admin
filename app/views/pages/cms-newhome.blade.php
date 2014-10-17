@@ -515,11 +515,11 @@
                                                 <span style="display:none;">{{$categoryProductPanelCount = 1}}</span>                                                
                                                 @foreach($categoryProductPanelList[$categorySectionIndex] as $categorySectionProducts)
                                                     <div style="position:relative;display:inline-block;">
-                                                        <div class='well' style="height:210px;">
-                                                            <p>
-                                                                <img src="{{$easyShopLink}}{{ltrim($categorySectionProducts->product_image_path, '.')}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
-                                                            </p>
-                                                            <a href="#categoryProductPanel_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}" data-toggle="modal" style="position:absolute;top:180px;left:135px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                                        <div class='well' style="height:auto;">
+                                                            <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
+                                                                <img src="{{$easyShopLink}}{{ltrim($categorySectionProducts->product_image_path, '.')}}"class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                            </div>
+                                                            <a href="#categoryProductPanel_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                             <a class="btn btn-default" 
                                                                 id="removeCategoryProductPanel" 
                                                                 data-index="{{$categorySectionIndex}}" 
@@ -535,7 +535,7 @@
                                                                 data-index="{{$categorySectionIndex}}" 
                                                                 data-order="{{$subCategorySectionIndex}}" 
                                                                 data-subindex="{{$subCategorySectionIndex}}" 
-                                                                style="position:absolute;top:180px;left:5px;"
+                                                                style="position:absolute;top:235px;left:5px;"
                                                                 data-url = "{{{$newHomeCmsLink}}}/setPositionCategoryProductPanel"
                                                              ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
 
@@ -545,7 +545,7 @@
                                                                 data-index="{{$categorySectionIndex}}" 
                                                                 data-order="{{$subCategorySectionIndex}}" 
                                                                 data-subindex="{{$subCategorySectionIndex}}" 
-                                                                style="position:absolute;top:180px;right:5px;"
+                                                                style="position:absolute;top:235px;right:5px;"
                                                                 data-url = "{{{$newHomeCmsLink}}}/setPositionCategoryProductPanel"
                                                              ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                             <span class="categoryProductPanelCount" style="display:none;">{{$categoryProductPanelCount}}</span>
@@ -642,12 +642,12 @@
                                     <div class="col-lg-15" style='text-align:center;'>
                                         @foreach($adSection[0] as $ads)
                                             <div style="position:relative;display:inline-block;">
-                                                <div class='well' style="height:210px;">
-                                                    <p>
-                                                        <img src="{{$easyShopLink}}/assets/cms/home/{{$ads->img}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
-                                                    </p>
+                                                <div class='well' style="height:auto;">
+                                                    <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
+                                                        <img src="{{$easyShopLink}}{{$ads->img}}" class="img-responsive" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                    </div>
 
-                                                    <a href="#adsPanel{{$adsSectionIndex}}" data-toggle="modal" style="position:absolute;top:180px;left:135px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                                    <a href="#adsPanel{{$adsSectionIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                     <a class="btn btn-default" 
                                                         id="removeAdsSection" 
                                                         data-index="{{$adsSectionIndex}}" 
@@ -661,7 +661,7 @@
                                                         data-action="up" 
                                                         data-index="{{$adsSectionIndex}}" 
                                                         data-order="{{$adsSectionIndex}}" 
-                                                        style="position:absolute;top:180px;left:5px;"
+                                                        style="position:absolute;top:235px;left:5px;"
                                                         data-url = "{{{$newHomeCmsLink}}}/setPositionAdsSection"
                                                      ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
 
@@ -670,7 +670,7 @@
                                                         data-action="down" 
                                                         data-index="{{$adsSectionIndex}}" 
                                                         data-order="{{$adsSectionIndex}}" 
-                                                        style="position:absolute;top:180px;right:5px;"
+                                                        style="position:absolute;top:235px;right:5px;"
                                                         data-url = "{{{$newHomeCmsLink}}}/setPositionAdsSection"
                                                      ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                  </div>
@@ -859,12 +859,12 @@
                                     <div class="col-lg-15" style='text-align:center;'>
                                         @foreach($productList as $productPanel)
                                             <div style="position:relative;display:inline-block;">
-                                                <div class='well' style="height:210px;">
-                                                    <p>
-                                                        <img src="{{$easyShopLink}}{{ltrim($productPanel->product_image_path, '.')}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
-                                                    </p>
+                                                <div class='well' style="height:auto;">
+                                                    <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
+                                                        <img src="{{$easyShopLink}}{{ltrim($productPanel->product_image_path, '.')}}" class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                    </div>
 
-                                                    <a href="#productPanel{{$productPanelindex}}" data-toggle="modal" style="position:absolute;top:180px;left:135px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                                    <a href="#productPanel{{$productPanelindex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                     <a class="btn btn-default" 
                                                         id="removeProductPanel" 
                                                         data-index="{{$productPanelindex}}" 
@@ -878,7 +878,7 @@
                                                         data-action="up" 
                                                         data-index="{{$productPanelindex}}" 
                                                         data-order="{{$productPanelindex}}" 
-                                                        style="position:absolute;top:180px;left:5px;"
+                                                        style="position:absolute;top:235px;left:5px;"
                                                         data-url = "{{{$newHomeCmsLink}}}/setPositionProductPanel"
                                                      ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
 
@@ -887,7 +887,7 @@
                                                         data-action="down" 
                                                         data-index="{{$productPanelindex}}" 
                                                         data-order="{{$productPanelindex}}" 
-                                                        style="position:absolute;top:180px;right:5px;"
+                                                        style="position:absolute;top:235px;right:5px;"
                                                         data-url = "{{{$newHomeCmsLink}}}/setPositionProductPanel"
                                                      ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                  </div>
@@ -1179,7 +1179,7 @@
                     </div>                                                           
                     <div class="form-group">
                         <div class="col-xs-offset-2 col-xs-10">
-                            <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addSliderSection" data-subcategories = "#subcategories_test" id="addMainSlider">Add Sub Category Navigation</a>
+                            <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addSliderSection" data-subcategories = "#subcategories_test" id="addMainSlider">Add Main Slider</a>
                         </div>
                     </div>                                      
                 </form>
@@ -1288,12 +1288,12 @@
                                             <span style="display:none;">{{$slideCount=1}}</span>  
                                             @foreach($slides->image as $subSlides)
                                                 <div style="position:relative;display:inline-block;">
-                                                    <div class='well' style="height:210px;">
-                                                        <p>
-                                                            <img src="{{$easyShopLink}}/assets/cms/home{{$subSlides->path}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
-                                                        </p>
+                                                    <div class='well' style="height:auto;">
+                                                        <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
+                                                            <img src="{{$easyShopLink}}{{$subSlides->path}}" class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                        </div>
 
-                                                        <a href="#myMain_{{$sliderIndex}}_{{$subSlideIndex}}" data-toggle="modal" style="position:absolute;top:180px;left:135px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                                        <a href="#myMain_{{$sliderIndex}}_{{$subSlideIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                         <a class="btn btn-default" 
                                                             id="removeSubSlide" 
                                                             data-index="{{$sliderIndex}}" 
@@ -1309,7 +1309,7 @@
                                                             data-index="{{$sliderIndex}}" 
                                                             data-order="{{$subSlideIndex}}" 
                                                             data-subindex="{{$subSlideIndex}}" 
-                                                            style="position:absolute;top:180px;left:5px;"
+                                                            style="position:absolute;top:235px;left:5px;"
                                                             data-url = "{{{$newHomeCmsLink}}}/setSliderPosition"
                                                          ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
 
@@ -1319,7 +1319,7 @@
                                                             data-index="{{$sliderIndex}}" 
                                                             data-order="{{$subSlideIndex}}" 
                                                             data-subindex="{{$subSlideIndex}}" 
-                                                            style="position:absolute;top:180px;right:5px;"
+                                                            style="position:absolute;top:235px;right:5px;"
                                                             data-url = "{{{$newHomeCmsLink}}}/setSliderPosition"
                                                          ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                      </div>
