@@ -15,7 +15,8 @@
     <div class="row">
         <section id="tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#manageCategorySection" role="tab"  data-toggle="tab">Manage Category Section</a></li>                
+                <li class="active"><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
+                <li><a href="#manageCategorySection" role="tab"  data-toggle="tab">Manage Category Section</a></li>                
                 <li><a href="#manageAdSection" role="tab"  data-toggle="tab">Manage Ad Section</a></li>                
                 <li><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
                 <li ><a href="#manageSellerSection" role="tab"  data-toggle="tab">Manage Seller Section</a></li>                
@@ -56,8 +57,110 @@
 
 
 
+            <div class="tab-pane fade active in" id="manageBrands">
+                    <legend>        
+                        <h4 class="tbl-title">
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                            Manage Brands Section
+                        </h4>
+                    </legend>  
 
-          <div class="tab-pane fade" id="manageTopSellers">
+                    <form id='left' target="test"  class="form-horizontal">                                          
+                        <div class="form-group">
+                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <div class="col-sm-10">
+                                <select name="c_stateregion" id="addBrandsDropDown"  class="form-control">
+                                    @foreach($allBrandsLists as $allBrands)
+                                        <option value="{{{$allBrands->id_brand}}}">{{{$allBrands->name}}}</option>
+                                    @endforeach
+                                </select>                            
+                            </div>
+                        </div>                                                                                   
+                        <div class="form-group">
+                            <div class="col-xs-offset-2 col-xs-10">
+                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addBrands" id="addBrandsBtn">Add</a>
+                            </div>
+                        </div>                                      
+                    </form> 
+
+                    <table class="table table-striped table-hover tbl-my-style" id="addBrandsTable">
+                        <thead>
+                        <tr>
+                            <th>/</th>
+                            <th>Product Slug</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody_boxContent">
+                        <span style="display:none;">{{$brandsCount=1}}</span>                               
+                        <span style="display:none;">{{$brandsIndex=0}}</span>                             
+                        @foreach($brandsLists as $brands)
+                            <tr id="">
+                                <td>
+                                    <div class="btn-toolbar" role="toolbar">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-danger editBrands" id="editTopSellersBtn" 
+                                                data-toggle="modal" data-target="#editBrandsModal"
+                                                data='{"url":"{{$newHomeCmsLink}}/setBrands","index":"{{$brandsIndex}}","value":"{{$brands->name}}","id_brand":"{{$brands->id_brand}}" } '
+                                                >
+                                                <span class="glyphicon-center glyphicon glyphicon-cog"></span>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn edit_btn removeBrands"
+                                                    data-nodename="brands" data-url="{{$newHomeCmsLink}}/removeContent" data-index = "{{$brandsIndex}}" 
+                                                >
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </div>                                                    
+                                    </div>
+                                </td>
+                                <td class="otherCategoriesTD">{{$brands->name}}</td>
+                                <span style="display:none;"></span>                            
+                            </tr>
+                        <span style="display:none;" class="brandsCount">{{$brandsCount++}}</span>                               
+                        <span style="display:none;">{{$brandsIndex++}}</span>                               
+                        @endforeach
+                        </tbody> 
+                    </table>
+
+                  <!--Start topProducts Modal -->
+                        <div class="modal fade user_modal" id="editBrandsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        <h4 class="modal-title white_header" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span>Edit Brands</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal"> 
+                                            <div class="form-group">
+                                                <label for="userId" class="col-sm-2 control-label">Select Brand</label>
+                                                <div class="col-sm-10">
+                                                    <select name="c_stateregion" id="editBrandsDropDown"  class="form-control">
+                                                        @foreach($allBrandsLists as $allBrands)
+                                                            <option value="{{{$allBrands->id_brand}}}">{{{$allBrands->name}}}</option>
+                                                        @endforeach
+                                                    </select>                                                  </div>
+                                            </div>                                               
+                                            {{ Form::hidden('index', "", array('id' => 'editBrandsIndex','class' => 'form-control')) }}                                                                                              
+                                            {{ Form::hidden('url', "", array('id' => 'editBrandsUrl','class' => 'form-control')) }}                                                                                              
+
+                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setBrands" id="editBrandsSubmit">Edit</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                  <!--End topProducts Modal -->
+            </div> 
+
+
+
+            <div class="tab-pane fade" id="manageTopSellers">
                     <legend>        
                         <h4 class="tbl-title">
                             <span class="glyphicon glyphicon-list-alt"></span>
@@ -362,7 +465,7 @@
                   <!--End Edit New Arrival Modal -->
             </div> 
 
-            <div class="tab-pane fade  active in" id="manageCategorySection">
+            <div class="tab-pane fade" id="manageCategorySection">
                     <form id='changeProductPanel' target="test" action="{{ $newHomeCmsLink}}/setSellerHead" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
                         <legend>        
                             <h4 class="tbl-title">
