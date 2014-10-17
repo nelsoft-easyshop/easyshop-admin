@@ -86,10 +86,20 @@ class NewHomeContentManagerController extends BaseController
         foreach($this->map->menu->topSellers as $tSellers)
         {
             $topSellers[] = $tSellers;
-        }             
+        }           
+        $brandRepository = App::make("BrandRepository");
+
+
+        foreach($this->map->brandSection->brandId as $brands) 
+        {
+            $brandsLists[] = $brandRepository->getBrandById($brands);                  
+
+        } 
 
         return View::make('pages.cms-newhome')
                     ->with('userid', Auth::id())
+                    ->with('allBrandsLists', $brandRepository->getAllBrands())
+                    ->with('brandsLists', $brandsLists)
                     ->with('otherCategories', $otherCategories)
                     ->with('categorySection', $categorySection)
                     ->with('categoryLists', $categoryLists)
@@ -107,6 +117,36 @@ class NewHomeContentManagerController extends BaseController
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                                   
     }
+
+    /**
+     *  Reloads contents brands nodes
+     */     
+    public function getBrandsSection()
+    {
+        foreach($this->map->menu->topSellers as $tSellers)
+        {
+            $topSellers[] = $tSellers;
+        }           
+        $brandRepository = App::make("BrandRepository");
+
+
+        foreach($this->map->brandSection->brandId as $brands) 
+        {
+            $brandsLists[] = $brandRepository->getBrandById($brands);                  
+
+        }   
+        $adminEntity = App::make('AdminMemberRepository');            
+
+        return View::make('partials.brandsection')        
+                    ->with('allBrandsLists', $brandRepository->getAllBrands())
+                    ->with('brandsLists', $brandsLists)
+                    ->with('userid', Auth::id())  
+                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))          
+                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink());            
+
+    }
+
 
     /**
      *  Reloads contents of ads nodes
