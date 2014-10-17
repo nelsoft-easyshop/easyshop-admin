@@ -159,6 +159,25 @@ class NewHomeContentManagerController extends BaseController
     /**
      *  Reloads sub categories
      */ 
+    public function getSubCategoryNavigation($index)
+    {
+        $index = (int) $index;
+        $adminEntity = App::make('AdminMemberRepository');            
+        foreach($this->map->categoryNavigation->category[$index]->sub as $subCategories)
+        {
+            $subCategoryNavigation[] = $subCategories;   
+        }
+        return View::make('partials.subcategorynavigation')        
+                    ->with('index', $index)
+                    ->with('subCategoryNavigation', $subCategoryNavigation[0])
+                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                    
+             
+    }
+
+    /**
+     *  Reloads sub categories
+     */ 
     public function getSubCategoriesSection($index)
     {
         $index = (int) $index;
