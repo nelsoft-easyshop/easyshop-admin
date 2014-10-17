@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryRepository
 {
+ 
     /**
      * Get parent Categories
      * @return Entity
@@ -13,6 +14,16 @@ class CategoryRepository
     public function getParentCategories()
     {
         return Category::where("parent_id","1")->get();
+    }
+
+    /**
+     * Get child Categories
+     * @return Entity
+     */    
+    public function getChildCategories()
+    {
+        return Category::where("parent_id","!=","1")->get();
+
     }
 
     /**

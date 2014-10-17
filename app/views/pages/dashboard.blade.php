@@ -93,7 +93,7 @@
             </li>
 
             <li>
-                <a href='/cms/home'>
+                <a href='/home'>
                     <img src="{{{ asset('images/icon_category.png') }}}"/> 
                     <span >Manage Home Page</span>
                 </a>

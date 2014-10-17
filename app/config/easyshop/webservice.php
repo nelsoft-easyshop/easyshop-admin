@@ -14,6 +14,7 @@ return array(
     |
     */
     'homeCmsLink' => "$baseUrl/webservice/homewebservice",
+    'newHomeCmsLink' => "$baseUrl/webservice/newhomewebservice",
     'feedCmsLink' => "$baseUrl/webservice/feedwebservice",
     'mobileCmsLink' => "$baseUrl/webservice/mobilewebservice",
     'getHomeXML'=> "$baseUrl/webservice/homewebservice/getContents/",
@@ -21,6 +22,7 @@ return array(
     'productCSVwebservice'=> "$baseUrl/webservice/synccsvImage",
     'easyShopLink'=> "$baseUrl",
     'getMobileXml'=> "$baseUrl/webservice/mobilewebservice/getcontents",
+    'getNewHomeXml'=> "$baseUrl/webservice/newhomewebservice/getcontents",
 );
 
 
