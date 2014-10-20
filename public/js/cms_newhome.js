@@ -109,8 +109,15 @@
                 contentType: "application/json",
                 dataType: 'jsonp',
                 success: function(json) {
-                    $(tableSelector).load(reloadurl);
-                    loader.hidePleaseWait();  
+                    if(json.sites[0]["success"] != "success") {
+                        loader.hidePleaseWait();    
+                        showErrorModal("Slug Does Not Exist");
+                    }   
+                    else {
+                        $(tableSelector).load(reloadurl);
+                        loader.hidePleaseWait();  
+                    }                 
+
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
@@ -275,8 +282,15 @@
                 contentType: "application/json",
                 dataType: 'jsonp',
                 success: function(json) {
-                    loader.hidePleaseWait();  
-                    $(tableSelector).load(reloadurl);
+                    if(json.sites[0]["success"] != "success") {
+                        loader.hidePleaseWait();    
+                        showErrorModal("Slug Does Not Exist");
+                    }
+                    else {
+                        loader.hidePleaseWait();  
+                        $(tableSelector).load(reloadurl);
+                    }
+
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
@@ -496,8 +510,15 @@
                 contentType: "application/json",
                 dataType: 'jsonp',
                 success: function(json) {
-                    $("#productPanelDiv").load("getProductPanel");                         
-                    loader.hidePleaseWait();   
+                    if(json.sites[0]["success"] != "success") {
+                        loader.hidePleaseWait();    
+                        showErrorModal("Slug Does Not Exist");
+                    }     
+                    else {
+                        $("#productPanelDiv").load("getProductPanel");                         
+                        loader.hidePleaseWait();   
+                    }               
+
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
@@ -527,8 +548,14 @@
                 contentType: "application/json",
                 dataType: 'jsonp',
                 success: function(json) {
-                    $("#productPanelDiv").load("getProductPanel");                     
-                    loader.hidePleaseWait();  
+                    if(json.sites[0]["success"] != "success") {
+                        loader.hidePleaseWait();    
+                        showErrorModal("Slug Does Not Exist");
+                    }
+                    else {
+                        $("#productPanelDiv").load("getProductPanel");                     
+                        loader.hidePleaseWait();    
+                    }
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
