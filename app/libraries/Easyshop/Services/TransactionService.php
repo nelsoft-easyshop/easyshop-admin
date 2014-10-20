@@ -152,7 +152,7 @@ class TransactionService
         $month = ($month > 12) ? 1 : $month;
         $year = $currentYear + (($currentMonth === 12 && $hasExceededLastCutOff) ? 1 : 0); 
 
-        return Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$day);
+        return Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$day)->startOfDay();
     }
     
     
@@ -243,7 +243,7 @@ class TransactionService
 
         $endDay = ($isEndOfMonth)?Carbon::createFromFormat('Y-m',$year.'-'.$month)->endOfMonth()->format('d'):$endDay;
 
-        return Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$endDay);
+        return Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-'.$endDay)->endOfDay();
     }
     
     
