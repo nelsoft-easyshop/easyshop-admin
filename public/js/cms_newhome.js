@@ -575,7 +575,7 @@
 
         data = { index: index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};  
         var count = parseInt($(".adsCount").last().text());
-        if(count > 1 ) {
+        if(count > 3) {
             loader.showPleaseWait();                    
             $.ajax({
                 type: 'GET',
