@@ -274,7 +274,7 @@ class OrderProductController extends BaseController
         $dateFrom = Carbon::createFromFormat('Y/m/d',  Input::get('dateFrom'));
         $dateTo = Carbon::createFromFormat('Y/m/d',  Input::get('dateTo'));
 
-        $member = $memberRepository->getMemberById($userId);
+        $member = $memberRepository->getById($userId);
         $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
 
         $errors = $transactionService->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
