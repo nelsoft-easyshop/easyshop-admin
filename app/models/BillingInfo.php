@@ -17,6 +17,8 @@ class BillingInfo extends Eloquent
     *
     */
     protected $primaryKey = 'id_billing_info';
+    
+    public $timestamps = false;
 
     
     public function member() 
