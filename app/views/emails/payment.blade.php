@@ -52,7 +52,12 @@
                 <td style="padding: 4px;">Total Amount</td>
                 <td style="padding: 4px;">Easyshop Charge</td>
                 <td style="padding: 4px;">Payment Charge</td>
-                <td style="padding: 4px;">Net</td>
+                @if($isRefund)  
+                    <td style="padding: 4px;">Refunded Amount</td>
+                @else
+                    <td style="padding: 4px;">Net</td>
+                @endif
+                
             </tr>
             @foreach($orderProducts as $idx=>$orderProduct)
                 <tr style="color: black; background-color:  {{{ ($idx%2 === 0) ? '#f5f5f5': 'ffffff'   }}};" >
@@ -71,7 +76,17 @@
                     <td style="padding: 4px;">{{ number_format($orderProduct->total,2,'.',',') }}</td>
                     <td style="padding: 4px;">{{ number_format($orderProduct->easyshop_charge,2,'.',',') }}</td>
                     <td style="padding: 4px;">{{ number_format($orderProduct->payment_method_charge,2,'.',',') }}</td>
-                    <td style="padding: 4px;"><b>{{ number_format($orderProduct->net,2,'.',',') }}</b></td>
+                    
+                    <td style="padding: 4px;">
+                        <b>
+                        @if($isRefund)  
+                            {{ number_format($orderProduct->total,2,'.',',') }}
+                        @else
+                            {{ number_format($orderProduct->net,2,'.',',') }}
+                        @endif
+                        </b>
+                    </td>
+
                 </tr>
             @endforeach
         </tbody>
