@@ -49,6 +49,7 @@ class BillingInfoRepository extends AbstractRepository
         $billingInfo->bank_account_name = $accountName;
         $billingInfo->bank_account_number = $accountNumber;
         $billingInfo->bank_id = $bankId;
+        $billingInfo->datemodified = date('Y-m-d H:i:s');
         $isSuccessful = $billingInfo->save();
         
         $this->currentId = $billingInfo->id_billing_info;
@@ -73,6 +74,9 @@ class BillingInfoRepository extends AbstractRepository
         $billingInfo->bank_account_number = $accountNumber;
         $billingInfo->member_id = $memberId;
         $billingInfo->bank_id = $bankId;
+        
+        $billingInfo->dateadded = date('Y-m-d H:i:s');
+        $billingInfo->datemodified = date('Y-m-d H:i:s');
         
         if($this->getDefaultAccount($memberId)->isEmpty()){
             $billingInfo->is_default = 1;
