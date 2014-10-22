@@ -7,7 +7,7 @@
         @endforeach
 
         @if($action === 'refund')
-            <option value="paypal" id="add-option" class="add-option">Refunded via Paypal</option>
+            <option value="paypal" class="paypal">Refunded via Paypal</option>
         @endif
         
         <option value="0" id="add-option" class="add-option">ADD PAYMENT ACCOUNT</option>

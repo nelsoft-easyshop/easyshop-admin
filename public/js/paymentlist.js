@@ -110,7 +110,7 @@
                             var $account_collection = $('#account_collection');
                             var optionCount = $account_collection.find('option').length;
                             var selectedOption = $account_collection.find('option:selected');
-                            if(optionCount == 1 && selectedOption.hasClass('add-option')){
+                            if(optionCount == 1 && (selectedOption.hasClass('add-option')||selectedOption.hasClass('paypal'))){
                                 $('#account_collection').change();
                             }
                              
