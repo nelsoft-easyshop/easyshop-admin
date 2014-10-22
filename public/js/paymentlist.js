@@ -232,7 +232,9 @@
         var billing_info_id = $this.val();
         var selectedOption = $this.find('option:selected');
         var account_order_billing_id = selectedOption.data('order-billing-id');
-
+        $('#inputs-container p:not(.paypal-container)').show();
+        $('.paypal-container').hide();
+      
         if(billing_info_id == 0 && account_order_billing_id ==  undefined){            
             $('#form_accnt_name').val('');
             $('#form_accnt_number').val('');
@@ -243,7 +245,12 @@
             $('#accnt_name').html(selectedOption.data('name'));
             $('#accnt_number').html(selectedOption.data('number'));
             $('#accnt_bank').val(selectedOption.data('bank-id')); 
-            hideInputs();
+            hideInputs();   
+            if(billing_info_id == 'paypal'){
+                $('#edit_account').hide();
+                $('#inputs-container p:not(.paypal-container)').hide();
+                $('.paypal-container').show();
+            }
         }
 
     });
@@ -255,12 +262,19 @@
         var url = isPayment ? 'orderproduct-status/pay' : 'orderproduct-status/refund'; 
         
         var selected_option = $('#account_collection').find('option:selected');
-        var account_name = selected_option.data('name');
-        var account_number = selected_option.data('number');
-        var bank_name = selected_option.data('bank-name');
-
+        
+        if(selected_option.val() == 'paypal'){
+            var account_name = 'PAYPAL';
+            var bank_name = 'PAYPAL';
+            var account_number = $('#form-paypal-account').val();
+        }
+        else{
+            var account_name = selected_option.data('name');
+            var account_number = selected_option.data('number');
+            var bank_name = selected_option.data('bank-name');            
+        }
+      
         var order_product_ids = $('#order_product_ids').val();
- 
         var dateFrom = $('input#date-from').val();
         var dateTo = $('input#date-to').val();
 
