@@ -5,13 +5,18 @@
         @foreach($accounts as $account)
             <option value="{{{ $account->billing_id  }}}" data-bank-name="{{{ $account->bank_name }}}" data-bank-id="{{{ $account->bank_id }}}" data-name="{{{ $account->account_name }}}" data-number="{{{ $account->account_number }}}"  data-order-billing-id = "{{{ $account->order_billing_id }}}"   >{{{ $account->bank_name }}} - {{{ $account->account_name }}} {{ is_numeric($account->order_billing_id) ? '[NEW]' : '' }}     </option>
         @endforeach
+
+        @if($action === 'refund')
+            <option value="paypal" id="add-option" class="add-option">Refunded via Paypal</option>
+        @endif
+        
         <option value="0" id="add-option" class="add-option">ADD PAYMENT ACCOUNT</option>
     </select>
 
     <hr/>
 
     <div class='left'>
-        <div class="control-group">
+        <div class="control-group" id="inputs-container">
         
         
             <p>
@@ -33,6 +38,13 @@
                     @endforeach
                 </select>
             </p>
+            
+            
+            <p style="display:none" class="paypal-container">
+                <label for="paypal-account"><strong>Paypal Account:</strong></label>
+                <input style="display:inline" class='form-control' type='text' name='form-paypal-account' id='form-paypal-account'/>
+            </p>
+            
         </div>
         
     
