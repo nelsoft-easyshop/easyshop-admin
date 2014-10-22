@@ -3444,7 +3444,8 @@ width: 1200px;
 
 .order_product_pay_container #form_accnt_bank,
 .order_product_pay_container #form_accnt_number,
-.order_product_pay_container #form_accnt_name{
+.order_product_pay_container #form_accnt_name,
+.order_product_pay_container #form-paypal-account{
     width: 300px;
 }
 
