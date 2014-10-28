@@ -28,6 +28,8 @@ class OrderProductTagRepository extends AbstractRepository
 
         return OrderProductTag::leftJoin("es_order_product","es_order_product_tag.order_product_id","="
                                 ,"es_order_product.id_order_product")
+                                ->join("es_order","es_order_product.id_order_product","=","es_order.id_order")
+                                ->join("es_member","es_order.buyer_id","=","es_member.id_member")                                
                                 ->leftJoin("es_tag_type","es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type")
                                 ->where("es_order_product_tag.order_product_id",$ids)
                                 ->get();
