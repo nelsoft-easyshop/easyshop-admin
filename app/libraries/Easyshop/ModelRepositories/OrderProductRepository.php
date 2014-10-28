@@ -14,7 +14,7 @@ class OrderProductRepository extends AbstractRepository
                             ->leftJoin("es_member","es_order.buyer_id","=","es_member.id_member")
                             ->rightJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product")
                             ->whereIn("es_order.payment_method_id",array(PaymentMethod::PAYPAL, PaymentMethod::DRAGONPAY))
-                            ->where("es_order.order_status","0")
+                            ->where("es_order.order_status","!=",OrderStatus::STATUS_VOID)
                             ->groupBy("es_order_product.seller_id")
                             ->groupBy("es_order_product.order_id")
                             ->get();
