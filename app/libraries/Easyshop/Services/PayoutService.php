@@ -21,8 +21,9 @@ class PayoutService
         $this->tagTypeRepository = $tagTypeRepository; 
     }
 
-    public function getAvailableTags($isSeller = TRUE)
+    public function getAvailableTags($orderId,$isSeller = TRUE)
     {
+        
         if($isSeller){
             return $this->tagTypeRepository->getSellerTags();
         }

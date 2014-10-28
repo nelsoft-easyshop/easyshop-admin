@@ -352,7 +352,7 @@ class OrderProductController extends BaseController
         $transactionDetails = $orderRepository->getOrderProductByOrderId($orderId);
 
         // get available tags
-        $availableTags = $payoutService->getAvailableTags();
+        $availableTags = $payoutService->getAvailableTags($orderId);
 
         $html = View::make('partials.payoutsellertransactiondetails')
             ->with('transactionDetails', $transactionDetails) 
