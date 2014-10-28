@@ -7,26 +7,6 @@ use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory, PaymentM
 
 class OrderProductRepository extends AbstractRepository
 {    
-
-    public function getBuyersOrdersWithShippingComment()
-    {
-        $query = OrderProduct::leftJoin("es_order","es_order_product.order_id","=","es_order.id_order")
-                            ->leftJoin("es_member","es_order.buyer_id","=","es_member.id_member")
-                            ->rightJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product")
-                            ->whereIn("es_order.payment_method_id",array(PaymentMethod::PAYPAL, PaymentMethod::DRAGONPAY))
-                            ->where("es_order.order_status","!=",OrderStatus::STATUS_VOID)
-                            ->groupBy("es_order_product.seller_id")
-                            ->groupBy("es_order_product.order_id")
-                            ->get();
-
-        return $query;      
-    }
-
-    public function insertBuyersTaggedOrders()
-    {
-        
-    }
-
     /**
      * Get order product by id
      *
@@ -248,5 +228,26 @@ class OrderProductRepository extends AbstractRepository
         
         return $returnTransaction;
     }
+
+    public function getBuyersTransactionWithShippingComment()
+    {
+        $query = OrderProduct::leftJoin("es_order","es_order_product.order_id","=","es_order.id_order")
+                            ->leftJoin("es_member","es_order.buyer_id","=","es_member.id_member")
+                            ->rightJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product")
+                            ->whereIn("es_order.payment_method_id",array(PaymentMethod::PAYPAL, PaymentMethod::DRAGONPAY))
+                            ->where("es_order.order_status","!=",OrderStatus::STATUS_VOID)
+                            ->groupBy("es_order_product.seller_id", "es_order_product.order_id")
+                            ->get([
+                                    'es_order.id_order', 
+                                    'es_member.username', 
+                                    'es_member.email', 
+                                    'es_member.contactno',
+                                    'es_order_product.id_order_product',
+                                    'es_product_shipping_comment.expected_date',
+                                     DB::raw('COUNT(es_order_product.order_id) as count')                                            
+                                ]);        
+
+        return array_flatten($query);      
+    }    
 }
 
