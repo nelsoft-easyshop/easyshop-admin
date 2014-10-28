@@ -229,6 +229,24 @@ class OrderProductRepository extends AbstractRepository
         $orderProduct->buyer_billing_id = $buyerBillingId;        
         return $orderProduct->save();
     }
+
+    public function getAllSellersTransaction($seller_id = 0)
+    {
+        $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
+        $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order')
+              ->where('es_order.order_status', '!=', OrderStatus::STATUS_VOID);
+
+        $query->groupBy('es_member.id_member','es_order_product.order_id');
+
+        $returnTransaction = $query->get([
+                                            'es_order.id_order', 
+                                            'es_member.username', 
+                                            'es_member.email', 
+                                            'es_member.contactno', 
+                                            DB::raw('COUNT(es_order_product.order_id) as count')
+                                        ]);
         
+        return $returnTransaction;
+    }
 }
 
