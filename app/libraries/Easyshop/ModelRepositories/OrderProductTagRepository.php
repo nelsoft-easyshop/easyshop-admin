@@ -2,6 +2,7 @@
 
 use OrderProductTag;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class OrderProductTagRepository extends AbstractRepository
 {
@@ -26,21 +27,28 @@ class OrderProductTagRepository extends AbstractRepository
     public function getBuyersOrdersForTagging($ids)
     {
 
-        return OrderProductTag::leftJoin("es_order_product","es_order_product_tag.order_product_id","="
+        $query =  OrderProduct::leftJoin("es_order_product","es_order_product_tag.order_product_id","="
                                 ,"es_order_product.id_order_product")
-                                ->join("es_order","es_order_product.id_order_product","=","es_order.id_order")
-                                ->join("es_member","es_order.buyer_id","=","es_member.id_member")                                
                                 ->leftJoin("es_tag_type","es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type")
-                                ->where("es_order_product_tag.order_product_id",$ids)
-                                ->get();
+                                ->join("es_order","es_order_product.order_id","=","es_order.id_order")
+                                ->join("es_member","es_order.buyer_id","=","es_member.id_member")
+                                ->where("es_order_product_tag.order_product_id",$ids);
+
+        $returnTransaction = $query->get([
+                                            'es_order_product_tag.id_order_product_tag', 
+                                            'es_order_product_tag.order_product_id', 
+                                            'es_order_product_tag.tag_type_id', 
+                                            'es_tag_type.tag_description', 
+                                            'es_order.id_order', 
+                                            'es_member.username', 
+                                            'es_member.email', 
+                                            'es_member.contactno',
+                                             DB::raw('COUNT(es_order_product.order_id) as count')                                            
+                                        ]);                                
+        return $returnTransaction;
 
     }
 
-/*        $raffle = new Raffle;
-       
-        $raffle->raffle_name = $raffleName;
-        $raffle->winners = $winners;
-        $raffle->members = $members;
-        $raffle->prices = $prices;
-        return $raffle->save();*/
 }
+
+
