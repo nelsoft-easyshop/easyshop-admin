@@ -345,17 +345,20 @@ class OrderProductController extends BaseController
         $orderRepository = App::make('OrderProductRepository');
         $tagRepository = App::make('TagTypeRepository');
 
+        //prepare service
+        $payoutService = App::make('PayoutService');
+
         // Query the transactions 
         $transactionDetails = $orderRepository->getOrderProductByOrderId($orderId);
 
         // get available tags
-        $availableTags = $tagRepository->getSellerTags();
+        $availableTags = $payoutService->getAvailableTags();
 
         $html = View::make('partials.payoutsellertransactiondetails')
             ->with('transactionDetails', $transactionDetails) 
             ->with('tags', $availableTags) 
             ->render();
 
-        return Response::json(array('html' => $html)); 
+        return Response::json(array('html' => $html));
     } 
 }
