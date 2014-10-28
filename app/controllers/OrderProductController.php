@@ -314,5 +314,48 @@ class OrderProductController extends BaseController
         $excelService = App::make('Easyshop\Services\ExcelService');
         $excelService->transactionRecord('EasyshopRecord', $transactionRecord);
     }
-    
+
+    /**
+     * Get all sellers with existing transactions
+     * @return view
+     */
+    public function getSellersTransactions()
+    {
+        // prepare repository needed
+        $orderRepository = App::make('OrderProductRepository');
+
+        // Query the transactions
+        $transactionRecord = $orderRepository->getAllSellersTransaction();
+
+        // Render the view
+        return View::make('pages.payoutsellerlist')
+                    ->with('transactionRecord', $transactionRecord);
+    }
+
+    /**
+     * Get all existing transaction details of the specific seller by order id
+     * @return JSON
+     */
+    public function getSellerTransactionDetailsByOrderId()
+    { 
+        // get input data
+        $orderId = Input::get('order_id'); 
+
+        // prepare repository needed
+        $orderRepository = App::make('OrderProductRepository');
+        $tagRepository = App::make('TagTypeRepository');
+
+        // Query the transactions 
+        $transactionDetails = $orderRepository->getOrderProductByOrderId($orderId);
+
+        // get available tags
+        $availableTags = $tagRepository->getSellerTags();
+
+        $html = View::make('partials.payoutsellertransactiondetails')
+            ->with('transactionDetails', $transactionDetails) 
+            ->with('tags', $availableTags) 
+            ->render();
+
+        return Response::json(array('html' => $html)); 
+    } 
 }

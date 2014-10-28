@@ -104,8 +104,10 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->bind('BrandRepository', function($app){  
             return new BrandRepository();
-        });                            
-         
-                 
+        });
+
+        $this->app->bind('TagTypeRepository', function($app){  
+            return new TagTypeRepository();
+        });
     }
 }

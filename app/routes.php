@@ -104,4 +104,9 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('order-product-void', array('uses' => 'OrderProductController@voidOrderProduct'));
 
     Route::get('prohibited', array('uses' => 'AccountController@prohibited'));
+
+    // routes for payout notifs
+    Route::get('payout/seller', array('uses' => 'OrderProductController@getSellersTransactions'));
+    Route::get('payout/seller/view-transactions', array('uses' => 'OrderProductController@getSellerExistingTransaction'));
+    Route::get('payout/seller/view-transactions-details', array('uses' => 'OrderProductController@getSellerTransactionDetailsByOrderId'));
 });
