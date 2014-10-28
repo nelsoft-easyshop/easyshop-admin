@@ -12,22 +12,20 @@ class OrderProductController extends BaseController
         $orderProductRepository = App::make('OrderProductRepository'); 
         $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
 
-        foreach (array_flatten($orderProductRepository->getBuyersOrdersWithShippingComment()) as $value) {
+        foreach (array_flatten($orderProductRepository->getBuyersTransactionWithShippingComment()) as $value) {
+
             $dt = Carbon::create(Carbon::parse($value->expected_date)->year
                                 , Carbon::parse($value->expected_date)->month
                                 , Carbon::parse($value->expected_date)->day);
 
             if($dt->addDays(2) > Carbon::now()){
-                $orders[] = $orderProductTagRepositoryRepository->getBuyersOrdersForTagging(
-                                $orderProductTagRepositoryRepository->insertBuyerTransaction($value->id_order_product));             
+                $orders[] = $value;            
             }
+
         }
 
-        echo "<pre>";
-            print_r($orders);
-        echo "</pre>";
         return View::make("pages.payoutsbuyer")
-                    ->with("orders", array_flatten($orders));
+                    ->with("orders", array_flatten($orders) );
     }
 
     /**
@@ -381,4 +379,30 @@ class OrderProductController extends BaseController
 
         return Response::json(array('html' => $html)); 
     } 
+
+    /**
+     * Get all existing transaction details of the specific seller by order id
+     * @return JSON
+     */
+    public function getBuyerTransactionDetailsByOrderId()
+    { 
+        $orderId = Input::get('order_id'); 
+
+        // prepare repository needed
+        $orderRepository = App::make('OrderProductRepository');
+        $tagRepository = App::make('TagTypeRepository');
+
+        // Query the transactions 
+        $transactionDetails = $orderRepository->getOrderProductByOrderId($orderId);
+
+        // get available tags
+        $availableTags = $tagRepository->getBuyerTags();
+
+        $html = View::make('partials.payoutbuyertransactiondetails')
+            ->with('transactionDetails', $transactionDetails) 
+            ->with('tags', $availableTags) 
+            ->render();
+
+        return Response::json(array('html' => $html)); 
+    }     
 }
