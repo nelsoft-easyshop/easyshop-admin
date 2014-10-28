@@ -7,6 +7,29 @@ use Carbon\Carbon;
 class OrderProductController extends BaseController 
 {
 
+    public function getOrderProductsContactBuyer()
+    {
+        $orderProductRepository = App::make('OrderProductRepository'); 
+        $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
+
+        foreach (array_flatten($orderProductRepository->getBuyersOrdersWithShippingComment()) as $value) {
+            $dt = Carbon::create(Carbon::parse($value->expected_date)->year
+                                , Carbon::parse($value->expected_date)->month
+                                , Carbon::parse($value->expected_date)->day);
+
+            if($dt->addDays(2) > Carbon::now()){
+                $orders[] = $orderProductTagRepositoryRepository->getBuyersOrdersForTagging(
+                                $orderProductTagRepositoryRepository->insertBuyerTransaction($value->id_order_product));             
+            }
+        }
+
+        echo "<pre>";
+            print_r($orders);
+        echo "</pre>";
+        return View::make("pages.payoutsbuyer")
+                    ->with("orders", array_flatten($orders));
+    }
+
     /**
      *  GET method for displaying list of account to pay
      *
