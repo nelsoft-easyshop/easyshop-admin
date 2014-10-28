@@ -1,11 +1,31 @@
 <?php namespace Easyshop\ModelRepositories;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory;
+use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory, PaymentMethod;
 
 
 class OrderProductRepository extends AbstractRepository
 {    
+
+    public function getBuyersOrdersWithShippingComment()
+    {
+        $query = OrderProduct::leftJoin("es_order","es_order_product.order_id","=","es_order.id_order")
+                            ->leftJoin("es_member","es_order.buyer_id","=","es_member.id_member")
+                            ->rightJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product")
+                            ->whereIn("es_order.payment_method_id",array(PaymentMethod::PAYPAL, PaymentMethod::DRAGONPAY))
+                            ->where("es_order.order_status","0")
+                            ->groupBy("es_order_product.seller_id")
+                            ->groupBy("es_order_product.order_id")
+                            ->get();
+
+        return $query;      
+    }
+
+    public function insertBuyersTaggedOrders()
+    {
+        
+    }
 
     /**
      * Get order product by id
