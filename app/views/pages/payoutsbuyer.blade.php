@@ -21,26 +21,23 @@
                 <thead>
                      <tr>
                         <th>Order ID</th>
-                        <th>Invoice No</th>
-                        <th>Transaction ID</th>
-                        <th>Total Amount</th>
-                        <th>Buyer</th>
-                        <th>Status</th>
-                        <th>Date of Transaction</th>
-                        <th>Type of Payment Method</th>
+                        <th>Order Product ID</th>
+                        <th>Username</th>
+                        <th>Number of Products</th>
+                        <th>Email</th>
+                        <th>Contact Number</th>
                      </tr>
                 </thead>
-                    <tr>
-                        <td class='order-id'>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-
-                        <td>test</td>
-                        <td>test</td>
+                @foreach($orders as $key => $details)
+                    <tr class='buyer-list'>
+                        <td class='td_order_id'>{{{$details->id_order}}}</td>
+                        <td class='td_order_id'>{{{$details->id_order_product}}}</td>
+                        <td class='username'>{{{$details->username}}}</td>
+                        <td class='count'>{{{$details->count}}}</td>
+                        <td class='email'>{{{$details->email}}}</td>
+                        <td class="contactno">{{{ ($details->contactno) ? $details->contactno : 'N/A' }}}</td>                        
                     </tr>
+                @endforeach
             </table>
         </div>
       </div>
