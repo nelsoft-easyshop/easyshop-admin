@@ -8,9 +8,9 @@ class OrderProductTagRepository extends AbstractRepository
 
     public function insertBuyerTransaction($orderProductId)
     {
-        $orderProductTag = new OrderProductTag;
 
-        if(!$orderProductTag::where("order_product_id",$orderProductId)->get()) {
+        if(OrderProductTag::where("order_product_id",$orderProductId)->count() < 1) {
+            $orderProductTag = new OrderProductTag;
 
             $orderProductTag->order_product_id = $orderProductId;
             $orderProductTag->tag_type_id = 1;
@@ -19,7 +19,8 @@ class OrderProductTagRepository extends AbstractRepository
 
             $orderProductTag->save(); 
         }
-        return $orderProductId;
+
+            return $orderProductId;
     }
 
     public function getBuyersOrdersForTagging($ids)
