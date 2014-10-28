@@ -57,7 +57,6 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('managerole', array('uses' => 'AccountController@showAdminLists'));    
     Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
     Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));   
-    Route::get('payouts/buyer', array('uses' => 'OrderProductController@getOrderProductsContactBuyer'));   
 
     Route::get('raffle', array('uses' => 'RaffleManagerController@showRaffle'));    
     Route::post('doRaffle', array('uses' => 'RaffleManagerController@doRaffle'));    
@@ -110,4 +109,6 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('payout/seller', array('uses' => 'OrderProductController@getSellersTransactions'));
     Route::get('payout/seller/view-transactions', array('uses' => 'OrderProductController@getSellerExistingTransaction'));
     Route::get('payout/seller/view-transactions-details', array('uses' => 'OrderProductController@getSellerTransactionDetailsByOrderId'));
+    Route::get('payout-buyer', array('uses' => 'OrderProductController@getOrderProductsContactBuyer'));   
+
 });
