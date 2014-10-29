@@ -1,13 +1,13 @@
 <?php namespace Easyshop\ModelRepositories;
 
-use OrderProductTag;
+use OrderProductTag, TagType;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class OrderProductTagRepository extends AbstractRepository
 {
 
-    public function insertBuyerTransaction($orderProductId)
+    public function insertContactedBuyer($orderProductId)
     {
 
         if(OrderProductTag::where("order_product_id",$orderProductId)->count() < 1) {
@@ -24,29 +24,28 @@ class OrderProductTagRepository extends AbstractRepository
             return $orderProductId;
     }
 
-    public function getBuyersOrdersForTagging($ids)
+    public function getOrdersTagStatus($ids)
     {
 
-        $query =  OrderProduct::leftJoin("es_order_product","es_order_product_tag.order_product_id","="
-                                ,"es_order_product.id_order_product")
-                                ->leftJoin("es_tag_type","es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type")
-                                ->join("es_order","es_order_product.order_id","=","es_order.id_order")
-                                ->join("es_member","es_order.buyer_id","=","es_member.id_member")
-                                ->where("es_order_product_tag.order_product_id",$ids);
+        $tagStatus =  OrderProductTag::join("es_tag_type","es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type")
+                                            ->where("order_product_id",$ids)->first();   
 
-        $returnTransaction = $query->get([
-                                            'es_order_product_tag.id_order_product_tag', 
-                                            'es_order_product_tag.order_product_id', 
-                                            'es_order_product_tag.tag_type_id', 
-                                            'es_tag_type.tag_description', 
-                                            'es_order.id_order', 
-                                            'es_member.username', 
-                                            'es_member.email', 
-                                            'es_member.contactno',
-                                             DB::raw('COUNT(es_order_product.order_id) as count')                                            
-                                        ]);                                
-        return $returnTransaction;
+        if($tagStatus) {    
+                $dt = Carbon::create(Carbon::parse($tagStatus->date_updated)->year
+                                    , Carbon::parse($tagStatus->date_updated)->month
+                                    , Carbon::parse($tagStatus->date_updated)->day); 
 
+                if( Carbon::now() > $dt->addDays(2) ){                    
+                    $tagStatus->tag_type_id = TagType::REFUND;
+                    $tagStatus->save();
+                }                
+            $status = $tagStatus->tag_description;
+
+        }
+        else {
+            $status = null;
+        }
+        return $status;
     }
 
 }
