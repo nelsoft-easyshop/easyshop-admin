@@ -13,7 +13,7 @@ class HomeController extends BaseController
         $orderProductRepository = App::make('OrderProductRepository'); 
         $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
 
-        foreach (array_flatten($orderProductRepository->getBuyersTransactionWithShippingComment()) as $value) {
+        foreach (array_flatten($orderProductRepository->getBuyersTransactionWithShippingComment(null, null)) as $value) {
             $dt = Carbon::create(Carbon::parse($value->expected_date)->year
                                 , Carbon::parse($value->expected_date)->month
                                 , Carbon::parse($value->expected_date)->day);
