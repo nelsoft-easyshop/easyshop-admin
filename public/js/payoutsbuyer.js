@@ -45,15 +45,16 @@
         $('.orderProductId').each(function(){
             orderProductIdCollection.push( parseInt($(this).html().trim(), 10));
         });
-        
+        console.log(orderProductIdCollection);
+
         $.ajax({
-            url: url,
+            url: "payout-buyer/contact-buyer",
             data: {order_product_ids: orderProductIdCollection},
-            type: 'post',
+            type: 'get',
             dataType: 'JSON',                      
             success: function(result){
                 spinner.stop();
-                    
+
             }
         });
        
