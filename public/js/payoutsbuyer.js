@@ -5,9 +5,12 @@
         loader.showPleaseWait(); 
         var url = "/payout-buyer/view-transaction-details";
         var orderId = $(this).find('.td_order_id').html(); 
+        var sellerID = $(this).find('.username').data("memberid"); 
+
+        console.log(sellerID);
         var $request = $.ajax({
                 url: url,
-                data:{order_id:orderId},
+                data:{order_id:orderId, seller_id: sellerID},
                 type: 'get',
                 dataType: 'JSON',
                 success: function(result){
@@ -39,22 +42,22 @@
     });
 
     $(document.body).on('click','#tagOrder',function(){
+        loader.showPleaseWait();
         var orderProductIdCollection =  [];
 
         var tag =  $('#tagOption option:selected').val();
+        var sellerId =  $('#sellerID').val();
         $('.orderProductId').each(function(){
             orderProductIdCollection.push( parseInt($(this).html().trim(), 10));
         });
-        console.log(orderProductIdCollection);
 
         $.ajax({
-            url: "payout-buyer/contact-buyer",
-            data: {order_product_ids: orderProductIdCollection},
+            url: "payout-buyer/update-buyer-transaction",
+            data: {order_product_ids: orderProductIdCollection, tagId:tag, sellerId: sellerId},
             type: 'get',
             dataType: 'JSON',                      
             success: function(result){
-                spinner.stop();
-
+                window.location.href = location.href;
             }
         });
        
