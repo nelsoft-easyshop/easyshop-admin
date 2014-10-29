@@ -5,12 +5,14 @@
                 <td>Order Product Id</td> 
                 <td>Product Name</td> 
                 <td>Order Quantity</td> 
+                <td>Price</td> 
             </tr>
             @foreach($transactionDetails as $orderProduct)
                 <tr>
                     <td class="orderProductId">{{{ $orderProduct->id_order_product }}}</td>
                     <td>{{{ $orderProduct->product->name }}}</td>
                     <td>{{{ $orderProduct->order_quantity }}}</td>
+                    <td>PHP {{{ number_format($orderProduct->total, 2, '.', '') }}}</td>
                 </tr>
             @endforeach
         </table>
