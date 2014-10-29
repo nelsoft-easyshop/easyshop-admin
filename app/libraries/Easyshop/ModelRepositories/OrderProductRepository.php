@@ -247,6 +247,10 @@ class OrderProductRepository extends AbstractRepository
         return $returnTransaction;
     }
 
+    /**
+     * Retrieves all buyers with shipping details
+     * @return JSON
+     */
     public function getBuyersTransactionWithShippingComment()
     {
         $query = OrderProduct::leftJoin('es_order','es_order_product.order_id', '=', 'es_order.id_order'); 
