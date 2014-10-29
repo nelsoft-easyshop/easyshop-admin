@@ -385,7 +385,7 @@ class OrderProductController extends BaseController
             $dt = Carbon::create(Carbon::parse($value->expected_date)->year
                                 , Carbon::parse($value->expected_date)->month
                                 , Carbon::parse($value->expected_date)->day);
-            if(  Carbon::now() >= $dt->addDays(2) ){
+            if(  Carbon::now() > $dt->addDays(2) ){
                 $orders[] = $value;   
             }
 
