@@ -251,8 +251,10 @@ class OrderProductRepository extends AbstractRepository
      * Retrieves all buyers with shipping details
      * @return JSON
      */
-    public function getBuyersTransactionWithShippingComment()
+    public function getBuyersTransactionWithShippingComment($sortBy, $sortOrder)
     {
+        $sortBy = $sortBy === NULL ? "es_order.dateadded" : $sortBy;
+        $sortOrder = $sortOrder === NULL ? "DESC" : $sortOrder;
         $query = OrderProduct::leftJoin('es_order','es_order_product.order_id', '=', 'es_order.id_order'); 
         $query->leftJoin("es_order_product_tag","es_order_product_tag.order_product_id","=","es_order_product.id_order_product");
         $query->leftJoin("es_tag_type","es_tag_type.id_tag_type","=","es_order_product_tag.tag_type_id");
@@ -261,7 +263,7 @@ class OrderProductRepository extends AbstractRepository
         $query->where('es_order.order_status', '!=', OrderStatus::STATUS_VOID)
               ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY])
               ->groupBy("es_order_product.seller_id", "es_order_product.order_id")
-              ->orderBy('es_order.dateadded','DESC');
+              ->orderBy($sortBy,$sortOrder);
 
         $returnTransaction =  $query->get([
                                             'es_order.id_order', 
@@ -273,6 +275,7 @@ class OrderProductRepository extends AbstractRepository
                                             'es_member.contactno', 
                                             'es_order_product_tag.tag_type_id', 
                                             'es_tag_type.tag_description', 
+                                            'es_tag_type.tag_color', 
                                             'es_product_shipping_comment.expected_date',
                                             DB::raw('COUNT(es_order_product.order_id) as count')
                                         ]);
