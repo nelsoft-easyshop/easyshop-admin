@@ -369,36 +369,38 @@ class OrderProductController extends BaseController
         return Response::json(array('html' => $html)); 
     } 
 
+    //here
+
     public function getOrderProductsContactBuyer()
     {
-        $taggedStatus = array();
         $orders = array();
         $orderProductRepository = App::make('OrderProductRepository'); 
         $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
 
         foreach (array_flatten($orderProductRepository->getBuyersTransactionWithShippingComment()) as $value) {
 
+
             $dt = Carbon::create(Carbon::parse($value->expected_date)->year
                                 , Carbon::parse($value->expected_date)->month
                                 , Carbon::parse($value->expected_date)->day);
-            if(Carbon::now() > $dt->addDays(2)) {
-                $orders[] = $value;            
-                $taggedStatus[] = $orderProductTagRepositoryRepository->getOrdersTagStatus($value->id_order_product);                
+            if(  Carbon::now() >= $dt->addDays(2) ){
+                $orders[] = $value;   
             }
-            
+
         }
 
-        return View::make("pages.payoutsbuyer")
-                    ->with("status", $taggedStatus)
-                    ->with("orders", array_flatten($orders) );
+        return View::make("pages.payoutsbuyers")
+                    ->with("orders", array_flatten($orders));
     }
 
-    public function insertContactedBuyer()
+    public function updateBuyerTagTransaction()
     {
+
         $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository');         
-        foreach(array_flatten(Input::all()) as $ids) {
-            $orderProductTagRepositoryRepository->insertContactedBuyer($ids);
+        foreach(array_flatten(Input::get("order_product_ids")) as $ids) {
+            $isSuccess = $orderProductTagRepositoryRepository->updateBuyerTag($ids, Input::get("tagId"), Input::get("sellerId"));
         }
+        return Response::json(array('html' => $isSuccess)); 
     }
 
 
@@ -406,38 +408,47 @@ class OrderProductController extends BaseController
      * Get all existing transaction details of the specific seller by order id
      * @return JSON
      */
-    public function getBuyerTransactionDetailsByOrderId()
+    public function getBuyerTransactionDetailsByOrderId($suggestForRefund = false)
     { 
+
         $orderId = Input::get('order_id'); 
+        $sellerId = Input::get('seller_id');  
+
 
         // prepare repository needed
         $orderProductRepository = App::make('OrderProductRepository');
         $tagRepository = App::make('TagTypeRepository');
 
         // Query the transactions 
-        $transactionDetails = $orderProductRepository->getOrderProductByOrderId($orderId);
+        $transactionDetails = $orderProductRepository->getOrderProductByOrderId($orderId, $sellerId);
 
-        // get available tags
+        $checkOrder = $orderProductRepository->checkOrderIfContact($orderId, $sellerId);
 
-        if($orderProductRepository->checkOrderIfContact($orderId)) {
+        if($checkOrder) {
             $availableTags = $tagRepository->getBuyerTags(true); 
+            $dt = Carbon::create(Carbon::parse($checkOrder->date_updated)->year
+                                            , Carbon::parse($checkOrder->date_updated)->month
+                                            , Carbon::parse($checkOrder->date_updated)->day);
+
+            if( (Carbon::now() >= $dt->addDays(2)) && $checkOrder->tag_type_id != TagType::REFUND){
+                $suggestForRefund = TRUE;
+            }
+
         }
         else {
             $availableTags = $tagRepository->getBuyerTags();             
         }
 
 
-
         $html = View::make('partials.payoutbuyertransactiondetails')
             ->with('transactionDetails', $transactionDetails) 
+            ->with('suggestForRefund', $suggestForRefund) 
+            ->with('sellerId', $sellerId) 
             ->with('tags', $availableTags) 
             ->render();
 
         return Response::json(array('html' => $html)); 
     }     
-
-        return Response::json(array('html' => $html));
-    }
 
     /**
      * Update or Insert to order product tag
