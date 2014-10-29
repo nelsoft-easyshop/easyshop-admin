@@ -7,27 +7,6 @@ use Carbon\Carbon;
 class OrderProductController extends BaseController 
 {
 
-    public function getOrderProductsContactBuyer()
-    {
-        $orderProductRepository = App::make('OrderProductRepository'); 
-        $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
-
-        foreach (array_flatten($orderProductRepository->getBuyersTransactionWithShippingComment()) as $value) {
-
-            $dt = Carbon::create(Carbon::parse($value->expected_date)->year
-                                , Carbon::parse($value->expected_date)->month
-                                , Carbon::parse($value->expected_date)->day);
-
-            if($dt->addDays(2) > Carbon::now()){
-                $orders[] = $value;            
-            }
-
-        }
-
-        return View::make("pages.payoutsbuyer")
-                    ->with("orders", array_flatten($orders) );
-    }
-
     /**
      *  GET method for displaying list of account to pay
      *
@@ -380,6 +359,39 @@ class OrderProductController extends BaseController
         return Response::json(array('html' => $html)); 
     } 
 
+    public function getOrderProductsContactBuyer()
+    {
+        $taggedStatus = array();
+        $orders = array();
+        $orderProductRepository = App::make('OrderProductRepository'); 
+        $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
+
+        foreach (array_flatten($orderProductRepository->getBuyersTransactionWithShippingComment()) as $value) {
+
+            $dt = Carbon::create(Carbon::parse($value->expected_date)->year
+                                , Carbon::parse($value->expected_date)->month
+                                , Carbon::parse($value->expected_date)->day);
+            if(Carbon::now() > $dt->addDays(2)) {
+                $orders[] = $value;            
+                $taggedStatus[] = $orderProductTagRepositoryRepository->getOrdersTagStatus($value->id_order_product);                
+            }
+            
+        }
+
+        return View::make("pages.payoutsbuyer")
+                    ->with("status", $taggedStatus)
+                    ->with("orders", array_flatten($orders) );
+    }
+
+    public function insertContactedBuyer()
+    {
+        $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository');         
+        foreach(array_flatten(Input::all()) as $ids) {
+            $orderProductTagRepositoryRepository->insertContactedBuyer($ids);
+        }
+    }
+
+
     /**
      * Get all existing transaction details of the specific seller by order id
      * @return JSON
@@ -389,14 +401,22 @@ class OrderProductController extends BaseController
         $orderId = Input::get('order_id'); 
 
         // prepare repository needed
-        $orderRepository = App::make('OrderProductRepository');
+        $orderProductRepository = App::make('OrderProductRepository');
         $tagRepository = App::make('TagTypeRepository');
 
         // Query the transactions 
-        $transactionDetails = $orderRepository->getOrderProductByOrderId($orderId);
+        $transactionDetails = $orderProductRepository->getOrderProductByOrderId($orderId);
 
         // get available tags
-        $availableTags = $tagRepository->getBuyerTags();
+
+        if($orderProductRepository->checkOrderIfContact($orderId)) {
+            $availableTags = $tagRepository->getBuyerTags(true); 
+        }
+        else {
+            $availableTags = $tagRepository->getBuyerTags();             
+        }
+
+
 
         $html = View::make('partials.payoutbuyertransactiondetails')
             ->with('transactionDetails', $transactionDetails) 
