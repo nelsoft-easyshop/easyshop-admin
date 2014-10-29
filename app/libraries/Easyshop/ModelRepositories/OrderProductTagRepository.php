@@ -88,7 +88,11 @@ class OrderProductTagRepository extends AbstractRepository
         return $orderProductTag;
     }
 
-    public function checkShippedOrderIfTagged($orderProductId)
+    /**
+     * Check if an order product is tagged
+     * @return OBJECT
+     */
+    public function checkTaggerOrderProduct($orderProductId)
     {
         return OrderProductTag::where("order_product_id",$orderProductId)->count();
     }
