@@ -161,7 +161,15 @@
                 </a>
                 <p> View Users and Products overall statistics</p>
             
-            </li>                                  
+            </li>
+            <li>
+                <a href='/payout/seller'>
+                    <img src="{{{ asset('images/icon_people.png') }}}"/> 
+                    <span >Payou Seller List <sup>{{{ $unTagCount  }}}</sup> </span>  
+                </a>
+                <p> View List of seller have transaction</p>
+            
+            </li>
 
             
         </ul>

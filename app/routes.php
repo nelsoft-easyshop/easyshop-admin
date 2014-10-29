@@ -107,9 +107,11 @@ Route::group(array('before' => 'auth'), function(){
 
     // routes for payout notifs
     Route::get('payout/seller', array('uses' => 'OrderProductController@getSellersTransactions'));
+    Route::post('payout/seller', array('uses' => 'OrderProductController@getSellersTransactions'));
     Route::get('payout/seller/view-transactions', array('uses' => 'OrderProductController@getSellerExistingTransaction'));
     Route::get('payout/seller/view-transactions-details', array('uses' => 'OrderProductController@getSellerTransactionDetailsByOrderId'));
     Route::get('payout/seller/update-transaction', array('uses' => 'OrderProductController@updateOrderProductStatus'));
+    Route::get('payout/seller/view-transaction-shipping', array('uses' => 'OrderProductController@getOrderProductShippingDetails'));
 
 
 });

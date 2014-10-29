@@ -8,8 +8,12 @@ class HomeController extends BaseController
      */
     public function index()
     {
+        $orderRepository = App::make('OrderProductRepository'); 
+        $ungTagCount = $orderRepository->countUntagTransaction();
+
         return View::make('pages.dashboard')
-            ->with('username', Auth::user()->username);
+            ->with('username', Auth::user()->username)
+            ->with('unTagCount',$ungTagCount);
     }
 
 

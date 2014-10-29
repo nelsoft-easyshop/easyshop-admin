@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\DB;
 use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory;
-use PaymentMethod;
+use PaymentMethod, TagType;
 
 
 class OrderProductRepository extends AbstractRepository
@@ -216,25 +216,98 @@ class OrderProductRepository extends AbstractRepository
         return $orderProduct->save();
     }
 
-    public function getAllSellersTransaction($seller_id = 0)
+    /**
+     * Get all transaction grouped by seller
+     * @param  integer $seller_id
+     * @return Object
+     */
+    public function getAllSellersTransaction($row = 100,$filter = false,$userData = array())
     {
         $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
         $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
-        $query->where('es_order.order_status', '!=', OrderStatus::STATUS_VOID)
-              ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY])
-              ->groupBy('es_member.id_member','es_order_product.order_id')
+
+        $query->leftJoin('es_order_product_tag',function($leftJoin){
+            $leftJoin->on('es_order_product_tag.order_product_id', '=', 'es_order_product.id_order_product');
+        });
+
+        $query->leftJoin('es_tag_type',function($leftJoin){
+            $leftJoin->on('es_order_product_tag.tag_type_id', '=', 'es_tag_type.id_tag_type');
+        }); 
+
+        $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
+              ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY]);
+
+
+        if($filter){
+            if($userData['fullname']){
+                $query->where('es_member.fullname', 'LIKE', '%' . $userData['fullname'] . '%');
+            }
+            if($userData['username']){
+                $query->where('es_member.username', 'LIKE', '%' . $userData['username'] . '%');
+            }
+            if($userData['contactno']){
+                $query->where('es_member.contactno', 'LIKE', '%' . $userData['contactno'] . '%');
+            }
+            if($userData['email']){
+                $query->where('es_member.email', 'LIKE', '%' . $userData['email'] . '%');
+            }
+        }
+
+        if($filter && $userData['tag']){
+            $query->where('es_order_product_tag.tag_type_id', '=', $userData['tag']);
+        }
+        else{
+            $query->where(function($query)
+                    {
+                        $query->orWhere(function($query)
+                        {
+                            $query->whereNotIn('es_order_product_tag.tag_type_id',[TagType::CONFIRMED,TagType::REFUND,TagType::PAYOUT]);
+                        })->orWhere(function($query)
+                        {
+                            $query->whereNull('es_order_product_tag.tag_type_id');
+                        });
+                        
+                    });
+        }
+
+        $query->groupBy('es_member.id_member','es_order_product.order_id')
               ->orderBy('es_order.dateadded','DESC');
 
-        $returnTransaction = $query->get([
+        $returnTransaction = $query->paginate($row,[
                                             'es_order.id_order', 
                                             'es_member.username', 
                                             'es_member.id_member', 
+                                            'es_member.fullname', 
                                             'es_member.email', 
                                             'es_member.contactno', 
+                                            'es_order_product_tag.*',
+                                            'es_tag_type.tag_description',
+                                            'es_tag_type.tag_color',
                                             DB::raw('COUNT(es_order_product.order_id) as count')
                                         ]);
         
         return $returnTransaction;
     }
+
+    public function countUntagTransaction()
+    {
+        $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
+        $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+
+        $query->leftJoin('es_order_product_tag',function($leftJoin){
+            $leftJoin->on('es_order_product_tag.order_product_id', '=', 'es_order_product.id_order_product');
+        });
+
+        $query->leftJoin('es_tag_type',function($leftJoin){
+            $leftJoin->on('es_order_product_tag.tag_type_id', '=', 'es_tag_type.id_tag_type');
+        }); 
+
+        $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
+              ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY])
+              ->whereNull('es_order_product_tag.tag_type_id');
+
+        return $query->get()->count();
+    }
 }
+
 

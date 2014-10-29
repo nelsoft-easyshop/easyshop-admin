@@ -324,12 +324,23 @@ class OrderProductController extends BaseController
         // prepare repository needed
         $orderRepository = App::make('OrderProductRepository');
 
+        $userData = []; 
+        $userData = array(
+            'fullname' => Input::get('fullname'),
+            'username' => Input::get('username'),
+            'contactno' => Input::get('number'),
+            'email' => Input::get('email'),
+            'tag' => Input::get('tag'),
+        );
+
         // Query the transactions
-        $transactionRecord = $orderRepository->getAllSellersTransaction();
+        $transactionRecord = $orderRepository->getAllSellersTransaction(100,TRUE,$userData);
+        $pagination = $transactionRecord->appends(Input::except(array('page','_token')))->links();
 
         // Render the view
         return View::make('pages.payoutsellerlist')
-                    ->with('transactionRecord', $transactionRecord);
+                    ->with('transactionRecord', $transactionRecord)
+                    ->with('pagination', $pagination);
     }
 
     /**
@@ -343,8 +354,7 @@ class OrderProductController extends BaseController
         $memberId = Input::get('member_id');
 
         // prepare repository needed
-        $orderRepository = App::make('OrderProductRepository');
-        $tagRepository = App::make('TagTypeRepository');
+        $orderRepository = App::make('OrderProductRepository'); 
 
         //prepare service
         $payoutService = App::make('PayoutService');
@@ -358,12 +368,13 @@ class OrderProductController extends BaseController
         $currentStatus = $orderTagStatus['current_status'];
         $requestForRefund = $orderTagStatus['request_refund'];
 
+        // prepare view
         $html = View::make('partials.payoutsellertransactiondetails')
-            ->with('transactionDetails', $transactionDetails) 
-            ->with('tags', $availableTags)
-            ->with('currentStatus', $currentStatus)
-            ->with('requestForRefund', $requestForRefund)
-            ->render();
+                        ->with('transactionDetails', $transactionDetails) 
+                        ->with('tags', $availableTags)
+                        ->with('currentStatus', $currentStatus)
+                        ->with('requestForRefund', $requestForRefund)
+                        ->render();
 
         return Response::json(array('html' => $html));
     }
@@ -388,5 +399,32 @@ class OrderProductController extends BaseController
                                                                     ,$memberId
                                                                     ,$tagType
                                                                     ,$adminMemberId);
+
+        return Response::json(array('response' => 'true'));
+    }
+
+    public function getOrderProductShippingDetails()
+    {
+        // get input data
+        $orderProductId = Input::get('order_product_id');
+
+        // prepare repositories
+        $shippingRepo = App::make('ProductShippingCommentRepository');
+
+        // get shipping details
+        $shippingInfo = $shippingRepo->getShippingCommentByOrderProductId($orderProductId);
+
+        $hasShippingInformation = FALSE;
+        if($shippingInfo->count() > 0){
+            $hasShippingInformation = TRUE;
+        }
+
+        // prepare view
+        $html = View::make('partials.shippingcommentdetails')
+                        ->with('shippingInfo', $shippingInfo)
+                        ->with('hasShippingInformation',$hasShippingInformation)
+                        ->render();
+
+        return Response::json(array('html' => $html));
     }
 }
