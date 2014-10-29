@@ -369,8 +369,10 @@ class OrderProductController extends BaseController
         return Response::json(array('html' => $html)); 
     } 
 
-    //here
-
+    /**
+     * Retrieves order products that are 2 days passed of ETD
+     * @return JSON
+     */
     public function getOrderProductsContactBuyer()
     {
         $orders = array();
@@ -393,6 +395,10 @@ class OrderProductController extends BaseController
                     ->with("orders", array_flatten($orders));
     }
 
+    /**
+     * Update tag status of order_products of a particular order
+     * @return JSON
+     */
     public function updateBuyerTagTransaction()
     {
 
