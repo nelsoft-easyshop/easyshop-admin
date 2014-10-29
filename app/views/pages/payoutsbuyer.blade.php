@@ -23,7 +23,6 @@
                         <th>Order ID</th>
                         <th>Username</th>
                         <th>Email</th>
-                        <th>Status</th>
                         <th>Contact Number</th>
                      </tr>
                 </thead>
@@ -32,7 +31,7 @@
                         <td class='td_order_id'>{{{$details->id_order}}}</td>
                         <td class='username'>{{{$details->username}}}</td>
                         <td class='email'>{{{$details->email}}}</td>
-                        <td class='email'><span class="org_btn view">  {{   ($status[$key]) ? $status[$key] : "N/A"   }} </span></td>
+                        <td class='email'><span class="org_btn view"> {{{$details->tag_description}}} </span></td>
                         <td class="contactno">{{{ ($details->contactno) ? $details->contactno : 'N/A' }}}</td>                        
                     </tr>
                 @endforeach
