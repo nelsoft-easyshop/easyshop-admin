@@ -4,10 +4,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory, PaymentMethod, OrderProductTag;
-use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory;
-use PaymentMethod;
-
-
 
 class OrderProductRepository extends AbstractRepository
 {    
@@ -56,11 +52,14 @@ class OrderProductRepository extends AbstractRepository
     
     public function checkOrderIfContact($orderIds)
     {
-        foreach(OrderProduct::where('order_id', '=', $orderIds)->get() as $ids) {
-            $orderProductIds[] = $ids->id_order_product;
-        }
+        return OrderProduct::leftJoin("es_order_product_tag","es_order_product_tag.order_product_id","=","es_order_product.id_order_product")
+                            ->join("es_member","es_member.id_member","=","es_order_product.seller_id")
+                            ->where('es_order_product.order_id', '=', $orderIds)
+                            ->where('es_order_product_tag.tag_type_id', '!=', "")
+                            ->first();
 
-        return OrderProductTag::whereIn("order_product_id",$orderProductIds)->first();
+
+
     }
     
     /**
@@ -250,23 +249,31 @@ class OrderProductRepository extends AbstractRepository
 
     public function getBuyersTransactionWithShippingComment()
     {
-        $query = OrderProduct::join("es_order","es_order_product.order_id","=","es_order.id_order")
-                            ->join("es_member","es_order.buyer_id","=","es_member.id_member")
-                            ->join("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product")
-                            ->whereIn("es_order.payment_method_id",array(PaymentMethod::PAYPAL, PaymentMethod::DRAGONPAY))
-                            ->where("es_order.order_status","!=",OrderStatus::STATUS_VOID)
-                            ->groupBy("es_order_product.seller_id", "es_order_product.order_id")
-                            ->get([
-                                    'es_order.id_order', 
-                                    'es_member.username', 
-                                    'es_member.email', 
-                                    'es_member.contactno',
-                                    'es_order_product.id_order_product',
-                                    'es_product_shipping_comment.expected_date',
-                                     DB::raw('COUNT(es_order_product.order_id) as count')                                            
-                                ]);        
+        $query = OrderProduct::leftJoin('es_order','es_order_product.order_id', '=', 'es_order.id_order'); 
+        $query->leftJoin("es_order_product_tag","es_order_product_tag.order_product_id","=","es_order_product.id_order_product");
+        $query->leftJoin("es_tag_type","es_tag_type.id_tag_type","=","es_order_product_tag.tag_type_id");
+        $query->leftjoin("es_member","es_order.buyer_id","=","es_member.id_member");
+        $query->rightJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product");
+        $query->where('es_order.order_status', '!=', OrderStatus::STATUS_VOID)
+              ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY])
+              ->groupBy("es_order_product.seller_id", "es_order_product.order_id")
+              ->orderBy('es_order.dateadded','DESC');
 
-        return array_flatten($query);      
+        $returnTransaction =  $query->get([
+                                            'es_order.id_order', 
+                                            'es_order_product.id_order_product', 
+                                            'es_member.username', 
+                                            'es_member.id_member', 
+                                            'es_order_product.seller_id',
+                                            'es_member.email', 
+                                            'es_member.contactno', 
+                                            'es_order_product_tag.tag_type_id', 
+                                            'es_tag_type.tag_description', 
+                                            'es_product_shipping_comment.expected_date',
+                                            DB::raw('COUNT(es_order_product.order_id) as count')
+                                        ]);
+
+        return $returnTransaction;
     }    
 }
 
