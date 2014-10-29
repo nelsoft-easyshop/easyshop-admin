@@ -67,6 +67,10 @@ class ServiceServiceProvider extends ServiceProvider
             return new ProductCSVService();
         });
 
+        $this->app->bind('CustomPaginator', function(){
+            return new CustomPaginator();
+        });                
+
         $this->app->bind('PayoutService', function(){
             return new PayoutService( 
                 new \Easyshop\ModelRepositories\TagTypeRepository,
