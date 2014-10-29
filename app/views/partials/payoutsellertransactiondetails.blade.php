@@ -17,11 +17,27 @@
     </div>
 
     <div>
-        Mark as: 
-        <select>
+        Mark as:
+        <select id="tagType">
         @foreach($tags as $tag)
-            <option value="{{{ $tag->id_tag_type }}}" >{{{ $tag->tag_description }}}</option>
+            @if($tag->id_tag_type === $currentStatus)
+                <option value="{{{ $tag->id_tag_type }}}" selected >
+                    {{{ $tag->tag_description }}}
+                </option>
+            @else
+                <option value="{{{ $tag->id_tag_type }}}" >
+                    {{{ $tag->tag_description }}}
+                </option>
+            @endif
         @endforeach
         </select>
-    </div>
+
+        @if($requestForRefund)
+            <label>
+                Suggested for refund
+            </label>
+        @endif
+    </div> 
+        
+
 </div>

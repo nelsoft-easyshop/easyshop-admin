@@ -109,4 +109,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('payout/seller', array('uses' => 'OrderProductController@getSellersTransactions'));
     Route::get('payout/seller/view-transactions', array('uses' => 'OrderProductController@getSellerExistingTransaction'));
     Route::get('payout/seller/view-transactions-details', array('uses' => 'OrderProductController@getSellerTransactionDetailsByOrderId'));
+    Route::get('payout/seller/update-transaction', array('uses' => 'OrderProductController@updateOrderProductStatus'));
+
+
 });

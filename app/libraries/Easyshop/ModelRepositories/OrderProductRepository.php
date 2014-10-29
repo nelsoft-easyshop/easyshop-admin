@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\DB;
 use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory;
+use PaymentMethod;
 
 
 class OrderProductRepository extends AbstractRepository
@@ -40,9 +41,14 @@ class OrderProductRepository extends AbstractRepository
      * @param integer $orderId
      * @return OrderProduct[]
      */
-    public function getOrderProductByOrderId($orderId)
+    public function getOrderProductByOrderId($orderId,$sellerId = 0)
     {
-        return OrderProduct::where('order_id', '=', $orderId)->get();
+        $query = OrderProduct::where('order_id', '=', $orderId);
+        if(intval($sellerId) !== 0){
+            $query->where('seller_id','=',$sellerId);
+        }
+
+        return $query->get();
     }
     
     
@@ -213,14 +219,22 @@ class OrderProductRepository extends AbstractRepository
     public function getAllSellersTransaction($seller_id = 0)
     {
         $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
-        $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order')
-              ->where('es_order.order_status', '!=', OrderStatus::STATUS_VOID);
+        $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
 
-        $query->groupBy('es_member.id_member','es_order_product.order_id');
+        $query->leftJoin('es_order_product_tag',function($leftJoin){
+            $leftJoin->on('es_order_product_tag.member_id', '=', 'es_member.id_member');
+            $leftJoin->on('es_billing_info.is_default', '=',  DB::raw('1'));
+        });
+
+        $query->where('es_order.order_status', '!=', OrderStatus::STATUS_VOID)
+              ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY])
+              ->groupBy('es_member.id_member','es_order_product.order_id')
+              ->orderBy('es_order.dateadded','DESC');
 
         $returnTransaction = $query->get([
                                             'es_order.id_order', 
                                             'es_member.username', 
+                                            'es_member.id_member', 
                                             'es_member.email', 
                                             'es_member.contactno', 
                                             DB::raw('COUNT(es_order_product.order_id) as count')

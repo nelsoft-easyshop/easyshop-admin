@@ -7,6 +7,7 @@ class TagType extends Eloquent
     const REFUND = 2;
     const ON_HOLD = 3;
     const PAYOUT = 4; 
+    const CONFIRMED = 5; 
 
    /**
     * The database table used by the model.

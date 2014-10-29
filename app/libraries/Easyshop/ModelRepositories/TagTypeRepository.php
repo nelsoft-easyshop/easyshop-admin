@@ -12,10 +12,10 @@ class TagTypeRepository extends AbstractRepository
             );
 
         if($default){
-            $tagArray = array(
-                TagType::CONTACTED,
+            $tagArray = array( 
+                TagType::CONFIRMED,
+                TagType::ON_HOLD,
                 TagType::REFUND,
-                TagType::ON_HOLD
             );
         }
 
@@ -29,14 +29,38 @@ class TagTypeRepository extends AbstractRepository
                     );
 
         if($default){
-            $tagArray = array(
-                TagType::CONTACTED,
+            $tagArray = array( 
                 TagType::PAYOUT,
                 TagType::ON_HOLD
             );
         }
 
         return TagType::whereIn('id_tag_type', $tagArray)->get();
+    }
+
+    public function getContacted()
+    {
+        return TagType::CONTACTED;
+    }
+
+    public function getRefund()
+    { 
+        return TagType::REFUND;
+    }
+
+    public function getOnHold()
+    {
+        return TagType::ON_HOLD;
+    }
+
+    public function getPayOut()
+    {
+        return TagType::PAYOUT;
+    }
+
+    public function getConfirmed()
+    {
+        return TagType::CONFIRMED;
     }
 }
 

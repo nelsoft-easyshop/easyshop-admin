@@ -340,6 +340,7 @@ class OrderProductController extends BaseController
     { 
         // get input data
         $orderId = Input::get('order_id'); 
+        $memberId = Input::get('member_id');
 
         // prepare repository needed
         $orderRepository = App::make('OrderProductRepository');
@@ -349,16 +350,43 @@ class OrderProductController extends BaseController
         $payoutService = App::make('PayoutService');
 
         // Query the transactions 
-        $transactionDetails = $orderRepository->getOrderProductByOrderId($orderId);
+        $transactionDetails = $orderRepository->getOrderProductByOrderId($orderId,$memberId);
 
         // get available tags
-        $availableTags = $payoutService->getAvailableTags($orderId);
+        $orderTagStatus = $payoutService->checkOrderProductTagStatus($orderId,$memberId);
+        $availableTags = $orderTagStatus['tags'];
+        $currentStatus = $orderTagStatus['current_status'];
+        $requestForRefund = $orderTagStatus['request_refund'];
 
         $html = View::make('partials.payoutsellertransactiondetails')
             ->with('transactionDetails', $transactionDetails) 
-            ->with('tags', $availableTags) 
+            ->with('tags', $availableTags)
+            ->with('currentStatus', $currentStatus)
+            ->with('requestForRefund', $requestForRefund)
             ->render();
 
         return Response::json(array('html' => $html));
-    } 
+    }
+
+    /**
+     * Update or Insert to order product tag
+     * @return [type] [description]
+     */
+    public function updateOrderProductStatus()
+    {
+        // get input data
+        $orderId = Input::get('order_id'); 
+        $memberId = Input::get('member_id');
+        $tagType = Input::get('tag_type');
+        $adminMemberId = Auth::id();
+
+        //prepare service
+        $payoutService = App::make('PayoutService');
+
+        // Update status
+        $orderTagStatus = $payoutService->updateOrderProductTagStatus($orderId
+                                                                    ,$memberId
+                                                                    ,$tagType
+                                                                    ,$adminMemberId);
+    }
 }
