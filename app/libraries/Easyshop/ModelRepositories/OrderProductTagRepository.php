@@ -1,54 +1,37 @@
 <?php namespace Easyshop\ModelRepositories;
 
-use OrderProductTag, TagType;
+use OrderProductTag, TagType, OrderProduct;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class OrderProductTagRepository extends AbstractRepository
 {
 
-    public function insertContactedBuyer($orderProductId)
+    public function updateBuyerTag($orderProductId, $tagId, $sellerId)
     {
+        $orderProductTag = OrderProductTag::leftJoin("es_order_product","es_order_product.id_order_product","=","es_order_product_tag.order_product_id")
+                            ->where("es_order_product_tag.order_product_id",$orderProductId)
+                            ->where("es_order_product_tag.seller_id",$sellerId)
+                            ->first();
 
-        if(OrderProductTag::where("order_product_id",$orderProductId)->count() < 1) {
+        if(count($orderProductTag) < 1) {
+
             $orderProductTag = new OrderProductTag;
 
             $orderProductTag->order_product_id = $orderProductId;
-            $orderProductTag->tag_type_id = 1;
+            $orderProductTag->seller_id = $sellerId;
+            $orderProductTag->tag_type_id = $tagId;
             $orderProductTag->date_updated = Carbon::now();
             $orderProductTag->admin_member_id = \Auth::id();
-
-            $orderProductTag->save(); 
-        }
-
-            return $orderProductId;
-    }
-
-    public function getOrdersTagStatus($ids)
-    {
-
-        $tagStatus =  OrderProductTag::join("es_tag_type","es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type")
-                                            ->where("order_product_id",$ids)->first();   
-
-        if($tagStatus) {    
-                $dt = Carbon::create(Carbon::parse($tagStatus->date_updated)->year
-                                    , Carbon::parse($tagStatus->date_updated)->month
-                                    , Carbon::parse($tagStatus->date_updated)->day); 
-
-                if( Carbon::now() > $dt->addDays(2) ){                    
-                    $tagStatus->tag_type_id = TagType::REFUND;
-                    $tagStatus->save();
-                }                
-            $status = $tagStatus->tag_description;
-
         }
         else {
-            $status = null;
+            $orderProductTag->tag_type_id = $tagId;
+            $orderProductTag->seller_id = $sellerId;            
+            $orderProductTag->date_updated = Carbon::now();
+            $orderProductTag->admin_member_id = \Auth::id();
         }
-        return $status;
+            return $orderProductTag->save();
     }
-
-}
 
     /**
      * Get order product tag by seller_id and order_id
