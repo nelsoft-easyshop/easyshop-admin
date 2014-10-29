@@ -220,12 +220,6 @@ class OrderProductRepository extends AbstractRepository
     {
         $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
         $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
-
-        $query->leftJoin('es_order_product_tag',function($leftJoin){
-            $leftJoin->on('es_order_product_tag.member_id', '=', 'es_member.id_member');
-            $leftJoin->on('es_billing_info.is_default', '=',  DB::raw('1'));
-        });
-
         $query->where('es_order.order_status', '!=', OrderStatus::STATUS_VOID)
               ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY])
               ->groupBy('es_member.id_member','es_order_product.order_id')
