@@ -2,6 +2,7 @@
 
 use Easyshop\Services\EmailService;
 use Easyshop\Services\TransactionService;
+use Easyshop\Services\CustomPaginator;
 use Carbon\Carbon;
 
 class OrderProductController extends BaseController 
@@ -373,27 +374,55 @@ class OrderProductController extends BaseController
      * Retrieves order products that are 2 days passed of ETD
      * @return JSON
      */
-    public function getOrderProductsContactBuyer()
+    public function getOrderProductsContactBuyer($sortBy = null, $sortOrder = null)
     {
         $orders = array();
         $orderProductRepository = App::make('OrderProductRepository'); 
         $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
-
-        foreach (array_flatten($orderProductRepository->getBuyersTransactionWithShippingComment()) as $value) {
-
-
+        foreach ($orderProductRepository->getBuyersTransactionWithShippingComment(null,null) as $value) {
             $dt = Carbon::create(Carbon::parse($value->expected_date)->year
                                 , Carbon::parse($value->expected_date)->month
                                 , Carbon::parse($value->expected_date)->day);
             if(  Carbon::now() > $dt->addDays(2) ){
                 $orders[] = $value;   
             }
-
         }
 
+        $paginatorService = App::make("CustomPaginator");
+
+        $orders  = $paginatorService->paginateArray($orders, Input::get('page'), 3);
+
         return View::make("pages.payoutsbuyers")
-                    ->with("orders", array_flatten($orders));
+                    ->with("orders", $orders);
     }
+
+    /**
+     * Retrieves order products that are 2 days passed of ETD
+     * @return JSON
+     */
+    public function searchContactBuyer($sortBy = null, $sortOrder = null)
+    {
+
+        $orders = array();
+        $orderProductRepository = App::make('OrderProductRepository'); 
+        $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
+        foreach ($orderProductRepository->getBuyersTransactionWithShippingComment(Input::get("sortBy"), Input::get("sortOrder")) as $value) {
+            $dt = Carbon::create(Carbon::parse($value->expected_date)->year
+                                , Carbon::parse($value->expected_date)->month
+                                , Carbon::parse($value->expected_date)->day);
+            if(  Carbon::now() > $dt->addDays(2) ){
+                $orders[] = $value;   
+            }
+        }
+        $paginatorService = App::make("CustomPaginator");
+        $orders  = $paginatorService->paginateArray($orders, Input::get('page'), 3);       
+
+        $html = View::make("partials.payoutbuyerlist")
+                    ->with("orders", $orders)
+                    ->render();
+
+        return Response::json(array('html' => $html)); 
+    }    
 
     /**
      * Update tag status of order_products of a particular order
