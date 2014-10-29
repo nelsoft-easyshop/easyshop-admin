@@ -14,16 +14,21 @@
                 </tr>
             @endforeach
         </table>
-    </div>
 
-    <div>
-        Mark as: 
-        <form id="form">
-            <select id="tagOption">
-            @foreach($tags as $tag)
-                <option value="{{{ $tag->id_tag_type }}}" >{{{ $tag->tag_description }}}</option>
-            @endforeach
-            </select>
-        </form>
+        <table>
+            <div>
+                Mark as: 
+                <tr>
+                <td><form id="form">
+                    <select id="tagOption">
+                    @foreach($tags as $tag)
+                        <option value="{{{ $tag->id_tag_type }}}" >{{{ $tag->tag_description }}}</option>
+                    @endforeach
+                    </select>
+                    <input type="hidden" name="sellerID" id="sellerID" value="{{{ $sellerId }}}">
+                </form></td>
+                <td> {{ ($suggestForRefund) ?  "<span class='org_btn view'>Suggest For Refund</span>" : "" }}</td></tr>
+            </div>
+         </table>        
     </div>
 </div>
