@@ -18,7 +18,7 @@ class HomeController extends BaseController
                                 , Carbon::parse($value->expected_date)->month
                                 , Carbon::parse($value->expected_date)->day);
 
-            $exists = $orderProductTagRepositoryRepository->checkShippedOrderIfTagged($value->id_order_product);
+            $exists = $orderProductTagRepositoryRepository->checkTaggerOrderProduct($value->id_order_product);
             
             if(Carbon::now() > $dt->addDays(2) && $exists < 1){
                 $untaggedBuyerTransactions++;
