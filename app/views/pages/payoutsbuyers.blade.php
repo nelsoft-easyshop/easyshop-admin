@@ -21,7 +21,7 @@
                 <thead>
                      <tr>
                         <th>Order ID</th>
-                        <th>Username</th>
+                        <th>Buyer Name</th>
                         <th>Email</th>
                         <th>Status</th>
                         <th>Contact Number</th>
