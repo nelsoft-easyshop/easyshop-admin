@@ -24,15 +24,17 @@
                         <th>Number of Products</th> 
                         <th>Email</th>
                         <th>Contact No.</th>
+                        <th>Current Status</th>
                     </tr>
                 </thead> 
                 @foreach($transactionRecord as $record)
                     <tr class="seller_detail">
                         <td class="td_order_id">{{{ $record->id_order }}}</td>
-                        <td class="td_username">{{{ $record->username }}}</td>
+                        <td class="td_username" data-member-id="{{{ $record->id_member }}}" >{{{ $record->username }}}</td>
                         <td class="td_total">{{{ $record->count }}}</td>
                         <td class="td_email">{{{ $record->email }}}</td>
                         <td class="td_contact">{{{ ($record->contactno) ? $record->contactno : 'N/A' }}}</td>
+                        <td></td>
                     </tr>
                 @endforeach
             </table>

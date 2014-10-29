@@ -65,7 +65,15 @@ class ServiceServiceProvider extends ServiceProvider
 
         $this->app->bind('ProductCSVService', function(){
             return new ProductCSVService();
-        });            
+        });
+
+        $this->app->bind('PayoutService', function(){
+            return new PayoutService( 
+                new \Easyshop\ModelRepositories\TagTypeRepository,
+                new \Easyshop\ModelRepositories\OrderProductTagRepository,
+                new \Easyshop\ModelRepositories\OrderProductRepository
+            );
+        });
 
     }
 }

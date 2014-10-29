@@ -1,13 +1,30 @@
 (function ($) {
 
+    var updateStatus = function(order_id,member_id,tag_type){
+        var $url = '/payout/seller/update-transaction';
+        var $request = $.ajax({
+                url: $url,
+                data:{order_id:order_id,member_id:member_id,tag_type:tag_type},
+                type: 'get',
+                dataType: 'JSON',
+                success: function(result){ 
+                }
+            });
+    } 
+    
+    $('#requestRefundButton').click(function(){
+        
+    });
+
     $('.seller_detail').click(function(){
         loader.showPleaseWait();
         var $this = $(this);
         var $url = '/payout/seller/view-transactions-details'; 
         var $orderId = $this.find('.td_order_id').html(); 
+        var $memberId = $this.find('.td_username').data('member-id'); 
         var $request = $.ajax({
                 url: $url,
-                data:{order_id:$orderId},
+                data:{order_id:$orderId,member_id:$memberId},
                 type: 'get',
                 dataType: 'JSON',
                 success: function(result){
@@ -22,7 +39,8 @@
                             {
                                 label: 'Save',
                                 action: function(dialogRef) {
-                                    dialogRef.close();
+                                    $tagType = $("#tagType").val();
+                                    updateStatus($orderId,$memberId,$tagType);
                                 }
                             },
                             {
@@ -37,5 +55,5 @@
             });
     });
  
-
+    
 })(jQuery);
