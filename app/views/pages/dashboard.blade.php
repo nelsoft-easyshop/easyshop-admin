@@ -93,6 +93,16 @@
             </li>
 
             <li>
+                <a href='/payout-buyer'>
+                    <img src="{{{ asset('images/img_icon_business.png') }}}"/> 
+                    <span >Contact Buyer </span> <span class="label label-danger pull-right" style='margin-right:20px;'>{{{$untaggedBuyerTransactions}}}</span>
+
+                </a>
+                <p>View buyers transactions that are needed to be contacted. Lists transactions that are 2 days passed of ETD.</p>
+            
+            </li>            
+
+            <li>
                 <a href='/home'>
                     <img src="{{{ asset('images/icon_category.png') }}}"/> 
                     <span >Manage Home Page</span>
@@ -161,7 +171,7 @@
                 </a>
                 <p> View Users and Products overall statistics</p>
             
-            </li>                                  
+            </li>                                               
 
             
         </ul>
