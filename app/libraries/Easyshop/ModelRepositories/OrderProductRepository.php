@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory, PaymentMethod;
+use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory, PaymentMethod, OrderProductTag;
 
 
 class OrderProductRepository extends AbstractRepository
@@ -45,6 +45,14 @@ class OrderProductRepository extends AbstractRepository
         return OrderProduct::where('order_id', '=', $orderId)->get();
     }
     
+    public function checkOrderIfContact($orderIds)
+    {
+        foreach(OrderProduct::where('order_id', '=', $orderIds)->get() as $ids) {
+            $orderProductIds[] = $ids->id_order_product;
+        }
+
+        return OrderProductTag::whereIn("order_product_id",$orderProductIds)->first();
+    }
     
     /**
      * Returns all order products to be paid that are tied to a certain payment account_name
@@ -231,9 +239,9 @@ class OrderProductRepository extends AbstractRepository
 
     public function getBuyersTransactionWithShippingComment()
     {
-        $query = OrderProduct::leftJoin("es_order","es_order_product.order_id","=","es_order.id_order")
-                            ->leftJoin("es_member","es_order.buyer_id","=","es_member.id_member")
-                            ->rightJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product")
+        $query = OrderProduct::join("es_order","es_order_product.order_id","=","es_order.id_order")
+                            ->join("es_member","es_order.buyer_id","=","es_member.id_member")
+                            ->join("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product")
                             ->whereIn("es_order.payment_method_id",array(PaymentMethod::PAYPAL, PaymentMethod::DRAGONPAY))
                             ->where("es_order.order_status","!=",OrderStatus::STATUS_VOID)
                             ->groupBy("es_order_product.seller_id", "es_order_product.order_id")
