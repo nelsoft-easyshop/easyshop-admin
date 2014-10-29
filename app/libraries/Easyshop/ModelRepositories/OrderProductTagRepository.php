@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\DB;
 class OrderProductTagRepository extends AbstractRepository
 {
 
+    /**
+     * Update tags of a particular order_products
+     * @param int $orderProductId
+     * @param int $tagId
+     * @param int $sellerId
+     * @return object
+     */
     public function updateBuyerTag($orderProductId, $tagId, $sellerId)
     {
         $orderProductTag = OrderProductTag::leftJoin("es_order_product","es_order_product.id_order_product","=","es_order_product_tag.order_product_id")
