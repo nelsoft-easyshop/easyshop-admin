@@ -9,6 +9,7 @@ class HomeController extends BaseController
      */
     public function index()
     {
+
         $untaggedBuyerTransactions = 0;        
         $orderProductRepository = App::make('OrderProductRepository'); 
         $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
@@ -25,9 +26,14 @@ class HomeController extends BaseController
             }
         }
 
+        $orderRepository = App::make('OrderProductRepository'); 
+        $ungTagCount = $orderRepository->countUntagTransaction();
+
         return View::make('pages.dashboard')
+            ->with('username', Auth::user()->username)
             ->with("untaggedBuyerTransactions",$untaggedBuyerTransactions)
-            ->with('username', Auth::user()->username);
+            ->with('unTagCount',$ungTagCount);
+
     }
 
 
