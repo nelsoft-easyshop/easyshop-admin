@@ -408,6 +408,8 @@ class OrderProductController extends BaseController
 
         return View::make("pages.payoutsbuyers")
                     ->with("orders", $orders)
+                    ->with("filter", $filter)
+                    ->with("filterBy", $filterBy)
                     ->with("pagination", $pagination);
     }
 
@@ -419,9 +421,11 @@ class OrderProductController extends BaseController
     {
 
         $orders = array();
+        $filter = (Input::get("filter")) ? Input::get("filter") : null;
+        $filterBy = (Input::get("filterBy")) ? Input::get("filterBy") : null;        
         $orderProductRepository = App::make('OrderProductRepository'); 
         $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
-        foreach ($orderProductRepository->getBuyersTransactionWithShippingComment(Input::get("sortBy"), Input::get("sortOrder")) as $value) {
+        foreach ($orderProductRepository->getBuyersTransactionWithShippingComment(Input::get("sortBy"), Input::get("sortOrder"), $filter, $filterBy) as $value) {
             $dt = Carbon::create(Carbon::parse($value->expected_date)->year
                                 , Carbon::parse($value->expected_date)->month
                                 , Carbon::parse($value->expected_date)->day);

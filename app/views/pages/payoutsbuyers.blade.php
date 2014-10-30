@@ -12,7 +12,8 @@
 
 
 @section('content')
-
+<input type="hidden" id="filterSort" name="filter" class="form-control" value="{{$filter}}" />
+<input type="hidden" id="filterBySort" name="filter" class="form-control" value="{{$filterBy}}" />
   <div id="mainsection">
         <br/>   
             {{ Form::open(array('url' => 'payout-buyer', 'id' => 'searchForm')) }}
@@ -35,6 +36,7 @@
                         <li><a class="drct_search" data="email" href="javascript:void(0)">Email</a></li>
                         <li><a class="drct_search" data="id_order" href="javascript:void(0)">Order ID</a></li>
                         <li class="divider"></li>
+                        <li role="presentation" class="dropdown-header">Click to View by Tag:</li>
                         <li><a class="drct_search" data="CONTACTED" data-value="1" href="javascript:void(0)">Contacted</a></li>
                         <li><a class="drct_search" data="ON-HOLD" data-value="3" href="javascript:void(0)">On-hold</a></li>
                         <li><a class="drct_search" data="REFUND" data-value="3" href="javascript:void(0)">Refund</a></li>

@@ -44,7 +44,35 @@
             var id = $(this).attr('data');
             var text = $('#filterBy').val(id);
             $('#searchForm').submit();        
-    });        
+    });     
+    $(document.body).on('click','thead th span',function(){
+        var filter = $('#filterSort').val();
+        var filterBy = $('#filterBySort').val();        
+        if($(this).hasClass("glyphicon-chevron-up")) {
+            $(this).attr("class","glyphicon glyphicon-chevron-down");
+            $(this).data("sortorder","asc");
+        }
+        else {
+            $(this).attr("class","glyphicon glyphicon-chevron-up");
+            $(this).data("sortorder", "desc");
+
+        }
+        var tempSort = $(this).data("sortby");
+        var tempOrder = $(this).data("sortorder");
+        var sortBy = tempSort;
+        var sortOrder = tempOrder;
+        var page = $("#pageNumber").val();
+        $.ajax({
+            url: "payout-buyer-sort",
+            data: {sortBy: sortBy, sortOrder:sortOrder, page: page, filter:filter, filterBy:filterBy},
+            type: 'get',
+            dataType: 'JSON',                      
+            success: function(result){
+                loader.hidePleaseWait(); 
+                $("#tbody").html(result.html);
+            }
+        });      
+    });            
 
     $(document.body).on('click','#tagOrder',function(){
         loader.showPleaseWait();
