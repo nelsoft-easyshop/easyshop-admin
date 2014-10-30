@@ -110,6 +110,8 @@ class MemberRepository extends AbstractRepository
         $query = DB::table('es_order_product');
         $query->leftJoin('es_billing_info', 'es_order_product.seller_billing_id', '=', 'es_billing_info.id_billing_info');
         $query->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=', 'es_bank_info.id_bank');
+        $query->leftJoin('es_order_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_billing_info.id_order_billing_info');
+        
         $query->join('es_member','es_order_product.seller_id', '=', 'es_member.id_member');
         $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
         $query->leftJoin('es_order_product_history', function($join){
@@ -142,17 +144,16 @@ class MemberRepository extends AbstractRepository
         if($username !== null){
             $query->where('es_member.username', '=', $username);
         }     
-                       
+        $billingInfoChangeDate = \Config::get('transaction.billingInfoChangeDate');   
         $query->groupBy('es_member.id_member', 'es_billing_info.bank_id',  'es_billing_info.bank_account_name',  'es_billing_info.bank_account_number'  );
         $completedOrders = $query->get(['es_member.username',
                                        'es_member.email', 
                                        'es_member.contactno', 
-                                       'es_bank_info.bank_name as bank_name', 
-                                       'es_billing_info.bank_account_name as account_name', 
-                                       'es_billing_info.bank_account_number as account_number', 
+                                        DB::raw('IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_bank_info.bank_name, es_order_billing_info.bank_name) as bank_name'), 
+                                        DB::raw('IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_name, es_order_billing_info.account_name) as account_name'), 
+                                        DB::raw('IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_number, es_order_billing_info.account_number) as account_number'),
                                         DB::raw('SUM(es_order_product.net) as net')
                                     ]);
-
         return $completedOrders;
     }
 
