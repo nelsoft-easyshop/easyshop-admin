@@ -385,12 +385,14 @@ class OrderProductController extends BaseController
      * Retrieves order products that are 2 days passed of ETD
      * @return JSON
      */
-    public function getOrderProductsContactBuyer($sortBy = null, $sortOrder = null)
+    public function getOrderProductsContactBuyer()
     {
-        $orders = array();
+        $orders = [];
+        $filter = (Input::get("filter")) ? Input::get("filter") : null;
+        $filterBy = (Input::get("filterBy")) ? Input::get("filterBy") : null;
         $orderProductRepository = App::make('OrderProductRepository'); 
         $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
-        foreach ($orderProductRepository->getBuyersTransactionWithShippingComment(null,null) as $value) {
+        foreach ($orderProductRepository->getBuyersTransactionWithShippingComment(null, null, $filter, $filterBy) as $value) {
             $dt = Carbon::create(Carbon::parse($value->expected_date)->year
                                 , Carbon::parse($value->expected_date)->month
                                 , Carbon::parse($value->expected_date)->day);
@@ -401,10 +403,12 @@ class OrderProductController extends BaseController
 
         $paginatorService = App::make("CustomPaginator");
 
-        $orders  = $paginatorService->paginateArray($orders, Input::get('page'), 3);
+        $orders  = $paginatorService->paginateArray($orders, Input::get('page'), 50);
+        $pagination = $orders->appends(Input::except(array('page','_token')))->links();
 
         return View::make("pages.payoutsbuyers")
-                    ->with("orders", $orders);
+                    ->with("orders", $orders)
+                    ->with("pagination", $pagination);
     }
 
     /**

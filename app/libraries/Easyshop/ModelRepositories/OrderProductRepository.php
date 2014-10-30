@@ -302,7 +302,7 @@ class OrderProductRepository extends AbstractRepository
      * Retrieves all buyers with shipping details
      * @return JSON
      */
-    public function getBuyersTransactionWithShippingComment($sortBy, $sortOrder)
+    public function getBuyersTransactionWithShippingComment($sortBy, $sortOrder, $filter, $filterBy)
     {
         $sortBy = $sortBy === NULL ? "es_order.dateadded" : $sortBy;
         $sortOrder = $sortOrder === NULL ? "DESC" : $sortOrder;
@@ -311,9 +311,27 @@ class OrderProductRepository extends AbstractRepository
         $query->leftJoin("es_tag_type","es_tag_type.id_tag_type","=","es_order_product_tag.tag_type_id");
         $query->leftjoin("es_member","es_order.buyer_id","=","es_member.id_member");
         $query->rightJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product");
+
+
+
         $query->where('es_order.order_status', '!=', OrderStatus::STATUS_VOID)
-              ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY])
-              ->groupBy("es_order_product.seller_id", "es_order_product.order_id")
+              ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY]);
+        if($filter != NULL) {
+            if($filter == "username") {
+                $query->where('es_member.username', 'LIKE', '%' . $filterBy . '%');
+            }
+            else if($filter === "email") {
+                $query->where('es_member.email', 'LIKE', '%' . $filterBy . '%');
+            }
+            else if($filter === "contactno") {
+                $query->where('es_member.contactno', 'LIKE', '%' . $filterBy . '%');
+            }
+            else if($filter === "id_order") {
+                $query->where('es_order.id_order', 'LIKE', '%' . $filterBy . '%');
+            }                         
+        }              
+
+        $query->groupBy("es_order_product.seller_id", "es_order_product.order_id")
               ->orderBy($sortBy,$sortOrder);
 
         $returnTransaction =  $query->get([

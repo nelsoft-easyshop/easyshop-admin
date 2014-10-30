@@ -111,6 +111,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('payout/seller/view-transactions', array('uses' => 'OrderProductController@getSellerExistingTransaction'));
     Route::get('payout/seller/view-transactions-details', array('uses' => 'OrderProductController@getSellerTransactionDetailsByOrderId'));
     Route::get('payout-buyer', array('uses' => 'OrderProductController@getOrderProductsContactBuyer'));   
+    Route::post('payout-buyer', array('uses' => 'OrderProductController@getOrderProductsContactBuyer'));   
     Route::get('payout-buyer-sort', array('uses' => 'OrderProductController@searchContactBuyer'));   
     Route::get('/payout-buyer/view-transaction-details', array('uses' => 'OrderProductController@getBuyerTransactionDetailsByOrderId'));   
     Route::get('payout-buyer/update-buyer-transaction', array('uses' => 'OrderProductController@updateBuyerTagTransaction'));   

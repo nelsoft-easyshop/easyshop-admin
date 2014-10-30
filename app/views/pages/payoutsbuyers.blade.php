@@ -15,7 +15,32 @@
 
   <div id="mainsection">
         <br/>   
-
+            {{ Form::open(array('url' => 'payout-buyer', 'id' => 'searchForm')) }}
+            <div class="input-group srch_div" style="padding:12px">
+                <div class="inner-addon left-addon">
+                    <i class="glyphicon glyphicon-search"></i>
+                    <input type="hidden" id="filterBy" name="filter" class="form-control" placeholder="Search transaction" />
+                    <input type="text" id="searchBoxWord" name="filterBy" class="form-control" placeholder="Search transaction" />
+                </div>
+                <div class="input-group-btn">
+                    &nbsp;
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Filters
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dd-right" role="menu">
+                        <li role="presentation" class="dropdown-header">Search by :</li>
+                        <li><a class="drct_search" data="username" href="javascript:void(0)">Username</a></li>
+                        <li><a class="drct_search" data="contactno" href="javascript:void(0)">Contact Number</a></li>
+                        <li><a class="drct_search" data="email" href="javascript:void(0)">Email</a></li>
+                        <li><a class="drct_search" data="id_order" href="javascript:void(0)">Order ID</a></li>
+                        <li class="divider"></li>
+                        <li><a class="tag_search" data="src_email" data-value="1" href="javascript:void(0)">Contacted</a></li>
+                        <li><a class="tag_search" data="src_tag" data-value="3" href="javascript:void(0)">On-hold</a></li>
+                    </ul>
+                </div>
+            </div>
+            {{ Form::close() }}
         <div class="table-responsive table-payment transaction-list"> 
             <br/>
             <table id="table1" class="table table-striped table-hover">
@@ -29,7 +54,7 @@
                             <input type='hidden' name="sortOrder" id="sortOrder" value=""/>
                           {{ Form::close() }}
                         </th>
-                        <th>Buyer Name <span class="glyphicon glyphicon-chevron-up"  style="cursor:pointer;" data-sortby='es_member.username' data-sortorder='asc'></span></th>
+                        <th>Username <span class="glyphicon glyphicon-chevron-up"  style="cursor:pointer;" data-sortby='es_member.username' data-sortorder='asc'></span></th>
                         <th>Email <span class="glyphicon glyphicon-chevron-up"  style="cursor:pointer;" data-sortby='es_member.email' data-sortorder='asc'></span></th>
                         <th>Status <span class="glyphicon glyphicon-chevron-up"  style="cursor:pointer;" data-sortby='es_tag_type.tag_description' data-sortorder='asc'></span></th>
                         <th>Contact Number<span class="glyphicon glyphicon-chevron-up"  style="cursor:pointer;" data-sortby='es_member.contactno' data-sortorder='asc'></span></th>
@@ -47,7 +72,7 @@
                   @endforeach
                 </tbody>
             </table>
-            {{ $orders->links() }}
+            {{ $pagination }}
 
         </div>
 
