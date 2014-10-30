@@ -434,7 +434,7 @@ class OrderProductController extends BaseController
             }
         }
         $paginatorService = App::make("CustomPaginator");
-        $orders  = $paginatorService->paginateArray($orders, Input::get('page'), 3);       
+        $orders  = $paginatorService->paginateArray($orders, Input::get('page'), 50);       
 
         $html = View::make("partials.payoutbuyerlist")
                     ->with("orders", $orders)
