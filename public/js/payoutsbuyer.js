@@ -74,6 +74,37 @@
         });      
     });            
 
+    $(document.body).on('click','.checkShipping',function (e) {  
+        var $this = $(this);
+        var $orderProduct = $this.data('order-product-id');
+        var $url = '/payout/seller/view-transaction-shipping';
+        var $request = $.ajax({
+                url: $url,
+                data:{order_product_id:$orderProduct},
+                type: 'get',
+                dataType: 'JSON',
+                success: function(result){
+                    var modal_container = $('<div></div>');
+                    modal_container.append(result.html);
+                    loader.hidePleaseWait();
+                    BootstrapDialog.show({
+                        title: 'Shipping Details',
+                        message: modal_container,
+                        cssClass: 'payment-dialog',
+                        buttons: [
+                            {
+                                label: 'Back',
+                                action: function(dialogRef) {
+                                    dialogRef.close();
+                                }
+                            }
+                        ]
+                    });
+                }
+            });
+    });
+
+
     $(document.body).on('click','#tagOrder',function(){
         loader.showPleaseWait();
         var orderProductIdCollection =  [];

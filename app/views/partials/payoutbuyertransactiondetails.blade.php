@@ -6,6 +6,7 @@
                 <td>Product Name</td> 
                 <td>Order Quantity</td> 
                 <td>Price</td> 
+                <td></td> 
             </tr>
             @foreach($transactionDetails as $orderProduct)
                 <tr>
@@ -13,6 +14,9 @@
                     <td>{{{ $orderProduct->product->name }}}</td>
                     <td>{{{ $orderProduct->order_quantity }}}</td>
                     <td>PHP {{{ number_format($orderProduct->total, 2, '.', '') }}}</td>
+                    <td>
+                        <span class="org_btn view checkShipping" data-order-product-id="{{{ $orderProduct->id_order_product }}}" > View Shipping Details</span>
+                    </td>                    
                 </tr>
             @endforeach
         </table>
