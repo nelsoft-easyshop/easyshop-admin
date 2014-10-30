@@ -313,7 +313,7 @@ class OrderProductRepository extends AbstractRepository
         $query->rightJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product");
 
 
-
+        
         $query->where('es_order.order_status', '!=', OrderStatus::STATUS_VOID)
               ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY]);
         if($filter != NULL) {
@@ -328,7 +328,16 @@ class OrderProductRepository extends AbstractRepository
             }
             else if($filter === "id_order") {
                 $query->where('es_order.id_order', 'LIKE', '%' . $filterBy . '%');
-            }                         
+            }       
+            else if($filter === "CONTACTED") {
+                $query->where('es_order_product_tag.tag_type_id', '=', TagType::CONTACTED);
+            }     
+            else if($filter === "ON-HOLD") {
+                $query->where('es_order_product_tag.tag_type_id', '=', TagType::ON_HOLD);
+            }      
+            else if($filter === "REFUND") {
+                $query->where('es_order_product_tag.tag_type_id', '=', TagType::REFUND);
+            }                                                           
         }              
 
         $query->groupBy("es_order_product.seller_id", "es_order_product.order_id")

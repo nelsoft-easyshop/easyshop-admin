@@ -35,8 +35,9 @@
                         <li><a class="drct_search" data="email" href="javascript:void(0)">Email</a></li>
                         <li><a class="drct_search" data="id_order" href="javascript:void(0)">Order ID</a></li>
                         <li class="divider"></li>
-                        <li><a class="tag_search" data="src_email" data-value="1" href="javascript:void(0)">Contacted</a></li>
-                        <li><a class="tag_search" data="src_tag" data-value="3" href="javascript:void(0)">On-hold</a></li>
+                        <li><a class="drct_search" data="CONTACTED" data-value="1" href="javascript:void(0)">Contacted</a></li>
+                        <li><a class="drct_search" data="ON-HOLD" data-value="3" href="javascript:void(0)">On-hold</a></li>
+                        <li><a class="drct_search" data="REFUND" data-value="3" href="javascript:void(0)">REFUND</a></li>
                     </ul>
                 </div>
             </div>
