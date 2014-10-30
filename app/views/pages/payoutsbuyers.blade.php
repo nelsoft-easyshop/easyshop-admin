@@ -37,7 +37,7 @@
                         <li class="divider"></li>
                         <li><a class="drct_search" data="CONTACTED" data-value="1" href="javascript:void(0)">Contacted</a></li>
                         <li><a class="drct_search" data="ON-HOLD" data-value="3" href="javascript:void(0)">On-hold</a></li>
-                        <li><a class="drct_search" data="REFUND" data-value="3" href="javascript:void(0)">REFUND</a></li>
+                        <li><a class="drct_search" data="REFUND" data-value="3" href="javascript:void(0)">Refund</a></li>
                     </ul>
                 </div>
             </div>
