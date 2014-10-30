@@ -5,12 +5,18 @@
                 <td>Order Product Id</td> 
                 <td>Product Name</td> 
                 <td>Order Quantity</td> 
+                <td>Total Price</td>
+                <td></td>
             </tr>
             @foreach($transactionDetails as $orderProduct)
                 <tr>
                     <td>{{{ $orderProduct->id_order_product }}}</td>
                     <td>{{{ $orderProduct->product->name }}}</td>
                     <td>{{{ $orderProduct->order_quantity }}}</td>
+                    <td>{{{ $orderProduct->total }}}</td>
+                    <td>
+                        <span class="org_btn view checkShipping" data-order-product-id="{{{ $orderProduct->id_order_product }}}" > View Shipping Details</span>
+                    </td>
                 </tr>
             @endforeach
         </table>
@@ -19,16 +25,11 @@
     <div>
         Mark as:
         <select id="tagType">
-        @foreach($tags as $tag)
-            @if($tag->id_tag_type === $currentStatus)
-                <option value="{{{ $tag->id_tag_type }}}" selected >
-                    {{{ $tag->tag_description }}}
-                </option>
-            @else
-                <option value="{{{ $tag->id_tag_type }}}" >
-                    {{{ $tag->tag_description }}}
-                </option>
-            @endif
+            <option value="0">--Select Tag--</option>
+        @foreach($tags as $tag) 
+            <option value="{{{ $tag->id_tag_type }}}" data-color="{{{ $tag->tag_color }}}" {{{ ($tag->id_tag_type === $currentStatus) ? "selected" : "" }}} >
+                {{{ $tag->tag_description }}}
+            </option> 
         @endforeach
         </select>
 
@@ -37,7 +38,5 @@
                 Suggested for refund
             </label>
         @endif
-    </div> 
-        
-
+    </div>
 </div>

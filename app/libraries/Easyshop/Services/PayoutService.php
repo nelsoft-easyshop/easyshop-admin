@@ -46,12 +46,12 @@ class PayoutService
     {   
         $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderId,$memberId);
         if($isSeller){
-            $bolleanTag = (count($checkTagTable) > 0) ? TRUE : FALSE;
-            $currentStatus = (count($checkTagTable) > 0) ? $checkTagTable[0]->tag_type_id 
+            $bolleanTag = ($checkTagTable->count() > 0) ? TRUE : FALSE;
+            $currentStatus = ($checkTagTable->count() > 0) ? $checkTagTable[0]->tag_type_id 
                                                          : $this->tagTypeRepository->getContacted();
             $requestForRefund = FALSE;
 
-            if(count($checkTagTable) > 0){  
+            if($checkTagTable->count() > 0){  
                 $dateUpdated = Carbon::create(Carbon::parse($checkTagTable[0]->date_updated)->year
                                    , Carbon::parse($checkTagTable[0]->date_updated)->month
                                    , Carbon::parse($checkTagTable[0]->date_updated)->day);
@@ -75,7 +75,7 @@ class PayoutService
         $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderId,$memberId);
 
         // check if order product is existing then update
-        if(count($checkTagTable) > 0){
+        if($checkTagTable->count() > 0){
             foreach ($checkTagTable as $orderProductTag) {
                 $this->orderProductTagRepository->updateOrderTags($orderProductTag,$tagType);
             }
