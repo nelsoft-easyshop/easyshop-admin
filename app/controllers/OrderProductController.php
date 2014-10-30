@@ -98,12 +98,6 @@ class OrderProductController extends BaseController
                                                                         $userdata['bankname'],
                                                                         $dateFrom, 
                                                                         $dateTo);      
-        $orderProducts = $orderProductRepository->getOrderProductsToPay($userdata['username'], 
-                                                                        $userdata['accountname'],
-                                                                        $userdata['accountno'], 
-                                                                        $userdata['bankname'],
-                                                                        $dateFrom, 
-                                                                        $dateTo);  
                                                                         
         $html = View::make('partials.orderproductlist')
                     ->with('orderproducts', $orderProducts)
