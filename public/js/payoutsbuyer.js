@@ -41,6 +41,7 @@
             });
     });
     $(document.body).on('click','th span',function(){
+        loader.showPleaseWait(); 
         if($(this).hasClass("glyphicon-chevron-up")) {
             $(this).attr("class","glyphicon glyphicon-chevron-down");
             $(this).data("sortorder","asc");
@@ -61,6 +62,7 @@
             type: 'get',
             dataType: 'JSON',                      
             success: function(result){
+                loader.hidePleaseWait(); 
                 $("#tbody").html(result.html);
             }
         });
