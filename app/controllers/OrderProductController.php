@@ -387,7 +387,7 @@ class OrderProductController extends BaseController
         $orderProductRepository = App::make('OrderProductRepository'); 
         $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
         $payoutService = App::make('PayoutService');
-        foreach ($orderProductRepository->getBuyersTransactionWithShippingComment(null, null, $filter, $filterBy) as $value) {
+        foreach ($orderProductRepository->getBuyersTransactionWithShippingComment((Input::get("sortBy")), (Input::get("sortOrder")), $filter, $filterBy) as $value) {
             if($payoutService->checkIfTwoDaysPassedofETD($value->expected_date)) {
                 $orders[] = $value;
             }
@@ -397,44 +397,22 @@ class OrderProductController extends BaseController
         $orders  = $paginatorService->paginateArray($orders, Input::get('page'), 50);
         $pagination = $orders->appends(Input::except(array('page','_token')))->links();
 
-        return View::make("pages.payoutsbuyers")
-                    ->with("orders", $orders)
-                    ->with("filter", $filter)
-                    ->with("filterBy", $filterBy)
-                    ->with("pagination", $pagination);
-    }
-
-    /**
-     * Retrieves order products that are 2 days passed of ETD
-     * @return JSON
-     */
-    public function searchContactBuyer($sortBy = null, $sortOrder = null)
-    {
-
-        $orders = array();
-        $filter = (Input::get("filter")) ? Input::get("filter") : null;
-        $filterBy = (Input::get("filterBy")) ? Input::get("filterBy") : null;        
-        $orderProductRepository = App::make('OrderProductRepository'); 
-        $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
-        foreach ($orderProductRepository->getBuyersTransactionWithShippingComment(Input::get("sortBy"), Input::get("sortOrder"), $filter, $filterBy) as $value) {
-
-
-            $dt = Carbon::create(Carbon::parse($value->expected_date)->year
-                                , Carbon::parse($value->expected_date)->month
-                                , Carbon::parse($value->expected_date)->day);
-            if(  Carbon::now() > $dt->addDays(2) ){
-                $orders[] = $value;   
-            }
+        if(!Request::ajax()) {
+            return View::make("pages.payoutsbuyers")
+                        ->with("orders", $orders)
+                        ->with("filter", $filter)
+                        ->with("filterBy", $filterBy)
+                        ->with("pagination", $pagination);  
         }
-        $paginatorService = App::make("CustomPaginator");
-        $orders  = $paginatorService->paginateArray($orders, Input::get('page'), 50);       
+        else {
+            $html = View::make("partials.payoutbuyerlist")
+                        ->with("orders", $orders)
+                        ->render();
 
-        $html = View::make("partials.payoutbuyerlist")
-                    ->with("orders", $orders)
-                    ->render();
+            return Response::json(array('html' => $html));  
+        }
 
-        return Response::json(array('html' => $html)); 
-    }    
+    }   
 
     /**
      * Update tag status of order_products of a particular order
@@ -487,9 +465,9 @@ class OrderProductController extends BaseController
 
     /**
      * Update or Insert to order product tag
-     * @return [type] [description]
+     * @return JSON
      */
-    public function updateOrderProductStatus()
+    public function updateOrderProductTagStatus()
     {
         // get input data
         $orderId = Input::get('order_id'); 
@@ -509,6 +487,10 @@ class OrderProductController extends BaseController
         return Response::json(array('response' => 'true'));
     }
 
+    /**
+     * Retrieves shipping details of a posted order_product_id
+     * @return JSON En
+     */
     public function getOrderProductShippingDetails()
     {
         // get input data
