@@ -30,9 +30,17 @@ class PayoutService
     private $orderProductRepository;
 
     /**
+     * ETD (Estimated Time of Delivery) Constant duration for orders with shipping details
+     *
+     * @var ETD
+     */
+    private $ETD = 2;    
+
+    /**
      * Inject dependecies
      *
      */
+
     public function __construct(TagTypeRepository $tagTypeRepository,
                                 OrderProductTagRepository $orderProductTagRepository,
                                 OrderProductRepository $orderProductRepository)
@@ -84,7 +92,7 @@ class PayoutService
         $dt = Carbon::create(Carbon::parse($date)->year
                             , Carbon::parse($date)->month
                             , Carbon::parse($date)->day);
-        if(  Carbon::now() > $dt->addDays(2) ){
+        if(  Carbon::now() > $dt->addDays($this->ETD) ){
             return true;
         }
     }
