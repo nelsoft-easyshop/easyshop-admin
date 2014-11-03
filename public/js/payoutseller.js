@@ -112,3 +112,4 @@
         $('#searchForm').submit();
     });
 })(jQuery);
+
