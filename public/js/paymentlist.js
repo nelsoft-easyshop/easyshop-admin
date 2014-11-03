@@ -108,9 +108,8 @@
                         cssClass: 'payment-dialog-pay',
                         onshown: function(dialogRef){
                             var $account_collection = $('#account_collection');
-                            var optionCount = $account_collection.find('option').length;
                             var selectedOption = $account_collection.find('option:selected');
-                            if(optionCount == 1 && selectedOption.hasClass('add-option')){
+                            if(selectedOption.hasClass('add-option')||selectedOption.hasClass('paypal')){
                                 $('#account_collection').change();
                             }
                              
@@ -225,9 +224,14 @@
         });
 
     });
+    
+    $(document.body).on('keyup','#form-paypal-account',function(){
+        $("#inputs-container").removeClass("has-error");
+    });
         
     $(document.body).on('change','#account_collection',function(){
         emptyErrors();
+        $("#inputs-container").removeClass("has-error");
         var $this = $(this)
         var billing_info_id = $this.val();
         var selectedOption = $this.find('option:selected');
@@ -267,6 +271,10 @@
             var account_name = 'PAYPAL';
             var bank_name = 'PAYPAL';
             var account_number = $('#form-paypal-account').val();
+            if($.trim(account_number) == ""){
+                $("#inputs-container").addClass("has-error");
+                return false;
+            }
         }
         else{
             var account_name = selected_option.data('name');

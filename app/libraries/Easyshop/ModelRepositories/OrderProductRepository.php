@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory, PaymentMethod, OrderProductTag, TagType;
 
+
 class OrderProductRepository extends AbstractRepository
 {    
     /**
@@ -73,7 +74,6 @@ class OrderProductRepository extends AbstractRepository
      */
     public function getOrderProductsToPay($username, $accountname, $accountno, $bankname, $dateFrom = null, $dateTo = null)
     {       
-
         $query = OrderProduct::leftJoin('es_billing_info', 'es_order_product.seller_billing_id', '=', 'es_billing_info.id_billing_info')
                         ->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member')
                         ->join('es_order', 'es_order.id_order', '=', 'es_order_product.order_id')
@@ -85,6 +85,7 @@ class OrderProductRepository extends AbstractRepository
                                 $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_FORWARD_SELLER));
                          })->leftJoin('es_product_shipping_comment','es_product_shipping_comment.order_product_id', '=', 'es_order_product.id_order_product')
                         ->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=',  'es_bank_info.id_bank')
+                        ->leftJoin('es_order_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_billing_info.id_order_billing_info')
                         ->where('seller.username', '=', $username);
 
         if($dateFrom && $dateTo){
@@ -105,42 +106,39 @@ class OrderProductRepository extends AbstractRepository
                     $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING);
                     $query->where('es_order_product.is_reject', '=', '0');
                     $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
-                    $query->where(DB::raw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15"));
+                    $query->whereRaw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15");
                     $query->setBindings(array_merge($query->getBindings(),array($dateTo)));
-                    $query->where(DB::raw(" DATE_ADD(es_product_shipping_comment.`delivery_date`, INTERVAL 15 DAY) BETWEEN ? AND ?"));
+                    $query->whereRaw(" DATE_ADD(es_product_shipping_comment.`delivery_date`, INTERVAL 15 DAY) BETWEEN ? AND ?");                    
                     $query->setBindings(array_merge($query->getBindings(),array($dateFrom, $dateTo)));
                 }); 
             
             });
 
         }
-
-        if(trim($accountname) !== ""){
-            $query->where('es_billing_info.bank_account_name', '=', $accountname);
-        }else{
-            $query->whereNull('es_billing_info.bank_account_name');
-        }
-        
-        if(trim($accountno) !== ""){
-            $query->where('es_billing_info.bank_account_number', '=', $accountno);
-        }else{
-            $query->whereNull('es_billing_info.bank_account_number');
-        }    
-        if(trim($bankname) !== ""){
-            $query->where('es_bank_info.bank_name', '=', $bankname);
-        }else{
-            $query->whereNull('es_bank_info.bank_name');
-        }    
-        
-        
-        return $query->get(['es_order_product.*', 
+        $billingInfoChangeDate = \Config::get('transaction.billingInfoChangeDate');   
+        $orderProducts = $query->get(['es_order_product.*', 
                             'es_order.invoice_no', 
                             'es_order.buyer_id as buyer_seller_id', 
                             'buyer.username as buyer_seller_username', 
                             'es_product.name as productname', 
-                            'es_order_product_status.name as statusname'
+                            'es_order_product_status.name as statusname',
+                            'es_order.dateadded',
+                            DB::raw('COALESCE(IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_bank_info.bank_name, es_order_billing_info.bank_name), "") as bank_name'), 
+                            DB::raw('COALESCE(IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_name, es_order_billing_info.account_name), "") as account_name'), 
+                            DB::raw('COALESCE(IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_number, es_order_billing_info.account_number), "") as account_number'),
                         ]);
-
+                        
+              
+ 
+        $orderProducts = $orderProducts->filter(function($orderProduct) use ($accountname, $accountno, $bankname)
+        {
+            $isValid = (trim($orderProduct->account_name) === trim($accountname) &&
+                        trim($orderProduct->account_number) === trim($accountno) &&
+                        trim($orderProduct->bank_name) === trim($bankname));
+            return $isValid;
+        });
+        
+        return $orderProducts;
     }
  
 
