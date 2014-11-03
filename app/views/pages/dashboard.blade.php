@@ -91,7 +91,7 @@
                 <p> View details about refunds for buyers and update the status of the transaction</p>
             
             </li>
-
+            <!--
             <li>
                 <a href='/home'>
                     <img src="{{{ asset('images/icon_category.png') }}}"/> 
@@ -99,7 +99,9 @@
                 </a>
                 <p>Manage the home page of Easyshop.ph. View and updates its different web parts.</p>
             
-            </li>   
+            </li>
+            -->
+            
             <li>
                 <a href='/cms/feeds'>
                     <img src="{{{ asset('images/icon_category.png') }}}"/> 
@@ -146,6 +148,8 @@
                 </a>
                 <p>Centralize all incoming messages from partner accounts that we're handling to a central account.</p>
             </li> 
+            
+            <!--
             <li>
                 <a href='/productcsv'>
                     <img src="{{{ asset('images/icon_people.png') }}}"/> 
@@ -154,6 +158,9 @@
                 <p> Enables the administrator to upload multiple product images and product info through csv/excel files.</p>
             
             </li>     
+            -->
+            
+            
             <li>
                 <a href='/reports'>
                     <img src="{{{ asset('images/icon_people.png') }}}"/> 
