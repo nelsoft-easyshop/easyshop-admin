@@ -106,24 +106,26 @@
 
 
     $(document.body).on('click','#tagOrder',function(){
-        loader.showPleaseWait();
         var orderProductIdCollection =  [];
-
+        var $confirm = confirm("Are you sure you want to update?");
         var tag =  $('#tagOption option:selected').val();
         var sellerId =  $('#sellerID').val();
         $('.orderProductId').each(function(){
             orderProductIdCollection.push( parseInt($(this).html().trim(), 10));
-        });
+        }); 
+        if($confirm){
+            $.ajax({
+                url: "payout-buyer/update-buyer-transaction",
+                data: {order_product_ids: orderProductIdCollection, tagId:tag, sellerId: sellerId},
+                type: 'get',
+                dataType: 'JSON',                      
+                success: function(result){
+                    window.location.href = location.href;
+                }
+            });
+        }
 
-        $.ajax({
-            url: "payout-buyer/update-buyer-transaction",
-            data: {order_product_ids: orderProductIdCollection, tagId:tag, sellerId: sellerId},
-            type: 'get',
-            dataType: 'JSON',                      
-            success: function(result){
-                window.location.href = location.href;
-            }
-        });
+
        
     });
     
