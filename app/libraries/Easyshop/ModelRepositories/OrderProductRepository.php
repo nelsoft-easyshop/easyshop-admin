@@ -302,7 +302,10 @@ class OrderProductRepository extends AbstractRepository
      * Retrieves all buyers with shipping details
      * @return JSON
      */
-    public function getBuyersTransactionWithShippingComment($sortBy, $sortOrder, $filter, $filterBy)
+    public function getBuyersTransactionWithShippingComment($sortBy = null, 
+                                                            $sortOrder = null, 
+                                                            $filter = null, 
+                                                            $filterBy = null)
     {
         $sortBy = $sortBy === NULL ? "es_order.dateadded" : $sortBy;
         $sortOrder = $sortOrder === NULL ? "DESC" : $sortOrder;
@@ -361,10 +364,17 @@ class OrderProductRepository extends AbstractRepository
         return $returnTransaction;
     }    
 
-    public function countUntagTransaction()
+    public function countUntagTransaction($isSeller = TRUE)
     {
-        $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
-        $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+        if($isSeller) {
+            $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
+            $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');            
+        }
+        else {
+            $query = OrderProduct::leftJoin('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+            $query->leftjoin("es_member","es_order.buyer_id","=","es_member.id_member");
+            $query->rightJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product");
+        }
 
         $query->leftJoin('es_order_product_tag',function($leftJoin){
             $leftJoin->on('es_order_product_tag.order_product_id', '=', 'es_order_product.id_order_product');
