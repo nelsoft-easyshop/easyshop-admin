@@ -33,7 +33,7 @@
                     </select>
                     <input type="hidden" name="sellerID" id="sellerID" value="{{{ $sellerId }}}">
                 </form></td>
-                <td> {{ ($suggestForRefund) ?  "<span class='org_btn view'>Suggest For Refund</span>" : "" }}</td></tr>
+                <td> {{ ($suggestForPayOut) ?  "<span class='org_btn view'>Suggest For Payout</span>" : "" }}</td></tr>
             </div>
          </table>        
     </div>
