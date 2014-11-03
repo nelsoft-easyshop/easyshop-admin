@@ -44,29 +44,48 @@ class PayoutService
 
     public function checkOrderProductTagStatus($orderId,$memberId,$isSeller = TRUE)
     {   
+
         $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderId,$memberId);
-        if($isSeller){
-            $bolleanTag = ($checkTagTable->count() > 0) ? TRUE : FALSE;
-            $currentStatus = ($checkTagTable->count() > 0) ? $checkTagTable[0]->tag_type_id 
-                                                         : $this->tagTypeRepository->getContacted();
-            $requestForRefund = FALSE;
 
-            if($checkTagTable->count() > 0){  
-                $dateUpdated = Carbon::create(Carbon::parse($checkTagTable[0]->date_updated)->year
-                                   , Carbon::parse($checkTagTable[0]->date_updated)->month
-                                   , Carbon::parse($checkTagTable[0]->date_updated)->day);
-                if(Carbon::now() > $dateUpdated->addDays(2) && intval($currentStatus) === $this->tagTypeRepository->getContacted()){
-                    $requestForRefund = TRUE;
-                }
+        $bolleanTag = ($checkTagTable->count() > 0) ? TRUE : FALSE;
+        $currentStatus = ($checkTagTable->count() > 0) ? $checkTagTable[0]->tag_type_id 
+                                                     : $this->tagTypeRepository->getContacted();
+        $requestType = FALSE;
+
+        if($checkTagTable->count() > 0){  
+            $dateUpdated = Carbon::create(Carbon::parse($checkTagTable[0]->date_updated)->year
+                               , Carbon::parse($checkTagTable[0]->date_updated)->month
+                               , Carbon::parse($checkTagTable[0]->date_updated)->day);
+            if(Carbon::now() > $dateUpdated->addDays(2) && intval($currentStatus) === $this->tagTypeRepository->getContacted()){
+                $requestType = TRUE;
+
             }
+        }
+        $requestLabel = ($isSeller) ? 'request_refund' : 'request_payout';
 
-            $returnVar = array(
-                        'tags' => $this->tagTypeRepository->getSellerTags($bolleanTag),
-                        'current_status' => $currentStatus, 
-                        'request_refund' => $requestForRefund
-                    );
+        $returnVar = array(
+            'tags' => ($tagsReturn = ($isSeller) ? $this->tagTypeRepository->getSellerTags($bolleanTag) : $this->tagTypeRepository->getBuyerTags($bolleanTag)),
+            'current_status' => $currentStatus, 
+             $requestLabel => $requestType
+        );
 
-            return $returnVar;
+        return $returnVar;
+
+
+    }
+
+    /**
+     * Method for checking if $date is two days passed of Carbon::now()
+     * @param date $date
+     * @return bool
+     */
+    public function checkIfTwoDaysPassedofETD($date)
+    {
+        $dt = Carbon::create(Carbon::parse($date)->year
+                            , Carbon::parse($date)->month
+                            , Carbon::parse($date)->day);
+        if(  Carbon::now() > $dt->addDays(2) ){
+            return true;
         }
     }
 
