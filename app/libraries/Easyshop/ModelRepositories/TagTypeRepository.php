@@ -40,7 +40,7 @@ class TagTypeRepository extends AbstractRepository
 
         if($default){
             $tagArray = array( 
-                TagType::REFUND,
+                TagType::PAYOUT,
                 TagType::ON_HOLD
             );
         }
