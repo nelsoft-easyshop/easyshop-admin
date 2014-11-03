@@ -23,7 +23,7 @@
 
         }); 
     $("#table3").DataTable({
-            "order": [0,'desc'],
+            "order": [1,'desc'],
             "bProcessing": true,            
             "bPaginate": false,                                   
             "dom": 'T<"clear">lfrtip',
