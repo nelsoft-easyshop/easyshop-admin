@@ -72,7 +72,7 @@ class OrderProductTagRepository extends AbstractRepository
 
     /**
      * Insert new data to order_productTag
-     * @return [type] [description]
+     * @return Entity
      */
     public function insertOrderProductTag($orderProductId,$sellerId,$tagType,$adminMemberId)
     {
