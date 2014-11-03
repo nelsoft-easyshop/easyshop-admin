@@ -392,15 +392,12 @@ class OrderProductController extends BaseController
         $filterBy = (Input::get("filterBy")) ? Input::get("filterBy") : null;
         $orderProductRepository = App::make('OrderProductRepository'); 
         $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
+        $payoutService = App::make('PayoutService');
         foreach ($orderProductRepository->getBuyersTransactionWithShippingComment(null, null, $filter, $filterBy) as $value) {
-            $dt = Carbon::create(Carbon::parse($value->expected_date)->year
-                                , Carbon::parse($value->expected_date)->month
-                                , Carbon::parse($value->expected_date)->day);
-            if(  Carbon::now() > $dt->addDays(2) ){
-                $orders[] = $value;   
+            if($payoutService->checkIfTwoDaysPassedofETD($value->expected_date)) {
+                $orders[] = $value;
             }
         }
-
         $paginatorService = App::make("CustomPaginator");
 
         $orders  = $paginatorService->paginateArray($orders, Input::get('page'), 50);
@@ -426,6 +423,8 @@ class OrderProductController extends BaseController
         $orderProductRepository = App::make('OrderProductRepository'); 
         $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
         foreach ($orderProductRepository->getBuyersTransactionWithShippingComment(Input::get("sortBy"), Input::get("sortOrder"), $filter, $filterBy) as $value) {
+
+
             $dt = Carbon::create(Carbon::parse($value->expected_date)->year
                                 , Carbon::parse($value->expected_date)->month
                                 , Carbon::parse($value->expected_date)->day);
@@ -468,7 +467,6 @@ class OrderProductController extends BaseController
         $orderId = Input::get('order_id'); 
         $sellerId = Input::get('seller_id');  
 
-
         // prepare repository needed
         $orderProductRepository = App::make('OrderProductRepository');
         $tagRepository = App::make('TagTypeRepository');
@@ -476,27 +474,16 @@ class OrderProductController extends BaseController
         // Query the transactions 
         $transactionDetails = $orderProductRepository->getOrderProductByOrderId($orderId, $sellerId);
 
-        $checkOrder = $orderProductRepository->checkOrderIfContact($orderId, $sellerId);
+        $payoutService = App::make('PayoutService');
 
-        if($checkOrder) {
-            $availableTags = $tagRepository->getBuyerTags(true); 
-            $dt = Carbon::create(Carbon::parse($checkOrder->date_updated)->year
-                                            , Carbon::parse($checkOrder->date_updated)->month
-                                            , Carbon::parse($checkOrder->date_updated)->day);
-
-            if( (Carbon::now() >= $dt->addDays(2)) && $checkOrder->tag_type_id != TagType::REFUND){
-                $suggestForRefund = TRUE;
-            }
-
-        }
-        else {
-            $availableTags = $tagRepository->getBuyerTags();             
-        }
-
+        $checkOrder = $payoutService->checkOrderProductTagStatus($orderId,$sellerId, FALSE);
+        $availableTags = $checkOrder['tags'];
+        $currentStatus = $checkOrder['current_status'];
+        $requestForPayout = $checkOrder['request_payout'];
 
         $html = View::make('partials.payoutbuyertransactiondetails')
             ->with('transactionDetails', $transactionDetails) 
-            ->with('suggestForRefund', $suggestForRefund) 
+            ->with('suggestForPayOut', $requestForPayout) 
             ->with('sellerId', $sellerId) 
             ->with('tags', $availableTags) 
             ->render();
