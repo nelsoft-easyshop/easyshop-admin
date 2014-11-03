@@ -50,18 +50,6 @@ class OrderProductRepository extends AbstractRepository
         return $query->get();
     }
     
-    public function checkOrderIfContact($orderIds)
-    {
-        return OrderProduct::leftJoin("es_order_product_tag","es_order_product_tag.order_product_id","=","es_order_product.id_order_product")
-                            ->join("es_member","es_member.id_member","=","es_order_product.seller_id")
-                            ->where('es_order_product.order_id', '=', $orderIds)
-                            ->where('es_order_product_tag.tag_type_id', '!=', "")
-                            ->first();
-
-
-
-    }
-    
     /**
      * Returns all order products to be paid that are tied to a certain payment account_name
      *
@@ -313,8 +301,6 @@ class OrderProductRepository extends AbstractRepository
         $query->leftjoin("es_member","es_order.buyer_id","=","es_member.id_member");
         $query->rightJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product");
 
-
-        
         $query->where('es_order.order_status', '!=', OrderStatus::STATUS_VOID)
               ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY]);
         if($filter != NULL) {
@@ -362,6 +348,11 @@ class OrderProductRepository extends AbstractRepository
         return $returnTransaction;
     }    
 
+    /**
+     * Retrieves count of untagged transactions
+     * @param bool $isSeller
+     * @return Entity Count
+     */
     public function countUntagTransaction($isSeller = TRUE)
     {
         if($isSeller) {
