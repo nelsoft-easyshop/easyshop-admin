@@ -19,6 +19,7 @@ class MemberRepository extends AbstractRepository
                             ->select(DB::raw("es_member.username as username, COUNT(es_product.id_product) as uploadCount"))
                             ->where("es_product.is_draft","=",0)
                             ->where("es_product.is_delete","=",0)
+                            ->orderBy("uploadCount", "desc")
                             ->groupBy('username')
                             ->paginate(50);
     
@@ -31,22 +32,23 @@ class MemberRepository extends AbstractRepository
      */  
     public function getNumberOfUsersWithUploadedProduct()
     {
-        $users = Member::all()->count();
-        $usersWithUpload = DB::select(DB::raw("SELECT COUNT(*) as userWithUpload FROM 
-                                        (
-                                        SELECT 
-                                            m.id_member as id_member, COUNT(p.id_product) as uploadCount
-                                        FROM
-                                            es_member m
-                                                LEFT JOIN
-                                            es_product p ON p.member_id = m.id_member AND p.is_draft = 0 AND is_delete = 0
-                                        GROUP BY m.username 
-                                        ) A 
-                                        WHERE uploadCount > 0;
+        $usersWithUpload = DB::select(DB::raw("SELECT 
+                                                COUNT(*) as userWithUpload, (SELECT COUNT(*) from `easyshop`.`es_member`) as memberCount
+                                            FROM
+                                                (SELECT 
+                                                    m.id_member as id_member, COUNT(id_member) as idCount,COUNT(p.id_product) as uploadCount
+                                                FROM
+                                                    es_member m
+                                                LEFT JOIN es_product p ON p.member_id = m.id_member
+                                                    AND p.is_draft = 0
+                                                    AND is_delete = 0
+                                                GROUP BY m.username) A
+                                            WHERE
+                                                uploadCount > 0;
                                         "));
 
         $withArr[] = $usersWithUpload[0]->userWithUpload;
-        $withOutArr[] = $users - $usersWithUpload[0]->userWithUpload;
+        $withOutArr[] = $usersWithUpload[0]->memberCount - $usersWithUpload[0]->userWithUpload;
         return array_merge($withArr,$withOutArr);
     }
 
