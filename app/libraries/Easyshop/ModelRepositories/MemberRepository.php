@@ -19,6 +19,7 @@ class MemberRepository extends AbstractRepository
                             ->select(DB::raw("es_member.username as username, COUNT(es_product.id_product) as uploadCount"))
                             ->where("es_product.is_draft","=",0)
                             ->where("es_product.is_delete","=",0)
+                            ->orderBy("uploadCount", "desc")
                             ->groupBy('username')
                             ->paginate(50);
     
@@ -31,8 +32,9 @@ class MemberRepository extends AbstractRepository
      */  
     public function getNumberOfUsersWithUploadedProduct()
     {
+        $userCount = DB::select(DB::raw("SELECT COUNT(*) as memberCount from `easyshop`.`es_member`"));
         $usersWithUpload = DB::select(DB::raw("SELECT 
-                                                COUNT(*) as userWithUpload, (SELECT COUNT(*) from `easyshop`.`es_member`) as memberCount
+                                                COUNT(*) as userWithUpload
                                             FROM
                                                 (SELECT 
                                                     m.id_member as id_member, COUNT(id_member) as idCount,COUNT(p.id_product) as uploadCount
@@ -47,7 +49,7 @@ class MemberRepository extends AbstractRepository
                                         "));
 
         $withArr[] = $usersWithUpload[0]->userWithUpload;
-        $withOutArr[] = $usersWithUpload[0]->memberCount - $usersWithUpload[0]->userWithUpload;
+        $withOutArr[] = $userCount[0]->memberCount - $usersWithUpload[0]->userWithUpload;
         return array_merge($withArr,$withOutArr);
     }
 
