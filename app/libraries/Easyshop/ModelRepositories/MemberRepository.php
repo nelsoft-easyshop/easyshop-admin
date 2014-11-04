@@ -19,6 +19,7 @@ class MemberRepository extends AbstractRepository
                             ->select(DB::raw("es_member.username as username, COUNT(es_product.id_product) as uploadCount"))
                             ->where("es_product.is_draft","=",0)
                             ->where("es_product.is_delete","=",0)
+                            ->orderBy("uploadCount", "desc")
                             ->groupBy('username')
                             ->paginate(50);
     
