@@ -757,7 +757,6 @@
     });  
 
     $(document.body).on('click','#removeSubSlide',function (e) { 
-            
         var index = $(this).data("index").toString();
         var subIndex = $(this).data("subindex").toString();
         var nodename = $(this).data("nodename").toString();
@@ -765,11 +764,21 @@
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;
         var hash =  hex_sha1(index + subIndex + nodename + userid + password);
+        
+        var currentSliderTemplate = $("#sliderTemplate" + index).val();
 
         data = { index: index, subIndex:subIndex, nodename:nodename,userid:userid,  password:password, hash:hash, callback:'?'};  
         var count = parseInt($(".slideCount_" + index).last().text());
 
-        if(count > 1 ) {
+        var countConstraint = null;
+        if(currentSliderTemplate == "C") {
+            countConstraint = 2;
+        }
+        if(currentSliderTemplate == "D") {
+            countConstraint = 3;
+        }
+
+        if(count > countConstraint ) {
             loader.showPleaseWait();                    
             $.ajax({
                 type: 'GET',
@@ -789,7 +798,10 @@
                     showErrorModal("Please try again");
                 }
             });    
-        }        
+        }      
+        else {
+            showErrorModal("Sorry, but you have reached the minimum number of images for this slider template")
+        }  
     });  
 
     $(document.body).on('click','.editBrands',function (e) { 
@@ -1106,7 +1118,6 @@
         
         var flag = 0;
         var count = parseInt($(".otherCategoriesCount").last().text());
-        console.log(count);
         if(count <= 5) {
             $("#otherCategoriesTable" + " tbody tr").each(function(){
                 var valueRow = $(this).find(".otherCategoriesTD").text();
@@ -1176,7 +1187,6 @@
         var value = $(this).closest("form").find("#editBrandsDropDown").val();     
         var hash =  hex_sha1(index + value + userid + password);
         data = {index:index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
-        console.log(url);
         $.ajax({
             type: 'GET',
             url: url,
@@ -1402,23 +1412,40 @@
         var url = $(this).data("url");
         var hash = hex_sha1(index + value + userid + password);
         data = { index: index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
-        console.log(hash);
 
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();                       
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });     
+        var count = parseInt($(".slideCount_" + index).last().text());
+        var currentSliderTemplate = $("#sliderTemplate" + index).val();
+        var countConstraint = null;
+        if(value == "C") {
+            countConstraint = 2;
+        }
+        if(value == "D") {
+            countConstraint = 3;
+        }
+
+        if(count >= countConstraint ) {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();        
+                    $("#sliderTemplate" + index).val(value);                                   
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });           
+        }
+        else {
+            $(this).closest("form").find('#drop_actionType option[value="'+ currentSliderTemplate +'"]').attr("selected", "selected");
+            showErrorModal("Sorry, but the minimum number of images for this slide design template is " + countConstraint + " images");
+        }
+ 
    
     });  
 
