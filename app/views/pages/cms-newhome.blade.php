@@ -1301,7 +1301,8 @@
                             <div id="collapse_{{$sliderIndex}}" class="panel-collapse collapse">
                                 <div class="panel-body"> 
                                     <!-- Add Main Slide Start -->
-                                    <form id='left' target="test"  class="form-horizontal">                                           
+                                    <form id='left' target="test"  class="form-horizontal">         
+                                        <input type="hidden" id="sliderTemplate{{$sliderIndex}}" value="{{$slides->template}}">                                  
                                         <div class="form-group">
                                             <div class="col-sm-10">
                                                 {{ Form::hidden('index', $sliderIndex, array('id' => 'index','class' => 'form-control')) }}                        
