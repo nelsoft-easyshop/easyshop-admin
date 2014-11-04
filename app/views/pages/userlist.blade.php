@@ -145,7 +145,7 @@
                     <td>{{{ $member->email }}}</td>
                     <td>{{{ (intval($member->gender) === 0) ? 'Male' : 'Female' }}}</td>
                     <td id="{{{ $member->id_member . '_remarks'}}}">{{{ $member->remarks }}}</td>
-                    <td id="{{{ $member->id_member . '_address'}}}">{{{ ($member->Address || $member->Address->City->location || $member->Address->Region->location || $member->Address->address) ? $member->Address->City->location . ' ' . $member->Address->Region->location . ' ' . $member->Address->address : '' }}}</td>
+                    <td id="{{{ $member->id_member . '_address'}}}">{{{ ($member->Address && $member->Address->City->location && $member->Address->Region->location) ? $member->Address->City->location . ' ' . $member->Address->Region->location . ' ' . $member->Address->address : '' }}}</td>
                     <td>{{{ ($member->Product(true)) ? $member->Product(true)->count() : 0 }}}</td>
                     <td id="{{{ $member->id_member . '_contact'}}}">{{{ $member->contactno }}}</td>
                 </tr>
