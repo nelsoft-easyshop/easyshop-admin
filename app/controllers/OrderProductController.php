@@ -318,6 +318,7 @@ class OrderProductController extends BaseController
     {
         // prepare repository needed
         $orderRepository = App::make('OrderProductRepository');
+        $tagRepository = App::make('TagTypeRepository');
 
         $userData = []; 
         $userData = array(
@@ -332,9 +333,14 @@ class OrderProductController extends BaseController
         $transactionRecord = $orderRepository->getAllSellersTransaction(100,TRUE,$userData);
         $pagination = $transactionRecord->appends(Input::except(array('page','_token')))->links();
 
+        // get tag constant
+        $constantArray['confirmed'] = $tagRepository->getConfirmed();
+        $constantArray['refund'] = $tagRepository->getRefund();
+
         // Render the view
         return View::make('pages.payoutsellerlist')
                     ->with('transactionRecord', $transactionRecord)
+                    ->with('constantValues', $constantArray)
                     ->with('pagination', $pagination);
     }
 
@@ -441,7 +447,6 @@ class OrderProductController extends BaseController
 
         // prepare repository needed
         $orderProductRepository = App::make('OrderProductRepository');
-        $tagRepository = App::make('TagTypeRepository');
 
         // Query the transactions 
         $transactionDetails = $orderProductRepository->getOrderProductByOrderId($orderId, $sellerId);
