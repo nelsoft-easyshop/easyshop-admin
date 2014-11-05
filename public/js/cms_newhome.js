@@ -228,6 +228,46 @@
     
     }); 
 
+    $(document.body).on('click','#moveParentSlider',function (e) { 
+   
+        var flag = 0;      
+        var action = $(this).data('action').toString();
+        var index = parseInt($(this).data('index').toString());
+        var nodename = $(this).data('nodename').toString();
+        var order = index;
+        var url = $(this).data('url').toString();
+        var count = parseInt($(".parentSliderCount").last().text());
+        if(action == "down") {
+            if(index + 1 != count) {
+                if(order == (count - 1)) {
+                    order = order;
+                } else {
+                     order = order + 1;
+                } 
+                flag = 1;    
+            }
+          
+        }
+        else {
+            if(index != 0) {
+                if(order > 0) {
+                    order = order - 1;
+                } else {
+                   order = 0;
+                }    
+                flag = 1;                  
+            }
+        }
+        if(flag == 1) {
+            loader.showPleaseWait();             
+            order = order.toString();
+            var hash =  hex_sha1(action + nodename + index  + order + userid + password);        
+            data = { action:action, nodename:nodename, index: index, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
+            setPositionParentSlider(url,data);       
+        }
+
+    
+    });
 
     $(document.body).on('click','#moveupAdsSection, #movedownAdsSection',function (e) { 
         loader.showPleaseWait();          
@@ -810,34 +850,40 @@
     });  
 
     $(document.body).on('click','#removeCategorySection, #removeMainSlider',function (e) { 
-        loader.showPleaseWait();           
+         
         var url = $(this).data("url");
         var nodename = $(this).data("nodename");
         var index = $(this).data("index").toString();
         var hash =  hex_sha1(index + nodename + userid + password);
         data = { index:index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
-        
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();   
-                if(nodename == "categorySectionPanel") {
-                    $("#manageCategorySection").load("getCategoriesPanel");
-                }
-                else {
-                    $("#manageSliderSection").load("getAllSliders");
-                }
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });   
+        var count = parseInt($(".parentSliderCount").last().text());
+        if(count > 0) {
+            var $confirm = confirm("Are you sure you want to remove?");   
+            if($confirm) {
+                loader.showPleaseWait();              
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:data,
+                    async: false,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();   
+                        if(nodename == "categorySectionPanel") {
+                            $("#manageCategorySection").load("getCategoriesPanel");
+                        }
+                        else {
+                            $("#manageSliderSection").load("getAllSliders");
+                        }
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });             
+            }            
+        }
     }); 
 
     $(document.body).on('click','#addCategorySectionProductPanel',function (e) { 
@@ -1542,27 +1588,6 @@
         }); 
     }
 
-    function setPositionAdsSection(url,data)
-    {
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#adsSectionDiv").load("getAdsSection");      
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                $("#adsSectionDiv").load("getAdsSection");     
-                loader.hidePleaseWait();                   
-            }
-        }); 
-    }
-
     function editAdsSectionForm(form,url)
     {
         $(form).ajaxForm({
@@ -1720,6 +1745,27 @@
         }); 
         $(mainSlideForm).submit();        
     }
+
+    function setPositionParentSlider(url, data)
+    {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#manageSliderSection").load("getAllSliders");  
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                loader.hidePleaseWait();                   
+                showErrorModal("Please try again");
+            }
+        }); 
+    }    
 
     function showErrorModal(messages) {
             loader.hidePleaseWait();
