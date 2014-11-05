@@ -97,8 +97,8 @@ class OrderProductController extends BaseController
                                                                         $userdata['accountno'], 
                                                                         $userdata['bankname'],
                                                                         $dateFrom, 
-                                                                        $dateTo);      
-                                                                        
+                                                                        $dateTo);                                        
+                                                            
         $html = View::make('partials.orderproductlist')
                     ->with('orderproducts', $orderProducts)
                     ->with('accountname', $userdata['accountname'])
@@ -166,6 +166,7 @@ class OrderProductController extends BaseController
         $orderProductRepository = App::make('OrderProductRepository');
         $billingInfoRepository = App::make('BillingInfoRepository');
         $bankInfoRepository = App::make('BankInfoRepository');
+        $transactionService = App::make('TransactionService');
         
         $orderProduct = $orderProductRepository->getOrderProductById($userdata['order_product_ids'][0]);
         $paymentAccounts = $billingInfoRepository->getBillingAccountsByMemberId($orderProduct->seller_id);
@@ -173,7 +174,7 @@ class OrderProductController extends BaseController
 
         $html = View::make('partials.orderproductbilling')
                     ->with('accounts', $paymentAccounts)
-                    ->with('defaultAccount', $orderProduct->sellerBillingInfo)
+                    ->with('defaultAccount', $transactionService->getSellerBillingInfo($orderProduct))
                     ->with('seller_id', $orderProduct->seller_id)
                     ->with('order_product_ids', json_encode($userdata['order_product_ids']))
                     ->with('bankList', $bankList)
