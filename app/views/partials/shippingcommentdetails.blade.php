@@ -1,10 +1,5 @@
 <div>
-    
-
-
     <div class="table-responsive table-payment"> 
-
-        
         @if($hasShippingInformation)
         <table class="table table-striped table-hover" id="order-tbl"> 
             @foreach($shippingInfo as $shipping)
