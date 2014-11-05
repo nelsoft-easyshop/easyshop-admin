@@ -72,7 +72,7 @@ class ProductRepository
          $query = DB::table('es_product')
          ->leftJoin('es_product_image', 'es_product.id_product', '=', 'es_product_image.product_id')
          ->where('es_product.slug','=', $slug)
-         ->get();
+         ->first();
 
         return $query;
     }    

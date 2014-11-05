@@ -17,7 +17,7 @@ class TransactionComposer
             $dateFrom =  $viewData['input']['dateFrom'];
         }
         else{
-            $dateFrom = Carbon::now()->startOfDay()->format('Y/m/d');
+            $dateFrom = Carbon::now()->startOfMonth()->startOfDay()->format('Y/m/d');
         }
         
         if(isset($viewData['input']['dateTo'])){
