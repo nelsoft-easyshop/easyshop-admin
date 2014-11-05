@@ -9,11 +9,9 @@
                     <div class="form-group">
                         <label for="userId" class="col-sm-2 control-label">Choose Slider Design Template</label>
                         <div class="col-sm-10">
-
-
                             <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
                                 @foreach($templateLists[0] as $templates)                                               
-                                    <option value="{{$templates}}" >{{$templates}}</option>
+                                    <option value="{{$templates->templateName}}" >{{$templates->templateName}}</option>
                                 @endforeach  
                             </select>
                         </div>
@@ -49,12 +47,12 @@
                                             <div class="col-sm-10">
                                                 <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
                                                     @foreach($templateLists[0] as $templates)                                             
-                                                        @if(strtolower(trim($templates)) == strtolower(trim($slides->template)))
-                                                            <option value="{{$templates}}" selected >{{$templates}}</option>
+                                                        @if(strtolower(trim($templates->templateName)) == strtolower(trim($slides->template)))
+                                                            <option value="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" selected >{{$templates->templateName}}</option>
                                                         @else
-                                                            <option value="{{$templates}}" >{{$templates}}</option>
+                                                            <option value="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" >{{$templates->templateName}}</option>
                                                         @endif
-                                                    @endforeach  
+                                                    @endforeach   
                                                 </select>
                                             </div>
                                         </div>
