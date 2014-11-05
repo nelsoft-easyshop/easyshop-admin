@@ -15,10 +15,10 @@
     <div class="row">
         <section id="tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
+                <li><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
                 <li><a href="#manageCategorySection" role="tab"  data-toggle="tab">Manage Category Section</a></li>                
                 <li><a href="#manageAdSection" role="tab"  data-toggle="tab">Manage Ad Section</a></li>                
-                <li><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
+                <li  class="active"><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
                 <li ><a href="#manageSellerSection" role="tab"  data-toggle="tab">Manage Seller Section</a></li>                
                 <li class="dropdown"  >
                     <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Manage Category Navigation<span class="caret"></span></a>
@@ -58,7 +58,7 @@
 
 
 
-            <div class="tab-pane fade active in" id="manageBrands">
+            <div class="tab-pane fade" id="manageBrands">
                     <legend>        
                         <h4 class="tbl-title">
                             <span class="glyphicon glyphicon-list-alt"></span>
@@ -501,7 +501,7 @@
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#accordion" href="#collapse_category_{{$categorySectionIndex}}">Manage Category </a>
-                                            <span class="glyphicon glyphicon-remove" id="removeCategorySection" data-nodename="categorySectionPanel" data-index="{{$categorySectionIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style="margin-left:860px !important;cursor:pointer;"></span>
+                                            <span class="glyphicon glyphicon-remove pull-right" id="removeCategorySection" data-nodename="categorySectionPanel" data-index="{{$categorySectionIndex}}" data-url="{{$newHomeCmsLink}}/removeContent"></span>
                                         </h4>
                                     </div>
                                     
@@ -1261,7 +1261,7 @@
             </div> 
 
 
-            <div class="tab-pane fade" id="manageSliderSection">
+            <div class="tab-pane fade active in" id="manageSliderSection">
                 <legend>        
                     <h4 class="tbl-title">
                         <span class="glyphicon glyphicon-list-alt"></span>
@@ -1289,13 +1289,16 @@
                 </form>
 
                 <span style="display:none;">{{$sliderIndex = 0}}</span>
+                <span style="display:none;">{{$parentSliderCount = 1}}</span>
                 <div class="panel-group" id="accordion">
                     @foreach($sliderSection as $slides)
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$sliderIndex}}">Add Main Slide</a>
-                                    <span class="glyphicon glyphicon-remove" id="removeMainSlider" data-nodename="mainSliderSection" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style="margin-left:935px !important;cursor:pointer;"></span>
+                                    <span class="glyphicon glyphicon-remove pull-right" id="removeMainSlider" data-nodename="mainSliderSection" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style='cursor:pointer;'></span>
+                                    <span class="glyphicon glyphicon-chevron-up pull-right" id="moveParentSlider" data-nodename="mainSliderSection" data-action="up" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/setPositionParentSlider" style='cursor:pointer;'></span>
+                                    <span class="glyphicon glyphicon-chevron-down pull-right" id="moveParentSlider" data-nodename="mainSliderSection" data-action="down" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/setPositionParentSlider" style='cursor:pointer;'></span>
                                 </h4>
                             </div>
                             <div id="collapse_{{$sliderIndex}}" class="panel-collapse collapse">
@@ -1498,6 +1501,7 @@
                                 </div>
                             </div>
                             <span style="display:none;">{{$sliderIndex++}}</span>                            
+                            <span style="display:none;" class="parentSliderCount">{{$parentSliderCount++}}</span>                            
                         </div>
                     @endforeach
                 <div>                    
