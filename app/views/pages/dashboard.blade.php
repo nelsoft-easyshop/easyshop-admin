@@ -88,7 +88,7 @@
                     <img src="{{{ asset('images/icon_people.png') }}}"/> 
                     <span >Payout List </span><span class="label label-danger pull-right" style='margin-right:20px;'>{{{ $unTaggedSellersTransaction  }}}</span></span>  
                 </a>
-                <p> View List of Seller have transaction</p>
+                <p> View List of Seller that have transactions</p>
             
             </li>                
         
@@ -107,7 +107,7 @@
                     <span >Refund List </span> <span class="label label-danger pull-right" style='margin-right:20px;'>{{{$untaggedBuyerTransactionsCount}}}</span>
 
                 </a>
-                <p>View buyers transactions that are needed to be contacted. Lists transactions that are 2 days passed of ETD.</p>
+                <p>View List of Buyers that have transactions</p>
             
             </li>            
 
