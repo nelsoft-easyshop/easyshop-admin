@@ -1409,21 +1409,14 @@
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
         var value = $(this).closest("form").find("#drop_actionType option:selected").val();
+        var imageCount = $(this).closest("form").find("#drop_actionType option:selected").data('count');
         var url = $(this).data("url");
         var hash = hex_sha1(index + value + userid + password);
         data = { index: index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
-
         var count = parseInt($(".slideCount_" + index).last().text());
         var currentSliderTemplate = $("#sliderTemplate" + index).val();
-        var countConstraint = null;
-        if(value == "C") {
-            countConstraint = 2;
-        }
-        if(value == "D") {
-            countConstraint = 3;
-        }
 
-        if(count >= countConstraint ) {
+        if(count >= imageCount ) {
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -1443,7 +1436,7 @@
         }
         else {
             $(this).closest("form").find('#drop_actionType option[value="'+ currentSliderTemplate +'"]').attr("selected", "selected");
-            showErrorModal("Sorry, but the minimum number of images for this slide design template is " + countConstraint + " images");
+            showErrorModal("Sorry, but the minimum number of images for this slide design template is " + imageCount + " images");
         }
  
    
