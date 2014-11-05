@@ -67,7 +67,7 @@
                 @endforeach
             </table>
             
-            {{ $orders->links() }}
+            {{ $orders->appends(array('dateFrom' => $dateFrom, 'dateTo' => $dateTo, 'stringFilter' => $string))->links() }}
             
             <button class="btn btn-default btn-sm" id='download-btn'><span class="glyphicon glyphicon-floppy-disk"></span> Download</button>
 
