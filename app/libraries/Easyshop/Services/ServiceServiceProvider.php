@@ -31,7 +31,8 @@ class ServiceServiceProvider extends ServiceProvider
                 new \Easyshop\ModelRepositories\OrderRepository,
                 new \Easyshop\ModelRepositories\OrderStatusRepository,
                 new \Easyshop\ModelRepositories\OrderHistoryRepository,
-                new \Easyshop\ModelRepositories\PaymentMethodRepository
+                new \Easyshop\ModelRepositories\PaymentMethodRepository,
+                new \Easyshop\ModelRepositories\BankInfoRepository
             );
         });
 

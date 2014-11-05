@@ -37,32 +37,30 @@ class BillingDetailComposer
                 }
                 $formattedAccounts[$idx] =  $swapTemp;
                 $isAccountExist = true;
-            }else{
+            }
+            else{
                 $formattedAccounts[$idx] = $stdAccount;
             }
             
         }
             
         if(!$isAccountExist && $defaultAccount !== null){
-            
-                $defaultBank = $bankList->filter(function($bank) use ($defaultAccount)
-                {
-                    if (strtolower($bank->bank_name) == strtolower($defaultAccount->bank_name)) {
-                        return true;
-                    }
-                });
-                
                 $newStdAccount = new \stdClass();
                 $newStdAccount->account_name = $defaultAccount->account_name;
                 $newStdAccount->account_number = $defaultAccount->account_number;
                 $newStdAccount->bank_name = $defaultAccount->bank_name;
-                $newStdAccount->bank_id = $defaultBank->first()->id_bank; 
-                $newStdAccount->billing_id = null;
-                $newStdAccount->order_billing_id = $defaultAccount->id_order_billing_info;       
+                $newStdAccount->bank_id = $defaultAccount->bank_id; 
+                if($defaultAccount->isOrderBillingInfo){
+                    $newStdAccount->billing_id = null;
+                    $newStdAccount->order_billing_id = $defaultAccount->id;   
+                }
+                else{
+                    $newStdAccount->billing_id = $defaultAccount->id;   
+                    $newStdAccount->order_billing_id = null; 
+                }
                 array_unshift($formattedAccounts, $newStdAccount);
         }
 
- 
         $view->with('accounts',  $formattedAccounts);
 
    
