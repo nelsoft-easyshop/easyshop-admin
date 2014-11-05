@@ -12,7 +12,7 @@
                         type: 'get',
                         dataType: 'JSON',
                         success: function(result){ 
-                            if($tagType == 5 || $tagType == 2){
+                            if($tagType == $("#confirmed-constant").val() || $tagType == $("#refund-constant").val()){
                                 window.location = '/payout/seller';
                             }
                         }

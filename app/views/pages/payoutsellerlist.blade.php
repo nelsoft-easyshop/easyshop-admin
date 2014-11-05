@@ -77,7 +77,12 @@
                 </table>
             </div>
             {{ $pagination }}
-        </div> 
+        </div>
+
+        <div id="hidden-values">
+            <input type="hidden" id="confirmed-constant" value="<?=$constantValues['confirmed']; ?>" />
+            <input type="hidden" id="refund-constant" value="<?=$constantValues['refund']; ?>" />
+        </div>
 @stop
 
 @section('page_js')  
