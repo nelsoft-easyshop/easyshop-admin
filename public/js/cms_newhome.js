@@ -268,26 +268,6 @@
 
     
     });
-    function setPositionParentSlider(url, data)
-    {
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $("#manageSliderSection").load("getAllSliders");  
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                loader.hidePleaseWait();                   
-                showErrorModal("Please try again");
-            }
-        }); 
-    }
 
     $(document.body).on('click','#moveupAdsSection, #movedownAdsSection',function (e) { 
         loader.showPleaseWait();          
@@ -1765,6 +1745,27 @@
         }); 
         $(mainSlideForm).submit();        
     }
+
+    function setPositionParentSlider(url, data)
+    {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $("#manageSliderSection").load("getAllSliders");  
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                loader.hidePleaseWait();                   
+                showErrorModal("Please try again");
+            }
+        }); 
+    }    
 
     function showErrorModal(messages) {
             loader.hidePleaseWait();
