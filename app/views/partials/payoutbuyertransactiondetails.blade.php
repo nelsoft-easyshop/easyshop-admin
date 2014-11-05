@@ -27,6 +27,7 @@
                 <tr>
                 <td><form id="form">
                     <select id="tagOption">
+                        <option value="0">--Select Tag--</option>
                     @foreach($tags as $tag)
                         <option value="{{{ $tag->id_tag_type }}}" >{{{ $tag->tag_description }}}</option>
                     @endforeach
