@@ -229,7 +229,8 @@
     }); 
 
     $(document.body).on('click','#moveParentSlider',function (e) { 
-        loader.showPleaseWait();          
+   
+        var flag = 0;      
         var action = $(this).data('action').toString();
         var index = parseInt($(this).data('index').toString());
         var nodename = $(this).data('nodename').toString();
@@ -237,24 +238,34 @@
         var url = $(this).data('url').toString();
         var count = parseInt($(".parentSliderCount").last().text());
         if(action == "down") {
-            if(order == (count - 1)) {
-                order = order;
-            } else {
-                 order = order + 1;
-            }           
+            if(index + 1 != count) {
+                if(order == (count - 1)) {
+                    order = order;
+                } else {
+                     order = order + 1;
+                } 
+                flag = 1;    
+            }
+          
         }
         else {
-            if(order > 0) {
-                order = order - 1;
-            } else {
-               order = 0;
+            if(index != 0) {
+                if(order > 0) {
+                    order = order - 1;
+                } else {
+                   order = 0;
+                }    
+                flag = 1;                  
             }
-    
         }
-        order = order.toString();
-        var hash =  hex_sha1(action + nodename + index  + order + userid + password);        
-        data = { action:action, nodename:nodename, index: index, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
-        setPositionParentSlider(url,data);
+        if(flag == 1) {
+            loader.showPleaseWait();             
+            order = order.toString();
+            var hash =  hex_sha1(action + nodename + index  + order + userid + password);        
+            data = { action:action, nodename:nodename, index: index, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
+            setPositionParentSlider(url,data);       
+        }
+
     
     });
     function setPositionParentSlider(url, data)
