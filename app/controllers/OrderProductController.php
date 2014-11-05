@@ -394,9 +394,7 @@ class OrderProductController extends BaseController
         $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
         $payoutService = App::make('PayoutService');
         foreach ($orderProductRepository->getBuyersTransactionWithShippingComment((Input::get("sortBy")), (Input::get("sortOrder")), $filter, $filterBy) as $value) {
-            if($payoutService->checkIfTwoDaysPassedofETD($value->expected_date)) {
-                $orders[] = $value;
-            }
+            $orders[] = $value;
         }
         $paginatorService = App::make("CustomPaginator");
 
