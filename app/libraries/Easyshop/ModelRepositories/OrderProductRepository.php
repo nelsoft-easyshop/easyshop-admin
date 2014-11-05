@@ -298,11 +298,12 @@ class OrderProductRepository extends AbstractRepository
         $query = OrderProduct::leftJoin('es_order','es_order_product.order_id', '=', 'es_order.id_order'); 
         $query->leftJoin("es_order_product_tag","es_order_product_tag.order_product_id","=","es_order_product.id_order_product");
         $query->leftJoin("es_tag_type","es_tag_type.id_tag_type","=","es_order_product_tag.tag_type_id");
-        $query->leftjoin("es_member","es_order.buyer_id","=","es_member.id_member");
-        $query->rightJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product");
-
+        $query->leftJoin("es_member","es_order.buyer_id","=","es_member.id_member");
+        $query->leftJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product");
         $query->where('es_order.order_status', '!=', OrderStatus::STATUS_VOID)
-              ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY]);
+                ->where("es_order_product_tag.tag_type_id","!=", TagType::PAYOUT)
+                ->orWhere("es_order_product_tag.tag_type_id","=", NULL)
+                ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY]);
         if($filter != NULL) {
             if($filter == "username") {
                 $query->where('es_member.username', 'LIKE', '%' . $filterBy . '%');
