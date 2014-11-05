@@ -323,8 +323,8 @@ class OrderProductRepository extends AbstractRepository
             else if($filter === "ON-HOLD") {
                 $query->where('es_order_product_tag.tag_type_id', '=', TagType::ON_HOLD);
             }      
-            else if($filter === "REFUND") {
-                $query->where('es_order_product_tag.tag_type_id', '=', TagType::REFUND);
+            else if($filter === "PAYOUT") {
+                $query->where('es_order_product_tag.tag_type_id', '=', TagType::PAYOUT);
             }                                                           
         }              
 
