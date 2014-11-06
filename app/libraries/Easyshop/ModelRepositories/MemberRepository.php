@@ -133,8 +133,16 @@ class MemberRepository extends AbstractRepository
                 $query->where(function ($query) {
                                 $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
                                     ->orWhere('es_order.order_status', '=',  OrderStatus::STATUS_COMPLETED);
-                            });
-                $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING);
+                            });        
+                $query->where(function ($query) {
+                                $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING)
+                                    ->orWhere(function ($query) {
+                                            $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_PAID_SELLER)
+                                                  ->whereNull('es_order_product_history.id_order_product_history');
+                                        }
+                                    );
+                            });        
+                            
                 $query->where('es_order_product.is_reject', '=', '0');
                 $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
                 $query->whereRaw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15");
@@ -157,6 +165,7 @@ class MemberRepository extends AbstractRepository
                                         DB::raw('IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_number, es_order_billing_info.account_number) as account_number'),
                                         DB::raw('SUM(es_order_product.net) as net')
                                     ]);
+                                    
         return $completedOrders;
     }
 
