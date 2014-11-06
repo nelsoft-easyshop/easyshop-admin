@@ -136,7 +136,7 @@ class MemberRepository extends AbstractRepository
                             });
                 $query->where(function ($query) {
                                 $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING)
-                                    ->orWhere('es_order_product.status', '=',  OrderStatus::STATUS_FORWARD_SELLER);
+                                    ->orWhere('es_order_product.status', '=',  OrderProductStatus::STATUS_FORWARD_SELLER);
                             });            
                 $query->where('es_order_product.is_reject', '=', '0');
                 $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
