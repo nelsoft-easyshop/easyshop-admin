@@ -1,5 +1,6 @@
 <div>
     <div class="table-responsive table-payment"> 
+        <span id="orderId" style="display:none;">{{$orderId}}</span>
         <table class="table table-striped table-hover" id="order-tbl">
             <tr class='head'> 
                 <td>Order Product Id</td> 
