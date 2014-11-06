@@ -14,6 +14,7 @@ use Easyshop\ModelRepositories\OrderRepository as OrderRepository;
 use Easyshop\ModelRepositories\OrderStatusRepository as OrderStatusRepository;
 use Easyshop\ModelRepositories\OrderHistoryRepository as OrderHistoryRepository;
 use Easyshop\ModelRepositories\PaymentMethodRepository as PaymentMethodRepository;
+use Easyshop\ModelRepositories\BankInfoRepository as BankInfoRepository;
 
 /**
  * TransactionService, containing all useful methods for business logic around transactions
@@ -85,6 +86,13 @@ class TransactionService
     private $paymentMethodRepository;
     
     /**
+     * BankInfoRepository
+     *
+     * @var BankInfoRepository
+     */
+    private $bankInfoRepository;
+    
+    /**
      * Inject dependecies
      *
      */
@@ -95,7 +103,8 @@ class TransactionService
                                 OrderRepository $orderRepository,
                                 OrderStatusRepository $orderStatusRepository,
                                 OrderHistoryRepository $orderHistoryRepository,
-                                PaymentMethodRepository $paymentMethodRepository)    
+                                PaymentMethodRepository $paymentMethodRepository,
+                                BankInfoRepository $bankInfoRepository)    
     {
         $this->orderProductStatusRepository = $orderProductStatusRepository;
         $this->orderBillingInfoRepository = $orderBillingInfoRepository;
@@ -105,6 +114,7 @@ class TransactionService
         $this->orderStatusRepository = $orderStatusRepository;
         $this->orderHistoryRepository = $orderHistoryRepository;
         $this->paymentMethodRepository = $paymentMethodRepository;
+        $this->bankInfoRepository = $bankInfoRepository;
         $this->payOutConfig = Config::get('transaction.payOut');
     }
     
@@ -271,12 +281,15 @@ class TransactionService
             $status = $this->orderProductStatusRepository->getSellerPaidStatus();
             foreach($orderProducts as $orderProduct){
                 $orderProductId = $orderProduct->id_order_product;
-                $orderBillingInfoId = $orderProduct->sellerBillingInfo->id_order_billing_info;
                 
-                $this->orderBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, 
+                $sellerBillingInfo = $this->getSellerBillingInfo($orderProduct);
+                $orderBillingInfoId = $sellerBillingInfo->id;
+                if($sellerBillingInfo->isOrderBillingInfo){
+                    $this->orderBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, 
                                                                                 $accountName,
                                                                                 $accountNumber, 
                                                                                 $bankName);
+                }
                 $this->orderProductRepository->updateOrderProductStatus($orderProduct, $status);
                 $this->orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
             }
@@ -397,6 +410,62 @@ class TransactionService
         }
     }
     
+        
+    /**
+     * Get the seller billing info depending on the date of purchase.
+     * This is due to the change of the fk in es_order_product.seller_billing_id
+     * from es_billing_info to es_order_billing_info after a certain time. This is
+     * necessary so that transactions prior to the date of change remain correct.
+     *
+     * @param OrderProduct $orderProduct
+     * @return stdObject
+     */
+     
+    public function getSellerBillingInfo($orderProduct)
+    {
+        $stringBillingInfoChangeDate = Config::get('transaction.billingInfoChangeDate');
+        $stringDateOfOrder = $orderProduct->order()->first()->dateadded;
+        $dateOfOrder = Carbon::createFromFormat('Y-m-d H:i:s',$stringDateOfOrder);
+        $billingInfoChangeDate = Carbon::createFromFormat('Y-m-d H:i:s',$stringBillingInfoChangeDate);
+        $billingInfo = new \stdClass();
+
+        if($dateOfOrder < $billingInfoChangeDate){
+            $rawBillingInfo = $orderProduct->sellerBillingInfoFromBillingInfo;    
+            if(!$rawBillingInfo){
+                return NULL;
+            }
+            $billingInfo->account_name = $rawBillingInfo->bank_account_name;
+            $billingInfo->account_number = $rawBillingInfo->bank_account_number;
+            $billingInfo->bank_name = $rawBillingInfo->bankInfo->bank_name;
+            $billingInfo->bank_id = $rawBillingInfo->bank_id;
+            $billingInfo->id = $rawBillingInfo->id_billing_info;
+            $billingInfo->isOrderBillingInfo = false;
+        }
+        else{
+            $rawBillingInfo = $orderProduct->sellerBillingInfoFromOrderBillingInfo;
+            if(!$rawBillingInfo){
+                return NULL;
+            }
+            $billingInfo->account_name = $rawBillingInfo->account_name;
+            $billingInfo->account_number = $rawBillingInfo->account_number;
+            $billingInfo->bank_name = $rawBillingInfo->bank_name;
+            
+            $bankList = $this->bankInfoRepository->getAllBanks();
+            $bank = $bankList->filter(function($bank) use ($rawBillingInfo)
+            {
+                if (strtolower($bank->bank_name) == strtolower($rawBillingInfo->bank_name)) {
+                    return true;
+                }
+            });
+
+            $billingInfo->bank_id = $bank->first()->id_bank; 
+            $billingInfo->id = $rawBillingInfo->id_order_billing_info;
+            $billingInfo->isOrderBillingInfo = true;
+        }
+        
+        return $billingInfo;
+    }
+        
     
 }
 

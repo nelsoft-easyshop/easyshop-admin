@@ -62,10 +62,20 @@ class OrderProduct extends Eloquent
      * Relationship with es_order_billing_info
      *
      */
-    public function sellerBillingInfo() 
+    public function sellerBillingInfoFromOrderBillingInfo() 
     {
         return $this->hasOne('OrderBillingInfo', 'id_order_billing_info', 'seller_billing_id');
     }
+    
+    /**
+     * Relationship with es_billing_info
+     *
+     */
+    public function sellerBillingInfoFromBillingInfo() 
+    {
+        return $this->hasOne('BillingInfo', 'id_billing_info', 'seller_billing_id');
+    }
+    
     
     /**
      * Relationship with es_order_product_history

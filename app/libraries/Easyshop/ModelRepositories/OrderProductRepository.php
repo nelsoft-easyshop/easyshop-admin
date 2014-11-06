@@ -87,8 +87,15 @@ class OrderProductRepository extends AbstractRepository
                     $query->where(function ($query) {
                                     $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
                                         ->orWhere('es_order.order_status', '=',  OrderStatus::STATUS_COMPLETED);
-                                });
-                    $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING);
+                            });      
+                    $query->where(function ($query) {
+                                $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING)
+                                    ->orWhere(function ($query) {
+                                            $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_PAID_SELLER)
+                                                  ->whereNull('es_order_product_history.id_order_product_history');
+                                        }
+                                    );
+                            });         
                     $query->where('es_order_product.is_reject', '=', '0');
                     $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
                     $query->whereRaw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15");
