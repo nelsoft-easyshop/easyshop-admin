@@ -47,9 +47,9 @@ class OrderRepository extends AbstractRepository
                 $query->orWhere('invoice_no', 'LIKE', '%'.$stringFilter.'%');
             });
         }
-        
-        $query->paginate($numberOfRows);
-        
+          
+        $query->orderBy('dateadded', 'DESC');
+          
         return $query->paginate($numberOfRows);
     }
     
