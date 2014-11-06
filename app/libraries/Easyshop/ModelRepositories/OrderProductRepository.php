@@ -92,7 +92,6 @@ class OrderProductRepository extends AbstractRepository
                                 $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING)
                                     ->orWhere('es_order_product.status', '=',  OrderProductStatus::STATUS_FORWARD_SELLER);
                             });                 
-                    $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING);
                     $query->where('es_order_product.is_reject', '=', '0');
                     $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
                     $query->whereRaw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15");
