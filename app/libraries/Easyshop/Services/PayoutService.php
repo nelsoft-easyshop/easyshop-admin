@@ -154,12 +154,21 @@ class PayoutService
      * @param  [type] $adminMemberId [description]
      * @return [type]                [description]
      */
-    public function updateOrderProductTagStatus($orderId,$memberId,$tagType,$adminMemberId)
-    {
-        $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderId,$memberId);
+    public function updateOrderProductTagStatus($orderId,$memberId,$tagType,$adminMemberId, $forSeller = true)
+    {   
+        if($forSeller) {
+            $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderId,$memberId);
+            $orderProductStatus = $this->orderProductStatusRepository->getReturnBuyerStatus();            
+        }
+        else{
+            $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderId,$memberId, false);
+            $orderProductStatus = $this->orderProductStatusRepository->getForwardSellerStatus();            
+        }
+
+
         $booleanReturn = TRUE;
         $returnMessage = "";
-        $orderProductStatus = $this->orderProductStatusRepository->getReturnBuyerStatus();
+
         $orderStatus = $this->orderStatusRepository->getCompletedStatus();
 
         // check if order product is existing then update
@@ -193,14 +202,14 @@ class PayoutService
                                                                                     ,$tagType
                                                                                     ,$adminMemberId);
 
-                    if($tagType == $this->tagTypeRepository->getRefund()){
+                    if($tagType == $this->tagTypeRepository->getRefund() || $tagType == $this->tagTypeRepository->getPayOut()){
                         $orderProductObject = $this->orderProductRepository->getOrderProductById($orderProductTag->order_product_id);
                         $this->orderProductRepository->updateOrderProductStatus($orderProductObject,$orderProductStatus);
                         $this->orderProductHistoryRepository->createOrderProductHistory($orderProductTag->order_product_id, $orderProductStatus);
                     }
                 }
 
-                if($tagType == $this->tagTypeRepository->getRefund()){
+                if($tagType == $this->tagTypeRepository->getRefund() || $tagType == $this->tagTypeRepository->getPayOut()){
                     $this->transactionService->synchOrderStatusWithOrderProduct($orderId,$orderProductStatus,$orderStatus);
                 }
             }
