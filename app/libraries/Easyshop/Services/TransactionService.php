@@ -430,7 +430,10 @@ class TransactionService
         $billingInfo = new \stdClass();
 
         if($dateOfOrder < $billingInfoChangeDate){
-            $rawBillingInfo = $orderProduct->sellerBillingInfoFromBillingInfo;            
+            $rawBillingInfo = $orderProduct->sellerBillingInfoFromBillingInfo;    
+            if(!$rawBillingInfo){
+                return NULL;
+            }
             $billingInfo->account_name = $rawBillingInfo->bank_account_name;
             $billingInfo->account_number = $rawBillingInfo->bank_account_number;
             $billingInfo->bank_name = $rawBillingInfo->bankInfo->bank_name;
@@ -440,6 +443,9 @@ class TransactionService
         }
         else{
             $rawBillingInfo = $orderProduct->sellerBillingInfoFromOrderBillingInfo;
+            if(!$rawBillingInfo){
+                return NULL;
+            }
             $billingInfo->account_name = $rawBillingInfo->account_name;
             $billingInfo->account_number = $rawBillingInfo->account_number;
             $billingInfo->bank_name = $rawBillingInfo->bank_name;
