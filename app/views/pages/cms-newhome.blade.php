@@ -26,7 +26,7 @@
                         <li role="presentation" class="dropdown-header">Category Navigations</li>
                         <span style="display:none;">{{{ $nav = 0 }}}</span>
                             @foreach($categoryNavigation as $navigation)
-                                <li><a href="#navigation_{{{$navigation->categorySlug}}}_{{$nav}}" id="mainNavigation_{{{$nav}}}" class="mainNavigation_{{{$navigation->categorySlug}}}" tabindex="-1" role="tab" data-toggle="tab">{{{$navigation->categorySlug}}}</a></li>
+                                <li><a href="#navigation_{{{$navigation->categorySlug}}}_{{$nav}}" id="mainNavigation_{{{$nav}}}" class="mainNavigation_{{{$navigation->categorySlug}}}" tabindex="-1" role="tab" data-toggle="tab">{{{ucwords(str_replace("-"," ",$navigation->categorySlug))}}}</a></li>
                                 <span style="display:none;">{{{ $nav++ }}}</span>
                             @endforeach
                         <li class="divider"></li>
