@@ -769,16 +769,8 @@
 
         data = { index: index, subIndex:subIndex, nodename:nodename,userid:userid,  password:password, hash:hash, callback:'?'};  
         var count = parseInt($(".slideCount_" + index).last().text());
-
-        var countConstraint = null;
-        if(currentSliderTemplate == "C") {
-            countConstraint = 2;
-        }
-        if(currentSliderTemplate == "D") {
-            countConstraint = 3;
-        }
-
-        if(count > countConstraint ) {
+        var sliderConstant = $("#template_" + currentSliderTemplate).data("count");
+        if(count > sliderConstant ) {
             loader.showPleaseWait();                    
             $.ajax({
                 type: 'GET',
@@ -797,7 +789,7 @@
                     loader.hidePleaseWait();
                     showErrorModal("Please try again");
                 }
-            });    
+            });  
         }      
         else {
             showErrorModal("Sorry, but you have reached the minimum number of images for this slider template")

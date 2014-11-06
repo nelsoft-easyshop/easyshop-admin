@@ -22,7 +22,9 @@
                         </div>
                     </div>                                      
                 </form>
-
+                @foreach($templateLists[0] as $templates)                                               
+                    <span id="template_{{$templates->templateName}}" data-name="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" style="display:none;">{{$templates->templateName}}</span>
+                @endforeach 
                 <span style="display:none;">{{$sliderIndex = 0}}</span>
                 <div class="panel-group" id="accordion">
                     @foreach($sliderSection as $slides)
