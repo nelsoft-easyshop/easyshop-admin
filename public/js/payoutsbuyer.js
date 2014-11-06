@@ -111,13 +111,14 @@
         if(tag != "0") {
             var $confirm = confirm("Are you sure you want to update?");
             var sellerId =  $('#sellerID').val();
+            var orderId =  $('#orderId').text();
             $('.orderProductId').each(function(){
                 orderProductIdCollection.push( parseInt($(this).html().trim(), 10));
             }); 
             if($confirm){
                 $.ajax({
-                    url: "payout-buyer/update-buyer-transaction",
-                    data: {order_product_ids: orderProductIdCollection, tagId:tag, sellerId: sellerId},
+                    url: "payout/seller/update-transaction",
+                    data: {order_id: orderId, tag_type:tag, member_id: sellerId, forBuyer: "1"},
                     type: 'get',
                     dataType: 'JSON',                      
                     success: function(result){
