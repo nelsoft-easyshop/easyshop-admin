@@ -420,21 +420,6 @@ class OrderProductController extends BaseController
     }   
 
     /**
-     * Update tag status of order_products of a particular order
-     * @return JSON
-     */
-    public function updateBuyerTagTransaction()
-    {
-
-        $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository');         
-        foreach(array_flatten(Input::get("order_product_ids")) as $ids) {
-            $isSuccess = $orderProductTagRepositoryRepository->updateBuyerTag($ids, Input::get("tagId"), Input::get("sellerId"));
-        }
-        return Response::json(array('html' => $isSuccess)); 
-    }
-
-
-    /**
      * Get all existing transaction details of the specific seller by order id
      * @return JSON
      */
@@ -458,6 +443,7 @@ class OrderProductController extends BaseController
         $requestForPayout = $checkOrder['request_payout'];
 
         $html = View::make('partials.payoutbuyertransactiondetails')
+            ->with('orderId', $orderId) 
             ->with('transactionDetails', $transactionDetails) 
             ->with('suggestForPayOut', $requestForPayout) 
             ->with('sellerId', $sellerId) 
@@ -474,6 +460,7 @@ class OrderProductController extends BaseController
     public function updateOrderProductTagStatus()
     {
         // get input data
+
         $orderId = Input::get('order_id'); 
         $memberId = Input::get('member_id');
         $tagType = Input::get('tag_type');
@@ -481,12 +468,13 @@ class OrderProductController extends BaseController
 
         //prepare service
         $payoutService = App::make('PayoutService');
-
+        $forBuyer = (Input::get("forBuyer")) ? false : true;
         // Update status
         $orderTagStatus = $payoutService->updateOrderProductTagStatus($orderId
                                                                     ,$memberId
                                                                     ,$tagType
-                                                                    ,$adminMemberId);
+                                                                    ,$adminMemberId
+                                                                    ,$forBuyer);
 
         return Response::json($orderTagStatus);
     }
