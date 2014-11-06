@@ -110,6 +110,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::post('payout/seller', array('uses' => 'OrderProductController@getSellersTransactions'));
     Route::get('payout/seller/view-transactions', array('uses' => 'OrderProductController@getSellerExistingTransaction'));
     Route::get('payout/seller/view-transactions-details', array('uses' => 'OrderProductController@getSellerTransactionDetailsByOrderId'));
+    Route::get('payout/seller/add-transactions-details', array('uses' => 'OrderProductController@getAddShippingDetailsView'));
     Route::get('payout-buyer', array('uses' => 'OrderProductController@getOrderProductsContactBuyer'));   
     Route::post('payout-buyer', array('uses' => 'OrderProductController@getOrderProductsContactBuyer'));   
     Route::get('payout-buyer-sort', array('uses' => 'OrderProductController@getOrderProductsContactBuyer'));   
@@ -118,5 +119,6 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('payout/seller/update-transaction', array('uses' => 'OrderProductController@updateOrderProductTagStatus'));
     Route::get('payout/seller/view-transaction-shipping', array('uses' => 'OrderProductController@getOrderProductShippingDetails'));
 
+    Route::get('shippingdetails/add', array('uses' => 'OrderProductController@addShippingDetails'));
 
 });

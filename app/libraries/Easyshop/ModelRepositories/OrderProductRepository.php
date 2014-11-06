@@ -42,12 +42,17 @@ class OrderProductRepository extends AbstractRepository
      */
     public function getOrderProductByOrderId($orderId,$sellerId = 0)
     {
-        $query = OrderProduct::where('order_id', '=', $orderId);
+        $query = OrderProduct::leftjoin('es_product_shipping_comment','es_order_product.id_order_product','=','es_product_shipping_comment.order_product_id')
+                                ->where('es_order_product.order_id', '=', $orderId);
+
         if(intval($sellerId) !== 0){
-            $query->where('seller_id','=',$sellerId);
+            $query->where('es_order_product.seller_id','=',$sellerId);
         }
 
-        return $query->get();
+        return $query->get([
+                            'es_order_product.*',
+                            DB::raw('COALESCE(es_product_shipping_comment.id_shipping_comment,0) as shipping')
+                            ]);
     }
     
     /**
@@ -358,7 +363,7 @@ class OrderProductRepository extends AbstractRepository
     {
         if($isSeller) {
             $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
-            $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');            
+            $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
         }
         else {
             $query = OrderProduct::leftJoin('es_order','es_order_product.order_id', '=', 'es_order.id_order');
@@ -372,8 +377,9 @@ class OrderProductRepository extends AbstractRepository
 
         $query->leftJoin('es_tag_type',function($leftJoin){
             $leftJoin->on('es_order_product_tag.tag_type_id', '=', 'es_tag_type.id_tag_type');
-        }); 
+        });
 
+        $query->groupBy("es_order_product.seller_id", "es_order_product.order_id");
         $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
               ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY])
               ->whereNull('es_order_product_tag.tag_type_id');

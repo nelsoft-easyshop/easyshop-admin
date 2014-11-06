@@ -13,9 +13,16 @@
                     <td>{{{ $orderProduct->id_order_product }}}</td>
                     <td>{{{ $orderProduct->product->name }}}</td>
                     <td>{{{ $orderProduct->order_quantity }}}</td>
-                    <td>{{{ $orderProduct->total }}}</td>
+                    <td>PHP {{{ number_format($orderProduct->total, 2, '.', '') }}}</td>
                     <td>
+                        @if($orderProduct->shipping != 0)
                         <span class="org_btn view checkShipping" data-order-product-id="{{{ $orderProduct->id_order_product }}}" > View Shipping Details</span>
+                        @else
+                        <div id="divSpan{{{ $orderProduct->id_order_product }}}">
+                            <span class="label label-danger "> NO SHIPPING DETAILS</span>
+                            <span class="org_btn view addShipping" data-order-product-id="{{{ $orderProduct->id_order_product }}}" > ADD</span>
+                        </div>
+                        @endif
                     </td>
                 </tr>
             @endforeach

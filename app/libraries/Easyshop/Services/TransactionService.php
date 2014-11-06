@@ -353,7 +353,8 @@ class TransactionService
         $cashOnDeliveryId = intval($this->paymentMethodRepository->getCashOnDelivery());       
         $onGoingStatus = intval($this->orderProductStatusRepository->getOnGoingStatus());
         $orderProduct = $this->orderProductRepository->getOrderProductById($orderProductId);
-        
+        $orderVoidStatus = $this->orderStatusRepository->getVoidStatus();
+
         if(intval($orderProduct->status) === $onGoingStatus){
             if(intval($orderProduct->order->payment_method_id) === $cashOnDeliveryId){
                 $voidStatus = $this->orderProductStatusRepository->getCashOnDeliveryStatus();
@@ -363,7 +364,7 @@ class TransactionService
             }
             $this->orderProductRepository->updateOrderProductStatus($orderProduct, $voidStatus);
             $this->orderProductHistoryRepository->createOrderProductHistory($orderProduct->id_order_product, $voidStatus);
-            $this->synchOrderVoidStatusWithOrderProduct($orderProduct->order_id, $voidStatus);
+            $this->synchOrderStatusWithOrderProduct($orderProduct->order_id, $voidStatus,$orderVoidStatus);
             return true;
         }
 
@@ -376,24 +377,24 @@ class TransactionService
      * If all order products are voided, the order will also be voided
      *
      * @param integer $orderId
-     * @param integer $orderProductVoidStatus
+     * @param integer $orderProductStatus
+     * @param integer $orderStatus
      */
-    public function synchOrderVoidStatusWithOrderProduct($orderId, $orderProductVoidStatus)
+    public function synchOrderStatusWithOrderProduct($orderId, $orderProductStatus,$orderStatus)
     {
         $orderProducts = $this->orderProductRepository->getOrderProductByOrderId($orderId);
         $isOrderVoid = true;
         
         foreach($orderProducts as $orderProduct){
-            if(intval($orderProduct->status) !== intval($orderProductVoidStatus)){
+            if(intval($orderProduct->status) !== intval($orderProductStatus)){
                 $isOrderVoid = false;
                 break;
             }
         }
         
-        if($isOrderVoid){
-            $orderVoidStatus = $this->orderStatusRepository->getVoidStatus();
+        if($isOrderVoid){ 
             $order = $this->orderRepository->getOrderById($orderId);
-            $this->orderRepository->updateOrderStatus($order, $orderVoidStatus);
+            $this->orderRepository->updateOrderStatus($order, $orderStatus);
         }
     }
     

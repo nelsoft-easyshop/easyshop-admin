@@ -4,6 +4,10 @@ namespace Easyshop\Services;
 use Easyshop\ModelRepositories\TagTypeRepository as TagTypeRepository;
 use Easyshop\ModelRepositories\OrderProductTagRepository as OrderProductTagRepository;
 use Easyshop\ModelRepositories\OrderProductRepository as OrderProductRepository;
+use Easyshop\ModelRepositories\ProductShippingCommentRepository as ProductShippingCommentRepository;
+use Easyshop\ModelRepositories\OrderProductStatusRepository as OrderProductStatusRepository;
+use Easyshop\ModelRepositories\OrderStatusRepository as OrderStatusRepository;
+use Easyshop\ModelRepositories\OrderProductHistoryRepository as OrderProductHistoryRepository;
 use Carbon\Carbon;
 
 class PayoutService
@@ -30,24 +34,61 @@ class PayoutService
     private $orderProductRepository;
 
     /**
+     * OrderProduct Repository
+     *
+     * @var ProductShippingCommentRepository
+     */
+    private $productShippingCommentRepository;
+
+    /**
+     * OrderProductStatus Repository
+     *
+     * @var OrderProductStatusRepository
+     */
+    private $orderProductStatusRepository;
+
+    /**
+     * OrderProductHistory Repository
+     *
+     * @var OrderProductHistoryRepository
+     */
+    private $orderProductHistoryRepository;
+
+    /**
+     * Transaction Servoce
+     *
+     * @var TransactionService
+     */
+    private $transactionService;
+
+    /**
      * ETD (Estimated Time of Delivery) Constant duration for orders with shipping details
      *
      * @var ETD
      */
-    private $ETD = 2;    
+    private $ETD = 2;
 
     /**
      * Inject dependecies
      *
      */
-
     public function __construct(TagTypeRepository $tagTypeRepository,
                                 OrderProductTagRepository $orderProductTagRepository,
-                                OrderProductRepository $orderProductRepository)
+                                OrderProductRepository $orderProductRepository,
+                                ProductShippingCommentRepository $productShippingCommentRepository,
+                                OrderProductStatusRepository $orderProductStatusRepository,
+                                OrderStatusRepository $orderStatusRepository,
+                                OrderProductHistoryRepository $orderProductHistoryRepository,
+                                TransactionService $transactionService)
     {
         $this->tagTypeRepository = $tagTypeRepository;
         $this->orderProductTagRepository = $orderProductTagRepository;
         $this->orderProductRepository = $orderProductRepository;
+        $this->productShippingCommentRepository = $productShippingCommentRepository;
+        $this->orderProductStatusRepository = $orderProductStatusRepository;
+        $this->orderStatusRepository = $orderStatusRepository;
+        $this->orderProductHistoryRepository = $orderProductHistoryRepository;
+        $this->transactionService = $transactionService;
     }
 
     public function checkOrderProductTagStatus($orderId,$memberId,$isSeller = TRUE)
@@ -78,8 +119,6 @@ class PayoutService
         );
 
         return $returnVar;
-
-
     }
 
     /**
@@ -97,14 +136,56 @@ class PayoutService
         }
     }
 
+    /**
+     * Update order product tag status of each order product
+     * @param  [type] $orderId       [description]
+     * @param  [type] $memberId      [description]
+     * @param  [type] $tagType       [description]
+     * @param  [type] $adminMemberId [description]
+     * @return [type]                [description]
+     */
     public function updateOrderProductTagStatus($orderId,$memberId,$tagType,$adminMemberId)
     {
         $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderId,$memberId);
+        $booleanReturn = TRUE;
+        $returnMessage = "";
+        $orderProductStatus = $this->orderProductStatusRepository->getReturnBuyerStatus();
+        $orderStatus = $this->orderStatusRepository->getCompletedStatus();
 
         // check if order product is existing then update
         if($checkTagTable->count() > 0){
-            foreach ($checkTagTable as $orderProductTag) {
-                $this->orderProductTagRepository->updateOrderTags($orderProductTag,$tagType);
+            if(intval($tagType) === $this->tagTypeRepository->getConfirmed()){
+                foreach ($checkTagTable as $orderProductTag) {
+                    $shippingInfo = $this->productShippingCommentRepository->getShippingCommentByOrderProductId($orderProductTag->order_product_id);
+                    if($shippingInfo->count() <= 0){ 
+                        $booleanReturn = FALSE;
+                        break;
+                    }
+                }
+
+                if($booleanReturn){
+                    foreach ($checkTagTable as $orderProductTag) {
+                        $this->orderProductTagRepository->updateOrderTags($orderProductTag,$tagType);
+                    }
+                }
+                else{
+                    $booleanReturn = FALSE;
+                    $returnMessage = "Please complete all shipping details.";
+                }
+            }
+            else{
+                foreach ($checkTagTable as $orderProductTag) {
+                    $this->orderProductTagRepository->updateOrderTags($orderProductTag,$tagType);
+                    if($tagType == $this->tagTypeRepository->getRefund()){
+                        $orderProductObject = $this->orderProductRepository->getOrderProductById($orderProductTag->order_product_id);
+                        $this->orderProductRepository->updateOrderProductStatus($orderProductObject,$orderProductStatus);
+                        $this->orderProductHistoryRepository->createOrderProductHistory($orderProductTag->order_product_id, $orderProductStatus);
+                    }
+                }
+
+                if($tagType == $this->tagTypeRepository->getRefund()){
+                    $this->transactionService->synchOrderStatusWithOrderProduct($orderId,$orderProductStatus,$orderStatus);
+                }
             }
         }
         // else insert new data
@@ -118,6 +199,63 @@ class PayoutService
             }
         }
 
-        return TRUE;
+        return ['isSuccess' => $booleanReturn 
+                ,'message' => $returnMessage];
+    }
+
+    public function addShippingComment($inputData)
+    {   
+        $booleanSuccess = FALSE;
+        $returnMessage = "";
+
+        if(intval($inputData['order_product_id']) <= 0){
+            $returnMessage = "No order product will be updated.";
+
+            return array('isSuccess'=> $booleanSuccess,'message'=>$returnMessage);
+        }
+
+        if(trim($inputData['courier']) === ""){ 
+            $returnMessage = "Courier cannot be empty.";
+
+            return array('isSuccess'=> $booleanSuccess,'message'=>$returnMessage);
+        }
+
+        if(trim($inputData['delivery']) === "" ){ 
+            $returnMessage = "Expected and Delivery Date cannot be empty.";
+
+            return array('isSuccess'=> $booleanSuccess,'message'=>$returnMessage);
+        }
+        else{ 
+            $deliveryDate = Carbon::createFromFormat('Y/m/d', $inputData['delivery'])->startOfDay();
+            if(trim($inputData['expected']) !== ""){
+                $expectedDate = Carbon::createFromFormat('Y/m/d', $inputData['expected'])->startOfDay();
+                if($expectedDate < $deliveryDate){
+                    $returnMessage = "Expected date is less than in given delivery date.";
+
+                    return array('isSuccess'=> $booleanSuccess,'message'=>$returnMessage);
+                }
+            }
+            else{
+                $expectedDate = "";
+            }
+
+        }
+
+        $orderProduct = $this->orderProductRepository->getOrderProductById($inputData['order_product_id']);
+        $memberId = $orderProduct->seller_id;
+        $modifiedDate = Carbon::now();
+        $insertData = $this->productShippingCommentRepository->addShippingComment($inputData['order_product_id']
+                                                                    ,trim($inputData['courier'])
+                                                                    ,trim($inputData['tracking'])
+                                                                    ,trim($inputData['comment'])
+                                                                    ,$memberId
+                                                                    ,$expectedDate
+                                                                    ,$deliveryDate
+                                                                    ,$modifiedDate
+                                                                    );
+        $booleanSuccess = TRUE;
+        $returnMessage = "";
+        
+        return array('isSuccess'=> $booleanSuccess,'message'=>$returnMessage);
     }
 }

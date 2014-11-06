@@ -16,4 +16,6 @@ class ProductShippingComment extends Eloquent
      */
     protected $primaryKey = 'id_product_shipping_comment';
 
+
+    public $timestamps = false;
 }

@@ -89,5 +89,6 @@
   {{ HTML::script('js/payoutseller.js') }}
   {{ HTML::script('js/src/ladda/spin.js') }}
   {{ HTML::script('js/src/ladda/ladda.js') }}
+  {{ HTML::script('js/src/jquery.datetimepicker.js') }} 
 @stop
 

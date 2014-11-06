@@ -355,13 +355,13 @@ class OrderProductController extends BaseController
         $memberId = Input::get('member_id');
 
         // prepare repository needed
-        $orderRepository = App::make('OrderProductRepository'); 
+        $orderProductRepository = App::make('OrderProductRepository'); 
 
         //prepare service
         $payoutService = App::make('PayoutService');
 
         // Query the transactions 
-        $transactionDetails = $orderRepository->getOrderProductByOrderId($orderId,$memberId);
+        $transactionDetails = $orderProductRepository->getOrderProductByOrderId($orderId,$memberId);
 
         // get available tags
         $orderTagStatus = $payoutService->checkOrderProductTagStatus($orderId,$memberId);
@@ -487,7 +487,7 @@ class OrderProductController extends BaseController
                                                                     ,$tagType
                                                                     ,$adminMemberId);
 
-        return Response::json(array('response' => 'true'));
+        return Response::json($orderTagStatus);
     }
 
     /**
@@ -517,6 +517,35 @@ class OrderProductController extends BaseController
                         ->render();
 
         return Response::json(array('html' => $html));
+    }
+
+    /**
+     * Request add shippiing voew
+     * @return JSON
+     */
+    public function getAddShippingDetailsView()
+    {
+        // get input data
+        $orderProductId = Input::get('order_product_id'); 
+
+        // prepare view
+        $html = View::make('partials.addshippingdetails')
+                        ->with('orderProductId', $orderProductId)
+                        ->render();
+
+
+        return Response::json(array('html' => $html)); 
+    }
+
+    public function addShippingDetails()
+    {
+        $inputData = Input::get();
+
+        $payoutService = App::make('PayoutService'); 
+ 
+        $response = $payoutService->addShippingComment($inputData);
+
+        return Response::json($response);
     }
 
 }

@@ -75,7 +75,12 @@ class ServiceServiceProvider extends ServiceProvider
             return new PayoutService( 
                 new \Easyshop\ModelRepositories\TagTypeRepository,
                 new \Easyshop\ModelRepositories\OrderProductTagRepository,
-                new \Easyshop\ModelRepositories\OrderProductRepository
+                new \Easyshop\ModelRepositories\OrderProductRepository,
+                new \Easyshop\ModelRepositories\ProductShippingCommentRepository,
+                new \Easyshop\ModelRepositories\OrderProductStatusRepository,
+                new \Easyshop\ModelRepositories\OrderStatusRepository,
+                new \Easyshop\ModelRepositories\OrderProductHistoryRepository,
+                \App::make('TransactionService')
             );
         });
 
