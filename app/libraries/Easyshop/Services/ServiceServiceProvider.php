@@ -81,6 +81,7 @@ class ServiceServiceProvider extends ServiceProvider
                 new \Easyshop\ModelRepositories\OrderProductStatusRepository,
                 new \Easyshop\ModelRepositories\OrderStatusRepository,
                 new \Easyshop\ModelRepositories\OrderProductHistoryRepository,
+                new \Easyshop\ModelRepositories\OrderProductTagHistoryRepository,
                 \App::make('TransactionService')
             );
         });

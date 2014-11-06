@@ -119,5 +119,9 @@ class RepositoryServiceProvider extends ServiceProvider
             return new ProductShippingCommentRepository();
         });
 
+        $this->app->bind('OrderProductTagHistoryRepository', function($app){  
+            return new OrderProductTagHistoryRepository();
+        });
+
     }
 }

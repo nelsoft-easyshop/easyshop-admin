@@ -8,6 +8,7 @@ use Easyshop\ModelRepositories\ProductShippingCommentRepository as ProductShippi
 use Easyshop\ModelRepositories\OrderProductStatusRepository as OrderProductStatusRepository;
 use Easyshop\ModelRepositories\OrderStatusRepository as OrderStatusRepository;
 use Easyshop\ModelRepositories\OrderProductHistoryRepository as OrderProductHistoryRepository;
+use Easyshop\ModelRepositories\OrderProductTagHistoryRepository as OrderProductTagHistoryRepository;
 use Carbon\Carbon;
 
 class PayoutService
@@ -55,6 +56,13 @@ class PayoutService
     private $orderProductHistoryRepository;
 
     /**
+     * OrderProductTagHistory Repository
+     *
+     * @var OrderProductTagHistoryRepository
+     */
+    private $orderProductTagHistoryRepository;
+
+    /**
      * Transaction Servoce
      *
      * @var TransactionService
@@ -79,6 +87,7 @@ class PayoutService
                                 OrderProductStatusRepository $orderProductStatusRepository,
                                 OrderStatusRepository $orderStatusRepository,
                                 OrderProductHistoryRepository $orderProductHistoryRepository,
+                                OrderProductTagHistoryRepository $orderProductTagHistoryRepository,
                                 TransactionService $transactionService)
     {
         $this->tagTypeRepository = $tagTypeRepository;
@@ -88,6 +97,7 @@ class PayoutService
         $this->orderProductStatusRepository = $orderProductStatusRepository;
         $this->orderStatusRepository = $orderStatusRepository;
         $this->orderProductHistoryRepository = $orderProductHistoryRepository;
+        $this->orderProductTagHistoryRepository = $orderProductTagHistoryRepository;
         $this->transactionService = $transactionService;
     }
 
@@ -166,6 +176,9 @@ class PayoutService
                 if($booleanReturn){
                     foreach ($checkTagTable as $orderProductTag) {
                         $this->orderProductTagRepository->updateOrderTags($orderProductTag,$tagType);
+                        $this->orderProductTagHistoryRepository->createOrderProductTagHistory($orderProductTag->order_product_id
+                                                                                        ,$tagType
+                                                                                        ,$adminMemberId);
                     }
                 }
                 else{
@@ -176,6 +189,10 @@ class PayoutService
             else{
                 foreach ($checkTagTable as $orderProductTag) {
                     $this->orderProductTagRepository->updateOrderTags($orderProductTag,$tagType);
+                    $this->orderProductTagHistoryRepository->createOrderProductTagHistory($orderProductTag->order_product_id
+                                                                                    ,$tagType
+                                                                                    ,$adminMemberId);
+
                     if($tagType == $this->tagTypeRepository->getRefund()){
                         $orderProductObject = $this->orderProductRepository->getOrderProductById($orderProductTag->order_product_id);
                         $this->orderProductRepository->updateOrderProductStatus($orderProductObject,$orderProductStatus);
@@ -196,6 +213,10 @@ class PayoutService
                                                                         ,$orderProduct->seller_id
                                                                         ,$tagType
                                                                         ,$adminMemberId);
+
+                $this->orderProductTagHistoryRepository->createOrderProductTagHistory($orderProduct->id_order_product
+                                                                                    ,$tagType
+                                                                                    ,$adminMemberId);
             }
         }
 
