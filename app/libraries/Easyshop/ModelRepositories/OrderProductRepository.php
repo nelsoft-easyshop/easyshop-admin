@@ -296,8 +296,8 @@ class OrderProductRepository extends AbstractRepository
         $sortBy = $sortBy === NULL ? "es_order.dateadded" : $sortBy;
         $sortOrder = $sortOrder === NULL ? "DESC" : $sortOrder;
         $query = ProductShippingComment::leftJoin("es_order_product", "es_order_product.id_order_product", "=", "es_product_shipping_comment.order_product_id");
-        $query->leftJoin('es_order','es_order_product.order_id', '=', 'es_order.id_order'); 
-        $query->leftJoin("es_member","es_order.buyer_id","=","es_member.id_member");
+        $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order'); 
+        $query->join("es_member","es_order.buyer_id","=","es_member.id_member");
         $query->leftJoin("es_order_product_tag","es_order_product_tag.order_product_id","=","es_order_product.id_order_product");
         $query->leftJoin("es_tag_type","es_tag_type.id_tag_type","=","es_order_product_tag.tag_type_id");
         $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID);
