@@ -1,6 +1,6 @@
 <?php namespace Easyshop\ModelRepositories;
 
-use OrderProductTag, TagType, OrderProduct;
+use OrderProductTag, TagType, OrderProduct, Order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -46,13 +46,16 @@ class OrderProductTagRepository extends AbstractRepository
      * @param  integer $memberId
      * @return object
      */
-    public function getOrderTags($orderId,$memberId)
+    public function getOrderTags($orderId,$memberId, $isSeller = TRUE)
     {
-        return OrderProductTag::whereIn('order_product_id', function($query) use($orderId,$memberId) {
-                    $query->select('id_order_product')
-                          ->from(with(new OrderProduct)->getTable()) 
-                          ->where('order_id', '=', $orderId)
-                          ->where('seller_id', '=', $memberId);
+
+        return OrderProductTag::whereIn('order_product_id', function($query) use($orderId,$memberId, $isSeller) {
+                $query->select('id_order_product');
+                $query->from(with(new OrderProduct)->getTable());
+                $query->where('order_id', '=', $orderId);
+                $query->where('seller_id', '=', $memberId);   
+
+
                 })->get(['es_order_product_tag.*']);
     }
 
