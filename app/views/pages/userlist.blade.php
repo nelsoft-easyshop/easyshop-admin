@@ -106,7 +106,7 @@
             </div>
         <h4 class="tbl-title">
             <span class="glyphicon glyphicon-list-alt"></span>
-            LIST OF REGISTERED USERS
+            LIST OF REGISTERED USERS : {{{$member_count[0]->memberCount}}} 
         </h4>
         <div class="tbl-div">
             <table class="table table-striped table-hover tbl-my-style" id="tbl-user-list">
