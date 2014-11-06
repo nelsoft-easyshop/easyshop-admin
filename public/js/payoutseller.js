@@ -186,5 +186,9 @@
         $('#' + id).val(value);
         $('#searchForm').submit();
     });
+
+    $(".tag_default").on('click', function(){
+        window.location = '/payout/seller';
+    });
 })(jQuery);
 

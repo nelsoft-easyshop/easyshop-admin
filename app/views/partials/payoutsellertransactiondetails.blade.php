@@ -41,7 +41,7 @@
         </select>
 
         @if($requestForRefund)
-            <label>
+            <label class="label label-danger">
                 Suggested for refund
             </label>
         @endif

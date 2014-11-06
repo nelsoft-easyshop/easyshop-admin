@@ -278,7 +278,8 @@ class OrderProductRepository extends AbstractRepository
         }
 
         $query->groupBy('es_member.id_member','es_order_product.order_id')
-              ->orderBy('es_order.dateadded','DESC');
+              ->orderBy('es_order.dateadded','DESC')
+              ->orderBy('es_order_product.id_order_product','DESC');
 
         $returnTransaction = $query->paginate($row,[
                                             'es_order.id_order', 

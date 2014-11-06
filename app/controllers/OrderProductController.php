@@ -318,7 +318,7 @@ class OrderProductController extends BaseController
     public function getSellersTransactions()
     {
         // prepare repository needed
-        $orderRepository = App::make('OrderProductRepository');
+        $orderProductRepository = App::make('OrderProductRepository');
         $tagRepository = App::make('TagTypeRepository');
 
         $userData = []; 
@@ -331,7 +331,7 @@ class OrderProductController extends BaseController
         );
 
         // Query the transactions
-        $transactionRecord = $orderRepository->getAllSellersTransaction(100,TRUE,$userData);
+        $transactionRecord = $orderProductRepository->getAllSellersTransaction(100,TRUE,$userData);
         $pagination = $transactionRecord->appends(Input::except(array('page','_token')))->links();
 
         // get tag constant

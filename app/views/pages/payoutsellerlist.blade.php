@@ -35,8 +35,11 @@
                         <li><a class="drct_search" data="src_number" href="javascript:void(0)">Contact Number</a></li>
                         <li><a class="drct_search" data="src_email" href="javascript:void(0)">Email</a></li>
                         <li class="divider"></li>
-                        <li><a class="tag_search" data="src_email" data-value="1" href="javascript:void(0)">Contacted</a></li>
+                        <li><a class="tag_default" href="javascript:void(0)">Default</a></li>
+                        <li><a class="tag_search" data="src_tag" data-value="1" href="javascript:void(0)">Contacted</a></li>
                         <li><a class="tag_search" data="src_tag" data-value="3" href="javascript:void(0)">On-hold</a></li>
+                        <li><a class="tag_search" data="src_tag" data-value="5" href="javascript:void(0)">Confirmed</a></li>
+                        <li><a class="tag_search" data="src_tag" data-value="2" href="javascript:void(0)">Refund</a></li>
                     </ul>
                 </div>
                 <input type="hidden" id="src_fullname" name="fullname" />
