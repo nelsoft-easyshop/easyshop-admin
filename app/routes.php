@@ -104,4 +104,20 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('order-product-void', array('uses' => 'OrderProductController@voidOrderProduct'));
 
     Route::get('prohibited', array('uses' => 'AccountController@prohibited'));
+
+    // routes for payout notifs
+    Route::get('payout/seller', array('uses' => 'OrderProductController@getSellersTransactions'));
+    Route::post('payout/seller', array('uses' => 'OrderProductController@getSellersTransactions'));
+    Route::get('payout/seller/view-transactions', array('uses' => 'OrderProductController@getSellerExistingTransaction'));
+    Route::get('payout/seller/view-transactions-details', array('uses' => 'OrderProductController@getSellerTransactionDetailsByOrderId'));
+    Route::get('payout/seller/add-transactions-details', array('uses' => 'OrderProductController@getAddShippingDetailsView'));
+    Route::get('payout-buyer', array('uses' => 'OrderProductController@getOrderProductsContactBuyer'));   
+    Route::post('payout-buyer', array('uses' => 'OrderProductController@getOrderProductsContactBuyer'));   
+    Route::get('payout-buyer-sort', array('uses' => 'OrderProductController@getOrderProductsContactBuyer'));   
+    Route::get('/payout-buyer/view-transaction-details', array('uses' => 'OrderProductController@getBuyerTransactionDetailsByOrderId'));   
+    Route::get('payout/seller/update-transaction', array('uses' => 'OrderProductController@updateOrderProductTagStatus'));
+    Route::get('payout/seller/view-transaction-shipping', array('uses' => 'OrderProductController@getOrderProductShippingDetails'));
+
+    Route::get('shippingdetails/add', array('uses' => 'OrderProductController@addShippingDetails'));
+
 });

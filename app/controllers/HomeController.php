@@ -1,4 +1,5 @@
 <?php
+use Carbon\Carbon;
 class HomeController extends BaseController
 {
 
@@ -8,9 +9,19 @@ class HomeController extends BaseController
      */
     public function index()
     {
+
+        $orderRepository = App::make('OrderProductRepository'); 
+        $unTaggedSellersTransaction = $orderRepository->countUntagTransaction();
+        $untaggedBuyerTransactionsCount  = $orderRepository->countUntagTransaction(FALSE);
+
         return View::make('pages.dashboard')
-            ->with('username', Auth::user()->username);
+            ->with('username', Auth::user()->username)
+            ->with("untaggedBuyerTransactionsCount",$untaggedBuyerTransactionsCount )
+            ->with('unTaggedSellersTransaction',$unTaggedSellersTransaction);
+
     }
+
+
 
 
 }

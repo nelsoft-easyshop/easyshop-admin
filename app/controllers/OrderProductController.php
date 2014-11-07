@@ -2,6 +2,7 @@
 
 use Easyshop\Services\EmailService;
 use Easyshop\Services\TransactionService;
+use Easyshop\Services\CustomPaginator;
 use Carbon\Carbon;
 
 class OrderProductController extends BaseController 
@@ -309,5 +310,231 @@ class OrderProductController extends BaseController
         $excelService = App::make('Easyshop\Services\ExcelService');
         $excelService->transactionRecord('EasyshopRecord', $transactionRecord);
     }
-    
+
+    /**
+     * Get all sellers with existing transactions
+     * @return view
+     */
+    public function getSellersTransactions()
+    {
+        // prepare repository needed
+        $orderProductRepository = App::make('OrderProductRepository');
+        $tagRepository = App::make('TagTypeRepository');
+
+        $userData = []; 
+        $userData = array(
+            'fullname' => Input::get('fullname'),
+            'username' => Input::get('username'),
+            'contactno' => Input::get('number'),
+            'email' => Input::get('email'),
+            'tag' => Input::get('tag'),
+        );
+
+        // Query the transactions
+        $transactionRecord = $orderProductRepository->getAllSellersTransaction(100,TRUE,$userData);
+        $pagination = $transactionRecord->appends(Input::except(array('page','_token')))->links();
+
+        // get tag constant
+        $constantArray['confirmed'] = $tagRepository->getConfirmed();
+        $constantArray['refund'] = $tagRepository->getRefund();
+
+        // Render the view
+        return View::make('pages.payoutsellerlist')
+                    ->with('transactionRecord', $transactionRecord)
+                    ->with('constantValues', $constantArray)
+                    ->with('pagination', $pagination);
+    }
+
+    /**
+     * Get all existing transaction details of the specific seller by order id
+     * @return JSON
+     */
+    public function getSellerTransactionDetailsByOrderId()
+    { 
+        // get input data
+        $orderId = Input::get('order_id'); 
+        $memberId = Input::get('member_id');
+
+        // prepare repository needed
+        $orderProductRepository = App::make('OrderProductRepository'); 
+
+        //prepare service
+        $payoutService = App::make('PayoutService');
+
+        // Query the transactions 
+        $transactionDetails = $orderProductRepository->getOrderProductByOrderId($orderId,$memberId);
+
+        // get available tags
+        $orderTagStatus = $payoutService->checkOrderProductTagStatus($orderId,$memberId);
+        $availableTags = $orderTagStatus['tags'];
+        $currentStatus = $orderTagStatus['current_status'];
+        $requestForRefund = $orderTagStatus['request_refund'];
+
+        // prepare view
+        $html = View::make('partials.payoutsellertransactiondetails')
+                        ->with('transactionDetails', $transactionDetails) 
+                        ->with('tags', $availableTags)
+                        ->with('currentStatus', $currentStatus)
+                        ->with('requestForRefund', $requestForRefund)
+                        ->render();
+
+
+        return Response::json(array('html' => $html)); 
+    } 
+
+    /**
+     * Retrieves order products that are 2 days passed of ETD
+     * @return JSON
+     */
+    public function getOrderProductsContactBuyer()
+    {
+        $orders = [];
+        $filter = (Input::get("filter")) ? Input::get("filter") : null;
+        $filterBy = (Input::get("filterBy")) ? Input::get("filterBy") : null;
+        $orderProductRepository = App::make('OrderProductRepository'); 
+        $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
+        $payoutService = App::make('PayoutService');
+        foreach ($orderProductRepository->getBuyersTransactionWithShippingComment((Input::get("sortBy")), (Input::get("sortOrder")), $filter, $filterBy) as $value) {
+            $orders[] = $value;
+        }
+        $paginatorService = App::make("CustomPaginator");
+
+        $orders  = $paginatorService->paginateArray($orders, Input::get('page'), 50);
+        $pagination = $orders->appends(Input::except(array('page','_token')))->links();
+
+        if(!Request::ajax()) {
+            return View::make("pages.payoutsbuyers")
+                        ->with("orders", $orders)
+                        ->with("filter", $filter)
+                        ->with("filterBy", $filterBy)
+                        ->with("pagination", $pagination);  
+        }
+        else {
+            $html = View::make("partials.payoutbuyerlist")
+                        ->with("orders", $orders)
+                        ->render();
+
+            return Response::json(array('html' => $html));  
+        }
+
+    }   
+
+    /**
+     * Get all existing transaction details of the specific seller by order id
+     * @return JSON
+     */
+    public function getBuyerTransactionDetailsByOrderId($suggestForRefund = false)
+    { 
+
+        $orderId = Input::get('order_id'); 
+        $sellerId = Input::get('seller_id');  
+
+        // prepare repository needed
+        $orderProductRepository = App::make('OrderProductRepository');
+
+        // Query the transactions 
+        $transactionDetails = $orderProductRepository->getOrderProductByOrderId($orderId, $sellerId);
+
+        $payoutService = App::make('PayoutService');
+
+        $checkOrder = $payoutService->checkOrderProductTagStatus($orderId,$sellerId, FALSE);
+        $availableTags = $checkOrder['tags'];
+        $currentStatus = $checkOrder['current_status'];
+        $requestForPayout = $checkOrder['request_payout'];
+
+        $html = View::make('partials.payoutbuyertransactiondetails')
+            ->with('orderId', $orderId) 
+            ->with('transactionDetails', $transactionDetails) 
+            ->with('suggestForPayOut', $requestForPayout) 
+            ->with('sellerId', $sellerId) 
+            ->with('tags', $availableTags) 
+            ->render();
+
+        return Response::json(array('html' => $html)); 
+    }     
+
+    /**
+     * Update or Insert to order product tag
+     * @return JSON
+     */
+    public function updateOrderProductTagStatus()
+    {
+        // get input data
+
+        $orderId = Input::get('order_id'); 
+        $memberId = Input::get('member_id');
+        $tagType = Input::get('tag_type');
+        $adminMemberId = Auth::id();
+
+        //prepare service
+        $payoutService = App::make('PayoutService');
+        $forBuyer = (Input::get("forBuyer")) ? false : true;
+        // Update status
+        $orderTagStatus = $payoutService->updateOrderProductTagStatus($orderId
+                                                                    ,$memberId
+                                                                    ,$tagType
+                                                                    ,$adminMemberId
+                                                                    ,$forBuyer);
+
+        return Response::json($orderTagStatus);
+    }
+
+    /**
+     * Retrieves shipping details of a posted order_product_id
+     * @return JSON En
+     */
+    public function getOrderProductShippingDetails()
+    {
+        // get input data
+        $orderProductId = Input::get('order_product_id');
+
+        // prepare repositories
+        $shippingRepo = App::make('ProductShippingCommentRepository');
+
+        // get shipping details
+        $shippingInfo = $shippingRepo->getShippingCommentByOrderProductId($orderProductId);
+
+        $hasShippingInformation = FALSE;
+        if($shippingInfo->count() > 0){
+            $hasShippingInformation = TRUE;
+        }
+
+        // prepare view
+        $html = View::make('partials.shippingcommentdetails')
+                        ->with('shippingInfo', $shippingInfo)
+                        ->with('hasShippingInformation',$hasShippingInformation)
+                        ->render();
+
+        return Response::json(array('html' => $html));
+    }
+
+    /**
+     * Request add shippiing voew
+     * @return JSON
+     */
+    public function getAddShippingDetailsView()
+    {
+        // get input data
+        $orderProductId = Input::get('order_product_id'); 
+
+        // prepare view
+        $html = View::make('partials.addshippingdetails')
+                        ->with('orderProductId', $orderProductId)
+                        ->render();
+
+
+        return Response::json(array('html' => $html)); 
+    }
+
+    public function addShippingDetails()
+    {
+        $inputData = Input::get();
+
+        $payoutService = App::make('PayoutService'); 
+ 
+        $response = $payoutService->addShippingComment($inputData);
+
+        return Response::json($response);
+    }
+
 }
