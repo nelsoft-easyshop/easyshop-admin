@@ -70,7 +70,7 @@ class PayoutService
     private $transactionService;
 
     /**
-     * ETD (Estimated Time of Delivery) Constant duration for orders with shipping details
+     * ETD (Estimated Time of Delivery) Constant days duration for orders with shipping details
      *
      * @var ETD
      */
@@ -101,21 +101,31 @@ class PayoutService
         $this->transactionService = $transactionService;
     }
 
+    /**
+     * Method that checks if an order has already been tagged, 
+     * If not tagged, returns only CONTACTED tag
+     * Else, returns tags available for buyers/sellers
+     *
+     * @param int $orderId
+     * @param int $memberId
+     * @param bool $isSeller
+     * @return array
+     */
     public function checkOrderProductTagStatus($orderId,$memberId,$isSeller = TRUE)
     {   
 
         $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderId,$memberId);
-
-        $bolleanTag = ($checkTagTable->count() > 0) ? TRUE : FALSE;
-        $currentStatus = ($checkTagTable->count() > 0) ? $checkTagTable[0]->tag_type_id 
+        $tagCountOfOrderProducts = $checkTagTable->count();
+        $hasBeenTagged = ($tagCountOfOrderProducts > 0) ? TRUE : FALSE;
+        $currentStatus = ($tagCountOfOrderProducts > 0) ? $checkTagTable[0]->tag_type_id 
                                                      : $this->tagTypeRepository->getContacted();
         $requestType = FALSE;
 
-        if($checkTagTable->count() > 0){  
+        if($tagCountOfOrderProducts > 0){  
             $dateUpdated = Carbon::create(Carbon::parse($checkTagTable[0]->date_updated)->year
                                , Carbon::parse($checkTagTable[0]->date_updated)->month
                                , Carbon::parse($checkTagTable[0]->date_updated)->day);
-            if(Carbon::now() > $dateUpdated->addDays(2) && intval($currentStatus) === $this->tagTypeRepository->getContacted()){
+            if(Carbon::now() > $dateUpdated->addDays($this->ETD) && intval($currentStatus) === $this->tagTypeRepository->getContacted()){
                 $requestType = TRUE;
 
             }
@@ -123,7 +133,7 @@ class PayoutService
         $requestLabel = ($isSeller) ? 'request_refund' : 'request_payout';
 
         $returnVar = array(
-            'tags' => ($tagsReturn = ($isSeller) ? $this->tagTypeRepository->getSellerTags($bolleanTag) : $this->tagTypeRepository->getBuyerTags($bolleanTag)),
+            'tags' => ($tagsReturn = ($isSeller) ? $this->tagTypeRepository->getSellerTags($hasBeenTagged) : $this->tagTypeRepository->getBuyerTags($hasBeenTagged)),
             'current_status' => $currentStatus, 
              $requestLabel => $requestType
         );
@@ -166,7 +176,7 @@ class PayoutService
         }
 
 
-        $booleanReturn = TRUE;
+        $hasShippingDetails = TRUE;
         $returnMessage = "";
 
         $orderStatus = $this->orderStatusRepository->getCompletedStatus();
@@ -177,12 +187,12 @@ class PayoutService
                 foreach ($checkTagTable as $orderProductTag) {
                     $shippingInfo = $this->productShippingCommentRepository->getShippingCommentByOrderProductId($orderProductTag->order_product_id);
                     if($shippingInfo->count() <= 0){ 
-                        $booleanReturn = FALSE;
+                        $hasShippingDetails = FALSE;
                         break;
                     }
                 }
 
-                if($booleanReturn){
+                if($hasShippingDetails){
                     foreach ($checkTagTable as $orderProductTag) {
                         $this->orderProductTagRepository->updateOrderTags($orderProductTag,$tagType);
                         $this->orderProductTagHistoryRepository->createOrderProductTagHistory($orderProductTag->order_product_id
@@ -191,7 +201,7 @@ class PayoutService
                     }
                 }
                 else{
-                    $booleanReturn = FALSE;
+                    $hasShippingDetails = FALSE;
                     $returnMessage = "Please complete all shipping details.";
                 }
             }
@@ -229,10 +239,16 @@ class PayoutService
             }
         }
 
-        return ['isSuccess' => $booleanReturn 
+        return ['isSuccess' => $hasShippingDetails 
                 ,'message' => $returnMessage];
     }
 
+    /**
+     * Method that adds shipping comment 
+     *
+     * @param array $inputData
+     * @return array
+     */
     public function addShippingComment($inputData)
     {   
         $booleanSuccess = FALSE;
