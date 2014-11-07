@@ -283,13 +283,20 @@ class TransactionService
                 $orderProductId = $orderProduct->id_order_product;
                 
                 $sellerBillingInfo = $this->getSellerBillingInfo($orderProduct);
-                $orderBillingInfoId = $sellerBillingInfo->id;
-                if($sellerBillingInfo->isOrderBillingInfo){
-                    $this->orderBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, 
-                                                                                $accountName,
-                                                                                $accountNumber, 
-                                                                                $bankName);
+                if($sellerBillingInfo){
+                    $orderBillingInfoId = $sellerBillingInfo->id;
+                    if($sellerBillingInfo->isOrderBillingInfo){
+                        $this->orderBillingInfoRepository->updateOrderBillingInfo($orderBillingInfoId, 
+                                                                                    $accountName,
+                                                                                    $accountNumber, 
+                                                                                    $bankName);
+                    }
                 }
+                else{
+                    $this->orderBillingInfoRepository->createOrderBillingInfo($accountName, $accountNumber, $bankName);
+                    $orderBillingInfoId= $this->orderBillingInfoRepository->currentId;
+                }
+
                 $this->orderProductRepository->updateOrderProductStatus($orderProduct, $status);
                 $this->orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
             }
