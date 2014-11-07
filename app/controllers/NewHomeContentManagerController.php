@@ -47,9 +47,9 @@ class NewHomeContentManagerController extends BaseController
         }
 
         foreach($this->map->sliderTemplate as $template) {
-            $templateLists[] = $template->template;
+            $templateLists[] = $template;
         } 
-
+        
         foreach($this->map->adSection as $ads) {
             $adsSection[] = $ads;
         }     
@@ -106,7 +106,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('categoryProductPanelList', $categoryProductPanelList)
                     ->with('productList', array_flatten($product))
                     ->with('childCategoryLists', $childCategoryLists)
-                    ->with('templateLists', $templateLists)
+                    ->with('templateLists', array_flatten($templateLists))
                     ->with('categoryNavigation', $categoryNavigation)
                     ->with('password', $adminEntity->getAdminMemberById(Auth::id()))
                     ->with('sliderSection', $sliders)
