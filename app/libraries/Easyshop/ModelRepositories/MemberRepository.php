@@ -189,7 +189,8 @@ class MemberRepository extends AbstractRepository
         });
         
         $query->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=', 'es_bank_info.id_bank');
-        
+        $query->leftJoin('es_order_billing_info', 'es_order_product.buyer_billing_id', '=', 'es_order_billing_info.id_order_billing_info');        
+
         $query->join('es_order_product_history', function($join){
             $join->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
             $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_RETURN_BUYER));
@@ -204,14 +205,13 @@ class MemberRepository extends AbstractRepository
         }     
 
         $query->groupBy('es_member.id_member');
-        
         $returnedOrders = $query->get(['es_member.username',
                                        'es_member.email', 
                                        'es_member.contactno', 
-                                       'es_billing_info.bank_account_name as account_name', 
-                                       'es_billing_info.bank_account_number as account_number', 
-                                       'es_bank_info.bank_name as bank_name' , 
-                                       DB::raw('SUM(es_order_product.net) as net')
+                                        DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.bank_name, es_billing_info.bank_account_name) as bank_name"), 
+                                        DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_name, es_billing_info.bank_account_number) as account_name"), 
+                                        DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_number, es_bank_info.bank_name as bank_name) as account_number"),
+                                        DB::raw('SUM(es_order_product.net) as net')
                                     ]);
         
         return $returnedOrders;
