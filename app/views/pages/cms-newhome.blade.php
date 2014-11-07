@@ -15,10 +15,10 @@
     <div class="row">
         <section id="tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
+                <li ><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
                 <li><a href="#manageCategorySection" role="tab"  data-toggle="tab">Manage Category Section</a></li>                
                 <li><a href="#manageAdSection" role="tab"  data-toggle="tab">Manage Ad Section</a></li>                
-                <li><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
+                <li class="active"><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
                 <li ><a href="#manageSellerSection" role="tab"  data-toggle="tab">Manage Seller Section</a></li>                
                 <li class="dropdown"  >
                     <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Manage Category Navigation<span class="caret"></span></a>
@@ -58,7 +58,7 @@
 
 
 
-            <div class="tab-pane fade active in" id="manageBrands">
+            <div class="tab-pane fade" id="manageBrands">
                     <legend>        
                         <h4 class="tbl-title">
                             <span class="glyphicon glyphicon-list-alt"></span>
@@ -1261,7 +1261,7 @@
             </div> 
 
 
-            <div class="tab-pane fade" id="manageSliderSection">
+            <div class="tab-pane fade active in" id="manageSliderSection">
                 <legend>        
                     <h4 class="tbl-title">
                         <span class="glyphicon glyphicon-list-alt"></span>
@@ -1272,11 +1272,9 @@
                     <div class="form-group">
                         <label for="userId" class="col-sm-2 control-label">Choose Slider Design Template</label>
                         <div class="col-sm-10">
-
-
                             <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
                                 @foreach($templateLists[0] as $templates)                                               
-                                    <option value="{{$templates}}" >{{$templates}}</option>
+                                    <option value="{{$templates->templateName}}" >{{$templates->templateName}}</option>
                                 @endforeach  
                             </select>
                         </div>
@@ -1287,7 +1285,9 @@
                         </div>
                     </div>                                      
                 </form>
-
+                @foreach($templateLists[0] as $templates)                                               
+                    <span id="template_{{$templates->templateName}}" data-name="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" style="display:none;">{{$templates->templateName}}</span>
+                @endforeach                  
                 <span style="display:none;">{{$sliderIndex = 0}}</span>
                 <span style="display:none;">{{$parentSliderCount = 1}}</span>
                 <div class="panel-group" id="accordion">
@@ -1304,7 +1304,8 @@
                             <div id="collapse_{{$sliderIndex}}" class="panel-collapse collapse">
                                 <div class="panel-body"> 
                                     <!-- Add Main Slide Start -->
-                                    <form id='left' target="test"  class="form-horizontal">                                           
+                                    <form id='left' target="test"  class="form-horizontal">         
+                                        <input type="hidden" id="sliderTemplate{{$sliderIndex}}" value="{{$slides->template}}">                                  
                                         <div class="form-group">
                                             <div class="col-sm-10">
                                                 {{ Form::hidden('index', $sliderIndex, array('id' => 'index','class' => 'form-control')) }}                        
@@ -1315,10 +1316,10 @@
                                             <div class="col-sm-10">
                                                 <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
                                                     @foreach($templateLists[0] as $templates)                                             
-                                                        @if(strtolower(trim($templates)) == strtolower(trim($slides->template)))
-                                                            <option value="{{$templates}}" selected >{{$templates}}</option>
+                                                        @if(strtolower(trim($templates->templateName)) == strtolower(trim($slides->template)))
+                                                            <option value="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" selected >{{$templates->templateName}}</option>
                                                         @else
-                                                            <option value="{{$templates}}" >{{$templates}}</option>
+                                                            <option value="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" >{{$templates->templateName}}</option>
                                                         @endif
                                                     @endforeach  
                                                 </select>
