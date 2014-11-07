@@ -208,9 +208,9 @@ class MemberRepository extends AbstractRepository
         $returnedOrders = $query->get(['es_member.username',
                                        'es_member.email', 
                                        'es_member.contactno', 
-                                        DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.bank_name, '') as bank_name"), 
-                                        DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_name, '') as account_name"), 
-                                        DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_number, '') as account_number"),
+                                        DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.bank_name, es_billing_info.bank_account_name) as bank_name"), 
+                                        DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_name, es_billing_info.bank_account_number) as account_name"), 
+                                        DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_number, es_bank_info.bank_name as bank_name) as account_number"),
                                         DB::raw('SUM(es_order_product.net) as net')
                                     ]);
         
