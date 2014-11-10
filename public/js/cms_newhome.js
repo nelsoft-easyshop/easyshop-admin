@@ -2,6 +2,7 @@
     var userid = $("#userid").val();
     var password = $("#password").val();
 
+    var minimumCategoryProductPanel = 2;
     $(document.body).on('click','#addSubCategorySection',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
@@ -898,7 +899,7 @@
         data = { value:value, userid:userid,  password:password, hash:hash, callback:'?'};
         
         var count = parseInt($(".categorySectionCount").last().text());
-        if(count < 3) {
+        if(count > minimumCategoryProductPanel) {
             $.ajax({
                 type: 'GET',
                 url: url,
