@@ -32,7 +32,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_category_{{$categorySectionIndex}}">Manage Category Section</a>
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_category_{{$categorySectionIndex}}">{{ucwords(str_replace("-"," ",$categoryPanel->categorySlug))}}</a>
                                             <span class="glyphicon glyphicon-remove" id="removeCategorySection" data-nodename="categorySectionPanel" data-index="{{$categorySectionIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style="margin-left:860px !important;cursor:pointer;"></span>
                                         </h4>
                                     </div>
