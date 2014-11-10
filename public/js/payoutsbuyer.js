@@ -77,7 +77,7 @@
     $(document.body).on('click','.checkShipping',function (e) {  
         var $this = $(this);
         var $orderProduct = $this.data('order-product-id');
-        var $url = '/payout/seller/view-transaction-shipping';
+        var $url = '/contact/seller/view-transaction-shipping';
         var $request = $.ajax({
                 url: $url,
                 data:{order_product_id:$orderProduct},
@@ -117,7 +117,7 @@
             }); 
             if($confirm){
                 $.ajax({
-                    url: "payout/seller/update-transaction",
+                    url: "contact/seller/update-transaction",
                     data: {order_id: orderId, tag_type:tag, member_id: sellerId, forBuyer: "1"},
                     type: 'get',
                     dataType: 'JSON',                      

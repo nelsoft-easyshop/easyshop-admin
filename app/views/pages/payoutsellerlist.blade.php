@@ -1,9 +1,9 @@
 @extends('layouts.default')
 
-@section('description', 'Seller Payout')
+@section('description', 'Contact Seller')
 @section('keywords', '')
-@section('title', 'Seller Payout | Easyshop Admin')
-@section('header_tagline', 'Seller Pay-out.')
+@section('title', 'Contact Seller | Easyshop Admin')
+@section('header_tagline', 'Contact Seller')
 
 
 @section('page_header')
@@ -16,7 +16,7 @@
 @section('content')
  
         <div id="mainsection">
-            {{ Form::open(array('url' => 'payout/seller', 'id' => 'searchForm')) }}
+            {{ Form::open(array('url' => 'contact/seller', 'id' => 'searchForm')) }}
             <div class="input-group srch_div" style="padding:12px">
                 <div class="inner-addon left-addon">
                     <i class="glyphicon glyphicon-search"></i>
@@ -55,17 +55,21 @@
                     <thead>
                         <tr>
                             <th>Order ID</th>
-                            <th>Fullname</th>
-                            <th>Username</th>
+                            <th>Transaction ID</th>
+                            <th>Invoice Number</th>
+                            <th>Seller Fullname</th>
+                            <th>Seller Username</th>
                             <th>Number of Products</th> 
-                            <th>Email</th>
-                            <th>Contact No.</th>
+                            <th>Seller Email</th>
+                            <th>Seller Contact No.</th>
                             <th>Current Tag</th>
                         </tr>
                     </thead> 
                     @foreach($transactionRecord as $record)
                         <tr class="seller_detail">
                             <td class="td_order_id">{{{ $record->id_order }}}</td>
+                            <td class="td_transaction_id">{{{ $record->transaction_id }}}</td>
+                            <td class="td_invoice_no">{{{ $record->invoice_no }}}</td>
                             <td class="td_fullname" >{{{ $record->fullname }}}</td>
                             <td class="td_username" data-member-id="{{{ $record->id_member }}}" >{{{ $record->username }}}</td>
                             <td class="td_total">{{{ $record->count }}}</td>

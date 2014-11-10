@@ -3,7 +3,7 @@
     var updateStatus = function(order_id,member_id,tag_type,$rowStatus,dialogRef){
         var $variable = "true";
         if(tag_type != "0"){
-            var $url = '/payout/seller/update-transaction';
+            var $url = '/contact/seller/update-transaction';
             var $confirm = confirm("Are you sure you want to update?");
             if($confirm){
                 var $request = $.ajax({
@@ -15,7 +15,7 @@
                             console.log(result);
                             if(result.isSuccess){
                                 if($tagType == $("#confirmed-constant").val() || $tagType == $("#refund-constant").val()){
-                                    window.location = '/payout/seller';
+                                    window.location = '/contact/seller';
                                 }
 
                                 $tagColor = $("#tagType option:selected").data('color');
@@ -66,7 +66,7 @@
     $('.seller_detail').click(function(){
         loader.showPleaseWait();
         var $this = $(this);
-        var $url = '/payout/seller/view-transactions-details'; 
+        var $url = '/contact/seller/view-transactions-details'; 
         var $orderId = $this.find('.td_order_id').html(); 
         var $memberId = $this.find('.td_username').data('member-id'); 
         var $rowStatus = $this.find('.td_status');
@@ -109,7 +109,7 @@
     $(document.body).on('click','.checkShipping',function (e) {  
         var $this = $(this);
         var $orderProduct = $this.data('order-product-id');
-        var $url = '/payout/seller/view-transaction-shipping';
+        var $url = '/contact/seller/view-transaction-shipping';
         var $request = $.ajax({
                 url: $url,
                 data:{order_product_id:$orderProduct},
@@ -139,7 +139,7 @@
     $(document.body).on('click','.addShipping',function (e) {
         var $this = $(this);
         var $orderProduct = $this.data('order-product-id');
-        var $url = '/payout/seller/add-transactions-details';
+        var $url = '/contact/seller/add-transactions-details';
         var $request = $.ajax({
                 url: $url,
                 data:{order_product_id:$orderProduct},

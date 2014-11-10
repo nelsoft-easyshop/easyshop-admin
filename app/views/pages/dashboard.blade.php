@@ -93,7 +93,7 @@
             </li>
 
             <li>
-                <a href='/payout/seller'>
+                <a href='/contact/seller'>
                     <img src="{{{ asset('images/icon_people.png') }}}"/> 
                     <span>Contact Sellers</span><span class="label label-danger pull-right" style='margin-right:20px;'>{{{ $unTaggedSellersTransaction  }}}</span></span>  
                 </a>
