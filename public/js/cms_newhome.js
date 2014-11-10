@@ -897,22 +897,29 @@
         var hash =  hex_sha1(value + userid + password);
         data = { value:value, userid:userid,  password:password, hash:hash, callback:'?'};
         
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();   
-                $("#manageCategorySection").load("getCategoriesPanel");
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });   
+        var count = parseInt($(".categorySectionCount").last().text());
+        if(count < 3) {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();   
+                    $("#manageCategorySection").load("getCategoriesPanel");
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });    
+        }
+        else {
+            showErrorModal("Sorry, but you have reached the maximum number of category section")
+        }
+  
     });   
 
     $(document.body).on('click','.removeNewArrival',function (e) { 
