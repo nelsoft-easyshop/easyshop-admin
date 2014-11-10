@@ -82,16 +82,7 @@
                 <p> View details about payments for sellers that are cleared for transfer every month. Update the status of completed transactions.</p>
             
             </li>
-
-            <li>
-                <a href='/payout/seller'>
-                    <img src="{{{ asset('images/icon_people.png') }}}"/> 
-                    <span >Payout List </span><span class="label label-danger pull-right" style='margin-right:20px;'>{{{ $unTaggedSellersTransaction  }}}</span></span>  
-                </a>
-                <p> View List of Seller that have transactions</p>
             
-            </li>                
-        
             <li>
                 <a href='/refund'>
                     <img src="{{{ asset('images/img_icon_business.png') }}}"/> 
@@ -102,12 +93,20 @@
             </li>
 
             <li>
+                <a href='/payout/seller'>
+                    <img src="{{{ asset('images/icon_people.png') }}}"/> 
+                    <span>Contact Sellers</span><span class="label label-danger pull-right" style='margin-right:20px;'>{{{ $unTaggedSellersTransaction  }}}</span></span>  
+                </a>
+                <p> View sellers that have to be contacted</p>
+            </li>                
+        
+            <li>
                 <a href='/payout-buyer'>
                     <img src="{{{ asset('images/img_icon_business.png') }}}"/> 
-                    <span >Refund List </span> <span class="label label-danger pull-right" style='margin-right:20px;'>{{{$untaggedBuyerTransactionsCount}}}</span>
+                    <span >Contact Buyers</span> <span class="label label-danger pull-right" style='margin-right:20px;'>{{{$untaggedBuyerTransactionsCount}}}</span>
 
                 </a>
-                <p>View List of Buyers that have transactions</p>
+                <p>View buyers that have to be contacted</p>
             
             </li>            
 
