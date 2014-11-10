@@ -352,25 +352,27 @@
 
         var tableSelector = "#subCategoriesSection_" + index;
         var reloadurl = "getSubCategoriesSection/" + index;
-
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $(tableSelector).load(reloadurl);
-                loader.hidePleaseWait();  
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-                showErrorModal("Please try again");
-            }
-        });       
-
+        var categoryCount = ".subCategorySectionCount_"+index;
+        var count = $(categoryCount).last().text();
+        if(count > 1) {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    $(tableSelector).load(reloadurl);
+                    loader.hidePleaseWait();  
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                    showErrorModal("Please try again");
+                }
+            });            
+        }
     });  
 
 
