@@ -1,7 +1,7 @@
 (function () {
     var userid = $("#userid").val();
     var password = $("#password").val();
-
+    var minimumCategoryProductPanel = 2;
     $(document.body).on('click','#addSubCategorySection',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
@@ -167,12 +167,11 @@
         var nodename = $(this).data("nodename");
         var url = $(this).data("url");
         var hash = hex_sha1(index + subindex  + nodename + userid + password);
-
         data = { index: index, subIndex:subindex,nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};  
         var count = parseInt($(".categoryProductPanelCount_"+index).last().text());        
         var tableSelector = "#categorySectionProductPanel_" + index;
         var reloadurl = "getCategoriesProductPanel/" + index;
-        if(count > 1 ) {
+        if(count > minimumCategoryProductPanel ) {
             loader.showPleaseWait();                    
             $.ajax({
                 type: 'GET',
@@ -352,25 +351,27 @@
 
         var tableSelector = "#subCategoriesSection_" + index;
         var reloadurl = "getSubCategoriesSection/" + index;
-
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $(tableSelector).load(reloadurl);
-                loader.hidePleaseWait();  
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-                showErrorModal("Please try again");
-            }
-        });       
-
+        var categoryCount = ".subCategorySectionCount_"+index;
+        var count = $(categoryCount).last().text();
+        if(count > minimumCategoryProductPanel) {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    $(tableSelector).load(reloadurl);
+                    loader.hidePleaseWait();  
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                    showErrorModal("Please try again");
+                }
+            });            
+        }
     });  
 
 

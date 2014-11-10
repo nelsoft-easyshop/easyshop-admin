@@ -580,7 +580,7 @@
                                                             <span style="display:none;"></span>                            
                                                             <input type="hidden" class="boxContentCount_" value="">
                                                         </tr>
-                                                        <span style="display:none;">{{{ $subCategorySection ++ }}}</span>
+                                                        <span style="display:none;" class="subCategorySectionCount_{{$categorySectionIndex}}">{{{ $subCategorySection++ }}}</span>
                                                     @endforeach
 
                                                 </tbody> 
