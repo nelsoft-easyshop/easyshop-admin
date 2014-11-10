@@ -357,9 +357,14 @@ class OrderProductRepository extends AbstractRepository
                                             'es_order_product_tag.tag_type_id', 
                                             'es_tag_type.tag_description', 
                                             'es_tag_type.tag_color', 
+                                            'es_order.transaction_id',
+                                            'es_order.invoice_no',       
                                             'es_product_shipping_comment.expected_date',
                                             DB::raw('COUNT(es_order_product.order_id) as count')
                                         ]);
+
+
+
 
         return $returnTransaction;
     }    
