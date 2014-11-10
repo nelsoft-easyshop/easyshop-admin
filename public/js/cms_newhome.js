@@ -172,7 +172,7 @@
         var count = parseInt($(".categoryProductPanelCount_"+index).last().text());        
         var tableSelector = "#categorySectionProductPanel_" + index;
         var reloadurl = "getCategoriesProductPanel/" + index;
-        if(count > 1 ) {
+        if(count > 2 ) {
             loader.showPleaseWait();                    
             $.ajax({
                 type: 'GET',
@@ -354,7 +354,7 @@
         var reloadurl = "getSubCategoriesSection/" + index;
         var categoryCount = ".subCategorySectionCount_"+index;
         var count = $(categoryCount).last().text();
-        if(count > 1) {
+        if(count > 2) {
             $.ajax({
                 type: 'GET',
                 url: url,
