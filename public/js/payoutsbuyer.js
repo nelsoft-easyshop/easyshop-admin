@@ -4,7 +4,7 @@
     }
     $('.buyer-list').click(function(){
         loader.showPleaseWait(); 
-        var url = "/payout-buyer/view-transaction-details";
+        var url = "/contact/buyer/view-transaction-details";
         var orderId = $(this).find('.td_order_id').html(); 
         var sellerID = $(this).find('.username').data("memberid"); 
 
@@ -117,7 +117,7 @@
             }); 
             if($confirm){
                 $.ajax({
-                    url: "contact/seller/update-transaction",
+                    url: "/contact/seller/update-transaction",
                     data: {order_id: orderId, tag_type:tag, member_id: sellerId, forBuyer: "1"},
                     type: 'get',
                     dataType: 'JSON',                      
