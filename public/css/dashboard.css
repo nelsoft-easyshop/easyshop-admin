@@ -86,27 +86,35 @@ div#mainsection li{
     vertical-align: top;
 }
 
-  #myTabContent, #tabs{
-        padding-right: 50px;
-        padding-left: 50px;                            
-      }
-      #myTabContent{
-         padding-top:40px; 
-      }
-      #bs-example {
-        margin-right: 0;
-        margin-left: 0;
-        background-color: #fff;
-        border-color: #ddd;
-        border-width: 1px;
-        border-radius: 4px 4px 0 0;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-      }
-      #submit{
-        margin-top:2em;
-        width:100px;
-      }
+.featurebox .section-title{
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#myTabContent, #tabs{
+    padding-right: 50px;
+    padding-left: 50px;                            
+}
+#myTabContent{
+    padding-top:40px; 
+}
+#bs-example {
+    margin-right: 0;
+    margin-left: 0;
+    background-color: #fff;
+    border-color: #ddd;
+    border-width: 1px;
+    border-radius: 4px 4px 0 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+#submit{
+    margin-top:2em;
+    width:100px;
+}
 
 
 
