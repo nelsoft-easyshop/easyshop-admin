@@ -6,7 +6,9 @@
                 <td>Order Product Id</td> 
                 <td>Product Name</td> 
                 <td>Order Quantity</td> 
-                <td>Price</td> 
+                <td>Shipping Fee</td> 
+                <td>Total Price</td> 
+                <td>Net Price</td> 
                 <td></td> 
             </tr>
             @foreach($transactionDetails as $orderProduct)
@@ -14,7 +16,9 @@
                     <td class="orderProductId">{{{ $orderProduct->id_order_product }}}</td>
                     <td>{{{ $orderProduct->product->name }}}</td>
                     <td>{{{ $orderProduct->order_quantity }}}</td>
+                    <td>PHP {{{ number_format($orderProduct->handling_fee, 2, '.', '') }}}</td>
                     <td>PHP {{{ number_format($orderProduct->total, 2, '.', '') }}}</td>
+                    <td>PHP {{{ number_format($orderProduct->net, 2, '.', '') }}}</td>
                     <td>
                         <span class="org_btn view checkShipping" data-order-product-id="{{{ $orderProduct->id_order_product }}}" > View Shipping Details</span>
                     </td>                    
