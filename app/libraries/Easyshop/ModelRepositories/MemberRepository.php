@@ -9,6 +9,14 @@ class MemberRepository extends AbstractRepository
     private $transactionService;
 
     /**
+     * Gets the total count of users
+     * @return object
+     */  
+    public function getUsersCount()
+    {
+        return DB::select(DB::raw("SELECT COUNT(*) as memberCount from `easyshop`.`es_member`"));        
+    }
+    /**
      * Get Number of uploaded products by users
      * @return Array
      */  

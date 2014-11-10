@@ -9,11 +9,9 @@
                     <div class="form-group">
                         <label for="userId" class="col-sm-2 control-label">Choose Slider Design Template</label>
                         <div class="col-sm-10">
-
-
                             <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
                                 @foreach($templateLists[0] as $templates)                                               
-                                    <option value="{{$templates}}" >{{$templates}}</option>
+                                    <option value="{{$templates->templateName}}" >{{$templates->templateName}}</option>
                                 @endforeach  
                             </select>
                         </div>
@@ -24,16 +22,21 @@
                         </div>
                     </div>                                      
                 </form>
-
+                @foreach($templateLists[0] as $templates)                                               
+                    <span id="template_{{$templates->templateName}}" data-name="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" style="display:none;">{{$templates->templateName}}</span>
+                @endforeach 
                 <span style="display:none;">{{$sliderIndex = 0}}</span>
+                <span style="display:none;">{{$parentSliderCount = 1}}</span>                
                 <div class="panel-group" id="accordion">
                     @foreach($sliderSection as $slides)
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$sliderIndex}}">Add Main Slide</a>
-                                    <span class="glyphicon glyphicon-remove" id="removeMainSlider" data-nodename="mainSliderSection" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style="margin-left:935px !important;cursor:pointer;"></span>
-                                </h4>
+                                    <span class="glyphicon glyphicon-remove pull-right" id="removeMainSlider" data-nodename="mainSliderSection" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style='cursor:pointer;'></span>
+                                    <span class="glyphicon glyphicon-chevron-up pull-right" id="moveParentSlider" data-nodename="mainSliderSection" data-action="up" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/setPositionParentSlider" style='cursor:pointer;'></span>
+                                    <span class="glyphicon glyphicon-chevron-down pull-right" id="moveParentSlider" data-nodename="mainSliderSection" data-action="down" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/setPositionParentSlider" style='cursor:pointer;'></span>
+                                </h4>                               
                             </div>
                             <div id="collapse_{{$sliderIndex}}" class="panel-collapse collapse">
                                 <div class="panel-body"> 
@@ -49,12 +52,12 @@
                                             <div class="col-sm-10">
                                                 <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
                                                     @foreach($templateLists[0] as $templates)                                             
-                                                        @if(strtolower(trim($templates)) == strtolower(trim($slides->template)))
-                                                            <option value="{{$templates}}" selected >{{$templates}}</option>
+                                                        @if(strtolower(trim($templates->templateName)) == strtolower(trim($slides->template)))
+                                                            <option value="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" selected >{{$templates->templateName}}</option>
                                                         @else
-                                                            <option value="{{$templates}}" >{{$templates}}</option>
+                                                            <option value="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" >{{$templates->templateName}}</option>
                                                         @endif
-                                                    @endforeach  
+                                                    @endforeach   
                                                 </select>
                                             </div>
                                         </div>
@@ -234,7 +237,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <span style="display:none;">{{$sliderIndex++}}</span>                            
+                            <span style="display:none;">{{$sliderIndex++}}</span>    
+                            <span style="display:none;" class="parentSliderCount">{{$parentSliderCount++}}</span>                                                                                
                         </div>
                     @endforeach
                 <div>     

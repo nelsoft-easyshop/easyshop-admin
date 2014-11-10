@@ -12,12 +12,15 @@ class MemberController extends BaseController
     public function showAllUsers()
     {
         $locationLookUpRepository = App::make('LocationLookUpRepository');
+        $MemberRepository = App::make('MemberRepository');
         $locationService = $this->locationService;
         $data = $locationService->location($locationLookUpRepository->getByType());
-
         return View::make('pages.userlist')
+            ->with('member_count', $MemberRepository->getUsersCount())
             ->with('list_of_member', Member::paginate(100))
             ->with('list_of_location', $data);
+
+
     }
 
     public function search()
