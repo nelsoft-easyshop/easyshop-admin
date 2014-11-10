@@ -1,9 +1,9 @@
 @extends('layouts.default')
 
-@section('description', 'Payouts - Buyer')
+@section('description', 'Contact - Buyer')
 @section('keywords', '')
-@section('title', 'Payouts - Buyer | Easyshop Admin')
-@section('header_tagline', 'Payouts - Buyer.')
+@section('title', 'Contact - Buyer | Easyshop Admin')
+@section('header_tagline', 'Contact - Buyer.')
 
 
 @section('page_header')
@@ -16,7 +16,7 @@
 <input type="hidden" id="filterBySort" name="filter" class="form-control" value="{{$filterBy}}" />
   <div id="mainsection">
         <br/>   
-            {{ Form::open(array('url' => 'payout-buyer', 'id' => 'searchForm')) }}
+            {{ Form::open(array('url' => 'contact/buyer', 'id' => 'searchForm')) }}
             <div class="input-group srch_div" style="padding:12px">
                 <div class="inner-addon left-addon">
                     <i class="glyphicon glyphicon-search"></i>
@@ -57,16 +57,21 @@
                             <input type='hidden' name="sortOrder" id="sortOrder" value=""/>
                           {{ Form::close() }}
                         </th>
-                        <th>Username <span class="glyphicon glyphicon-chevron-up"  style="cursor:pointer;" data-sortby='es_member.username' data-sortorder='asc'></span></th>
-                        <th>Email <span class="glyphicon glyphicon-chevron-up"  style="cursor:pointer;" data-sortby='es_member.email' data-sortorder='asc'></span></th>
-                        <th>Status <span class="glyphicon glyphicon-chevron-up"  style="cursor:pointer;" data-sortby='es_tag_type.tag_description' data-sortorder='asc'></span></th>
-                        <th>Contact Number<span class="glyphicon glyphicon-chevron-up"  style="cursor:pointer;" data-sortby='es_member.contactno' data-sortorder='asc'></span></th>
+                        <th>Transaction ID</th>
+                        <th>Invoice Number</th>                        
+                        <th>Buyer Name </th>
+                        <th>Email</th>
+                        <th>Status</th>
+
+                        <th>Contact Number</th>
                      </tr>
                 </thead>
                 <tbody id="tbody">
                   @foreach($orders as $details)
                       <tr class='buyer-list'>
                           <td class='td_order_id'>{{{$details->id_order}}}</td>
+                          <td class="td_transaction_id">{{{ $details->transaction_id }}}</td>
+                          <td class="td_invoice_no">{{{ $details->invoice_no }}}</td>                              
                           <td class='username' data-memberid="{{{ $details->seller_id }}}">{{{$details->username}}}</td>
                           <td class='email'>{{{$details->email}}}</td>
                           <td class='email'><span class="org_btn view" style="background-color:{{  $details->tag_color  }};">{{{ ($details->tag_description) ? $details->tag_description : 'NO TAG'  }}} </span></td>
