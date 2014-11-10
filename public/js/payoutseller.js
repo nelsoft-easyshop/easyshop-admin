@@ -188,7 +188,7 @@
     });
 
     $(".tag_default").on('click', function(){
-        window.location = '/payout/seller';
+        window.location = '/contact/seller';
     });
 })(jQuery);
 
