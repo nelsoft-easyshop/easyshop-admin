@@ -78,7 +78,7 @@
             </li>                
         
             <li>
-                <a href='/payout-buyer'>
+                <a href='/contact/buyer'>
                     <img src="{{{ asset('images/img_icon_business.png') }}}"/> 
                     <span >Contact Buyers</span> <span class="label label-danger pull-right" style='margin-right:20px;'>{{{$untaggedBuyerTransactionsCount}}}</span>
 
