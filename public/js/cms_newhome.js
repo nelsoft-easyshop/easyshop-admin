@@ -867,8 +867,13 @@
         var index = $(this).data("index").toString();
         var hash =  hex_sha1(index + nodename + userid + password);
         data = { index:index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
-        var count = parseInt($(".parentSliderCount").last().text());
-        if(count > 0) {
+        if(nodename == "categorySectionPanel") {
+            var count = parseInt($(".categorySectionCount").last().text());
+        }
+        else {
+            var count = parseInt($(".parentSliderCount").last().text());
+        }
+        if(count > minimumCategorySectionProductPanel) {
             var $confirm = confirm("Are you sure you want to remove?");   
             if($confirm) {
                 loader.showPleaseWait();              
@@ -894,6 +899,9 @@
                     }
                 });             
             }            
+        }
+        else {
+            showErrorModal("Sorry, but you have reached the minimum number of sub category section");            
         }
     }); 
 
