@@ -68,7 +68,7 @@
 
                     <form id='left' target="test"  class="form-horizontal">                                          
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <label for="userId" class="col-sm-2 control-label">Select Brand Name</label>
                             <div class="col-sm-10">
                                 <select name="c_stateregion" id="addBrandsDropDown"  class="form-control">
                                     @foreach($allBrandsLists as $allBrands)
