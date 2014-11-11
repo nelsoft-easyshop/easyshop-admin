@@ -876,7 +876,7 @@
         else {
             var count = parseInt($(".parentSliderCount").last().text());
         }
-        if(count > minimumCategorySectionProductPanel) {
+        if(count > 0) {
             var $confirm = confirm("Are you sure you want to remove?");   
             if($confirm) {
                 loader.showPleaseWait();              
