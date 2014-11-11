@@ -1,7 +1,9 @@
 (function () {
     var userid = $("#userid").val();
     var password = $("#password").val();
+
     var minimumCategoryProductPanel = 2;
+    var minimumCategorySectionProductPanel = 3;
     $(document.body).on('click','#addSubCategorySection',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
@@ -340,7 +342,6 @@
     });  
 
     $(document.body).on('click','.removeCategorySection',function (e) { 
-        loader.showPleaseWait();          
         var index = $(this).data("index").toString();
         var subIndex = $(this).data("subindex").toString();
         var nodename = $(this).data("nodename");
@@ -353,7 +354,8 @@
         var reloadurl = "getSubCategoriesSection/" + index;
         var categoryCount = ".subCategorySectionCount_"+index;
         var count = $(categoryCount).last().text();
-        if(count > minimumCategoryProductPanel) {
+        if(count >= minimumCategoryProductPanel) {
+            loader.showPleaseWait();                      
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -371,6 +373,10 @@
                     showErrorModal("Please try again");
                 }
             });            
+        }
+        else {
+            showErrorModal("Sorry, but you have reached the minimum number of sub category section");
+
         }
     });  
 
@@ -861,8 +867,13 @@
         var index = $(this).data("index").toString();
         var hash =  hex_sha1(index + nodename + userid + password);
         data = { index:index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
-        var count = parseInt($(".parentSliderCount").last().text());
-        if(count > 0) {
+        if(nodename == "categorySectionPanel") {
+            var count = parseInt($(".categorySectionCount").last().text());
+        }
+        else {
+            var count = parseInt($(".parentSliderCount").last().text());
+        }
+        if(count > minimumCategorySectionProductPanel) {
             var $confirm = confirm("Are you sure you want to remove?");   
             if($confirm) {
                 loader.showPleaseWait();              
@@ -889,31 +900,41 @@
                 });             
             }            
         }
+        else {
+            showErrorModal("Sorry, but you have reached the minimum number of sub category section");            
+        }
     }); 
 
     $(document.body).on('click','#addCategorySectionProductPanel',function (e) { 
-        loader.showPleaseWait();           
         var value = $('#addCategorySectionValue option:selected').val();
         var url = $(this).data("url");
         var hash =  hex_sha1(value + userid + password);
         data = { value:value, userid:userid,  password:password, hash:hash, callback:'?'};
         
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();   
-                $("#manageCategorySection").load("getCategoriesPanel");
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });   
+        var count = parseInt($(".categorySectionCount").last().text());
+        if(count < minimumCategorySectionProductPanel) {
+            loader.showPleaseWait();                       
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();   
+                    $("#manageCategorySection").load("getCategoriesPanel");
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });    
+        }
+        else {
+            showErrorModal("Sorry, but you have reached the maximum number of category section")
+        }
+  
     });   
 
     $(document.body).on('click','.removeNewArrival',function (e) { 
