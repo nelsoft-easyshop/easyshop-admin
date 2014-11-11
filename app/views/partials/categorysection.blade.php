@@ -26,6 +26,7 @@
                             </div>
                         </div>
                     <span style="display:none;">{{$categorySectionIndex = 0}}</span>
+                    <span style="display:none;">{{$categorySectionCount = 1}}</span>                    
                     </form>   
                     <div class="panel-group" id="accordion">
                         @foreach($categorySection as $categoryPanel)
@@ -235,7 +236,8 @@
 
                                         </div>
                                     </div>
-                                    <span style="display:none;">{{$categorySectionIndex++}}</span>                           
+                                    <span style="display:none;">{{$categorySectionIndex++}}</span>    
+                                    <span style="display:none;" class='categorySectionCount'>{{$categorySectionCount++}}</span>                                                           
                                 </div>
                         @endforeach
                     </div>
