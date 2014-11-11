@@ -1069,8 +1069,14 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                loader.hidePleaseWait();  
-                $("#addTopProductsTable").load("getTopProducts");
+                loader.hidePleaseWait(); 
+                if(json.sites[0]["success"] != "success") {
+                    loader.hidePleaseWait();    
+                    showErrorModal("Slug Does Not Exist");
+                }            
+                else {
+                    $("#addTopProductsTable").load("getTopProducts");
+                }       
             },
             error: function(e) {
                 loader.hidePleaseWait();
@@ -1311,8 +1317,14 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                loader.hidePleaseWait();   
-                $("#addTopProductsTable").load("getTopProducts");
+                loader.hidePleaseWait(); 
+                if(json.sites[0]["success"] != "success") {
+                    loader.hidePleaseWait();    
+                    showErrorModal("Slug Does Not Exist");
+                } 
+                else {
+                    $("#addTopProductsTable").load("getTopProducts");
+                }                  
             },
             error: function(e) {
                 loader.hidePleaseWait();

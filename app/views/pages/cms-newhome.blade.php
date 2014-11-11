@@ -274,7 +274,7 @@
 
                     <form id='left' target="test"  class="form-horizontal">                                          
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <label for="userId" class="col-sm-2 control-label">Enter Product Slug</label>
                             <div class="col-sm-10">
                                 <input type="text" id="value" name='value' class='form-control'> 
                             </div>
