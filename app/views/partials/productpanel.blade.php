@@ -16,24 +16,6 @@
                                                         style="position:absolute;top:2px;left:5px;"
                                                         data-url = "{{{$newHomeCmsLink}}}/removeContent"
                                                      ><font color='red'><b>X</b></font></a>
-
-                                                    <a 
-                                                        id="moveupProductPanel" 
-                                                        data-action="up" 
-                                                        data-index="{{$productPanelindex}}" 
-                                                        data-order="{{$productPanelindex}}" 
-                                                        style="position:absolute;top:235px;left:5px;"
-                                                        data-url = "{{{$newHomeCmsLink}}}/setPositionProductPanel"
-                                                     ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
-
-                                                     <a  
-                                                        id="movedownProductPanel" 
-                                                        data-action="down" 
-                                                        data-index="{{$productPanelindex}}" 
-                                                        data-order="{{$productPanelindex}}" 
-                                                        style="position:absolute;top:235px;right:5px;"
-                                                        data-url = "{{{$newHomeCmsLink}}}/setPositionProductPanel"
-                                                     ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                  </div>
                                                  <span class="productPanelCount" style="display:none;">{{$productPanelCount}}</span>
                                                 <!--Start Edit Slide Modal -->
