@@ -492,23 +492,26 @@
                 showErrorModal("Please enter a valid slug");
             }
             else {
-                    var hash =  hex_sha1(slug + action + userid + password);
-                    data = { slug:slug, action:action, userid:userid,  password:password, hash:hash, callback:'?'};
-                    $.ajax({
-                        type: 'GET',
-                        url: url,
-                        data:data,
-                        async: false,
-                        jsonpCallback: 'jsonCallback',
-                        contentType: "application/json",
-                        dataType: 'jsonp',
-                        success: function(json) {
-                            loader.hidePleaseWait();   
-                        },
-                        error: function(e) {
-                            loader.hidePleaseWait();
-                        }
-                    });    
+                var hash =  hex_sha1(slug + action + userid + password);
+                data = { slug:slug, action:action, userid:userid,  password:password, hash:hash, callback:'?'};
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:data,
+                    async: false,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();
+                        if(json.sites[0]["usererror"]){
+                            showErrorModal(json.sites[0]["usererror"]);
+                        }   
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });    
             }
         }
         else {
@@ -873,7 +876,7 @@
         else {
             var count = parseInt($(".parentSliderCount").last().text());
         }
-        if(count > minimumCategorySectionProductPanel) {
+        if(count > 0) {
             var $confirm = confirm("Are you sure you want to remove?");   
             if($confirm) {
                 loader.showPleaseWait();              
@@ -988,7 +991,12 @@
             dataType: 'jsonp',
             success: function(json) {
                 loader.hidePleaseWait();  
-                $("#addTopSellersTable").load("getTopSellers");
+                if(json.sites[0]["usererror"]){
+                    showErrorModal(json.sites[0]["usererror"]);
+                }
+                else {
+                    $("#addTopSellersTable").load("getTopSellers");
+                }         
             },
             error: function(e) {
                 loader.hidePleaseWait();
@@ -1291,7 +1299,12 @@
             dataType: 'jsonp',
             success: function(json) {
                 loader.hidePleaseWait();   
-                $("#addTopSellersTable").load("getTopSellers");
+                if(json.sites[0]["usererror"]){
+                    showErrorModal(json.sites[0]["usererror"]);
+                }
+                else {
+                    $("#addTopSellersTable").load("getTopSellers");
+                }                
             },
             error: function(e) {
                 loader.hidePleaseWait();

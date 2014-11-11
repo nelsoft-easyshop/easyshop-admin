@@ -146,7 +146,7 @@
                                             {{ Form::hidden('index', "", array('id' => 'editBrandsIndex','class' => 'form-control')) }}                                                                                              
                                             {{ Form::hidden('url', "", array('id' => 'editBrandsUrl','class' => 'form-control')) }}                                                                                              
 
-                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setBrands" id="editBrandsSubmit">Edit</button>
+                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setBrands" id="editBrandsSubmit">Save</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                         </form>
                                     </div>
@@ -171,7 +171,7 @@
 
                     <form id='left' target="test"  class="form-horizontal">                                          
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <label for="userId" class="col-sm-2 control-label">Add Seller Slug</label>
                             <div class="col-sm-10">
                                 <input type="text" id="value" name='value' class='form-control'> 
                             </div>
