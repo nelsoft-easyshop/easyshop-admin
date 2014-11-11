@@ -3,6 +3,7 @@
     var password = $("#password").val();
 
     var minimumCategoryProductPanel = 2;
+    var minimumCategorySectionProductPanel = 3;
     $(document.body).on('click','#addSubCategorySection',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
@@ -892,14 +893,14 @@
     }); 
 
     $(document.body).on('click','#addCategorySectionProductPanel',function (e) { 
-        loader.showPleaseWait();           
         var value = $('#addCategorySectionValue option:selected').val();
         var url = $(this).data("url");
         var hash =  hex_sha1(value + userid + password);
         data = { value:value, userid:userid,  password:password, hash:hash, callback:'?'};
         
         var count = parseInt($(".categorySectionCount").last().text());
-        if(count > minimumCategoryProductPanel) {
+        if(count < minimumCategorySectionProductPanel) {
+            loader.showPleaseWait();                       
             $.ajax({
                 type: 'GET',
                 url: url,
