@@ -146,7 +146,7 @@
                                             {{ Form::hidden('index', "", array('id' => 'editBrandsIndex','class' => 'form-control')) }}                                                                                              
                                             {{ Form::hidden('url', "", array('id' => 'editBrandsUrl','class' => 'form-control')) }}                                                                                              
 
-                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setBrands" id="editBrandsSubmit">Edit</button>
+                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setBrands" id="editBrandsSubmit">Save</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                         </form>
                                     </div>
