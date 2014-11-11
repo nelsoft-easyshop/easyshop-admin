@@ -991,7 +991,12 @@
             dataType: 'jsonp',
             success: function(json) {
                 loader.hidePleaseWait();  
-                $("#addTopSellersTable").load("getTopSellers");
+                if(json.sites[0]["usererror"]){
+                    showErrorModal(json.sites[0]["usererror"]);
+                }
+                else {
+                    $("#addTopSellersTable").load("getTopSellers");
+                }         
             },
             error: function(e) {
                 loader.hidePleaseWait();
@@ -1288,7 +1293,12 @@
             dataType: 'jsonp',
             success: function(json) {
                 loader.hidePleaseWait();   
-                $("#addTopSellersTable").load("getTopSellers");
+                if(json.sites[0]["usererror"]){
+                    showErrorModal(json.sites[0]["usererror"]);
+                }
+                else {
+                    $("#addTopSellersTable").load("getTopSellers");
+                }                
             },
             error: function(e) {
                 loader.hidePleaseWait();
