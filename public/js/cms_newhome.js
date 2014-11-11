@@ -342,7 +342,6 @@
     });  
 
     $(document.body).on('click','.removeCategorySection',function (e) { 
-        loader.showPleaseWait();          
         var index = $(this).data("index").toString();
         var subIndex = $(this).data("subindex").toString();
         var nodename = $(this).data("nodename");
@@ -355,7 +354,8 @@
         var reloadurl = "getSubCategoriesSection/" + index;
         var categoryCount = ".subCategorySectionCount_"+index;
         var count = $(categoryCount).last().text();
-        if(count > minimumCategoryProductPanel) {
+        if(count >= minimumCategoryProductPanel) {
+            loader.showPleaseWait();                      
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -373,6 +373,10 @@
                     showErrorModal("Please try again");
                 }
             });            
+        }
+        else {
+            showErrorModal("Sorry, but you have reached the minimum number of sub category section");
+
         }
     });  
 
