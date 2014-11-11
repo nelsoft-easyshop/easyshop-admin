@@ -492,23 +492,26 @@
                 showErrorModal("Please enter a valid slug");
             }
             else {
-                    var hash =  hex_sha1(slug + action + userid + password);
-                    data = { slug:slug, action:action, userid:userid,  password:password, hash:hash, callback:'?'};
-                    $.ajax({
-                        type: 'GET',
-                        url: url,
-                        data:data,
-                        async: false,
-                        jsonpCallback: 'jsonCallback',
-                        contentType: "application/json",
-                        dataType: 'jsonp',
-                        success: function(json) {
-                            loader.hidePleaseWait();   
-                        },
-                        error: function(e) {
-                            loader.hidePleaseWait();
-                        }
-                    });    
+                var hash =  hex_sha1(slug + action + userid + password);
+                data = { slug:slug, action:action, userid:userid,  password:password, hash:hash, callback:'?'};
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:data,
+                    async: false,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();
+                        if(json.sites[0]["usererror"]){
+                            showErrorModal(json.sites[0]["usererror"]);
+                        }   
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });    
             }
         }
         else {
