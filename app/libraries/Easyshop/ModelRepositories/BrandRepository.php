@@ -19,7 +19,7 @@ class BrandRepository extends AbstractRepository
      */
     public function getAllBrands()
     {
-        return Brand::all();
+        return Brand::orderBy("name","asc")->get();
     }
      
 }
