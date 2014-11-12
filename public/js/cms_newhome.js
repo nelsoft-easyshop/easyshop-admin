@@ -427,7 +427,10 @@
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
-        target = target == "" ? "/" : target;
+        if($.trim(target) === "") {
+            target = "/";
+            $(this).closest("form").find("#target").val("/");            
+        }
         var hash =  hex_sha1(index + userid + value + target  + password);
         var form = "#adSectionForm"+index;
         $(this).closest("form").find("#editAdsSectionHash").val(hash);
