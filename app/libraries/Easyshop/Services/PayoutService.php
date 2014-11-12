@@ -251,37 +251,33 @@ class PayoutService
      */
     public function addShippingComment($inputData)
     {   
-        $booleanSuccess = FALSE;
+        $booleanSuccess = false;
         $returnMessage = "";
         $expectedDate = "0000-00-00 00:00:00";
 
         if((int)$inputData['order_product_id'] <= 0){
             $returnMessage = "No order product will be updated.";
-
             return array('isSuccess'=> $booleanSuccess,'message'=>$returnMessage);
         }
 
-        if(trim($inputData['courier']) === ""){ 
+        if(!$inputData['courier']){ 
             $returnMessage = "Courier cannot be empty.";
-
             return array('isSuccess'=> $booleanSuccess,'message'=>$returnMessage);
         }
 
-        if(trim($inputData['delivery']) === ""){ 
+        if(!$inputData['delivery']){ 
             $returnMessage = "Expected and Delivery Date cannot be empty.";
-
             return array('isSuccess'=> $booleanSuccess,'message'=>$returnMessage);
         }
-        else{ 
-            $deliveryDate = Carbon::createFromFormat('Y/m/d', $inputData['delivery'])->startOfDay();
-            if(trim($inputData['expected'])){
-                $expectedDate = Carbon::createFromFormat('Y/m/d', $inputData['expected'])->startOfDay();
-                if($expectedDate < $deliveryDate){
-                    $returnMessage = "Expected date is less than in given delivery date.";
-
-                    return array('isSuccess'=> $booleanSuccess,'message'=>$returnMessage);
-                }
+        
+        $deliveryDate = Carbon::createFromFormat('Y/m/d', $inputData['delivery'])->startOfDay();
+        if($inputData['expected']){
+            $expectedDateInput = Carbon::createFromFormat('Y/m/d', trim($inputData['expected']))->startOfDay();
+            if($expectedDateInput < $deliveryDate){
+                $returnMessage = "Expected date is less than in given delivery date.";
+                return array('isSuccess'=> $booleanSuccess,'message'=>$returnMessage);
             }
+            $expectedDate = $expectedDateInput->toDateTimeString();
         }
 
         $orderProduct = $this->orderProductRepository->getOrderProductById($inputData['order_product_id']);
@@ -296,8 +292,7 @@ class PayoutService
                                                                     ,$deliveryDate
                                                                     ,$modifiedDate
                                                                     );
-        $booleanSuccess = TRUE;
-        $returnMessage = "";
+        $booleanSuccess = true;
         
         return array('isSuccess'=> $booleanSuccess,'message'=>$returnMessage);
     }
