@@ -12,6 +12,7 @@ class ProductCSVController extends BaseController
 
     public function __construct(ProductCSVService $ProductCSVService) 
     {   
+        exit('This page is currently unavailable. <a href="/"> Return from whence you came. </a>');
         $this->ProductCSVService = $ProductCSVService;
     }
     /**

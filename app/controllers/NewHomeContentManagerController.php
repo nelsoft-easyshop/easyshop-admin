@@ -11,6 +11,7 @@ class NewHomeContentManagerController extends BaseController
 
     public function __construct(XMLService $XMLService) 
     {   
+        exit('This page is currently unavailable. <a href="/"> Return from whence you came. </a>');
         $this->XMLService = $XMLService;
         $xmlString = $this->XMLService->getNewHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
