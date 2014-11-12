@@ -12,6 +12,19 @@
 
 App::before(function($request)
 {
+
+    $clientIp = Request::getClientIp();
+
+    $arrayWhiteListIp = [
+        '124.104.99.142',
+        '124.104.99.90',
+        '127.0.0.1',
+    ];
+
+    if(!in_array($clientIp, $arrayWhiteListIp)){
+        exit();
+    }
+
 	if(Auth::check()) {
         if(!Request::ajax()) {
             $AdminMemberService = App::make("AdminMemberManagerService");
