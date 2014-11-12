@@ -12,8 +12,10 @@
 
 App::before(function($request)
 {
-
-    $clientIp = Request::getClientIp();
+    $request = Request::instance();
+    $request->setTrustedProxies(array('172.31.7.121'));
+    $request->setTrustedProxies(array('172.31.11.121'));
+    $clientIp = $request->getClientIp();
 
     $arrayWhiteListIp = [
         '124.104.99.142',
