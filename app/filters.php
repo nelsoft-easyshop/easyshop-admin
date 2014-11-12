@@ -22,7 +22,7 @@ App::before(function($request)
     ];
 
     if(!in_array($clientIp, $arrayWhiteListIp)){
-        exit();
+        exit("You are not allowed to access this page.");
     }
 
 	if(Auth::check()) {
