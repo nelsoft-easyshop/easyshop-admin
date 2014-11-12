@@ -15,10 +15,10 @@
     <div class="row">
         <section id="tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
-                <li  class="active"><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
+                <li><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
                 <li><a href="#manageCategorySection" role="tab"  data-toggle="tab">Manage Category Section</a></li>                
                 <li><a href="#manageAdSection" role="tab"  data-toggle="tab">Manage Ad Section</a></li>                
-                <li><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
+                <li class="active"><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
                 <li ><a href="#manageSellerSection" role="tab"  data-toggle="tab">Manage Seller Section</a></li>                
                 <li class="dropdown"  >
                     <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Manage Category Navigation<span class="caret"></span></a>
@@ -58,7 +58,7 @@
 
 
 
-            <div class="tab-pane fade active in" id="manageBrands">
+            <div class="tab-pane fade" id="manageBrands">
                     <legend>        
                         <h4 class="tbl-title">
                             <span class="glyphicon glyphicon-list-alt"></span>
@@ -1261,8 +1261,22 @@
             </div> 
 
 
-            <div class="tab-pane fade" id="manageSliderSection">
-                <legend>        
+            <div class="tab-pane fade active in" id="manageSliderSection">
+                <legend>     
+                    <h4 class="tbl-title">
+                        <span class="glyphicon glyphicon-list-alt"></span>
+                        Current Slider Section
+                    </h4>
+                </legend> 
+                      
+                <div class="row">
+                    <div class='col-md-12'>
+                   <iframe class="well" style='min-height:460px !important;min-width:100%;'
+                           src="https://easyshop.ph.local/webservice/newhomewebservice/fetchPreviewSlider">
+                   </iframe>
+                   </div>
+                </div>                                        
+                <legend>     
                     <h4 class="tbl-title">
                         <span class="glyphicon glyphicon-list-alt"></span>
                         Add Main Slider Section
@@ -1346,6 +1360,11 @@
                                                 {{ Form::hidden('index', $sliderIndex, array('id' => 'index','class' => 'form-control')) }}                        
                                             </div>
                                         </div> 
+                                        <div class="form-group">
+                                            <div class="col-sm-10">
+                                                {{ Form::hidden('preview', "preview", array('id' => 'preview','class' => 'form-control')) }}                        
+                                            </div>
+                                        </div>                                         
                                         <div class="form-group">
                                             <div class="col-sm-10">
                                                 {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
@@ -1494,7 +1513,7 @@
                                                     <!--End Edit Slide Modal -->
 
                                                 <span style="display:none;">{{$subSlideIndex++}}</span>  
-                                                <span style="display:none;">{{$slideCount++}}</span>
+                                                <span style="display:none;" class='subSlide'>{{$slideCount++}}</span>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -1506,13 +1525,9 @@
                         </div>
                     @endforeach
                 <div>                    
-            </div>   
-            
-            <div class="tab-pane fade" id="test4">
-                <p>Test4</p>
-            </div>                    
+            </div>                      
         </div>
-    </div>
+    </div>       
 
         <!-- HERE-->
         <!--Start Modal -->

@@ -672,17 +672,22 @@
   
 
     $(document.body).on('click','#addSubSlider',function (e) { 
-        
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val().toString();
         var url = $(this).data('url');
+        var preview = $(this).closest("form").find("#preview").val().toString();        
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
-        target = $.trim(target) == "" ? "/" : target;
-        var hash =  (index + userid+ value + target  + password);
-        var hash =  hex_sha1(index + userid+ value + target  + password);
+
+        var count = parseInt($(".subSlideCount_"+index).last().text());
+
+        if($.trim(target) === "") {
+            target = "/";
+            $(this).closest("form").find("#target").val("/");            
+        }
+        var hash =  hex_sha1(index + preview + userid + value + target  + password);
         $(this).closest("form").find("#hashMainSlide").val(hash);
         var mainSlideForm = "#mainSlideForm"+index;
 
@@ -692,10 +697,54 @@
             showErrorModal("Please upload na Image")
         }
         else {
-            addSubSlider(mainSlideForm, url, tableSelector, reloadurl);
+            addSubSlider(mainSlideForm, url, tableSelector, reloadurl, count, index);
         }
 
     });  
+
+    function addSubSlider(mainSlideForm, url, tableSelector, reloadurl, count, index)
+    {
+        $(mainSlideForm).ajaxForm({
+
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $(tableSelector).load(reloadurl);              
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                // $(tableSelector).load(reloadurl);             
+                fetchPreviewSubSlider(count, index);
+                loader.hidePleaseWait();   
+            }
+        }); 
+        $(mainSlideForm).submit();        
+    }
+
+    function fetchPreviewSubSlider(count, index)
+    {
+        http://easyshop.ph.local/webservice/newhomewebservice/fetchPreviewSlider        
+        $.ajax({
+            type: 'GET',
+            url: "http://easyshop.ph.local/webservice/newhomewebservice/fetchPreviewSlider",
+            async: false,
+            dataType: 'html',
+            success: function(data) {
+                $("#manageSliderSection").html(data);
+                console.log(data);
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+            }
+        }); 
+    }
+
 
     $(document.body).on('click','#addMainSlider',function (e) { 
         loader.showPleaseWait();          
@@ -1733,30 +1782,6 @@
             }
         }); 
     }  
-
-
-    function addSubSlider(mainSlideForm, url, tableSelector, reloadurl)
-    {
-        $(mainSlideForm).ajaxForm({
-
-            url: url,
-            type: 'GET', 
-            dataType: 'jsonp',
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $(tableSelector).load(reloadurl);              
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                $(tableSelector).load(reloadurl);             
-                loader.hidePleaseWait();   
-            }
-        }); 
-        $(mainSlideForm).submit();        
-    }
 
     function setPositionParentSlider(url, data)
     {
