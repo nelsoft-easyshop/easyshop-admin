@@ -7,7 +7,7 @@
             "dom": 'T<"clear">lfrtip',
             "tableTools": {
                 "sSwfPath": "misc/TableTools/copy_csv_xls_pdf.swf",
-                "aButtons": [ "copy", "csv" ]                
+                "aButtons": [ "copy",  {"sExtends": "xls","sTitle": "monthly_signup_statistics"} ]                
             },
         });      
     $("#table2").DataTable({
@@ -18,7 +18,7 @@
             "dom": 'T<"clear">lfrtip',
             "tableTools": {
                 "sSwfPath": "misc/TableTools/copy_csv_xls_pdf.swf",
-                "aButtons": [ "copy", "csv" ]                
+                "aButtons": [ "copy",  {"sExtends": "xls","sTitle": "users_with_and_without_products"} ]                
             },
 
         }); 
@@ -27,9 +27,9 @@
             "bProcessing": true,            
             "bPaginate": false,                                   
             "dom": 'T<"clear">lfrtip',
-            "tableTools": {
+            "oTableTools": {
                 "sSwfPath": "misc/TableTools/copy_csv_xls_pdf.swf",
-                "aButtons": [ "copy", "csv" ]                
+                "aButtons": [ "copy", {"sExtends": "xls","sTitle": "number_of_uploaded_products_per_account"} ]                
             },
         });   
     $("#table4").DataTable({
@@ -40,7 +40,7 @@
             "dom": 'T<"clear">lfrtip',
             "tableTools": {
                 "sSwfPath": "misc/TableTools/copy_csv_xls_pdf.swf",
-                "aButtons": [ "copy", "csv" ]                
+                "aButtons": [ "copy",  {"sExtends": "xls","sTitle": "number_of_uploaded_items_per_account"} ]                
             },             
 
         });            
@@ -50,7 +50,7 @@
             "dom": 'T<"clear">lfrtip',
             "tableTools": {
                 "sSwfPath": "misc/TableTools/copy_csv_xls_pdf.swf",
-                "aButtons": [ "copy", "csv" ]                
+                "aButtons": [ "copy",  {"sExtends": "xls","sTitle": "number_of_items_per_parent_category"} ]                
             },
 
         });

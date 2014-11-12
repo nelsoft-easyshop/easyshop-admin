@@ -16,24 +16,6 @@
                                                         style="position:absolute;top:2px;left:5px;"
                                                         data-url = "{{{$newHomeCmsLink}}}/removeContent"
                                                      ><font color='red'><b>X</b></font></a>
-
-                                                    <a 
-                                                        id="moveupAdsSection" 
-                                                        data-action="up" 
-                                                        data-index="{{$adsSectionIndex}}" 
-                                                        data-order="{{$adsSectionIndex}}" 
-                                                        style="position:absolute;top:235px;left:5px;"
-                                                        data-url = "{{{$newHomeCmsLink}}}/setPositionAdsSection"
-                                                     ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
-
-                                                     <a  
-                                                        id="movedownAdsSection" 
-                                                        data-action="down" 
-                                                        data-index="{{$adsSectionIndex}}" 
-                                                        data-order="{{$adsSectionIndex}}" 
-                                                        style="position:absolute;top:235px;right:5px;"
-                                                        data-url = "{{{$newHomeCmsLink}}}/setPositionAdsSection"
-                                                     ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                  </div>
                                                  <span class="adsCount" style="display:none;">{{$adsCount}}</span>
                                                 <!--Start Edit Slide Modal -->

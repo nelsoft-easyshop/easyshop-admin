@@ -15,7 +15,7 @@
     <div class="row">
         <section id="tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
+                <li  class="active"><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
                 <li><a href="#manageCategorySection" role="tab"  data-toggle="tab">Manage Category Section</a></li>                
                 <li><a href="#manageAdSection" role="tab"  data-toggle="tab">Manage Ad Section</a></li>                
                 <li><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
@@ -26,7 +26,7 @@
                         <li role="presentation" class="dropdown-header">Category Navigations</li>
                         <span style="display:none;">{{{ $nav = 0 }}}</span>
                             @foreach($categoryNavigation as $navigation)
-                                <li><a href="#navigation_{{{$navigation->categorySlug}}}_{{$nav}}" id="mainNavigation_{{{$nav}}}" class="mainNavigation_{{{$navigation->categorySlug}}}" tabindex="-1" role="tab" data-toggle="tab">{{{$navigation->categorySlug}}}</a></li>
+                                <li><a href="#navigation_{{{$navigation->categorySlug}}}_{{$nav}}" id="mainNavigation_{{{$nav}}}" class="mainNavigation_{{{$navigation->categorySlug}}}" tabindex="-1" role="tab" data-toggle="tab">{{{ucwords(str_replace("-"," ",$navigation->categorySlug))}}}</a></li>
                                 <span style="display:none;">{{{ $nav++ }}}</span>
                             @endforeach
                         <li class="divider"></li>
@@ -68,7 +68,7 @@
 
                     <form id='left' target="test"  class="form-horizontal">                                          
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <label for="userId" class="col-sm-2 control-label">Select Brand Name</label>
                             <div class="col-sm-10">
                                 <select name="c_stateregion" id="addBrandsDropDown"  class="form-control">
                                     @foreach($allBrandsLists as $allBrands)
@@ -146,7 +146,7 @@
                                             {{ Form::hidden('index', "", array('id' => 'editBrandsIndex','class' => 'form-control')) }}                                                                                              
                                             {{ Form::hidden('url', "", array('id' => 'editBrandsUrl','class' => 'form-control')) }}                                                                                              
 
-                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setBrands" id="editBrandsSubmit">Edit</button>
+                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setBrands" id="editBrandsSubmit">Save</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                         </form>
                                     </div>
@@ -171,7 +171,7 @@
 
                     <form id='left' target="test"  class="form-horizontal">                                          
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <label for="userId" class="col-sm-2 control-label">Add Seller Slug</label>
                             <div class="col-sm-10">
                                 <input type="text" id="value" name='value' class='form-control'> 
                             </div>
@@ -274,7 +274,7 @@
 
                     <form id='left' target="test"  class="form-horizontal">                                          
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <label for="userId" class="col-sm-2 control-label">Enter Product Slug</label>
                             <div class="col-sm-10">
                                 <input type="text" id="value" name='value' class='form-control'> 
                             </div>
@@ -494,14 +494,15 @@
                             </div>
                         </div>
                     <span style="display:none;">{{$categorySectionIndex = 0}}</span>
+                    <span style="display:none;">{{$categorySectionCount = 1}}</span>
                     </form>   
                     <div class="panel-group" id="accordion">
                         @foreach($categorySection as $categoryPanel)
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_category_{{$categorySectionIndex}}">Manage Category </a>
-                                            <span class="glyphicon glyphicon-remove" id="removeCategorySection" data-nodename="categorySectionPanel" data-index="{{$categorySectionIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style="margin-left:860px !important;cursor:pointer;"></span>
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_category_{{$categorySectionIndex}}">{{ucwords(str_replace("-"," ",$categoryPanel->categorySlug))}}</a>
+                                            <span class="glyphicon glyphicon-remove pull-right" id="removeCategorySection" data-nodename="categorySectionPanel" data-index="{{$categorySectionIndex}}" data-url="{{$newHomeCmsLink}}/removeContent"></span>
                                         </h4>
                                     </div>
                                     
@@ -580,7 +581,7 @@
                                                             <span style="display:none;"></span>                            
                                                             <input type="hidden" class="boxContentCount_" value="">
                                                         </tr>
-                                                        <span style="display:none;">{{{ $subCategorySection ++ }}}</span>
+                                                        <span style="display:none;" class="subCategorySectionCount_{{$categorySectionIndex}}">{{{ $subCategorySection++ }}}</span>
                                                     @endforeach
 
                                                 </tbody> 
@@ -697,7 +698,9 @@
 
                                         </div>
                                     </div>
-                                    <span style="display:none;">{{$categorySectionIndex++}}</span>                           
+                                    <span style="display:none;">{{$categorySectionIndex++}}</span>      
+                                    <span style="display:none;" class='categorySectionCount'>{{$categorySectionCount++}}</span>
+
                                 </div>
                         @endforeach
                     </div>
@@ -759,24 +762,6 @@
                                                         style="position:absolute;top:2px;left:5px;"
                                                         data-url = "{{{$newHomeCmsLink}}}/removeContent"
                                                      ><font color='red'><b>X</b></font></a>
-
-                                                    <a 
-                                                        id="moveupAdsSection" 
-                                                        data-action="up" 
-                                                        data-index="{{$adsSectionIndex}}" 
-                                                        data-order="{{$adsSectionIndex}}" 
-                                                        style="position:absolute;top:235px;left:5px;"
-                                                        data-url = "{{{$newHomeCmsLink}}}/setPositionAdsSection"
-                                                     ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
-
-                                                     <a  
-                                                        id="movedownAdsSection" 
-                                                        data-action="down" 
-                                                        data-index="{{$adsSectionIndex}}" 
-                                                        data-order="{{$adsSectionIndex}}" 
-                                                        style="position:absolute;top:235px;right:5px;"
-                                                        data-url = "{{{$newHomeCmsLink}}}/setPositionAdsSection"
-                                                     ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                  </div>
                                                  <span class="adsCount" style="display:none;">{{$adsCount}}</span>
                                                 <!--Start Edit Slide Modal -->
@@ -976,24 +961,6 @@
                                                         style="position:absolute;top:2px;left:5px;"
                                                         data-url = "{{{$newHomeCmsLink}}}/removeContent"
                                                      ><font color='red'><b>X</b></font></a>
-
-                                                    <a 
-                                                        id="moveupProductPanel" 
-                                                        data-action="up" 
-                                                        data-index="{{$productPanelindex}}" 
-                                                        data-order="{{$productPanelindex}}" 
-                                                        style="position:absolute;top:235px;left:5px;"
-                                                        data-url = "{{{$newHomeCmsLink}}}/setPositionProductPanel"
-                                                     ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
-
-                                                     <a  
-                                                        id="movedownProductPanel" 
-                                                        data-action="down" 
-                                                        data-index="{{$productPanelindex}}" 
-                                                        data-order="{{$productPanelindex}}" 
-                                                        style="position:absolute;top:235px;right:5px;"
-                                                        data-url = "{{{$newHomeCmsLink}}}/setPositionProductPanel"
-                                                     ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                  </div>
                                                  <span class="productPanelCount" style="display:none;">{{$productPanelCount}}</span>
                                                 <!--Start Edit Slide Modal -->
@@ -1272,11 +1239,9 @@
                     <div class="form-group">
                         <label for="userId" class="col-sm-2 control-label">Choose Slider Design Template</label>
                         <div class="col-sm-10">
-
-
                             <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
                                 @foreach($templateLists[0] as $templates)                                               
-                                    <option value="{{$templates}}" >{{$templates}}</option>
+                                    <option value="{{$templates->templateName}}" >{{$templates->templateName}}</option>
                                 @endforeach  
                             </select>
                         </div>
@@ -1287,21 +1252,27 @@
                         </div>
                     </div>                                      
                 </form>
-
+                @foreach($templateLists[0] as $templates)                                               
+                    <span id="template_{{$templates->templateName}}" data-name="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" style="display:none;">{{$templates->templateName}}</span>
+                @endforeach                  
                 <span style="display:none;">{{$sliderIndex = 0}}</span>
+                <span style="display:none;">{{$parentSliderCount = 1}}</span>
                 <div class="panel-group" id="accordion">
                     @foreach($sliderSection as $slides)
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$sliderIndex}}">Add Main Slide</a>
-                                    <span class="glyphicon glyphicon-remove" id="removeMainSlider" data-nodename="mainSliderSection" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style="margin-left:935px !important;cursor:pointer;"></span>
+                                    <span class="glyphicon glyphicon-remove pull-right" id="removeMainSlider" data-nodename="mainSliderSection" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style='cursor:pointer;'></span>
+                                    <span class="glyphicon glyphicon-chevron-up pull-right" id="moveParentSlider" data-nodename="mainSliderSection" data-action="up" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/setPositionParentSlider" style='cursor:pointer;'></span>
+                                    <span class="glyphicon glyphicon-chevron-down pull-right" id="moveParentSlider" data-nodename="mainSliderSection" data-action="down" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/setPositionParentSlider" style='cursor:pointer;'></span>
                                 </h4>
                             </div>
                             <div id="collapse_{{$sliderIndex}}" class="panel-collapse collapse">
                                 <div class="panel-body"> 
                                     <!-- Add Main Slide Start -->
-                                    <form id='left' target="test"  class="form-horizontal">                                           
+                                    <form id='left' target="test"  class="form-horizontal">         
+                                        <input type="hidden" id="sliderTemplate{{$sliderIndex}}" value="{{$slides->template}}">                                  
                                         <div class="form-group">
                                             <div class="col-sm-10">
                                                 {{ Form::hidden('index', $sliderIndex, array('id' => 'index','class' => 'form-control')) }}                        
@@ -1312,10 +1283,10 @@
                                             <div class="col-sm-10">
                                                 <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
                                                     @foreach($templateLists[0] as $templates)                                             
-                                                        @if(strtolower(trim($templates)) == strtolower(trim($slides->template)))
-                                                            <option value="{{$templates}}" selected >{{$templates}}</option>
+                                                        @if(strtolower(trim($templates->templateName)) == strtolower(trim($slides->template)))
+                                                            <option value="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" selected >{{$templates->templateName}}</option>
                                                         @else
-                                                            <option value="{{$templates}}" >{{$templates}}</option>
+                                                            <option value="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" >{{$templates->templateName}}</option>
                                                         @endif
                                                     @endforeach  
                                                 </select>
@@ -1498,6 +1469,7 @@
                                 </div>
                             </div>
                             <span style="display:none;">{{$sliderIndex++}}</span>                            
+                            <span style="display:none;" class="parentSliderCount">{{$parentSliderCount++}}</span>                            
                         </div>
                     @endforeach
                 <div>                    

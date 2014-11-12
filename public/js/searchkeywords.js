@@ -1,7 +1,7 @@
 (function ($) {
 
-    $("form").submit({
-        return false;
+    $("form").submit(function (e){
+        e.preventDefault();
     });
     $( "#searchBox" ).keyup(function() {
         var keyword = $(this).val();

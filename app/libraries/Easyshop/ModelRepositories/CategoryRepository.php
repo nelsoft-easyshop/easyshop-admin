@@ -22,7 +22,7 @@ class CategoryRepository
      */    
     public function getChildCategories()
     {
-        return Category::where("parent_id","!=","1")->get();
+        return Category::where("parent_id","!=","1")->orderBy("name","asc")->get();
 
     }
 

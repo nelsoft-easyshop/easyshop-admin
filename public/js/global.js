@@ -64,7 +64,7 @@ function getParameterByName(name) {
 }
 
 var loader = loader || (function () {
-    var pleaseWaitDiv = $('<div style="text-align:center"><hr/> <p><img src = "images/orange_loader.gif" /></p> <p style="font-size:13px;"><strong>One moment please </strong> </p> <hr/></div>');
+    var pleaseWaitDiv = $('<div style="text-align:center"><hr/> <p><img src = "/images/orange_loader.gif" /></p> <p style="font-size:13px;"><strong>One moment please </strong> </p> <hr/></div>');
     var dialog = new BootstrapDialog({
             message: pleaseWaitDiv,
             cssClass: 'loader-dialog',

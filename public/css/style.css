@@ -3650,3 +3650,10 @@ width: 1200px;
     padding-top: 10px;
 }
 
+.date-readonly-control{
+    cursor: pointer !important;
+}
+
+.required-span{
+    color: red;
+}
