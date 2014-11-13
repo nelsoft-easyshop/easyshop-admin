@@ -757,6 +757,7 @@
             dataType: 'jsonp',
             success: function(json) {
                 $("#manageSliderSection").load("getAllSliders");
+                getSliderPreview();
                 loader.hidePleaseWait();   
             },
             error: function(e) {
