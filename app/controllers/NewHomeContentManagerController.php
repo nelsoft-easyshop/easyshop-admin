@@ -380,7 +380,14 @@ class NewHomeContentManagerController extends BaseController
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
     }    
-
+    public function getSliderPreview()
+    {
+        $html =  View::make("partials.sliderpreview")
+                    ->with("newHomeCmsLink",$this->XMLService->getNewHomeCmsLink())
+                    ->render();
+        return Response::json(array('html' => $html));           
+                    
+    }
     /**
      *  Reloads contents of categoriesSection nodes
      */ 

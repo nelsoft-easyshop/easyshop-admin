@@ -1227,22 +1227,32 @@
                   <!--End Edit Other Category Modal -->
             </div> 
 
-
+            <div class="row">
+                <div class='col-md-12'>
+                    <center>
+                        <a1 href="#" class="btn btn-success text-center" data-url="{{{$newHomeCmsLink}}}/commitSliderChanges" id="commitSliderChanges">Commit Slider Changes
+                        </a1>
+                    </center>
+                </div>
+            </div>  
             <div class="tab-pane fade active in" id="manageSliderSection">
                 <legend>     
                     <h4 class="tbl-title">
                         <span class="glyphicon glyphicon-list-alt"></span>
-                        Current Slider Section
+                        Current Slider Section 
                     </h4>
                 </legend> 
                       
-                <div class="row">
-                    <div class='col-md-12'>
-                   <iframe class="well" style='min-height:460px !important;min-width:100%;'
-                           src="https://easyshop.ph.local/webservice/newhomewebservice/fetchPreviewSlider">
-                   </iframe>
-                   </div>
-                </div>                                        
+                <div id="sliderPreview">
+                    <div class="row">
+                        <div class='col-md-12'>
+                           <iframe class="well" style='min-height:460px !important;min-width:100%;'
+                                   src="{{{$newHomeCmsLink}}}/fetchPreviewSlider">
+                           </iframe>
+                       </div>
+                    </div> 
+                </div>
+
                 <legend>     
                     <h4 class="tbl-title">
                         <span class="glyphicon glyphicon-list-alt"></span>

@@ -727,36 +727,19 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $(tableSelector).load(reloadurl);              
+                $(tableSelector).load(reloadurl);   
+                getSliderPreview();                           
                 loader.hidePleaseWait();   
             },
             error: function(e) {
-                $(tableSelector).load(reloadurl);             
-                fetchPreviewSubSlider(count, index);
+                $(tableSelector).load(reloadurl);   
+                getSliderPreview();                          
                 loader.hidePleaseWait();   
             }
         }); 
         $(mainSlideForm).submit();        
     }
 
-    function fetchPreviewSubSlider(count, index)
-    {
-        http://easyshop.ph.local/webservice/newhomewebservice/fetchPreviewSlider        
-        $.ajax({
-            type: 'GET',
-            url: "http://easyshop.ph.local/webservice/newhomewebservice/fetchPreviewSlider",
-            async: false,
-            dataType: 'html',
-            success: function(data) {
-                $("#manageSliderSection").html(data);
-                console.log(data);
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        }); 
-    }
 
 
     $(document.body).on('click','#addMainSlider',function (e) { 
@@ -883,12 +866,14 @@
                 contentType: "application/json",
                 dataType: 'jsonp',
                 success: function(json) {
-                    $(tableSelector).load(reloadurl);                  
+                    $(tableSelector).load(reloadurl);  
+                    getSliderPreview();
                     loader.hidePleaseWait();
                        
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
+                    getSliderPreview();                    
                     showErrorModal("Please try again");
                 }
             });  
@@ -947,9 +932,12 @@
                         }
                         else {
                             $("#manageSliderSection").load("getAllSliders");
+                            getSliderPreview();                 
+
                         }
                     },
                     error: function(e) {
+                        getSliderPreview();                                         
                         loader.hidePleaseWait();
                     }
                 });             
@@ -1668,11 +1656,13 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $(tableSelector).load(reloadurl);    
+                $(tableSelector).load(reloadurl);   
+                getSliderPreview();                 
                 loader.hidePleaseWait();   
             },
             error: function(e) {
                 $(tableSelector).load(reloadurl);   
+                getSliderPreview();                
                 loader.hidePleaseWait();                   
             }
         }); 
@@ -1734,11 +1724,13 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $(tableSelector).load(reloadurl);                
+                $(tableSelector).load(reloadurl);  
+                getSliderPreview();                              
                 loader.hidePleaseWait();   
             },
             error: function(e) {
-                $(tableSelector).load(reloadurl);                
+                $(tableSelector).load(reloadurl); 
+                getSliderPreview();                            
                 loader.hidePleaseWait();   
             }
         }); 
@@ -1844,15 +1836,31 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $("#manageSliderSection").load("getAllSliders");  
+                $("#manageSliderSection").load("getAllSliders"); 
+                console.log("hre");
                 loader.hidePleaseWait();   
             },
             error: function(e) {
-                loader.hidePleaseWait();                   
+                loader.hidePleaseWait();     
+                getSliderPreview();                                               
                 showErrorModal("Please try again");
             }
         }); 
     }    
+
+    function getSliderPreview()
+    {
+        $.ajax({
+            type: 'post',
+            url: "getSliderPreview",
+            dataType: 'json',
+            success: function(json) {
+                $("#sliderPreview").html(json.html);  
+                loader.hidePleaseWait();
+                   
+            },
+        });         
+    }
 
     function showErrorModal(messages) {
             loader.hidePleaseWait();
