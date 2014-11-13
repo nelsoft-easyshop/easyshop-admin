@@ -198,13 +198,13 @@
 
 
     $(document.body).on('click','#moveup, #movedown',function (e) { 
-        loader.showPleaseWait();          
+       
         var action = $(this).data('action').toString();
         var subindex = $(this).data('subindex').toString();
         var index = $(this).data('index').toString();
         var order = parseInt($(this).data('order'));
         var url = $(this).data('url').toString();
-        var count = parseInt($(".slideCount").last().text());
+        var count = parseInt($(".slideCount_" + index).last().text());
         if(action == "down") {
             if(order == (count - 1)) {
                 order = order;
@@ -220,12 +220,17 @@
             }
     
         }
+        var flag = parseInt(index) + 1;
+
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;        
         order = order.toString();
         var hash =  hex_sha1(index + subindex  + order + userid + password);        
         data = { index: index, subIndex:subindex, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
+
+        loader.showPleaseWait();   
         setSliderPosition(url,data, tableSelector, reloadurl);
+
     
     }); 
 
@@ -687,7 +692,6 @@
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val().toString();
         var url = $(this).data('url');
-        var preview = $(this).closest("form").find("#preview").val().toString();        
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
@@ -1568,6 +1572,7 @@
     });  
 
     $(document.body).on('click','#commitSliderChanges',function (e) { 
+        loader.showPleaseWait();
         var commit = 1;
         var hash = hex_sha1(userid + password);
         $.ajax({
@@ -1581,7 +1586,7 @@
                    
             },
         });   
-    });         
+    }); 
 
     $(document.body).on('click','#addSubCategoryNavigation',function (e) { 
         loader.showPleaseWait();          
@@ -1663,6 +1668,7 @@
 
     function setSliderPosition(url,data, tableSelector, reloadurl)
     {
+                      
         $.ajax({
             type: 'GET',
             url: url,
@@ -1673,15 +1679,14 @@
             dataType: 'jsonp',
             success: function(json) {
                 $(tableSelector).load(reloadurl);   
-                getSliderPreview();                 
                 loader.hidePleaseWait();   
             },
             error: function(e) {
                 $(tableSelector).load(reloadurl);   
-                getSliderPreview();                
                 loader.hidePleaseWait();                   
             }
-        }); 
+        });
+        getSliderPreview();            
     }    
 
     function setPositionAdsSection(url,data)
@@ -1853,6 +1858,7 @@
             dataType: 'jsonp',
             success: function(json) {
                 $("#manageSliderSection").load("getAllSliders"); 
+                getSliderPreview();                
                 loader.hidePleaseWait();   
             },
             error: function(e) {
@@ -1861,6 +1867,7 @@
                 showErrorModal("Please try again");
             }
         }); 
+
     }    
 
     function getSliderPreview()

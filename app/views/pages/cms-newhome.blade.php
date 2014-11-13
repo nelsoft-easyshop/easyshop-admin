@@ -1227,15 +1227,16 @@
                   <!--End Edit Other Category Modal -->
             </div> 
 
-            <div class="row">
-                <div class='col-md-12'>
-                    <center>
-                        <a1 href="#" class="btn btn-success text-center" data-url="{{{$newHomeCmsLink}}}/commitSliderChanges" id="commitSliderChanges">Commit Slider Changes
-                        </a1>
-                    </center>
-                </div>
-            </div>  
+
             <div class="tab-pane fade active in" id="manageSliderSection">
+                <div class="row">
+                    <div class='col-md-12'>
+                        <center>
+                            <a1 href="#" class="btn btn-success text-center" id="commitSliderChanges">Commit Slider Changes
+                            </a1>
+                        </center>
+                    </div>
+                </div>                  
                 <legend>     
                     <h4 class="tbl-title">
                         <span class="glyphicon glyphicon-list-alt"></span>
@@ -1489,7 +1490,7 @@
                                                     <!--End Edit Slide Modal -->
 
                                                 <span style="display:none;">{{$subSlideIndex++}}</span>  
-                                                <span style="display:none;" class='subSlide'>{{$slideCount++}}</span>
+                                                <span style="display:none;" class='subSlide_{{$sliderIndex}}'>{{$slideCount++}}</span>
                                                 </div>
                                             @endforeach
                                         </div>
