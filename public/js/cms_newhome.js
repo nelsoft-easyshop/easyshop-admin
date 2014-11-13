@@ -731,7 +731,7 @@
                 loader.hidePleaseWait();   
             },
             error: function(e) {
-                // $(tableSelector).load(reloadurl);             
+                $(tableSelector).load(reloadurl);             
                 fetchPreviewSubSlider(count, index);
                 loader.hidePleaseWait();   
             }
