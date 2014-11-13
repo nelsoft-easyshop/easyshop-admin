@@ -15,10 +15,10 @@
     <div class="row">
         <section id="tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
                 <li><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
                 <li><a href="#manageCategorySection" role="tab"  data-toggle="tab">Manage Category Section</a></li>                
                 <li><a href="#manageAdSection" role="tab"  data-toggle="tab">Manage Ad Section</a></li>                
-                <li class="active"><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
                 <li ><a href="#manageSellerSection" role="tab"  data-toggle="tab">Manage Seller Section</a></li>                
                 <li class="dropdown"  >
                     <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Manage Category Navigation<span class="caret"></span></a>

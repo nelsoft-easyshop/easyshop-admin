@@ -111,9 +111,9 @@ class XMLContentGetterService
      *
      *  @return string $link
      */
-    public function getSliderXml()
+    public function getTempHomeXml()
     {
-        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getSliderXml'));
+        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getTempHomeXml'));
         return $xmlString;
     }              
 }

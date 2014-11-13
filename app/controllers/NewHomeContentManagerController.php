@@ -15,7 +15,7 @@ class NewHomeContentManagerController extends BaseController
         $xmlString = $this->XMLService->getNewHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
-        $sliderXmlString = $this->XMLService->getSliderXml();
+        $sliderXmlString = $this->XMLService->getTempHomeXml();
         $this->sliderMap = simplexml_load_string(trim($sliderXmlString));        
     
     }      
@@ -263,7 +263,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $index = (int)$index;
         $adminEntity = App::make('AdminMemberRepository'); 
-        $sliderXmlString = $this->XMLService->getSliderXml();
+        $sliderXmlString = $this->XMLService->getTempHomeXml();
         $this->map = simplexml_load_string(trim($sliderXmlString));                       
         foreach($this->map->sliderTemplate as $template) {
             $templateLists[] = $template->template;
@@ -290,7 +290,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $adminEntity = App::make('AdminMemberRepository'); 
 
-        $sliderXmlString = $this->XMLService->getSliderXml();
+        $sliderXmlString = $this->XMLService->getTempHomeXml();
         $this->map = simplexml_load_string(trim($sliderXmlString));                    
         foreach($this->map->sliderTemplate as $template) {
             $templateLists[] = $template->template;
