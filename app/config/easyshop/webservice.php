@@ -23,6 +23,7 @@ return array(
     'easyShopLink'=> "$baseUrl",
     'getMobileXml'=> "$baseUrl/webservice/mobilewebservice/getcontents",
     'getNewHomeXml'=> "$baseUrl/webservice/newhomewebservice/getcontents",
+    'getSliderXml'=> "$baseUrl/webservice/newhomewebservice/getSliderContents",
 );
 
 

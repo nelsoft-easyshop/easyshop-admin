@@ -14,6 +14,9 @@ class NewHomeContentManagerController extends BaseController
         $this->XMLService = $XMLService;
         $xmlString = $this->XMLService->getNewHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
+
+        $sliderXmlString = $this->XMLService->getSliderXml();
+        $this->sliderMap = simplexml_load_string(trim($sliderXmlString));        
     
     }      
       
@@ -42,11 +45,11 @@ class NewHomeContentManagerController extends BaseController
             $childCategoryLists[] = array("slug" => $value->slug, "name" => $value->name);
         }               
 
-        foreach($this->map->sliderSection->slide as $slides) {
+        foreach($this->sliderMap->sliderSection->slide as $slides) {
             $sliders[] = $slides;
         }
 
-        foreach($this->map->sliderTemplate as $template) {
+        foreach($this->sliderMap->sliderTemplate as $template) {
             $templateLists[] = $template;
         } 
         
@@ -259,7 +262,9 @@ class NewHomeContentManagerController extends BaseController
     public function getSlideSection($index)
     {
         $index = (int)$index;
-        $adminEntity = App::make('AdminMemberRepository');             
+        $adminEntity = App::make('AdminMemberRepository'); 
+        $sliderXmlString = $this->XMLService->getSliderXml();
+        $this->map = simplexml_load_string(trim($sliderXmlString));                       
         foreach($this->map->sliderTemplate as $template) {
             $templateLists[] = $template->template;
         }        
@@ -283,7 +288,10 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAllSliders()
     {
-        $adminEntity = App::make('AdminMemberRepository');             
+        $adminEntity = App::make('AdminMemberRepository'); 
+
+        $sliderXmlString = $this->XMLService->getSliderXml();
+        $this->map = simplexml_load_string(trim($sliderXmlString));                    
         foreach($this->map->sliderTemplate as $template) {
             $templateLists[] = $template->template;
         }        
@@ -382,8 +390,13 @@ class NewHomeContentManagerController extends BaseController
     }    
     public function getSliderPreview()
     {
+        $adminEntity = App::make('AdminMemberRepository');            
         $html =  View::make("partials.sliderpreview")
                     ->with("newHomeCmsLink",$this->XMLService->getNewHomeCmsLink())
+                    ->with('userid', Auth::id())
+                    ->with('hash', Input::get("hash"))
+                    ->with('commit', Input::get("commit"))
+                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))                    
                     ->render();
         return Response::json(array('html' => $html));           
                     

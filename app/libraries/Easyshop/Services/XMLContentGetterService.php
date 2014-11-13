@@ -104,5 +104,16 @@ class XMLContentGetterService
     {
         $xmlString = file_get_contents(\Config::get('easyshop/webservice.getNewHomeXml'));
         return $xmlString;
-    }       
+    }   
+
+    /**
+     *  Returns the contents new_home_page_temp.xml
+     *
+     *  @return string $link
+     */
+    public function getSliderXml()
+    {
+        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getSliderXml'));
+        return $xmlString;
+    }              
 }
