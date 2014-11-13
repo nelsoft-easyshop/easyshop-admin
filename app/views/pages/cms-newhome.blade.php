@@ -68,7 +68,7 @@
 
                     <form id='left' target="test"  class="form-horizontal">                                          
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <label for="userId" class="col-sm-2 control-label">Select Brand Name</label>
                             <div class="col-sm-10">
                                 <select name="c_stateregion" id="addBrandsDropDown"  class="form-control">
                                     @foreach($allBrandsLists as $allBrands)
@@ -146,7 +146,7 @@
                                             {{ Form::hidden('index', "", array('id' => 'editBrandsIndex','class' => 'form-control')) }}                                                                                              
                                             {{ Form::hidden('url', "", array('id' => 'editBrandsUrl','class' => 'form-control')) }}                                                                                              
 
-                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setBrands" id="editBrandsSubmit">Edit</button>
+                                            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setBrands" id="editBrandsSubmit">Save</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                         </form>
                                     </div>
@@ -171,7 +171,7 @@
 
                     <form id='left' target="test"  class="form-horizontal">                                          
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <label for="userId" class="col-sm-2 control-label">Add Seller Slug</label>
                             <div class="col-sm-10">
                                 <input type="text" id="value" name='value' class='form-control'> 
                             </div>
@@ -274,7 +274,7 @@
 
                     <form id='left' target="test"  class="form-horizontal">                                          
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Enter Text</label>
+                            <label for="userId" class="col-sm-2 control-label">Enter Product Slug</label>
                             <div class="col-sm-10">
                                 <input type="text" id="value" name='value' class='form-control'> 
                             </div>
@@ -494,6 +494,7 @@
                             </div>
                         </div>
                     <span style="display:none;">{{$categorySectionIndex = 0}}</span>
+                    <span style="display:none;">{{$categorySectionCount = 1}}</span>
                     </form>   
                     <div class="panel-group" id="accordion">
                         @foreach($categorySection as $categoryPanel)
@@ -580,7 +581,7 @@
                                                             <span style="display:none;"></span>                            
                                                             <input type="hidden" class="boxContentCount_" value="">
                                                         </tr>
-                                                        <span style="display:none;">{{{ $subCategorySection ++ }}}</span>
+                                                        <span style="display:none;" class="subCategorySectionCount_{{$categorySectionIndex}}">{{{ $subCategorySection++ }}}</span>
                                                     @endforeach
 
                                                 </tbody> 
@@ -697,7 +698,9 @@
 
                                         </div>
                                     </div>
-                                    <span style="display:none;">{{$categorySectionIndex++}}</span>                           
+                                    <span style="display:none;">{{$categorySectionIndex++}}</span>      
+                                    <span style="display:none;" class='categorySectionCount'>{{$categorySectionCount++}}</span>
+
                                 </div>
                         @endforeach
                     </div>
@@ -759,24 +762,6 @@
                                                         style="position:absolute;top:2px;left:5px;"
                                                         data-url = "{{{$newHomeCmsLink}}}/removeContent"
                                                      ><font color='red'><b>X</b></font></a>
-
-                                                    <a 
-                                                        id="moveupAdsSection" 
-                                                        data-action="up" 
-                                                        data-index="{{$adsSectionIndex}}" 
-                                                        data-order="{{$adsSectionIndex}}" 
-                                                        style="position:absolute;top:235px;left:5px;"
-                                                        data-url = "{{{$newHomeCmsLink}}}/setPositionAdsSection"
-                                                     ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
-
-                                                     <a  
-                                                        id="movedownAdsSection" 
-                                                        data-action="down" 
-                                                        data-index="{{$adsSectionIndex}}" 
-                                                        data-order="{{$adsSectionIndex}}" 
-                                                        style="position:absolute;top:235px;right:5px;"
-                                                        data-url = "{{{$newHomeCmsLink}}}/setPositionAdsSection"
-                                                     ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                  </div>
                                                  <span class="adsCount" style="display:none;">{{$adsCount}}</span>
                                                 <!--Start Edit Slide Modal -->
@@ -976,24 +961,6 @@
                                                         style="position:absolute;top:2px;left:5px;"
                                                         data-url = "{{{$newHomeCmsLink}}}/removeContent"
                                                      ><font color='red'><b>X</b></font></a>
-
-                                                    <a 
-                                                        id="moveupProductPanel" 
-                                                        data-action="up" 
-                                                        data-index="{{$productPanelindex}}" 
-                                                        data-order="{{$productPanelindex}}" 
-                                                        style="position:absolute;top:235px;left:5px;"
-                                                        data-url = "{{{$newHomeCmsLink}}}/setPositionProductPanel"
-                                                     ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
-
-                                                     <a  
-                                                        id="movedownProductPanel" 
-                                                        data-action="down" 
-                                                        data-index="{{$productPanelindex}}" 
-                                                        data-order="{{$productPanelindex}}" 
-                                                        style="position:absolute;top:235px;right:5px;"
-                                                        data-url = "{{{$newHomeCmsLink}}}/setPositionProductPanel"
-                                                     ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                  </div>
                                                  <span class="productPanelCount" style="display:none;">{{$productPanelCount}}</span>
                                                 <!--Start Edit Slide Modal -->

@@ -2,6 +2,8 @@
     var userid = $("#userid").val();
     var password = $("#password").val();
 
+    var minimumCategoryProductPanel = 2;
+    var minimumCategorySectionProductPanel = 3;
     $(document.body).on('click','#addSubCategorySection',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
@@ -167,12 +169,11 @@
         var nodename = $(this).data("nodename");
         var url = $(this).data("url");
         var hash = hex_sha1(index + subindex  + nodename + userid + password);
-
         data = { index: index, subIndex:subindex,nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};  
         var count = parseInt($(".categoryProductPanelCount_"+index).last().text());        
         var tableSelector = "#categorySectionProductPanel_" + index;
         var reloadurl = "getCategoriesProductPanel/" + index;
-        if(count > 1 ) {
+        if(count > minimumCategoryProductPanel ) {
             loader.showPleaseWait();                    
             $.ajax({
                 type: 'GET',
@@ -341,7 +342,6 @@
     });  
 
     $(document.body).on('click','.removeCategorySection',function (e) { 
-        loader.showPleaseWait();          
         var index = $(this).data("index").toString();
         var subIndex = $(this).data("subindex").toString();
         var nodename = $(this).data("nodename");
@@ -352,25 +352,32 @@
 
         var tableSelector = "#subCategoriesSection_" + index;
         var reloadurl = "getSubCategoriesSection/" + index;
+        var categoryCount = ".subCategorySectionCount_"+index;
+        var count = $(categoryCount).last().text();
+        if(count >= minimumCategoryProductPanel) {
+            loader.showPleaseWait();                      
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    $(tableSelector).load(reloadurl);
+                    loader.hidePleaseWait();  
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                    showErrorModal("Please try again");
+                }
+            });            
+        }
+        else {
+            showErrorModal("Sorry, but you have reached the minimum number of sub category section");
 
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $(tableSelector).load(reloadurl);
-                loader.hidePleaseWait();  
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-                showErrorModal("Please try again");
-            }
-        });       
-
+        }
     });  
 
 
@@ -420,7 +427,10 @@
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
-        target = target == "" ? "/" : target;
+        if($.trim(target) === "") {
+            target = "/";
+            $(this).closest("form").find("#target").val("/");            
+        }
         var hash =  hex_sha1(index + userid + value + target  + password);
         var form = "#adSectionForm"+index;
         $(this).closest("form").find("#editAdsSectionHash").val(hash);
@@ -485,23 +495,26 @@
                 showErrorModal("Please enter a valid slug");
             }
             else {
-                    var hash =  hex_sha1(slug + action + userid + password);
-                    data = { slug:slug, action:action, userid:userid,  password:password, hash:hash, callback:'?'};
-                    $.ajax({
-                        type: 'GET',
-                        url: url,
-                        data:data,
-                        async: false,
-                        jsonpCallback: 'jsonCallback',
-                        contentType: "application/json",
-                        dataType: 'jsonp',
-                        success: function(json) {
-                            loader.hidePleaseWait();   
-                        },
-                        error: function(e) {
-                            loader.hidePleaseWait();
-                        }
-                    });    
+                var hash =  hex_sha1(slug + action + userid + password);
+                data = { slug:slug, action:action, userid:userid,  password:password, hash:hash, callback:'?'};
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:data,
+                    async: false,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();
+                        if(json.sites[0]["usererror"]){
+                            showErrorModal(json.sites[0]["usererror"]);
+                        }   
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });    
             }
         }
         else {
@@ -909,7 +922,12 @@
         var index = $(this).data("index").toString();
         var hash =  hex_sha1(index + nodename + userid + password);
         data = { index:index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
-        var count = parseInt($(".parentSliderCount").last().text());
+        if(nodename == "categorySectionPanel") {
+            var count = parseInt($(".categorySectionCount").last().text());
+        }
+        else {
+            var count = parseInt($(".parentSliderCount").last().text());
+        }
         if(count > 0) {
             var $confirm = confirm("Are you sure you want to remove?");   
             if($confirm) {
@@ -937,31 +955,41 @@
                 });             
             }            
         }
+        else {
+            showErrorModal("Sorry, but you have reached the minimum number of sub category section");            
+        }
     }); 
 
     $(document.body).on('click','#addCategorySectionProductPanel',function (e) { 
-        loader.showPleaseWait();           
         var value = $('#addCategorySectionValue option:selected').val();
         var url = $(this).data("url");
         var hash =  hex_sha1(value + userid + password);
         data = { value:value, userid:userid,  password:password, hash:hash, callback:'?'};
         
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();   
-                $("#manageCategorySection").load("getCategoriesPanel");
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });   
+        var count = parseInt($(".categorySectionCount").last().text());
+        if(count < minimumCategorySectionProductPanel) {
+            loader.showPleaseWait();                       
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();   
+                    $("#manageCategorySection").load("getCategoriesPanel");
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });    
+        }
+        else {
+            showErrorModal("Sorry, but you have reached the maximum number of category section")
+        }
+  
     });   
 
     $(document.body).on('click','.removeNewArrival',function (e) { 
@@ -1015,7 +1043,12 @@
             dataType: 'jsonp',
             success: function(json) {
                 loader.hidePleaseWait();  
-                $("#addTopSellersTable").load("getTopSellers");
+                if(json.sites[0]["usererror"]){
+                    showErrorModal(json.sites[0]["usererror"]);
+                }
+                else {
+                    $("#addTopSellersTable").load("getTopSellers");
+                }         
             },
             error: function(e) {
                 loader.hidePleaseWait();
@@ -1096,8 +1129,14 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                loader.hidePleaseWait();  
-                $("#addTopProductsTable").load("getTopProducts");
+                loader.hidePleaseWait(); 
+                if(json.sites[0]["success"] != "success") {
+                    loader.hidePleaseWait();    
+                    showErrorModal("Slug Does Not Exist");
+                }            
+                else {
+                    $("#addTopProductsTable").load("getTopProducts");
+                }       
             },
             error: function(e) {
                 loader.hidePleaseWait();
@@ -1312,7 +1351,12 @@
             dataType: 'jsonp',
             success: function(json) {
                 loader.hidePleaseWait();   
-                $("#addTopSellersTable").load("getTopSellers");
+                if(json.sites[0]["usererror"]){
+                    showErrorModal(json.sites[0]["usererror"]);
+                }
+                else {
+                    $("#addTopSellersTable").load("getTopSellers");
+                }                
             },
             error: function(e) {
                 loader.hidePleaseWait();
@@ -1338,8 +1382,14 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                loader.hidePleaseWait();   
-                $("#addTopProductsTable").load("getTopProducts");
+                loader.hidePleaseWait(); 
+                if(json.sites[0]["success"] != "success") {
+                    loader.hidePleaseWait();    
+                    showErrorModal("Slug Does Not Exist");
+                } 
+                else {
+                    $("#addTopProductsTable").load("getTopProducts");
+                }                  
             },
             error: function(e) {
                 loader.hidePleaseWait();

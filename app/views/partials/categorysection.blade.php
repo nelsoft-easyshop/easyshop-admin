@@ -26,14 +26,15 @@
                             </div>
                         </div>
                     <span style="display:none;">{{$categorySectionIndex = 0}}</span>
+                    <span style="display:none;">{{$categorySectionCount = 1}}</span>                    
                     </form>   
                     <div class="panel-group" id="accordion">
                         @foreach($categorySection as $categoryPanel)
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_category_{{$categorySectionIndex}}">Manage Category Section</a>
-                                            <span class="glyphicon glyphicon-remove" id="removeCategorySection" data-nodename="categorySectionPanel" data-index="{{$categorySectionIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style="margin-left:860px !important;cursor:pointer;"></span>
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_category_{{$categorySectionIndex}}">{{ucwords(str_replace("-"," ",$categoryPanel->categorySlug))}}</a>
+                                            <span class="glyphicon glyphicon-remove pull-right" id="removeCategorySection" data-nodename="categorySectionPanel" data-index="{{$categorySectionIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style="cursor:pointer;"></span>
                                         </h4>
                                     </div>
                                     
@@ -235,7 +236,8 @@
 
                                         </div>
                                     </div>
-                                    <span style="display:none;">{{$categorySectionIndex++}}</span>                           
+                                    <span style="display:none;">{{$categorySectionIndex++}}</span>    
+                                    <span style="display:none;" class='categorySectionCount'>{{$categorySectionCount++}}</span>                                                           
                                 </div>
                         @endforeach
                     </div>
