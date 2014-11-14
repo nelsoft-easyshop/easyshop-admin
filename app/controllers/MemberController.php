@@ -36,8 +36,9 @@ class MemberController extends BaseController
         $locationLookUpRepository = App::make('LocationLookUpRepository');
         $locationService = $this->locationService;
         $data = $locationService->location($locationLookUpRepository->getByType());
-
+        $MemberRepository = App::make('MemberRepository');
         return View::make('pages.userlist')
+            ->with('member_count', $MemberRepository->getUsersCount())        
             ->with('list_of_member', App::make('MemberRepository')->search($userData, 100))
             ->with('list_of_location', $data);
     }
