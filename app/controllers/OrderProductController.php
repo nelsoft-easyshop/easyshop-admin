@@ -317,31 +317,33 @@ class OrderProductController extends BaseController
      */
     public function getSellersTransactions()
     {
-        // prepare repository needed
         $orderProductRepository = App::make('OrderProductRepository');
         $tagRepository = App::make('TagTypeRepository');
 
-        $userData = []; 
-        $userData = array(
+        $userData = [
             'fullname' => Input::get('fullname'),
             'username' => Input::get('username'),
             'contactno' => Input::get('number'),
             'email' => Input::get('email'),
             'tag' => Input::get('tag'),
-        );
+        ];
 
-        // Query the transactions
-        $transactionRecord = $orderProductRepository->getAllSellersTransaction(100,TRUE,$userData);
-        $pagination = $transactionRecord->appends(Input::except(array('page','_token')))->links();
+        $transactionRecord = $orderProductRepository->getAllSellersTransaction(100,true,$userData);
+        $pagination = $transactionRecord->appends(Input::except(['page','_token']))->links();
 
-        // get tag constant
         $constantArray['confirmed'] = $tagRepository->getConfirmed();
         $constantArray['refund'] = $tagRepository->getRefund();
+        $constantArray['contacted'] = $tagRepository->getContacted(); 
 
-        // Render the view
+        $defaultStatus = $tagRepository->getSellerTags();
+        $nonDefaultStatus = $tagRepository->getSellerTags(true);
+
         return View::make('pages.payoutsellerlist')
                     ->with('transactionRecord', $transactionRecord)
                     ->with('constantValues', $constantArray)
+                    ->with('defaultStatus', $defaultStatus)
+                    ->with('nonDefaultStatus', $nonDefaultStatus)
+                    ->with('tagType', Input::get('tag'))
                     ->with('pagination', $pagination);
     }
 
@@ -351,35 +353,23 @@ class OrderProductController extends BaseController
      */
     public function getSellerTransactionDetailsByOrderId()
     { 
-        // get input data
         $orderId = Input::get('order_id'); 
         $memberId = Input::get('member_id');
+        $currentTag = Input::get('current_tag');
 
-        // prepare repository needed
         $orderProductRepository = App::make('OrderProductRepository'); 
-
-        //prepare service
+        $tagRepository = App::make('TagTypeRepository');
         $payoutService = App::make('PayoutService');
+        $transactionDetails = $orderProductRepository->getOrderProductBySellerOngoing($orderId, $memberId, $currentTag);
+        $payoutService->applyStatusOrderProductValidate($transactionDetails);
 
-        // Query the transactions 
-        $transactionDetails = $orderProductRepository->getOrderProductByOrderId($orderId,$memberId);
-
-        // get available tags
-        $orderTagStatus = $payoutService->checkOrderProductTagStatus($orderId,$memberId);
-        $availableTags = $orderTagStatus['tags'];
-        $currentStatus = $orderTagStatus['current_status'];
-        $requestForRefund = $orderTagStatus['request_refund'];
-
-        // prepare view
         $html = View::make('partials.payoutsellertransactiondetails')
-                        ->with('transactionDetails', $transactionDetails) 
-                        ->with('tags', $availableTags)
-                        ->with('currentStatus', $currentStatus)
-                        ->with('requestForRefund', $requestForRefund)
+                        ->with('transactionDetails', $transactionDetails)
+                        ->with('isFilter', $currentTag)
+                        ->with('contactedTag', $tagRepository->getContacted())
                         ->render();
 
-
-        return Response::json(array('html' => $html)); 
+        return Response::json(['html' => $html]); 
     } 
 
     /**
@@ -414,7 +404,7 @@ class OrderProductController extends BaseController
                         ->with("orders", $orders)
                         ->render();
 
-            return Response::json(array('html' => $html));  
+            return Response::json(['html' => $html]);  
         }
 
     }   
@@ -459,21 +449,19 @@ class OrderProductController extends BaseController
      */
     public function updateOrderProductTagStatus()
     {
-        // get input data
-
         $orderId = Input::get('order_id'); 
         $memberId = Input::get('member_id');
         $tagType = Input::get('tag_type');
+        $orderProductIds = Input::get('order_product_ids');
         $adminMemberId = Auth::id();
 
-        //prepare service
         $payoutService = App::make('PayoutService');
         $forBuyer = (Input::get("forBuyer")) ? false : true;
-        // Update status
         $orderTagStatus = $payoutService->updateOrderProductTagStatus($orderId
                                                                     ,$memberId
                                                                     ,$tagType
                                                                     ,$adminMemberId
+                                                                    ,$orderProductIds
                                                                     ,$forBuyer);
 
         return Response::json($orderTagStatus);

@@ -111,26 +111,24 @@ class PayoutService
      * @param bool $isSeller
      * @return array
      */
-    public function checkOrderProductTagStatus($orderId,$memberId,$isSeller = TRUE)
-    {   
-
+    public function checkOrderProductTagStatus($orderId, $memberId, $isSeller = true)
+    {
         $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderId,$memberId);
         $tagCountOfOrderProducts = $checkTagTable->count();
-        $hasBeenTagged = ($tagCountOfOrderProducts > 0) ? TRUE : FALSE;
+        $hasBeenTagged = ($tagCountOfOrderProducts > 0) ? true : false;
         $currentStatus = ($tagCountOfOrderProducts > 0) ? $checkTagTable[0]->tag_type_id 
                                                      : $this->tagTypeRepository->getContacted();
-        $requestType = FALSE;
+        $requestType = false;
 
         if($tagCountOfOrderProducts > 0){  
             $dateUpdated = Carbon::create(Carbon::parse($checkTagTable[0]->date_updated)->year
                                , Carbon::parse($checkTagTable[0]->date_updated)->month
                                , Carbon::parse($checkTagTable[0]->date_updated)->day);
             if(Carbon::now() > $dateUpdated->addDays($this->ETD) && intval($currentStatus) === $this->tagTypeRepository->getContacted()){
-                $requestType = TRUE;
-
+                $requestType = true;
             }
         }
-        $requestLabel = ($isSeller) ? 'request_refund' : 'request_payout';
+        $requestLabel = $isSeller ? 'request_refund' : 'request_payout';
 
         $returnVar = array(
             'tags' => ($tagsReturn = ($isSeller) ? $this->tagTypeRepository->getSellerTags($hasBeenTagged) : $this->tagTypeRepository->getBuyerTags($hasBeenTagged)),
@@ -139,6 +137,31 @@ class PayoutService
         );
 
         return $returnVar;
+    }
+
+    public function applyStatusOrderProductValidate(&$transactionDetails)
+    {
+        foreach ($transactionDetails as $transaction) {
+            $tagTypeId = (int)$transaction->tag_id;
+            $transaction->requestForRefund = false;
+            $noTagStatus = $this->tagTypeRepository->getNoTag();
+            $completedStatus = (int)$this->tagTypeRepository->getContacted();
+            $transaction->tagStatusAvailable = $this->tagTypeRepository->getSellerTags();
+
+            if($tagTypeId > $noTagStatus){
+                $transaction->tagStatusAvailable = $this->tagTypeRepository->getSellerTags(true);
+                if($tagTypeId === $completedStatus){ 
+                    $dateUpdated = Carbon::create(Carbon::parse($transaction->date_updated)->year
+                                 , Carbon::parse($transaction->date_updated)->month
+                                 , Carbon::parse($transaction->date_updated)->day);
+                    if(Carbon::now() > $dateUpdated->addDays($this->ETD)){
+                        $transaction->requestForRefund = true;
+                    }
+                }
+            }
+        }
+
+        return $transactionDetails;
     }
 
     /**
@@ -158,25 +181,30 @@ class PayoutService
 
     /**
      * Update order product tag status of each order product
-     * @param  [type] $orderId       [description]
-     * @param  [type] $memberId      [description]
-     * @param  [type] $tagType       [description]
-     * @param  [type] $adminMemberId [description]
-     * @return [type]                [description]
+     * @param  integer $orderId
+     * @param  integer $memberId
+     * @param  integer $tagType
+     * @param  integer $adminMemberId
+     * @return array
      */
-    public function updateOrderProductTagStatus($orderId,$memberId,$tagType,$adminMemberId, $forSeller = true)
-    {   
+    public function updateOrderProductTagStatus($orderId,
+                                                $memberId,
+                                                $tagType,
+                                                $adminMemberId,
+                                                $orderProductIds,
+                                                $forSeller = true)
+    {
+
+        $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderProductIds, $memberId);
+
         if($forSeller) {
-            $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderId,$memberId);
-            $orderProductStatus = $this->orderProductStatusRepository->getReturnBuyerStatus();            
+            $orderProductStatus = $this->orderProductStatusRepository->getReturnBuyerStatus();
         }
         else{
-            $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderId,$memberId, false);
-            $orderProductStatus = $this->orderProductStatusRepository->getForwardSellerStatus();            
+            $orderProductStatus = $this->orderProductStatusRepository->getForwardSellerStatus();
         }
 
-
-        $hasShippingDetails = TRUE;
+        $hasShippingDetails = true;
         $returnMessage = "";
 
         $orderStatus = $this->orderStatusRepository->getCompletedStatus();
@@ -187,7 +215,7 @@ class PayoutService
                 foreach ($checkTagTable as $orderProductTag) {
                     $shippingInfo = $this->productShippingCommentRepository->getShippingCommentByOrderProductId($orderProductTag->order_product_id);
                     if($shippingInfo->count() <= 0){ 
-                        $hasShippingDetails = FALSE;
+                        $hasShippingDetails = false;
                         break;
                     }
                 }
@@ -201,7 +229,7 @@ class PayoutService
                     }
                 }
                 else{
-                    $hasShippingDetails = FALSE;
+                    $hasShippingDetails = false;
                     $returnMessage = "Please complete all shipping details.";
                 }
             }
@@ -226,7 +254,7 @@ class PayoutService
         }
         // else insert new data
         else{
-            $orderProducts = $this->orderProductRepository->getOrderProductByOrderId($orderId,$memberId);
+            $orderProducts = $this->orderProductRepository->getManyOrderProductById($orderProductIds);
             foreach ($orderProducts as $orderProduct) {
                 $this->orderProductTagRepository->insertOrderProductTag($orderProduct->id_order_product
                                                                         ,$orderProduct->seller_id

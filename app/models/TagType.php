@@ -3,6 +3,7 @@
 class TagType extends Eloquent 
 {
 
+    const NOTAG = 0;
     const CONTACTED = 1;
     const REFUND = 2;
     const ON_HOLD = 3;
