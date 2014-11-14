@@ -141,6 +141,7 @@
     }
 
     $('.seller_detail').click(function(){
+        var $forBuyer = 0;        
         loader.showPleaseWait();
         var $this = $(this);
         var $url = '/contact/seller/view-transactions-details'; 

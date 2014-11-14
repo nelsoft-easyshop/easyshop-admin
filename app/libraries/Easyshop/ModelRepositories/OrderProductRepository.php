@@ -230,10 +230,18 @@ class OrderProductRepository extends AbstractRepository
      */
     public function getAllSellersTransaction($row = 100,
                                              $filter = false,
-                                             $userData = [])
+                                             $userData = [],
+                                             $forBuyer = false)
     {
-        $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
-        $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+        if(!$forBuyer) {
+          $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
+          $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+        }
+        else {
+          $query = ProductShippingComment::leftJoin("es_order_product", "es_order_product.id_order_product", "=", "es_product_shipping_comment.order_product_id");
+          $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order'); 
+          $query->join("es_member","es_order.buyer_id","=","es_member.id_member");        
+        }
 
         $query->leftJoin('es_order_product_tag',function($leftJoin){
             $leftJoin->on('es_order_product_tag.order_product_id', '=', 'es_order_product.id_order_product');
@@ -417,14 +425,24 @@ class OrderProductRepository extends AbstractRepository
      * @param integer $orderId
      * @return OrderProduct[]
      */
-    public function getOrderProductBySellerOngoing($orderId, $sellerId, $tagType = "")
+    public function getOrderProductBySellerOngoing($orderId, $sellerId, $tagType = "",$forBuyer)
     {
-        $query = OrderProduct::leftjoin('es_product_shipping_comment','es_order_product.id_order_product','=','es_product_shipping_comment.order_product_id');
-        $query->leftjoin('es_order_product_tag',"es_order_product.id_order_product","=","es_order_product_tag.order_product_id");
-        $query->leftjoin('es_tag_type',"es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type")
-              ->where('es_order_product.order_id', '=', $orderId)
-              ->where('es_order_product.seller_id','=',$sellerId)
-              ->where('es_order_product.status','=',OrderProductStatus::STATUS_ON_GOING);
+        if(!$forBuyer) {
+          $query = OrderProduct::leftjoin('es_product_shipping_comment','es_order_product.id_order_product','=','es_product_shipping_comment.order_product_id');
+          $query->leftjoin('es_order_product_tag',"es_order_product.id_order_product","=","es_order_product_tag.order_product_id");
+          $query->leftjoin('es_tag_type',"es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type");
+          $query->where('es_order_product.order_id', '=', $orderId);
+          $query->where('es_order_product.seller_id','=',$sellerId);
+        }
+        else {  
+          $query = OrderProduct::join('es_product_shipping_comment','es_order_product.id_order_product','=','es_product_shipping_comment.order_product_id');
+          $query->leftjoin('es_order_product_tag',"es_order_product.id_order_product","=","es_order_product_tag.order_product_id");
+          $query->leftjoin('es_tag_type',"es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type");
+          $query->where('es_order_product.order_id', '=', $orderId);             
+          $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+          $query->where("es_order.buyer_id","=",$sellerId);             
+        }
+        $query->where('es_order_product.status','=',OrderProductStatus::STATUS_ON_GOING);
        
         if($tagType){
             $query->where('es_order_product_tag.tag_type_id', '=', $tagType);

@@ -348,6 +348,41 @@ class OrderProductController extends BaseController
     }
 
     /**
+     * Get all sellers with existing transactions
+     * @return view
+     */
+    public function getOrderProductsContactBuyer()
+    {
+        $orderProductRepository = App::make('OrderProductRepository');
+        $tagRepository = App::make('TagTypeRepository');
+
+        $userData = [
+            'fullname' => Input::get('fullname'),
+            'username' => Input::get('username'),
+            'contactno' => Input::get('number'),
+            'email' => Input::get('email'),
+            'tag' => Input::get('tag'),
+        ];
+
+        $transactionRecord = $orderProductRepository->getAllSellersTransaction(100,true,$userData, true);
+        $pagination = $transactionRecord->appends(Input::except(['page','_token']))->links();
+
+        $constantArray['payout'] = $tagRepository->getPayOut();
+        $constantArray['contacted'] = $tagRepository->getContacted(); 
+
+        $defaultStatus = $tagRepository->getBuyerTags();
+        $nonDefaultStatus = $tagRepository->getBuyerTags(true);
+
+        return View::make('pages.payoutsbuyers')
+                    ->with('transactionRecord', $transactionRecord)
+                    ->with('constantValues', $constantArray)
+                    ->with('defaultStatus', $defaultStatus)
+                    ->with('nonDefaultStatus', $nonDefaultStatus)
+                    ->with('tagType', Input::get('tag'))
+                    ->with('pagination', $pagination);
+    }    
+
+    /**
      * Get all existing transaction details of the specific seller by order id
      * @return JSON
      */
@@ -356,12 +391,14 @@ class OrderProductController extends BaseController
         $orderId = Input::get('order_id'); 
         $memberId = Input::get('member_id');
         $currentTag = Input::get('current_tag');
+        $forBuyer = (bool) Input::get('forBuyer');
 
         $orderProductRepository = App::make('OrderProductRepository'); 
         $tagRepository = App::make('TagTypeRepository');
         $payoutService = App::make('PayoutService');
-        $transactionDetails = $orderProductRepository->getOrderProductBySellerOngoing($orderId, $memberId, $currentTag);
-        $payoutService->applyStatusOrderProductValidate($transactionDetails);
+        $transactionDetails = $orderProductRepository->getOrderProductBySellerOngoing($orderId, $memberId, $currentTag, $forBuyer);
+
+        $payoutService->applyStatusOrderProductValidate($transactionDetails,$forBuyer);
 
         $html = View::make('partials.payoutsellertransactiondetails')
                         ->with('transactionDetails', $transactionDetails)
@@ -376,7 +413,7 @@ class OrderProductController extends BaseController
      * Retrieves order products that are 2 days passed of ETD
      * @return JSON
      */
-    public function getOrderProductsContactBuyer()
+    public function getOrderProductsContactBuyer2()
     {
         $orders = [];
         $filter = (Input::get("filter")) ? Input::get("filter") : null;
@@ -449,6 +486,7 @@ class OrderProductController extends BaseController
      */
     public function updateOrderProductTagStatus()
     {
+ 
         $orderId = Input::get('order_id'); 
         $memberId = Input::get('member_id');
         $tagType = Input::get('tag_type');

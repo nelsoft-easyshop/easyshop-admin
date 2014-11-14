@@ -139,17 +139,17 @@ class PayoutService
         return $returnVar;
     }
 
-    public function applyStatusOrderProductValidate(&$transactionDetails)
+    public function applyStatusOrderProductValidate(&$transactionDetails , $forBuyer)
     {
         foreach ($transactionDetails as $transaction) {
             $tagTypeId = (int)$transaction->tag_id;
             $transaction->requestForRefund = false;
             $noTagStatus = $this->tagTypeRepository->getNoTag();
             $completedStatus = (int)$this->tagTypeRepository->getContacted();
-            $transaction->tagStatusAvailable = $this->tagTypeRepository->getSellerTags();
+            $transaction->tagStatusAvailable = (!$forBuyer) ? $this->tagTypeRepository->getSellerTags() : $this->tagTypeRepository->getBuyerTags();
 
             if($tagTypeId > $noTagStatus){
-                $transaction->tagStatusAvailable = $this->tagTypeRepository->getSellerTags(true);
+            $transaction->tagStatusAvailable = (!$forBuyer) ? $this->tagTypeRepository->getSellerTags(true) : $this->tagTypeRepository->getBuyerTags(true);
                 if($tagTypeId === $completedStatus){ 
                     $dateUpdated = Carbon::create(Carbon::parse($transaction->date_updated)->year
                                  , Carbon::parse($transaction->date_updated)->month
