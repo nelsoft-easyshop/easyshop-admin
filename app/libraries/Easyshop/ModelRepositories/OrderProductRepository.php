@@ -317,8 +317,6 @@ class OrderProductRepository extends AbstractRepository
         $query->leftJoin("es_tag_type","es_tag_type.id_tag_type","=","es_order_product_tag.tag_type_id");
         $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID);
         $query->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY]);
-        $query->whereNull('es_order_product_tag.tag_type_id');        
-        $query->orWhere('es_order_product_tag.tag_type_id', '!=', TagType::PAYOUT);
         if($filter != NULL) {
             if($filter == "username") {
                 $query->where('es_member.username', 'LIKE', '%' . $filterBy . '%');
@@ -341,7 +339,9 @@ class OrderProductRepository extends AbstractRepository
             else if($filter === "PAYOUT") {
                 $query->where('es_order_product_tag.tag_type_id', '=', TagType::PAYOUT);
             }                                                           
-        }              
+        } 
+        $query->whereNull('es_order_product_tag.tag_type_id');        
+        $query->orWhere('es_order_product_tag.tag_type_id', '!=', TagType::PAYOUT);                     
 
         $query->groupBy("es_order_product.seller_id", "es_order_product.order_id")
               ->orderBy($sortBy,$sortOrder);
