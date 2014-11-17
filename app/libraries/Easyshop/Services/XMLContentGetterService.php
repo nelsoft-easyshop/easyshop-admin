@@ -9,8 +9,7 @@ class XMLContentGetterService
      */
     public function GetXMLHomeFiles()
     {
-        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getHomeXML'));
-        return $xmlString;
+        return file_get_contents(\Config::get('easyshop/webservice.getHomeXML'));
     }
 
     /**
@@ -20,8 +19,7 @@ class XMLContentGetterService
      */
     public function GetHomeCmsLink()
     {
-        $link = \Config::get('easyshop/webservice.homeCmsLink');
-        return $link;
+        return \Config::get('easyshop/webservice.homeCmsLink');
     }
 
 
@@ -32,8 +30,7 @@ class XMLContentGetterService
      */
     public function GetContentCmsLink()
     {
-        $link = \Config::get('easyshop/webservice.feedCmsLink');
-        return $link;
+        return \Config::get('easyshop/webservice.feedCmsLink');
     }
 
     /**
@@ -43,8 +40,7 @@ class XMLContentGetterService
      */
     public function getMobileCmsLink()
     {
-        $link = \Config::get('easyshop/webservice.mobileCmsLink');
-        return $link;
+        return \Config::get('easyshop/webservice.mobileCmsLink');
     }    
 
 
@@ -55,8 +51,7 @@ class XMLContentGetterService
      */
     public function getNewHomeCmsLink()
     {
-        $link = \Config::get('easyshop/webservice.newHomeCmsLink');
-        return $link;
+        return \Config::get('easyshop/webservice.newHomeCmsLink');
     }       
 
     /**
@@ -66,8 +61,7 @@ class XMLContentGetterService
      */
     public function GetEasyShopLink()
     {
-        $link = \Config::get('easyshop/webservice.easyShopLink');
-        return $link;
+        return \Config::get('easyshop/webservice.easyShopLink');
 
     }
 
@@ -78,9 +72,7 @@ class XMLContentGetterService
      */
     public function GetXmlContentFiles()
     {
-
-        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getFeedXML'));
-        return $xmlString;
+        return file_get_contents(\Config::get('easyshop/webservice.getFeedXML'));
     }
 
     /**
@@ -91,8 +83,7 @@ class XMLContentGetterService
     public function getMobileHomeXml()
     {
 
-        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getMobileXml'));
-        return $xmlString;
+        return file_get_contents(\Config::get('easyshop/webservice.getMobileXml'));
     }    
 
     /**
@@ -102,8 +93,7 @@ class XMLContentGetterService
      */
     public function getNewHomeXml()
     {
-        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getNewHomeXml'));
-        return $xmlString;
+        return file_get_contents(\Config::get('easyshop/webservice.getNewHomeXml'));
     }   
 
     /**
@@ -113,7 +103,6 @@ class XMLContentGetterService
      */
     public function getTempHomeXml()
     {
-        $xmlString = file_get_contents(\Config::get('easyshop/webservice.getTempHomeXml'));
-        return $xmlString;
+        return file_get_contents(\Config::get('easyshop/webservice.getTempHomeXml'));
     }              
 }
