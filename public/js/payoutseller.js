@@ -10,7 +10,7 @@
     }
 
 
-    var updateStatus = function(order_id,member_id,tag_type,$rowStatus,dialogRef){
+    var updateStatus = function(order_id,member_id,tag_type,$rowStatus,forBuyer,dialogRef){
 
         var checkValues = $('input[name=order-id-checkbox]:checked').map(function(){
             return $(this).val();
@@ -33,6 +33,7 @@
                                 member_id:member_id,
                                 tag_type:tag_type,
                                 order_product_ids:checkValues,
+                                forBuyer:forBuyer
                             },
                         type: 'get',
                         dataType: 'JSON',
@@ -159,7 +160,7 @@
                     },
                 type: 'get',
                 dataType: 'JSON',
-                success: function(result){
+                success: function(result, forBuyer){
                     var modal_container = $('<div></div>');
                     modal_container.append(result.html); 
                     loader.hidePleaseWait();
@@ -181,7 +182,7 @@
                                     action: function(dialogRef) {
                                         $tagColor = $("#tagType option:selected").data('color');
                                         $tagType = $("#tagType").val();
-                                        updateStatus($orderId,$memberId,$tagType,$rowStatus,dialogRef);
+                                        updateStatus($orderId,$memberId,$tagType,$rowStatus,forBuyer,dialogRef);
                                     }
                                 }
                             ],
