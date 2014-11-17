@@ -409,42 +409,6 @@ class OrderProductController extends BaseController
         return Response::json(['html' => $html]); 
     } 
 
-    /**
-     * Retrieves order products that are 2 days passed of ETD
-     * @return JSON
-     */
-    public function getOrderProductsContactBuyer2()
-    {
-        $orders = [];
-        $filter = (Input::get("filter")) ? Input::get("filter") : null;
-        $filterBy = (Input::get("filterBy")) ? Input::get("filterBy") : null;
-        $orderProductRepository = App::make('OrderProductRepository'); 
-        $orderProductTagRepositoryRepository = App::make('OrderProductTagRepository'); 
-        $payoutService = App::make('PayoutService');
-        foreach ($orderProductRepository->getBuyersTransactionWithShippingComment((Input::get("sortBy")), (Input::get("sortOrder")), $filter, $filterBy) as $value) {
-            $orders[] = $value;
-        }
-        $paginatorService = App::make("CustomPaginator");
-
-        $orders  = $paginatorService->paginateArray($orders, Input::get('page'), 50);
-        $pagination = $orders->appends(Input::except(array('page','_token')))->links();
-
-        if(!Request::ajax()) {
-            return View::make("pages.payoutsbuyers")
-                        ->with("orders", $orders)
-                        ->with("filter", $filter)
-                        ->with("filterBy", $filterBy)
-                        ->with("pagination", $pagination);  
-        }
-        else {
-            $html = View::make("partials.payoutbuyerlist")
-                        ->with("orders", $orders)
-                        ->render();
-
-            return Response::json(['html' => $html]);  
-        }
-
-    }   
 
     /**
      * Get all existing transaction details of the specific seller by order id
