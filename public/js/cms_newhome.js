@@ -16,7 +16,7 @@
         var tableSelector = "#subCategoriesSection_" + index;
         var reloadurl = "getSubCategoriesSection/" + index;
 
-        if($.trim(subCategoryText) == "" || $.trim(subCategorySectionTarget) == "") {
+        if(subCategoryText.trim() == "" || subCategorySectionTarget.trim() == "") {
             showErrorModal("Please enter values to the required fields");
         }
         else {
@@ -98,7 +98,7 @@
         var tableSelector = "#categorySectionProductPanel_" + index;
         var reloadurl = "getCategoriesProductPanel/" + index;
 
-        if($.trim(value) == "") {
+        if(value.trim() == "") {
             showErrorModal("Please supply a slug");
         }
         else {
@@ -314,7 +314,7 @@
 
         var tableSelector = "#categorySectionProductPanel_" + index;
         var reloadurl = "getCategoriesProductPanel/" + index;
-        if($.trim(value) == "") {
+        if(value.trim() == "") {
             showErrorModal("Please supply a slug");
         }
         else {
@@ -431,7 +431,7 @@
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
-        if($.trim(target) === "") {
+        if(target.trim() === "") {
             target = "/";
             $(this).closest("form").find("#target").val("/");            
         }
@@ -494,7 +494,7 @@
         var password = $(this).closest("form").find("#password").val().toString();
         if(action == "slug") {
             var slug = $(this).closest("form").find("#slug").val().toString();
-            if($.trim(slug) == "") {
+            if(slug.trim() == "") {
                 loader.hidePleaseWait();                  
                 showErrorModal("Please enter a valid slug");
             }
@@ -554,7 +554,7 @@
         var index = $(this).closest("form").find("#index").val();   
         var hash =  hex_sha1(index  + value + userid + password);
         data = { index: index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
-        if($.trim(value) == "") {
+        if(value.trim() == "") {
             showErrorModal("Please supply a slug");
         }
         else {
@@ -592,7 +592,7 @@
         var hash =  hex_sha1( userid + value + password);
         data = { userid:userid, value:value,  password:password, hash:hash, callback:'?'};
 
-        if($.trim(value) == "") {
+        if(value.trim() == "") {
             showErrorModal("Please supply a valid slug");
         }
         else {
@@ -688,7 +688,7 @@
 
   
 
-    $(document.body).on('click','#addSubSlider',function (e) { 
+    $("#manageSliderSection").on('click','#addSubSlider',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val().toString();
         var url = $(this).data('url');
@@ -699,9 +699,9 @@
 
         var count = parseInt($(".subSlideCount_"+index).last().text());
 
-        if($.trim(target) === "") {
+        if(target.trim() === "") {
             target = "/";
-            $(this).closest("form").find("#target").val("/");            
+            $("#target").val("/");            
         }
         var hash =  hex_sha1(index + preview + userid + value + target  + password);
         $(this).closest("form").find("#hashMainSlide").val(hash);
