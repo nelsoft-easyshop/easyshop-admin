@@ -16,7 +16,7 @@
 @section('content')
  
         <div id="mainsection">
-            {{ Form::open(array('url' => 'contact/seller', 'id' => 'searchForm')) }}
+            {{ Form::open(array('url' => 'contact/buyer', 'id' => 'searchForm')) }}
             <div class="input-group srch_div" style="padding:12px">
                 <div class="inner-addon left-addon">
                     <i class="glyphicon glyphicon-search"></i>
@@ -38,8 +38,7 @@
                         <li><a class="tag_default" href="javascript:void(0)">Default</a></li>
                         <li><a class="tag_search" data="src_tag" data-value="1" href="javascript:void(0)">Contacted</a></li>
                         <li><a class="tag_search" data="src_tag" data-value="3" href="javascript:void(0)">On-hold</a></li>
-                        <li><a class="tag_search" data="src_tag" data-value="5" href="javascript:void(0)">Confirmed</a></li>
-                        <li><a class="tag_search" data="src_tag" data-value="2" href="javascript:void(0)">Refund</a></li>
+                        <li><a class="tag_search" data="src_tag" data-value="4" href="javascript:void(0)">Payout</a></li>
                     </ul>
                 </div>
                 <input type="hidden" id="src_fullname" name="fullname" />
@@ -57,10 +56,10 @@
                             <th>Order ID</th>
                             <th>Transaction ID</th>
                             <th>Invoice Number</th>
-                            <th>Seller Fullname</th>
-                            <th>Seller Username</th>
-                            <th>Seller Email</th>
-                            <th>Seller Contact No.</th>
+                            <th>Buyer Fullname</th>
+                            <th>Buyer Username</th>
+                            <th>Buyer Email</th>
+                            <th>Buyer Contact No.</th>
                             <th>Transaction Date</th>
                             @if($tagType)
                             <th>Current Tag</th>
@@ -92,8 +91,8 @@
         </div>
 
         <div id="hidden-values">
-            <input type="text" id="payout-constant" value="{{{ $constantValues['payout'] }}}" />
-            <input type="text" id="contacted-constant" value="{{{ $constantValues['contacted'] }}}" />
+            <input type="hidden" id="payout-constant" value="{{{ $constantValues['payout'] }}}" />
+            <input type="hidden" id="contacted-constant" value="{{{ $constantValues['contacted'] }}}" />
             <input id="defaultStatus" type="hidden" value="{{{ $defaultStatus }}}" >
             <input id="nonDefaultStatus" type="hidden" value="{{{ $nonDefaultStatus }}}" >
             <input id="currentTag" type="hidden" value="{{{ $tagType }}}" >
