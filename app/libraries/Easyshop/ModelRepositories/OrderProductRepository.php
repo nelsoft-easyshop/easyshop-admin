@@ -428,6 +428,7 @@ class OrderProductRepository extends AbstractRepository
     public function getOrderProductBySellerOngoing($orderId, $sellerId, $tagType = "",$forBuyer)
     {
         if(!$forBuyer) {
+
           $query = OrderProduct::leftjoin('es_product_shipping_comment','es_order_product.id_order_product','=','es_product_shipping_comment.order_product_id');
           $query->leftjoin('es_order_product_tag',"es_order_product.id_order_product","=","es_order_product_tag.order_product_id");
           $query->leftjoin('es_tag_type',"es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type");
@@ -460,6 +461,7 @@ class OrderProductRepository extends AbstractRepository
         return $query->get([
                     'es_order_product.*',
                     'es_tag_type.tag_description',
+                    'es_order_product_tag.date_updated',
                     'es_tag_type.tag_color',
                     DB::raw('COALESCE(es_order_product_tag.tag_type_id,0) as tag_id'),
                     DB::raw('COALESCE(es_product_shipping_comment.id_shipping_comment,0) as shipping')
