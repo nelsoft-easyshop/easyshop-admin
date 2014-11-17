@@ -492,9 +492,9 @@ class OrderProductController extends BaseController
         $tagType = Input::get('tag_type');
         $orderProductIds = Input::get('order_product_ids');
         $adminMemberId = Auth::id();
+        $forBuyer = Input::get("forBuyer");
 
         $payoutService = App::make('PayoutService');
-        $forBuyer = (Input::get("forBuyer")) ? false : true;
         $orderTagStatus = $payoutService->updateOrderProductTagStatus($orderId
                                                                     ,$memberId
                                                                     ,$tagType
