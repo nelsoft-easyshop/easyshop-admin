@@ -687,17 +687,21 @@
     $(document.body).on('click','#addSubSlider',function (e) { 
         
         loader.showPleaseWait();          
+        var image_x = $(this).closest("form").find("#image_x").val().toString();
+        var image_y = $(this).closest("form").find("#image_y").val().toString();
+        var image_w = $(this).closest("form").find("#image_w").val().toString();
+        var image_h = $(this).closest("form").find("#image_h").val().toString();
         var index = $(this).closest("form").find("#index").val().toString();
         var url = $(this).data('url');
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
-        var value = $(this).closest("form").find("#photoFile").val().toString();     
+        var value = $(this).closest("form").find("#modalSliderValue").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
         target = $.trim(target) == "" ? "/" : target;
         var hash =  (index + userid+ value + target  + password);
-        var hash =  hex_sha1(index + userid+ value + target  + password);
+        var hash =  hex_sha1(image_x + image_y + image_w + image_h +index + userid+ value + target  + password);
         $(this).closest("form").find("#hashMainSlide").val(hash);
-        var mainSlideForm = "#mainSlideForm"+index;
+        var mainSlideForm = "#mainSlideForm";
 
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;
@@ -1833,7 +1837,142 @@
             loader.hidePleaseWait();
             $("#errorTexts").html(messages); 
             $("#customerror").modal('show');  
-    }                                            
+    }      
+
+
+
+    /*********************** JCROP ******************************/
+    $("input:file").on("change", function(){
+        var currValue  = $(this).val();
+        var index = $(this).data("index");
+        var oldIE;
+        var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+        
+        if ($('html').is('.ie6, .ie7, .ie8, .ie9')){
+            oldIE = true;
+        }
+
+        if (oldIE || isSafari){
+            $('#form_image').submit();
+        }
+        else{
+            $("#modalSliderValue").val(currValue);
+            imageprev(this, index);
+        }
+    });   
+
+
+
+    /***************    Image preview for cropping  ************************/
+function imageprev(input, index) {
+    $("#modalSliderIndex").val(index);
+
+
+    var jcrop_api, width, height;
+    
+    if (input.files && input.files[0] && input.files[0].type.match(/(gif|png|jpeg|jpg)/g) && input.files[0].size <= 5000000) {
+        var reader = new FileReader();
+
+        reader.onload = function(e){
+            var image = new Image();
+            image.src = e.target.result;
+            image.onload = function(){
+                width = this.width;
+                height = this.height;
+
+                $('#user_image_prev').attr('src', this.src);
+                $("#previewImage").modal("show"); 
+                if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
+
+
+                    $(' #previewImage').bind('shown.bs.modal', function () {
+
+                        jcrop_api = $.Jcrop($('#user_image_prev'),{
+                            aspectRatio: 1,
+                            boxWidth: 500,
+                            boxHeight: 500,
+                            minSize: [width*0.1,height*0.1],
+                            trueSize: [width,height],
+                            onChange: showCoords,
+                            onSelect: showCoords,
+                            onRelease: resetCoords
+                        });    
+                    });   
+
+                    $(' #previewImage').bind('hidden.bs.modal', function () {
+
+                        $('#user_image_prev').attr('src', '');
+                        resetCoords();
+                        jcrop_api.destroy(); 
+                        var img = $('<img id="user_image_prev">');
+                        img.attr('src', "");
+                        img.appendTo("#imgContainer");
+                    });                                           
+                  
+
+                }
+                else if(width > 5000 || height > 5000)
+                    alert('Failed to upload image. Max image dimensions: 5000px x 5000px');
+                else
+                    $('#div_user_image_prev span:first').html('Preview');
+            }
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+    else
+        alert('You can only upload gif|png|jpeg|jpg files at a max size of 5MB! ');
+    
+    
+    function deploy_imageprev(){
+                    jcrop_api = $.Jcrop($('#user_image_prev'),{
+                        aspectRatio: 1,
+                        boxWidth: 500,
+                        boxHeight: 500,
+                        minSize: [width*0.1,height*0.1],
+                        trueSize: [width,height],
+                        onChange: showCoords,
+                        onSelect: showCoords,
+                        onRelease: resetCoords
+                    });
+        $('#previewImage').modal({
+                escClose: false,
+                containerCss:{
+                    maxWidth: 600,
+                    minWidth: 505,
+                    maxHeight: 600
+                },
+                onShow: function(){
+                    $('#div_user_image_prev button').on('click', function(){
+                        $('#form_image').submit();
+                        $.modal.close();
+                    });
+
+                },
+                onClose: function(){
+                    $('#user_image_prev').attr('src', '');
+                    resetCoords();
+                    jcrop_api.destroy();
+                    $('#div_user_image_prev span').after('<img src="" id="user_image_prev">');
+                    $.modal.close();
+                }
+            });
+    }
+}
+
+function showCoords(c){
+    $('#image_x').val(c.x);
+    $('#image_y').val(c.y);
+    $('#image_w').val(c.w);
+    $('#image_h').val(c.h);
+}
+
+function resetCoords(){
+    $('#image_x').val(0);
+    $('#image_y').val(0);
+    $('#image_w').val(0);
+    $('#image_h').val(0);
+}
+                                   
 
 })(jQuery);    
 
