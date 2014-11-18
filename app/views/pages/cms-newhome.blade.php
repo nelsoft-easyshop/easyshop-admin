@@ -41,6 +41,9 @@
             margin: auto !important;
         }
 
+        #addSliderCrop:hover, #addSliderCrop:visited{
+            text-decoration: none !important;
+        }
 
     </style>
     <div class="row">
@@ -1330,27 +1333,12 @@
                                             </div>
                                         </div>  
                                     </form>
-                                    <!-- Add Main Slide End -->
-                                    <!-- Add Sub Slider Start -->
-                                    <legend>        
-                                        <h4 class="tbl-title">
-                                            <span class="glyphicon glyphicon-list-alt"></span>
-                                            Add Sub Slider Section
-                                        </h4>
-                                    </legend>    
-                                        <div class="form-group">
-                                            <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
-                                            <div class="col-xs-10">
-                                                <input type="file" id="photoFile" class='form' data-index = "{{$sliderIndex}}" name='myfile'> 
-                                            </div>
-                                        </div>                                                                       
-                                    <!-- End Sub Slider Start -->
-                                    <hr/>
                                     <div class="form-group ">
                                         <legend>        
                                             <h4 class="tbl-title">
                                                 <span class="glyphicon glyphicon-list-alt"></span>
-                                                Manage Sub Slider
+                                                Manage Sub Slider <a href="#previewImage" class='pull-right' data-index = "{{$sliderIndex}}" data-toggle="modal" id="addSliderCrop">Add Slider <span class="glyphicon glyphicon-plus"></span></a>
+
                                             </h4>
                                         </legend>                   
                       
@@ -1584,23 +1572,28 @@
 
     <div class="modal fade" id="previewImage" >
         <div class="modal-dialog">
-            <div class="modal-content" style='text-align:center; padding: 30px;'>
-                <h3>Position and scale your photo</h3><br/>
-                <div class="img-editor-container" id="imgContainer">
-                    <span></span>
-                    <img src=""  id="user_image_prev" style="border: black 1px solid;">
-                </div><br/>
+            <div class="modal-content" style='text-align:center; padding: 20px;'>
+
+
+                <br/>
                  <form id='mainSlideForm' target="test" action="{{ $newHomeCmsLink}}/addmainslide" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
-                    <input type='text' name='x' value='0' id='image_x'>
-                    <input type='text' name='y' value='0' id='image_y'>
-                    <input type='text' name='w' value='0' id='image_w'>
-                    <input type='text' name='h' value='0' id='image_h'>                    
+                                         <div class="form-group">
+                        <div class="col-sm-10">
+                     <button type="button" class="btn btn-default" data-dismiss="modal" id="cropClose">Close</button>
+                    <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addSubSlider" id="addSubSlider">Add Sub Slider</a>                                       
+                              </div>
+                    </div>
+                    <input type='hidden' name='x' value='0' id='image_x'>
+                    <input type='hidden' name='y' value='0' id='image_y'>
+                    <input type='hidden' name='w' value='0' id='image_w'>
+                    <input type='hidden' name='h' value='0' id='image_h'>                    
                     <div class="form-group">
                         <div class="col-sm-10">
                             {{ Form::hidden('index', '',array('id' => 'modalSliderIndex','class' => 'form-control')) }}                        
                         </div>
                     </div> 
                     <div class="form-group">
+                        <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
                         <div class="col-sm-10">
                             {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}     
                             <input type="file" id="modalSliderValue" class='form' name='myfile'> 
@@ -1610,7 +1603,7 @@
                         <label for="inputPassword" class="control-label col-xs-2">Target</label>
 
                         <div class="col-sm-10">
-                            {{ Form::text('target', "", array('id' => 'target','class' => 'form-control')) }}                        
+                            {{ Form::text('target', "/", array('id' => 'target','class' => 'form-control')) }}                        
                         </div>
                     </div>                                                                               
                     <div class="form-group">
@@ -1620,12 +1613,19 @@
                     </div>                                          
                     <div class="form-group">
                         <div class="col-sm-10">
-                            {{ Form::hidden('hash', "", array('id' => "hashMainSlide",'class' => 'form-control')) }}                        
+                            {{ Form::hidden('hash', "", array('id' => "hashMainSlide",'class' => 'form-control')) }}            
                         </div>
-                    </div>                                                                                               
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="cropClose">Close</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="cropSave">Save changes</button>
-                </form>                
+                    </div> 
+
+                   
+                </form> 
+                <div id="scaleAndCrop" style="display:none;">
+                    <h3>Position and scale your photo</h3><br/>
+                    <div class="img-editor-container" id="imgContainer">
+                        <span></span>
+                        <img src=""  id="user_image_prev" style="border: black 1px solid;">
+                    </div>
+                </div>                               
             </div>
         </div>
     </div>  
