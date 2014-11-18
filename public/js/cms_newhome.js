@@ -691,7 +691,7 @@
         var image_y = $(this).closest("form").find("#image_y").val().toString();
         var image_w = $(this).closest("form").find("#image_w").val().toString();
         var image_h = $(this).closest("form").find("#image_h").val().toString();
-        var index = $(this).closest("form").find("#index").val().toString();
+        var index = $(this).closest("form").find("#modalSliderIndex").val().toString();
         var url = $(this).data('url');
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
@@ -706,6 +706,7 @@
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;
         if(value == "") {
+            $("#previewImage").modal("hide");
             showErrorModal("Please upload na Image")
         }
         else {
@@ -1801,10 +1802,12 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
+                $("#previewImage").modal("hide");                      
                 $(tableSelector).load(reloadurl);              
                 loader.hidePleaseWait();   
             },
             error: function(e) {
+                $("#previewImage").modal("hide");               
                 $(tableSelector).load(reloadurl);             
                 loader.hidePleaseWait();   
             }
@@ -1839,12 +1842,15 @@
             $("#customerror").modal('show');  
     }      
 
+    $(document.body).on('click','#addSliderCrop',function (e) { 
 
+        $("#modalSliderIndex").val($(this).data("index"));
+    });
 
     /*********************** JCROP ******************************/
     $("input:file").on("change", function(){
+        var jcrop;
         var currValue  = $(this).val();
-        var index = $(this).data("index");
         var oldIE;
         var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
         
@@ -1856,17 +1862,24 @@
             $('#form_image').submit();
         }
         else{
-            $("#modalSliderValue").val(currValue);
-            imageprev(this, index);
+
+
+             $("#scaleAndCrop").css("display","block");
+            imageprev(this);
         }
     });   
 
 
+    $(' #previewImage').bind('hidden.bs.modal', function () {
+        $("#modalSliderValue").val("");
+        jcrop_api = $.Jcrop($('#user_image_prev'));  
+        resetCoords();        
+        jcrop_api.destroy();         
+        $("#scaleAndCrop").css("display","none");        
+    });  
 
     /***************    Image preview for cropping  ************************/
-function imageprev(input, index) {
-    $("#modalSliderIndex").val(index);
-
+function imageprev(input) {
 
     var jcrop_api, width, height;
     
@@ -1881,23 +1894,19 @@ function imageprev(input, index) {
                 height = this.height;
 
                 $('#user_image_prev').attr('src', this.src);
-                $("#previewImage").modal("show"); 
                 if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
 
-
-                    $(' #previewImage').bind('shown.bs.modal', function () {
-
-                        jcrop_api = $.Jcrop($('#user_image_prev'),{
-                            aspectRatio: 1,
-                            boxWidth: 500,
-                            boxHeight: 500,
-                            minSize: [width*0.1,height*0.1],
-                            trueSize: [width,height],
-                            onChange: showCoords,
-                            onSelect: showCoords,
-                            onRelease: resetCoords
-                        });    
-                    });   
+                    jcrop_api = $.Jcrop($('#user_image_prev'),{
+                        aspectRatio: 1,
+                        boxWidth: 500,
+                        boxHeight: 500,
+                        minSize: [width*0.1,height*0.1],
+                        trueSize: [width,height],
+                        onChange: showCoords,
+                        onSelect: showCoords,
+                        onRelease: resetCoords
+                    });    
+   
 
                     $(' #previewImage').bind('hidden.bs.modal', function () {
 
@@ -1907,7 +1916,7 @@ function imageprev(input, index) {
                         var img = $('<img id="user_image_prev">');
                         img.attr('src', "");
                         img.appendTo("#imgContainer");
-                    });                                           
+                    });                                        
                   
 
                 }
@@ -1922,41 +1931,6 @@ function imageprev(input, index) {
     else
         alert('You can only upload gif|png|jpeg|jpg files at a max size of 5MB! ');
     
-    
-    function deploy_imageprev(){
-                    jcrop_api = $.Jcrop($('#user_image_prev'),{
-                        aspectRatio: 1,
-                        boxWidth: 500,
-                        boxHeight: 500,
-                        minSize: [width*0.1,height*0.1],
-                        trueSize: [width,height],
-                        onChange: showCoords,
-                        onSelect: showCoords,
-                        onRelease: resetCoords
-                    });
-        $('#previewImage').modal({
-                escClose: false,
-                containerCss:{
-                    maxWidth: 600,
-                    minWidth: 505,
-                    maxHeight: 600
-                },
-                onShow: function(){
-                    $('#div_user_image_prev button').on('click', function(){
-                        $('#form_image').submit();
-                        $.modal.close();
-                    });
-
-                },
-                onClose: function(){
-                    $('#user_image_prev').attr('src', '');
-                    resetCoords();
-                    jcrop_api.destroy();
-                    $('#div_user_image_prev span').after('<img src="" id="user_image_prev">');
-                    $.modal.close();
-                }
-            });
-    }
 }
 
 function showCoords(c){
