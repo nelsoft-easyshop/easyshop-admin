@@ -1,6 +1,7 @@
 (function () {
     var userid = $("#userid").val();
     var password = $("#password").val();
+    var newHomeCmsLink = $("#newHomeCmsLink").text();
 
     var minimumCategoryProductPanel = 2;
     var minimumCategorySectionProductPanel = 3;
@@ -695,13 +696,13 @@
         var url = $(this).data('url');
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
-        var value = $(this).closest("form").find("#modalSliderValue").val().toString();     
+        var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
         target = $.trim(target) == "" ? "/" : target;
         var hash =  (index + userid+ value + target  + password);
-        var hash =  hex_sha1(image_x + image_y + image_w + image_h +index + userid+ value + target  + password);
+        var hash =  hex_sha1(image_x + image_y + image_w + image_h + value +index + userid + target  + password);
         $(this).closest("form").find("#hashMainSlide").val(hash);
-        var mainSlideForm = "#mainSlideForm";
+        var mainSlideForm = "#cropForm";
 
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;
@@ -1845,6 +1846,12 @@
     $(document.body).on('click','#addSliderCrop',function (e) { 
 
         $("#modalSliderIndex").val($(this).data("index"));
+        var clone = $("#cloneForm_addSubSlider").html();
+        $("#contentPreview").html(clone);
+
+        var actionLink = newHomeCmsLink + "/addmainslide";
+
+        $("#previewImage").find("form").attr("action",actionLink);
     });
 
     /*********************** JCROP ******************************/
@@ -1871,7 +1878,7 @@
 
 
     $(' #previewImage').bind('hidden.bs.modal', function () {
-        $("#modalSliderValue").val("");
+        $("#photoFile").val("");
         jcrop_api = $.Jcrop($('#user_image_prev'));  
         resetCoords();        
         jcrop_api.destroy();         
