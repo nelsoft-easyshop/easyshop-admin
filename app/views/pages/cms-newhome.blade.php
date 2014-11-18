@@ -12,13 +12,44 @@
 @section('content')
 
     <link type="text/css" href="{{{ asset('css/dashboard.css') }}}" rel="stylesheet"  media="screen"/>
+    <link type="text/css" href="{{{ asset('css/src/jquery.Jcrop.min.css') }}}" rel="stylesheet"  media="screen"/>
+    <style type="text/css">
+
+        /* Container */
+        #previewImage {
+            font-size: 12px;
+            min-height: 700px !important;
+
+            padding: 5px;
+            overflow: auto;
+        }
+        #previewImage .modal-content {
+            min-height: auto !important;
+        }
+
+        #previewImage{
+            overflow: inherit !important;
+        }
+
+        .jcrop-holder{
+            margin: auto !important;
+        }
+
+
+        #user_image_prev{
+            display: block;
+            margin: auto !important;
+        }
+
+
+    </style>
     <div class="row">
         <section id="tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
-                <li  class="active"><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
+                <li ><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
                 <li><a href="#manageCategorySection" role="tab"  data-toggle="tab">Manage Category Section</a></li>                
                 <li><a href="#manageAdSection" role="tab"  data-toggle="tab">Manage Ad Section</a></li>                
-                <li><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
+                <li class="active"><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
                 <li ><a href="#manageSellerSection" role="tab"  data-toggle="tab">Manage Seller Section</a></li>                
                 <li class="dropdown"  >
                     <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Manage Category Navigation<span class="caret"></span></a>
@@ -58,7 +89,7 @@
 
 
 
-            <div class="tab-pane fade active in" id="manageBrands">
+            <div class="tab-pane fade" id="manageBrands">
                     <legend>        
                         <h4 class="tbl-title">
                             <span class="glyphicon glyphicon-list-alt"></span>
@@ -1228,7 +1259,7 @@
             </div> 
 
 
-            <div class="tab-pane fade" id="manageSliderSection">
+            <div class="tab-pane fade active in" id="manageSliderSection">
                 <legend>        
                     <h4 class="tbl-title">
                         <span class="glyphicon glyphicon-list-alt"></span>
@@ -1268,7 +1299,7 @@
                                     <span class="glyphicon glyphicon-chevron-down pull-right" id="moveParentSlider" data-nodename="mainSliderSection" data-action="down" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/setPositionParentSlider" style='cursor:pointer;'></span>
                                 </h4>
                             </div>
-                            <div id="collapse_{{$sliderIndex}}" class="panel-collapse collapse">
+                            <div id="collapse_{{$sliderIndex}}" class="panel-collapse collapse in">
                                 <div class="panel-body"> 
                                     <!-- Add Main Slide Start -->
                                     <form id='left' target="test"  class="form-horizontal">         
@@ -1306,49 +1337,14 @@
                                             <span class="glyphicon glyphicon-list-alt"></span>
                                             Add Sub Slider Section
                                         </h4>
-                                    </legend>                                     
-                                     <form id='mainSlideForm{{$sliderIndex}}' target="test" action="{{ $newHomeCmsLink}}/addmainslide" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('index', $sliderIndex, array('id' => 'index','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div> 
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>  
+                                    </legend>    
                                         <div class="form-group">
                                             <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
                                             <div class="col-xs-10">
-                                                <input type="file" id="photoFile" name='myfile'> 
+                                                <input type="file" id="photoFile" class='form' data-index = "{{$sliderIndex}}" name='myfile'> 
                                             </div>
-                                        </div>  
-                                        <div class="form-group">
-                                            <label for="inputPassword" class="control-label col-xs-2">Target</label>
-
-                                            <div class="col-sm-10">
-                                                {{ Form::text('target', "", array('id' => 'target','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>                                                                               
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>                                          
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('hash', "", array('id' => "hashMainSlide",'class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>                                                                                               
-                                        <div class="form-group">
-                                            <div class="col-xs-offset-2 col-xs-10">
-                                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addSubSlider" id="addSubSlider">Add Sub Slider</a>
-                                            </div>
-                                        </div>
-                                    </form>
+                                        </div>                                                                       
                                     <!-- End Sub Slider Start -->
-
                                     <hr/>
                                     <div class="form-group ">
                                         <legend>        
@@ -1581,12 +1577,65 @@
                 </div>
             </div>
         </div>
-    </div>        
+    </div>  
+
+
+
+
+    <div class="modal fade" id="previewImage" >
+        <div class="modal-dialog">
+            <div class="modal-content" style='text-align:center; padding: 30px;'>
+                <h3>Position and scale your photo</h3><br/>
+                <div class="img-editor-container" id="imgContainer">
+                    <span></span>
+                    <img src=""  id="user_image_prev" style="border: black 1px solid;">
+                </div><br/>
+                 <form id='mainSlideForm' target="test" action="{{ $newHomeCmsLink}}/addmainslide" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
+                    <input type='text' name='x' value='0' id='image_x'>
+                    <input type='text' name='y' value='0' id='image_y'>
+                    <input type='text' name='w' value='0' id='image_w'>
+                    <input type='text' name='h' value='0' id='image_h'>                    
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            {{ Form::hidden('index', '',array('id' => 'modalSliderIndex','class' => 'form-control')) }}                        
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}     
+                            <input type="file" id="modalSliderValue" class='form' name='myfile'> 
+                        </div>
+                    </div>   
+                    <div class="form-group">
+                        <label for="inputPassword" class="control-label col-xs-2">Target</label>
+
+                        <div class="col-sm-10">
+                            {{ Form::text('target', "", array('id' => 'target','class' => 'form-control')) }}                        
+                        </div>
+                    </div>                                                                               
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
+                        </div>
+                    </div>                                          
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            {{ Form::hidden('hash', "", array('id' => "hashMainSlide",'class' => 'form-control')) }}                        
+                        </div>
+                    </div>                                                                                               
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="cropClose">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="cropSave">Save changes</button>
+                </form>                
+            </div>
+        </div>
+    </div>  
+      
 
 @stop
 @section('page_js') 
 {{ HTML::script('js/src/sha1.js') }}
 {{ HTML::script('js/src/jquery.form.js') }}
+{{ HTML::script('js/src/jquery.Jcrop.min.js') }}
 {{ HTML::script('js/cms_newhome.js') }}
 
 @stop
