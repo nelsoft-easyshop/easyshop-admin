@@ -422,7 +422,7 @@
 
     $(document.body).on('click','#editAdsSection',function (e) { 
         loader.showPleaseWait();
-        var index = $(this).closest("form").find("#index").val().toString();
+        var index = $(this).closest("form").find("#editAdsIndex").val().toString();
         var url = $(this).data('url');
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
@@ -433,7 +433,7 @@
             $(this).closest("form").find("#target").val("/");            
         }
         var hash =  hex_sha1(index + userid + value + target  + password);
-        var form = "#adSectionForm"+index;
+        var form = "#cropForm";
         $(this).closest("form").find("#editAdsSectionHash").val(hash);
         editAdsSectionForm(form, url);
 
@@ -443,8 +443,8 @@
 
     $(document.body).on('click','#editSubSlider',function (e) { 
 
-        var index = $(this).closest("form").find("#index").val().toString();
-        var subIndex = $(this).closest("form").find("#subIndex").val().toString();
+        var index = $(this).closest("form").find("#editModalSliderIndex").val().toString();
+        var subIndex = $(this).closest("form").find("#editModalSliderSubIndex").val().toString();
         var url = $(this).data('url');
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
@@ -454,7 +454,7 @@
         var hash =  hex_sha1(index + subIndex + userid + value + target  + password);
         $(this).closest("form").find("#editHashMainSlide").val(hash);
 
-        var editSlideForm_ = "#editSlideForm_"+index+"_"+subIndex;
+        var editSlideForm_ = "#cropForm";
 
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;
@@ -473,7 +473,7 @@
         var password = $(this).closest("form").find("#password").val().toString();
         var hash =  hex_sha1(userid  + value + password);        
         $(this).closest("form").find("#hashAddAds").val(hash);
-        var form = "#addAdsForm";
+        var form = "#cropForm";
         if(value == "") {
             showErrorModal("Please upload na image");
         }
@@ -1715,7 +1715,7 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $("#adsSectionDiv").load("getAdsSection");                  
+                $("#adsSectionDiv").load("getAdsSection");   
                 loader.hidePleaseWait();  
             },
             error: function(e) {
@@ -1843,15 +1843,58 @@
             $("#customerror").modal('show');  
     }      
 
-    $(document.body).on('click','#addSliderCrop',function (e) { 
+    $(document.body).on('click','#addSliderCrop,#editSubSliderCrop,#addAdsCrop,#editAdsCrop',function (e) { 
 
-        $("#modalSliderIndex").val($(this).data("index"));
-        var clone = $("#cloneForm_addSubSlider").html();
-        $("#contentPreview").html(clone);
+       
+        var nodename = $(this).data("nodename");
+        if(nodename == "addMainSlider") {
+            $("#modalSliderIndex").val($(this).data("index"));
+            var clone = $("#cloneForm_addSubSlider").html();
+            $("#contentPreview").html(clone);
+            var actionLink = newHomeCmsLink + "/addmainslide";
+            $(".cropFormButton").attr("data-url",actionLink);
+            $(".cropFormButton").attr("id","addSubSlider");
+            $("#previewImage").find("form").attr("action",actionLink);       
+            $("#previewImage").find("#displayFormGroup").css("display","block");
 
-        var actionLink = newHomeCmsLink + "/addmainslide";
+        }
+        else if(nodename == "editMainSlider" ) {
+            var index = $(this).data("index");
+            var subindex = $(this).data("subindex");
+            var clone = $("#editSlideForm_"+index+"_"+subindex).html();
+            $("#editModalSliderIndex").val(index);
+            $("#editModalSliderSubIndex").val(subindex);
+            $("#contentPreview").html(clone); 
+            var actionLink = newHomeCmsLink + "/editSubSlider";
+            $(".cropFormButton").attr("id","editSubSlider");            
+            $(".cropFormButton").attr("data-url",actionLink);            
+            $("#previewImage").find("form").attr("action",actionLink);
+            $("#previewImage").find("#displayFormGroup").css("display","block");
 
-        $("#previewImage").find("form").attr("action",actionLink);
+        }
+        else if(nodename == "addAds") {
+            var clone = $("#cloneForm_addAds").html();
+            $("#contentPreview").html(clone);
+            var actionLink = newHomeCmsLink + "/addAdds";
+            $(".cropFormButton").attr("id","addAdSection");            
+            $(".cropFormButton").attr("data-url",actionLink);             
+            $("#previewImage").find("form").attr("action",actionLink);    
+            $("#previewImage").find("#displayFormGroup").css("display","block");
+
+        }
+        else {
+            alert("here");
+            var index = $(this).data("index");  
+            var clone = $("#clone_editAdsCrop").html();                      
+            $("#editAdsIndex").val(index);
+            $("#contentPreview").html(clone); 
+            var actionLink = newHomeCmsLink + "/setAdsSection";
+            $(".cropFormButton").attr("id","editAdsSection");            
+            $(".cropFormButton").attr("data-url",actionLink);            
+            $("#previewImage").find("form").attr("action",actionLink);
+            $("#previewImage").find("#displayFormGroup").css("display","block");  
+        }
+
     });
 
     /*********************** JCROP ******************************/
