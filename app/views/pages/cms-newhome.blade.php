@@ -99,7 +99,7 @@
                                 <td>
                                     <div class="btn-toolbar" role="toolbar">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-danger editBrands" id="editTopSellersBtn" 
+                                            <button type="button" class="btn btn-danger editBrands" 
                                                 data-toggle="modal" data-target="#editBrandsModal"
                                                 data='{"url":"{{$newHomeCmsLink}}/setBrands","index":"{{$brandsIndex}}","value":"{{$brands->name}}","id_brand":"{{$brands->id_brand}}" } '
                                                 >
@@ -501,8 +501,8 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_category_{{$categorySectionIndex}}">{{ucwords(str_replace("-"," ",$categoryPanel->categorySlug))}}</a>
-                                            <span class="glyphicon glyphicon-remove pull-right" id="removeCategorySection" data-nodename="categorySectionPanel" data-index="{{$categorySectionIndex}}" data-url="{{$newHomeCmsLink}}/removeContent"></span>
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_category_{{$categorySectionIndex}}" style='cursor:pointer;'>{{ucwords(str_replace("-"," ",$categoryPanel->categorySlug))}}</a>
+                                            <span class="glyphicon glyphicon-remove pull-right" id="removeCategorySection" data-nodename="categorySectionPanel" style='cursor:pointer;' data-index="{{$categorySectionIndex}}" data-url="{{$newHomeCmsLink}}/removeContent"></span>
                                         </h4>
                                     </div>
                                     
@@ -543,7 +543,7 @@
 
 
                                             <!-- Start Manage Sub Category Section -->
-                                             <table class="table table-striped table-hover tbl-my-style"  id="subCategoriesSection_{{{$categorySectionIndex}}}">
+                                             <table class="table table-striped table-hover tbl-my-style subCategoriesSectionTable"  id="subCategoriesSection_{{{$categorySectionIndex}}}">
                                                 <thead>
                                                 <tr>
                                                     <th>/</th>
