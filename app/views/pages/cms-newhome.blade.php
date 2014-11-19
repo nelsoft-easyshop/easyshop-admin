@@ -1143,7 +1143,7 @@
                         </div>                                                           
                         <div class="form-group">
                             <div class="col-xs-offset-2 col-xs-10">
-                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addOtherotherCategories" id="addOtherCategoy">Add Other Category Navigation</a>
+                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addOtherotherCategories" id="addOtherCategory">Add Other Category Navigation</a>
                             </div>
                         </div>                                      
                     </form> 
