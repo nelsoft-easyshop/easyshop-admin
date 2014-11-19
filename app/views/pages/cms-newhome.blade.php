@@ -851,7 +851,7 @@
                         <div class="form-group">
                             <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
                             <div class="col-xs-10">
-                                <input type="file" id="photoFile" name='myfile' class='form-control'> 
+                                <input type="file" id="sellerFile" name='myfile' class='form-control'> 
                             </div>
                         </div>            
                         {{ Form::hidden('action', "banner", array('id' => 'action','class' => 'form-control')) }}                        
@@ -877,7 +877,7 @@
                         <div class="form-group">
                             <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
                             <div class="col-xs-10">
-                                <input type="file" id="photoFile" name='myfile' class='form-control'> 
+                                <input type="file" id="sellerFile" name='myfile' class='form-control'> 
                             </div>
                         </div>                                                                                 
                         {{ Form::hidden('action', "logo", array('id' => 'action','class' => 'form-control')) }}                        
