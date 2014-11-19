@@ -11,49 +11,17 @@
 
 @section('content')
 
+    <link type="text/css" href="{{{ asset('css/src/jquery.Jcrop.min.css') }}}" rel="stylesheet"  media="screen"/>   
     <link type="text/css" href="{{{ asset('css/dashboard.css') }}}" rel="stylesheet"  media="screen"/>
-    <link type="text/css" href="{{{ asset('css/src/jquery.Jcrop.min.css') }}}" rel="stylesheet"  media="screen"/>
-    <style type="text/css">
-
-        /* Container */
-        #previewImage {
-            font-size: 12px;
-            min-height: 700px !important;
-
-            padding: 5px;
-            overflow: auto;
-        }
-        #previewImage .modal-content {
-            min-height: auto !important;
-        }
-
-        #previewImage{
-            overflow: inherit !important;
-        }
-
-        .jcrop-holder{
-            margin: auto !important;
-        }
-
-
-        #user_image_prev{
-            display: block;
-            margin: auto !important;
-        }
-
-        #addSliderCrop:hover, #addSliderCrop:visited{
-            text-decoration: none !important;
-        }
-
-    </style>    
+    <style type="text/css">.jcrop-holder{margin: auto !important;}</style>
     <span id='newHomeCmsLink' style="display:none;">{{$newHomeCmsLink}}</span>
     <div class="row">
         <section id="tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
-                <li><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
+                <li class="active"><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
                 <li><a href="#manageCategorySection" role="tab"  data-toggle="tab">Manage Category Section</a></li>                
                 <li><a href="#manageAdSection" role="tab"  data-toggle="tab">Manage Ad Section</a></li>                
-                <li class="active"><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
+                <li><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
                 <li ><a href="#manageSellerSection" role="tab"  data-toggle="tab">Manage Seller Section</a></li>                
                 <li class="dropdown"  >
                     <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Manage Category Navigation<span class="caret"></span></a>
@@ -93,7 +61,7 @@
 
 
 
-            <div class="tab-pane fade" id="manageBrands">
+            <div class="tab-pane fade active in" id="manageBrands">
                     <legend>        
                         <h4 class="tbl-title">
                             <span class="glyphicon glyphicon-list-alt"></span>
@@ -745,6 +713,13 @@
             <div class="tab-pane fade" id="manageAdSection">
                     <form id='addAdsForm' target="test" action="{{ $newHomeCmsLink}}/addAdds" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                                              
                         <div id="cloneForm_addAds">
+                            <div class="form-group" id="displayFormGroup" style='display:none;'>
+                                <label for="inputPassword" class="control-label col-xs-2">Target</label>
+
+                                <div class="col-sm-10">
+                                    {{ Form::text('target',"/", array('id' => 'target','class' => 'form-control')) }}                        
+                                </div>
+                            </div>                             
                             {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                                    
                             {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                             {{ Form::hidden('hash', "", array('id' => "hashAddAds",'class' => 'form-control')) }}                        
@@ -756,10 +731,10 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Manage Ads Panel <a href="#previewImage" class='pull-right' data-nodename="addAds" data-toggle="modal" id="addAdsCrop">Add Slider <span class="glyphicon glyphicon-plus"></span></a></a>
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Manage Ads Panel <a href="#previewImage" class='pull-right' data-nodename="addAds" data-toggle="modal" id="addAdsCrop">Add Ads <span class="glyphicon glyphicon-plus"></span></a></a>
                                 </h4>
                             </div>
-                            <div id="collapseOne" class="panel-collapse collapse in">
+                            <div id="collapseOne" class="panel-collapse collapse">
                                 <div class="panel-body" id="adsSectionDiv">
 
                                     <span style="display:none;">{{$adsSectionIndex = 0}}</span>
@@ -772,7 +747,7 @@
                                                         <img src="{{$easyShopLink}}/{{$ads->img}}" class="img-responsive" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                     </div>
 
-                                                    <a href="#previewImage" id="editAdsCrop" data-index="{{$adsSectionIndex}}" data-nodename="editAds" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span id="editAdsCrop" data-index="{{$adsSectionIndex}}" data-nodename="editAds" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                                    <a href="#previewImage" id="editAdsCrop" data-index="{{$adsSectionIndex}}" data-nodename="editAds" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span  data-index="{{$adsSectionIndex}}" data-nodename="editAds" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
 
                                                     <a class="btn btn-default" 
                                                         id="removeAdsSection" 
@@ -794,7 +769,7 @@
                                                                 <div class="modal-body">
                                                                                                          
                                                                     <form id='adSectionForm{{$adsSectionIndex}}' target="test" action="{{ $newHomeCmsLink}}/setAdsSection" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
-                                                                        <div id="clone_editAdsCrop">
+                                                                        <div id="clone_editAdsCrop_{{$adsSectionIndex}}">
                                                                             {{ Form::hidden('index',$adsSectionIndex, array('id' => 'editAdsIndex','class' => 'form-control')) }}                        
                                                                             {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
                                                                             <div class="form-group" id="displayFormGroup" style='display:none;'>
@@ -1233,7 +1208,7 @@
             </div> 
 
 
-            <div class="tab-pane fade active in" id="manageSliderSection">
+            <div class="tab-pane fade" id="manageSliderSection">
                 <legend>        
                     <h4 class="tbl-title">
                         <span class="glyphicon glyphicon-list-alt"></span>
@@ -1530,35 +1505,44 @@
     </div>       
 
 
-    <div class="modal fade" id="previewImage" >
+    <div class="modal fade user_modal" id="previewImage" >
         <div class="modal-dialog">
-            <div class="modal-content" style='text-align:center; padding: 20px;'>
-                 <form id='cropForm' target="test" action="" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
-                    <input type='hidden' name='x' value='0' id='image_x'>
-                    <input type='hidden' name='y' value='0' id='image_y'>
-                    <input type='hidden' name='w' value='0' id='image_w'>
-                    <input type='hidden' name='h' value='0' id='image_h'>                    
-                    <div class="form-group">
-                        <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
-                        <div class="col-xs-10">
-                            <input type="file" id="photoFile" name='myfile'> 
-                        </div>
-                    </div>                      
-                    <div id="contentPreview"></div>
-                    <div class="form-group">
-                        <div class="col-sm-10">
-                            <button type="button" class="btn btn-default" data-dismiss="modal" id="cropClose">Close</button>
-                            <a1 href="#"  class="btn btn-primary text-center cropFormButton" data-dismiss="modal" data-url = "" id="">Save</a>                                       
-                        </div>
-                    </div>                    
-                </form> 
-                <div id="scaleAndCrop" style="display:none;">
-                    <h3>Position and scale your photo</h3><br/>
-                    <div class="img-editor-container" id="imgContainer">
-                        <span></span>
-                        <img src=""  id="user_image_prev" style="border: black 1px solid;">
-                    </div>
-                </div>                               
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title white_header" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span>Upload Image</h4>
+                </div>     
+
+                <div class="modal-body" style='text-align:center;padding:20px;'>     
+                  
+                     <form id='cropForm' target="test" action="" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
+                        
+                        <input type='hidden' name='x' value='0' id='image_x'>
+                        <input type='hidden' name='y' value='0' id='image_y'>
+                        <input type='hidden' name='w' value='0' id='image_w'>
+                        <input type='hidden' name='h' value='0' id='image_h'>                    
+                        <div class="form-group">
+                            <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
+                            <div class="col-xs-10">
+                                <input type="file" id="photoFile" name='myfile' class='form-control'> 
+                            </div>
+                        </div>                            
+                        <div id="contentPreview"></div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="cropClose">Close</button>
+                                <a1 href="#"  class="btn btn-primary text-center cropFormButton" data-dismiss="modal" data-url = "" id="">Save</a>                                       
+                            </div>
+                        </div>                    
+                        <div id="scaleAndCrop" style="display:none;">
+                            <h3>Position and scale your photo</h3><br/>
+                            <div class="img-editor-container" id="imgContainer">
+                                <span></span>
+                                <img src=""  id="user_image_prev" style="border: black 1px solid;">
+                            </div>
+                        </div>   <br/>                          
+                    </form> 
+                </div>                            
             </div>
         </div>
     </div>      
