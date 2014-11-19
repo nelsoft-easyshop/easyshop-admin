@@ -520,7 +520,7 @@
         }
         else {
 
-            var value = $(this).closest("form").find("#photoFile").val().toString();     
+            var value = $(this).closest("form").find("#sellerFile").val().toString();     
             var hash =  hex_sha1(userid +  value + action + password);
             var form = "";
             if(action == "banner") {
@@ -1898,7 +1898,7 @@
     });
 
     /*********************** JCROP ******************************/
-    $("input:file").on("change", function(){
+    $("#photoFile").on("change", function(){
         var jcrop;
         var currValue  = $(this).val();
         var oldIE;
