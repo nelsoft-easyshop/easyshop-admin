@@ -643,7 +643,7 @@
             target = "/";
             $("#target").val("/");            
         }
-        var hash =  hex_sha1(index + preview + userid + value + target  + password);
+        var hash =  hex_sha1(index + userid + value + target  + password);
         $(this).closest("form").find("#hashMainSlide").val(hash);
         var mainSlideForm = "#mainSlideForm"+index;
 
@@ -1507,6 +1507,26 @@
             },
         });   
     }); 
+
+    $("#manageSliderSection").on('click','#discardChanges',function (e) { 
+        var url = $(this).data("url");
+        loader.showPleaseWait();
+        var hash = hex_sha1(userid + password);
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:{hash:hash, userid:userid},
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',            
+            success: function(json) {
+                $("#manageSliderSection").load("getAllSliders"); 
+                loader.hidePleaseWait();
+                   
+            },
+        });   
+    });     
 
     $("#myTabContent").on('click','#addSubCategoryNavigation',function (e) { 
         loader.showPleaseWait();          
