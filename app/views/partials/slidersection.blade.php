@@ -3,6 +3,8 @@
                         <center>
                             <a1 href="#" class="btn btn-success text-center" id="commitSliderChanges">Commit Slider Changes
                             </a1>
+                            <a1 href="#" class="btn btn-success text-center" id="discardChanges" data-url="{{$newHomeCmsLink}}/syncTempHomeFiles">Sync to Current Home Page
+                            </a1>                             
                         </center>
                     </div>
                 </div>                  
