@@ -920,7 +920,7 @@
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Manage Seller Product Panel</a>
                                 </h4>
                             </div>
-                            <div id="collapseTwo" class="panel-collapse collapse in">
+                            <div id="collapseTwo" class="panel-collapse collapse">
                                 <div class="panel-body" id="productPanelDiv">
 
                                     <span style="display:none;">{{$productPanelindex = 0}}</span>
