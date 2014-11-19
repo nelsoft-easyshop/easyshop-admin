@@ -420,10 +420,10 @@
     });  
 
 
-    $(document.body).on('click','#editAdsSection',function (e) { 
+    $("#previewImage").on('click','#editAdsSection',function (e) { 
         loader.showPleaseWait();
         var index = $(this).closest("form").find("#editAdsIndex").val().toString();
-        var url = $(this).data('url');
+        var url = newHomeCmsLink + "/setAdsSection";
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
@@ -465,19 +465,19 @@
 
 
     $(document.body).on('click', '#addAdSection',function (e) { 
-        
-        loader.showPleaseWait();     
         var url = $(this).data('url');
+        var target = $(this).closest("form").find("#target").val().toString();
         var userid = $(this).closest("form").find("#userid").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();   
         var password = $(this).closest("form").find("#password").val().toString();
-        var hash =  hex_sha1(userid  + value + password);        
+        var hash =  hex_sha1(value + target + userid + password);        
         $(this).closest("form").find("#hashAddAds").val(hash);
         var form = "#cropForm";
         if(value == "") {
             showErrorModal("Please upload na image");
         }
         else {
+            loader.showPleaseWait();                 
             addAds(form, url);
         }
     }); 
@@ -1848,7 +1848,7 @@
        
         var nodename = $(this).data("nodename");
         if(nodename == "addMainSlider") {
-            $("#modalSliderIndex").val($(this).data("index"));
+            $("#contentPreview").find("#modalSliderIndex").val($(this).data("index"));
             var clone = $("#cloneForm_addSubSlider").html();
             $("#contentPreview").html(clone);
             var actionLink = newHomeCmsLink + "/addmainslide";
@@ -1862,8 +1862,8 @@
             var index = $(this).data("index");
             var subindex = $(this).data("subindex");
             var clone = $("#editSlideForm_"+index+"_"+subindex).html();
-            $("#editModalSliderIndex").val(index);
-            $("#editModalSliderSubIndex").val(subindex);
+            $("#contentPreview").find("#editModalSliderIndex").val(index);
+            $("#contentPreview").find("#editModalSliderSubIndex").val(subindex);
             $("#contentPreview").html(clone); 
             var actionLink = newHomeCmsLink + "/editSubSlider";
             $(".cropFormButton").attr("id","editSubSlider");            
@@ -1882,11 +1882,11 @@
             $("#previewImage").find("#displayFormGroup").css("display","block");
 
         }
-        else {
-            alert("here");
-            var index = $(this).data("index");  
-            var clone = $("#clone_editAdsCrop").html();                      
-            $("#editAdsIndex").val(index);
+        else if(nodename == "editAds"){
+
+            var index = $(this).data("index"); 
+            var clone = $("#clone_editAdsCrop_"+index).html();                      
+            $("#contentPreview").find("#editAdsIndex").val(index);
             $("#contentPreview").html(clone); 
             var actionLink = newHomeCmsLink + "/setAdsSection";
             $(".cropFormButton").attr("id","editAdsSection");            
@@ -1913,15 +1913,14 @@
         }
         else{
 
-
-             $("#scaleAndCrop").css("display","block");
+            $("#scaleAndCrop").css("display","block");
             imageprev(this);
         }
     });   
 
 
     $(' #previewImage').bind('hidden.bs.modal', function () {
-        $("#photoFile").val("");
+        $("#contentPreview").find("#photoFile").val("");
         jcrop_api = $.Jcrop($('#user_image_prev'));  
         resetCoords();        
         jcrop_api.destroy();         
@@ -1947,7 +1946,6 @@ function imageprev(input) {
                 if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
 
                     jcrop_api = $.Jcrop($('#user_image_prev'),{
-                        aspectRatio: 1,
                         boxWidth: 500,
                         boxHeight: 500,
                         minSize: [width*0.1,height*0.1],
