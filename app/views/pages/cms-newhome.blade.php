@@ -734,7 +734,7 @@
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Manage Ads Panel <a href="#previewImage" class='pull-right' data-nodename="addAds" data-toggle="modal" id="addAdsCrop">Add Ads <span class="glyphicon glyphicon-plus"></span></a></a>
                                 </h4>
                             </div>
-                            <div id="collapseOne" class="panel-collapse collapse">
+                            <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="panel-body" id="adsSectionDiv">
 
                                     <span style="display:none;">{{$adsSectionIndex = 0}}</span>
@@ -920,7 +920,7 @@
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Manage Seller Product Panel</a>
                                 </h4>
                             </div>
-                            <div id="collapseTwo" class="panel-collapse collapse">
+                            <div id="collapseTwo" class="panel-collapse collapse in">
                                 <div class="panel-body" id="productPanelDiv">
 
                                     <span style="display:none;">{{$productPanelindex = 0}}</span>
