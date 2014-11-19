@@ -274,7 +274,7 @@
     
     });
 
-    $("#changeProductPanel").on('click','#addCategoryProductPanel',function (e) { 
+    $("#manageCategorySection").on('click','#addCategoryProductPanel',function (e) { 
         loader.showPleaseWait();          
         var value = $(this).closest("form").find("#value").val().toString();
         var index = $(this).data("index");
@@ -316,7 +316,7 @@
         }      
     });  
 
-    $("myTabContent").on('click','.removeCategorySection',function (e) { 
+    $(".subCategoriesSectionTable").on('click','.removeCategorySection',function (e) { 
         var index = $(this).data("index").toString();
         var subIndex = $(this).data("subindex").toString();
         var nodename = $(this).data("nodename");
@@ -357,7 +357,7 @@
 
 
 
-    $("myTabContent").on('click','#setMainNavigation',function (e) { 
+    $("#myTabContent").on('click','#setMainNavigation',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
         var categoryName = $(this).closest("form").find("#drop_actionType").val();
@@ -802,11 +802,20 @@
 
     $("#addBrandsTable").on('click','.editBrands',function (e) { 
         var dataNode = $(this).attr("data");
-        var data = $.parseJSON(dataNode);
+        var data = $.parseJSON(dataNode);   
         $("#editBrandsUrl").val(data.url);
         $("#editBrandsIndex").val(data.index);
         $('#editBrandsDropDown option[value="'+ data.id_brand +'"]').attr("selected", "selected");
     });  
+
+    $("#manageTopSellers").on('click','#editTopSellersBtn',function (e) { 
+        var dataNode = $(this).attr("data");
+        var data = $.parseJSON(dataNode);   
+        $("#editTopSellersUrl").val(data.url);
+        $("#editTopSellersIndex").val(data.index);
+        $('#editTopSellersValue').val(data.value);
+    });  
+
 
     $("#myTabContent").on('click','.btn-danger',function (e) { 
         var dataNode = $(this).attr("data");
