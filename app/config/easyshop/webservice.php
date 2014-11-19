@@ -23,6 +23,7 @@ return array(
     'easyShopLink'=> "$baseUrl",
     'getMobileXml'=> "$baseUrl/webservice/mobilewebservice/getcontents",
     'getNewHomeXml'=> "$baseUrl/webservice/newhomewebservice/getcontents",
+    'getTempHomeXml'=> "$baseUrl/webservice/newhomewebservice/getTempContents",
 );
 
 

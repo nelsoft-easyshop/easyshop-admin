@@ -15,10 +15,10 @@
     <div class="row">
         <section id="tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
-                <li  class="active"><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
+                <li class="active"><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
+                <li><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
                 <li><a href="#manageCategorySection" role="tab"  data-toggle="tab">Manage Category Section</a></li>                
                 <li><a href="#manageAdSection" role="tab"  data-toggle="tab">Manage Ad Section</a></li>                
-                <li><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
                 <li ><a href="#manageSellerSection" role="tab"  data-toggle="tab">Manage Seller Section</a></li>                
                 <li class="dropdown"  >
                     <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Manage Category Navigation<span class="caret"></span></a>
@@ -58,7 +58,7 @@
 
 
 
-            <div class="tab-pane fade active in" id="manageBrands">
+            <div class="tab-pane fade" id="manageBrands">
                     <legend>        
                         <h4 class="tbl-title">
                             <span class="glyphicon glyphicon-list-alt"></span>
@@ -99,7 +99,7 @@
                                 <td>
                                     <div class="btn-toolbar" role="toolbar">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-danger editBrands" id="editTopSellersBtn" 
+                                            <button type="button" class="btn btn-danger editBrands" 
                                                 data-toggle="modal" data-target="#editBrandsModal"
                                                 data='{"url":"{{$newHomeCmsLink}}/setBrands","index":"{{$brandsIndex}}","value":"{{$brands->name}}","id_brand":"{{$brands->id_brand}}" } '
                                                 >
@@ -501,8 +501,8 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_category_{{$categorySectionIndex}}">{{ucwords(str_replace("-"," ",$categoryPanel->categorySlug))}}</a>
-                                            <span class="glyphicon glyphicon-remove pull-right" id="removeCategorySection" data-nodename="categorySectionPanel" data-index="{{$categorySectionIndex}}" data-url="{{$newHomeCmsLink}}/removeContent"></span>
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_category_{{$categorySectionIndex}}" style='cursor:pointer;'>{{ucwords(str_replace("-"," ",$categoryPanel->categorySlug))}}</a>
+                                            <span class="glyphicon glyphicon-remove pull-right" id="removeCategorySection" data-nodename="categorySectionPanel" style='cursor:pointer;' data-index="{{$categorySectionIndex}}" data-url="{{$newHomeCmsLink}}/removeContent"></span>
                                         </h4>
                                     </div>
                                     
@@ -543,7 +543,7 @@
 
 
                                             <!-- Start Manage Sub Category Section -->
-                                             <table class="table table-striped table-hover tbl-my-style"  id="subCategoriesSection_{{{$categorySectionIndex}}}">
+                                             <table class="table table-striped table-hover tbl-my-style subCategoriesSectionTable"  id="subCategoriesSection_{{{$categorySectionIndex}}}">
                                                 <thead>
                                                 <tr>
                                                     <th>/</th>
@@ -1143,7 +1143,7 @@
                         </div>                                                           
                         <div class="form-group">
                             <div class="col-xs-offset-2 col-xs-10">
-                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addOtherotherCategories" id="addOtherCategoy">Add Other Category Navigation</a>
+                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addOtherotherCategories" id="addOtherCategory">Add Other Category Navigation</a>
                             </div>
                         </div>                                      
                     </form> 
@@ -1228,8 +1228,34 @@
             </div> 
 
 
-            <div class="tab-pane fade" id="manageSliderSection">
-                <legend>        
+            <div class="tab-pane fade active in" id="manageSliderSection">
+                <div class="row">
+                    <div class='col-md-12'>
+                        <center>
+                            <a1 href="#" class="btn btn-success text-center" id="commitSliderChanges">Commit Slider Changes
+                            </a1>
+                            <a1 href="#" class="btn btn-success text-center" id="discardChanges" data-url="{{$newHomeCmsLink}}/syncTempHomeFiles">Sync to Current Home Page
+                            </a1>                                                        
+                        </center>
+                    </div>
+                </div>                  
+                <legend>     
+                    <h4 class="tbl-title">
+                        <span class="glyphicon glyphicon-list-alt"></span>
+                        Current Slider Section 
+                    </h4>
+                </legend> 
+                <div id="sliderPreview">
+                    <div class="row">
+                        <div class='col-md-12'>
+                           <iframe id="iframe" class="well" style='min-height:460px !important;min-width:100%;'
+                                   src="{{{$newHomeCmsLink}}}/fetchPreviewSlider">
+                           </iframe>
+                       </div>
+                    </div> 
+                </div>
+
+                <legend>     
                     <h4 class="tbl-title">
                         <span class="glyphicon glyphicon-list-alt"></span>
                         Add Main Slider Section
@@ -1313,6 +1339,11 @@
                                                 {{ Form::hidden('index', $sliderIndex, array('id' => 'index','class' => 'form-control')) }}                        
                                             </div>
                                         </div> 
+                                        <div class="form-group">
+                                            <div class="col-sm-10">
+                                                {{ Form::hidden('preview', "preview", array('id' => 'preview','class' => 'form-control')) }}                        
+                                            </div>
+                                        </div>                                         
                                         <div class="form-group">
                                             <div class="col-sm-10">
                                                 {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
@@ -1461,7 +1492,7 @@
                                                     <!--End Edit Slide Modal -->
 
                                                 <span style="display:none;">{{$subSlideIndex++}}</span>  
-                                                <span style="display:none;">{{$slideCount++}}</span>
+                                                <span style="display:none;" class='subSlide_{{$sliderIndex}}'>{{$slideCount++}}</span>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -1473,13 +1504,9 @@
                         </div>
                     @endforeach
                 <div>                    
-            </div>   
-            
-            <div class="tab-pane fade" id="test4">
-                <p>Test4</p>
-            </div>                    
+            </div>                      
         </div>
-    </div>
+    </div>       
 
         <!-- HERE-->
         <!--Start Modal -->

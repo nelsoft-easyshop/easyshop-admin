@@ -41,6 +41,8 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('getOtherCategories', array('uses' => 'NewHomeContentManagerController@getOtherCategories'));
     Route::get('getSubCategoriesSection/{index}', array('uses' => 'NewHomeContentManagerController@getSubCategoriesSection'));
     Route::get('getCategoriesProductPanel/{index}', array('uses' => 'NewHomeContentManagerController@getCategoriesProductPanel'));
+    Route::post('getSliderPreview', array('uses' => 'NewHomeContentManagerController@getSliderPreview'));
+
     Route::get('cms/slides', array('uses' => 'HomeContentManagerController@getMainSlides'));
     Route::get('cms/productslides', array('uses' => 'HomeContentManagerController@getProductSlides'));
 
