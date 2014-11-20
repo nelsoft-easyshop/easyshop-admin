@@ -97,7 +97,7 @@
                                     <legend>        
                                         <h4 class="tbl-title">
                                             <span class="glyphicon glyphicon-list-alt"></span>
-                                            Add Sub Slider Section
+                                                Manage Sub Slider <a href="#previewImage" class='pull-right' data-index = "{{$sliderIndex}}" data-nodename="addMainSlider" data-toggle="modal" id="addSliderCrop">Add Slider <span class="glyphicon glyphicon-plus"></span></a>
                                         </h4>
                                     </legend>                                     
                                      <form id='mainSlideForm{{$sliderIndex}}' target="test" action="{{ $newHomeCmsLink}}/addmainslide" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
