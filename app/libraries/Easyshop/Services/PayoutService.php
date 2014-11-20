@@ -139,17 +139,27 @@ class PayoutService
         return $returnVar;
     }
 
-    public function applyStatusOrderProductValidate(&$transactionDetails , $forBuyer)
+    /**
+     * Organizes the array transactionDetails to be displayed:
+     * 1. checks if the order is suggested for refund/payout
+     * 2. returns approriate tags for each entity(buyer/sellers) or if the entity was already contacted or not
+     *
+     * @param int $transactionDetails
+     * @param bool $isBuyer
+     *
+     * @return transactionDetails
+     */
+    public function applyStatusOrderProductValidate(&$transactionDetails , $isBuyer)
     {
         foreach ($transactionDetails as $transaction) {
             $tagTypeId = (int)$transaction->tag_id;
             $transaction->requestForRefund = false;
             $noTagStatus = $this->tagTypeRepository->getNoTag();
             $completedStatus = (int)$this->tagTypeRepository->getContacted();
-            $transaction->tagStatusAvailable = (!$forBuyer) ? $this->tagTypeRepository->getSellerTags() : $this->tagTypeRepository->getBuyerTags();
+            $transaction->tagStatusAvailable = (!$isBuyer) ? $this->tagTypeRepository->getSellerTags() : $this->tagTypeRepository->getBuyerTags();
 
             if($tagTypeId > $noTagStatus){
-            $transaction->tagStatusAvailable = (!$forBuyer) ? $this->tagTypeRepository->getSellerTags(true) : $this->tagTypeRepository->getBuyerTags(true);
+                $transaction->tagStatusAvailable = (!$isBuyer) ? $this->tagTypeRepository->getSellerTags(true) : $this->tagTypeRepository->getBuyerTags(true);
                 if($tagTypeId === $completedStatus){ 
                     $dateUpdated = Carbon::create(Carbon::parse($transaction->date_updated)->year
                                  , Carbon::parse($transaction->date_updated)->month
