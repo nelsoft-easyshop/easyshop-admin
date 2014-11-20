@@ -14,6 +14,9 @@ class NewHomeContentManagerController extends BaseController
         $this->XMLService = $XMLService;
         $xmlString = $this->XMLService->getNewHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
+
+        $sliderXmlString = $this->XMLService->getTempHomeXml();
+        $this->sliderMap = simplexml_load_string(trim($sliderXmlString));        
     
     }      
       
@@ -42,13 +45,9 @@ class NewHomeContentManagerController extends BaseController
             $childCategoryLists[] = array("slug" => $value->slug, "name" => $value->name);
         }               
 
-        foreach($this->map->sliderSection->slide as $slides) {
+        foreach($this->sliderMap->sliderSection->slide as $slides) {
             $sliders[] = $slides;
         }
-
-        foreach($this->map->sliderTemplate as $template) {
-            $templateLists[] = $template;
-        } 
         
         foreach($this->map->adSection as $ads) {
             $adsSection[] = $ads;
@@ -106,7 +105,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('categoryProductPanelList', $categoryProductPanelList)
                     ->with('productList', array_flatten($product))
                     ->with('childCategoryLists', $childCategoryLists)
-                    ->with('templateLists', array_flatten($templateLists))
+                    ->with('templateLists', array_flatten($this->getTemplates($this->sliderMap->sliderTemplate)))
                     ->with('categoryNavigation', $categoryNavigation)
                     ->with('password', $adminEntity->getAdminMemberById(Auth::id()))
                     ->with('sliderSection', $sliders)
@@ -259,10 +258,9 @@ class NewHomeContentManagerController extends BaseController
     public function getSlideSection($index)
     {
         $index = (int)$index;
-        $adminEntity = App::make('AdminMemberRepository');             
-        foreach($this->map->sliderTemplate as $template) {
-            $templateLists[] = $template->template;
-        }        
+        $adminEntity = App::make('AdminMemberRepository'); 
+        $sliderXmlString = $this->XMLService->getTempHomeXml();
+        $this->map = simplexml_load_string(trim($sliderXmlString));                           
 
         foreach($this->map->sliderSection->slide[$index]->image as $slides) {
             $sliders[] = $slides;
@@ -273,7 +271,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('slides', $sliders)
                     ->with('userid', Auth::id())  
                     ->with('password', $adminEntity->getAdminMemberById(Auth::id()))    
-                    ->with('templateLists', $templateLists)                    
+                    ->with('templateLists', array_flatten($this->getTemplates($this->sliderMap->sliderTemplate)))                    
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());  
     }
@@ -283,10 +281,10 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAllSliders()
     {
-        $adminEntity = App::make('AdminMemberRepository');             
-        foreach($this->map->sliderTemplate as $template) {
-            $templateLists[] = $template->template;
-        }        
+        $adminEntity = App::make('AdminMemberRepository'); 
+
+        $sliderXmlString = $this->XMLService->getTempHomeXml();
+        $this->map = simplexml_load_string(trim($sliderXmlString));                          
 
         foreach($this->map->sliderSection->slide as $slides) {
             $sliders[] = $slides;
@@ -295,7 +293,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('sliderSection', $sliders)
                     ->with('userid', Auth::id())  
                     ->with('password', $adminEntity->getAdminMemberById(Auth::id()))    
-                    ->with('templateLists', $templateLists)                    
+                    ->with('templateLists', array_flatten($this->getTemplates($this->sliderMap->sliderTemplate)))                    
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());  
     }
@@ -380,7 +378,19 @@ class NewHomeContentManagerController extends BaseController
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
     }    
-
+    public function getSliderPreview()
+    {
+        $adminEntity = App::make('AdminMemberRepository');            
+        $html =  View::make("partials.sliderpreview")
+                    ->with("newHomeCmsLink",$this->XMLService->getNewHomeCmsLink())
+                    ->with('userid', Auth::id())
+                    ->with('hash', Input::get("hash"))
+                    ->with('commit', Input::get("commit"))
+                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))                    
+                    ->render();
+        return Response::json(['html' => $html]);           
+                    
+    }
     /**
      *  Reloads contents of categoriesSection nodes
      */ 
@@ -417,4 +427,17 @@ class NewHomeContentManagerController extends BaseController
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());              
 
     }
+
+    /**
+     *  Returns template Lists
+     *  @param object $templatesObj
+     *  @return array 
+     */
+    public function getTemplates($templatesObj)
+    {
+        foreach($templatesObj as $template) {
+            $templateLists[] = $template;
+        } 
+        return $templateLists;
+    }    
 }

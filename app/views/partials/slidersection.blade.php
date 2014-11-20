@@ -1,4 +1,28 @@
-
+                <div class="row">
+                    <div class='col-md-12'>
+                        <center>
+                            <a1 href="#" class="btn btn-success text-center" id="commitSliderChanges">Commit Slider Changes
+                            </a1>
+                            <a1 href="#" class="btn btn-success text-center" id="discardChanges" data-url="{{$newHomeCmsLink}}/syncTempHomeFiles">Sync to Current Home Page
+                            </a1>                             
+                        </center>
+                    </div>
+                </div>                  
+                <legend>     
+                    <h4 class="tbl-title">
+                        <span class="glyphicon glyphicon-list-alt"></span>
+                        Current Slider Section
+                    </h4>
+                </legend> 
+                <div id="sliderPreview"> 
+                    <div class="row">
+                        <div class='col-md-12'>
+                       <iframe class="well" style='min-height:460px !important;min-width:100%;'
+                                src="{{{$newHomeCmsLink}}}/fetchPreviewSlider">
+                       </iframe>
+                       </div>
+                    </div> 
+                </div> 
                 <legend>        
                     <h4 class="tbl-title">
                         <span class="glyphicon glyphicon-list-alt"></span>
