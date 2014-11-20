@@ -504,11 +504,10 @@
                 contentType: "application/json",
                 dataType: 'jsonp',
                 success: function(json) {
-                        $("#loading").modal('hide');
+                    $("#loading").modal('hide');
                 },
                 error: function(e) {
-                        $("#loading").modal('success');
-                        $("#loading").modal('hide');
+                    $("#loading").modal('hide');
                 }
             }); 
         }  
