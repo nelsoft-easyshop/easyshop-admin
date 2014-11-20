@@ -63,6 +63,17 @@ function getParameterByName(name) {
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
+Array.prototype.areArraysEquals = function() {
+    for(var i = 1; i < this.length; i++){
+        if(this[i] !== this[0]){
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
 var loader = loader || (function () {
     var pleaseWaitDiv = $('<div style="text-align:center"><hr/> <p><img src = "/images/orange_loader.gif" /></p> <p style="font-size:13px;"><strong>One moment please </strong> </p> <hr/></div>');
     var dialog = new BootstrapDialog({
