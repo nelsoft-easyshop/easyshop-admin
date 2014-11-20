@@ -456,7 +456,7 @@ class OrderProductController extends BaseController
         $tagType = Input::get('tag_type');
         $orderProductIds = Input::get('order_product_ids');
         $adminMemberId = Auth::id();
-        $forBuyer = Input::get("forBuyer");
+        $isBuyer = Input::get("forBuyer");
 
         $payoutService = App::make('PayoutService');
         $orderTagStatus = $payoutService->updateOrderProductTagStatus($orderId
@@ -464,7 +464,7 @@ class OrderProductController extends BaseController
                                                                     ,$tagType
                                                                     ,$adminMemberId
                                                                     ,$orderProductIds
-                                                                    ,$forBuyer);
+                                                                    ,$isBuyer);
 
         return Response::json($orderTagStatus);
     }
