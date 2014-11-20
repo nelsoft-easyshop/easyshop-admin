@@ -422,7 +422,7 @@
 
         var index = $(this).closest("form").find("#editModalSliderIndex").val().toString();
         var subIndex = $(this).closest("form").find("#editModalSliderSubIndex").val().toString();
-        var url = $(this).data('url');
+        var url = newHomeCmsLink + "/editSubSlider";;
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
@@ -446,7 +446,7 @@
         
         loader.showPleaseWait();     
 
-        var url = $(this).data('url');
+        var url = newHomeCmsLink + "/addAdds";
         var target = $(this).closest("form").find("#target").val().toString();
         var userid = $(this).closest("form").find("#userid").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();   
@@ -648,8 +648,7 @@
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
 
-
-        var count = parseInt($(".subSlideCount_"+index).last().text());
+        var count = parseInt($(".subSlide_"+index).last().text());
 
         if(target.trim() === "") {
             target = "/";
