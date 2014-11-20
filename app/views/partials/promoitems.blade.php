@@ -85,7 +85,7 @@
                                                 <a 
                                                     id="productslide" 
                                                     data-index="{{$indexForEach}}"  
-                                                    data-nodename="map/feedPromoItems/product" 
+                                                    data-nodename="//feedPromoItems" 
                                                     data-userid="{{$userId}}"                                                
                                                     data-password="{{$adminPassword}}"
                                                     data-url = "{{ $contentCmsLink }}/removeContent"
