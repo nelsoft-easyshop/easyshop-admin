@@ -1539,6 +1539,10 @@
                 loader.hidePleaseWait();
                    
             },
+            error: function(e) {
+                loader.hidePleaseWait();
+                showErrorModal("Please try again");
+            }            
         });   
     });     
 
