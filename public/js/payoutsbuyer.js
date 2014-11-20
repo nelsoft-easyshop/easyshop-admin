@@ -1,13 +1,5 @@
 (function ($) {
-    Array.prototype.allValuesSame = function() {
-        for(var i = 1; i < this.length; i++){
-            if(this[i] !== this[0]){
-                return false;
-            }
-        }
 
-        return true;
-    }
 
 
     var updateStatus = function(order_id,member_id,tag_type,$rowStatus,forBuyer,dialogRef){
@@ -130,7 +122,7 @@
             $tags = $(this).data('status');
         });
 
-        $isAvailable = $tagArray.allValuesSame();
+        $isAvailable = $tagArray.areArraysEquals();
         $("#tagType").empty();
         $("#tagType").append('<option value="0">--Select Tag--</option>');
         if($isAvailable){
