@@ -1880,7 +1880,7 @@
 
     $("#myTabContent").on('click','#addSliderCrop,#editSubSliderCrop,#addAdsCrop,#editAdsCrop',function (e) { 
 
-       
+        $('.cropFormButton').prop('disabled', true);
         var nodename = $(this).data("nodename");
         if(nodename == "addMainSlider") {
             $("#contentPreview").find("#modalSliderIndex").val($(this).data("index"));
@@ -2017,6 +2017,7 @@ function imageprev(input) {
 }
 
 function showCoords(c){
+    $('.cropFormButton').prop('disabled', false);    
     $('#image_x').val(c.x);
     $('#image_y').val(c.y);
     $('#image_w').val(c.w);
