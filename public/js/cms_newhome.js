@@ -418,7 +418,7 @@
 
 
 
-    $("#manageSliderSection").on('click','#editSubSlider',function (e) { 
+    $("#previewImage").on('click','#editSubSlider',function (e) { 
 
         var index = $(this).closest("form").find("#editModalSliderIndex").val().toString();
         var subIndex = $(this).closest("form").find("#editModalSliderSubIndex").val().toString();
@@ -442,7 +442,7 @@
 
 
 
-    $("#manageAdSection").on('click', '#addAdSection',function (e) { 
+    $("#previewImage").on('click', '#addAdSection',function (e) { 
         
         loader.showPleaseWait();     
 
@@ -635,7 +635,7 @@
       
     });
 
-    $("#manageSliderSection").on('click','#addSubSlider',function (e) { 
+    $("#previewImage").on('click','#addSubSlider',function (e) { 
         loader.showPleaseWait();          
         var image_x = $(this).closest("form").find("#image_x").val().toString();
         var image_y = $(this).closest("form").find("#image_y").val().toString();
@@ -1879,7 +1879,7 @@
             $("#customerror").modal('show');  
     }      
 
-    $(document.body).on('click','#addSliderCrop,#editSubSliderCrop,#addAdsCrop,#editAdsCrop',function (e) { 
+    $("#myTabContent").on('click','#addSliderCrop,#editSubSliderCrop,#addAdsCrop,#editAdsCrop',function (e) { 
 
        
         var nodename = $(this).data("nodename");
@@ -1887,7 +1887,7 @@
             $("#contentPreview").find("#modalSliderIndex").val($(this).data("index"));
             var clone = $("#cloneForm_addSubSlider").html();
             $("#contentPreview").html(clone);
-            var actionLink = newHomeCmsLink + "/addmainslide";
+            var actionLink = newHomeCmsLink + "/addSubSlider";
             $(".cropFormButton").attr("data-url",actionLink);
             $(".cropFormButton").attr("id","addSubSlider");
             $("#previewImage").find("form").attr("action",actionLink);       
