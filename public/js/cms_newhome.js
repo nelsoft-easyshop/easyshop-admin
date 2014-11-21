@@ -2003,16 +2003,20 @@ function imageprev(input) {
                   
 
                 }
-                else if(width > 5000 || height > 5000)
-                    alert('Failed to upload image. Max image dimensions: 5000px x 5000px');
-                else
+                else if(width > 5000 || height > 5000) {
+                    showErrorModal("Failed to upload image. Max image dimensions: 5000px x 5000px");
+                }                    
+                else {
                     $('#div_user_image_prev span:first').html('Preview');
+                }                    
             }
         }
         reader.readAsDataURL(input.files[0]);
     }
-    else
-        alert('You can only upload gif|png|jpeg|jpg files at a max size of 5MB! ');
+    else {
+        showErrorModal("You can only upload gif|png|jpeg|jpg files at a max size of 5MB!");
+    }
+
     
 }
 
