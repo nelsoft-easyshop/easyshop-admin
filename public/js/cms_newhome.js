@@ -1,6 +1,7 @@
 (function () {
     var userid = $("#userid").val();
     var password = $("#password").val();
+    var newHomeCmsLink = $("#newHomeCmsLink").text();
 
     var minimumCategoryProductPanel = 2;
     var minimumCategorySectionProductPanel = 3;
@@ -394,10 +395,12 @@
     });  
 
 
-    $("#adsSectionDiv").on('click','#editAdsSection',function (e) { 
+
+    $("#previewImage").on('click','#editAdsSection',function (e) { 
+
         loader.showPleaseWait();
-        var index = $(this).closest("form").find("#index").val().toString();
-        var url = $(this).data('url');
+        var index = $(this).closest("form").find("#editAdsIndex").val().toString();
+        var url = newHomeCmsLink + "/setAdsSection";
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
@@ -407,7 +410,7 @@
             $(this).closest("form").find("#target").val("/");            
         }
         var hash =  hex_sha1(index + userid + value + target  + password);
-        var form = "#adSectionForm"+index;
+        var form = "#cropForm";
         $(this).closest("form").find("#editAdsSectionHash").val(hash);
         editAdsSectionForm(form, url);
 
@@ -415,11 +418,11 @@
 
 
 
-    $("#manageSliderSection").on('click','#editSubSlider',function (e) { 
+    $("#previewImage").on('click','#editSubSlider',function (e) { 
 
-        var index = $(this).closest("form").find("#index").val().toString();
-        var subIndex = $(this).closest("form").find("#subIndex").val().toString();
-        var url = $(this).data('url');
+        var index = $(this).closest("form").find("#editModalSliderIndex").val().toString();
+        var subIndex = $(this).closest("form").find("#editModalSliderSubIndex").val().toString();
+        var url = newHomeCmsLink + "/editSubSlider";;
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
@@ -428,7 +431,7 @@
         var hash =  hex_sha1(index + subIndex + userid + value + target  + password);
         $(this).closest("form").find("#editHashMainSlide").val(hash);
 
-        var editSlideForm_ = "#editSlideForm_"+index+"_"+subIndex;
+        var editSlideForm_ = "#cropForm";
 
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;
@@ -438,20 +441,24 @@
     }); 
 
 
-    $("#manageAdSection").on('click', '#addAdSection',function (e) { 
+
+    $("#previewImage").on('click', '#addAdSection',function (e) { 
         
         loader.showPleaseWait();     
-        var url = $(this).data('url');
+
+        var url = newHomeCmsLink + "/addAdds";
+        var target = $(this).closest("form").find("#target").val().toString();
         var userid = $(this).closest("form").find("#userid").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();   
         var password = $(this).closest("form").find("#password").val().toString();
-        var hash =  hex_sha1(userid  + value + password);        
+        var hash =  hex_sha1(value + target + userid + password);        
         $(this).closest("form").find("#hashAddAds").val(hash);
-        var form = "#addAdsForm";
+        var form = "#cropForm";
         if(value == "") {
             showErrorModal("Please upload na image");
         }
         else {
+            loader.showPleaseWait();                 
             addAds(form, url);
         }
     }); 
@@ -494,7 +501,7 @@
         }
         else {
 
-            var value = $(this).closest("form").find("#photoFile").val().toString();     
+            var value = $(this).closest("form").find("#sellerFile").val().toString();     
             var hash =  hex_sha1(userid +  value + action + password);
             var form = "";
             if(action == "banner") {
@@ -628,28 +635,34 @@
       
     });
 
-    $("#manageSliderSection").on('click','#addSubSlider',function (e) { 
+    $("#previewImage").on('click','#addSubSlider',function (e) { 
         loader.showPleaseWait();          
-        var index = $(this).closest("form").find("#index").val().toString();
+        var image_x = $(this).closest("form").find("#image_x").val().toString();
+        var image_y = $(this).closest("form").find("#image_y").val().toString();
+        var image_w = $(this).closest("form").find("#image_w").val().toString();
+        var image_h = $(this).closest("form").find("#image_h").val().toString();
+        var index = $(this).closest("form").find("#modalSliderIndex").val().toString();
         var url = $(this).data('url');
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
 
-        var count = parseInt($(".subSlideCount_"+index).last().text());
+        var count = parseInt($(".subSlide_"+index).last().text());
 
         if(target.trim() === "") {
             target = "/";
             $("#target").val("/");            
         }
-        var hash =  hex_sha1(index + userid + value + target  + password);
+        var hash =  hex_sha1(image_x + image_y + image_w + image_h + value +index + userid + target  + password);
+
         $(this).closest("form").find("#hashMainSlide").val(hash);
-        var mainSlideForm = "#mainSlideForm"+index;
+        var mainSlideForm = "#cropForm";
 
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;
         if(value == "") {
+            $("#previewImage").modal("hide");
             showErrorModal("Please upload na Image")
         }
         else {
@@ -1525,6 +1538,10 @@
                 loader.hidePleaseWait();
                    
             },
+            error: function(e) {
+                loader.hidePleaseWait();
+                showErrorModal("Please try again");
+            }            
         });   
     });     
 
@@ -1711,7 +1728,7 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $("#adsSectionDiv").load("getAdsSection");                  
+                $("#adsSectionDiv").load("getAdsSection");   
                 loader.hidePleaseWait();  
             },
             error: function(e) {
@@ -1797,14 +1814,16 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $("#manageSliderSection").load("getAllSliders"); 
-                getSliderPreview();                
+
+                $("#previewImage").modal("hide");                      
+                $(tableSelector).load(reloadurl);              
                 loader.hidePleaseWait();   
             },
             error: function(e) {
-                loader.hidePleaseWait();     
-                                            
-                showErrorModal("Please try again");
+                $("#previewImage").modal("hide");               
+                $(tableSelector).load(reloadurl);             
+                loader.hidePleaseWait();   
+
             }
         }); 
 
@@ -1857,7 +1876,165 @@
             loader.hidePleaseWait();
             $("#errorTexts").html(messages); 
             $("#customerror").modal('show');  
-    }                                            
+    }      
+
+    $("#myTabContent").on('click','#addSliderCrop,#editSubSliderCrop,#addAdsCrop,#editAdsCrop',function (e) { 
+
+        $('.cropFormButton').prop('disabled', true);
+        var nodename = $(this).data("nodename");
+        if(nodename == "addMainSlider") {
+            $("#contentPreview").find("#modalSliderIndex").val($(this).data("index"));
+            var clone = $("#cloneForm_addSubSlider").html();
+            $("#contentPreview").html(clone);
+            var actionLink = newHomeCmsLink + "/addSubSlider";
+            $(".cropFormButton").attr("data-url",actionLink);
+            $(".cropFormButton").attr("id","addSubSlider");
+            $("#previewImage").find("form").attr("action",actionLink);       
+            $("#previewImage").find("#displayFormGroup").css("display","block");
+
+        }
+        else if(nodename == "editMainSlider" ) {
+            var index = $(this).data("index");
+            var subindex = $(this).data("subindex");
+            var clone = $("#editSlideForm_"+index+"_"+subindex).html();
+            $("#contentPreview").find("#editModalSliderIndex").val(index);
+            $("#contentPreview").find("#editModalSliderSubIndex").val(subindex);
+            $("#contentPreview").html(clone); 
+            var actionLink = newHomeCmsLink + "/editSubSlider";
+            $(".cropFormButton").attr("id","editSubSlider");            
+            $(".cropFormButton").attr("data-url",actionLink);            
+            $("#previewImage").find("form").attr("action",actionLink);
+            $("#previewImage").find("#displayFormGroup").css("display","block");
+
+        }
+        else if(nodename == "addAds") {
+            var clone = $("#cloneForm_addAds").html();
+            $("#contentPreview").html(clone);
+            var actionLink = newHomeCmsLink + "/addAdds";
+            $(".cropFormButton").attr("id","addAdSection");            
+            $(".cropFormButton").attr("data-url",actionLink);             
+            $("#previewImage").find("form").attr("action",actionLink);    
+            $("#previewImage").find("#displayFormGroup").css("display","block");
+
+        }
+        else if(nodename == "editAds"){
+
+            var index = $(this).data("index"); 
+            var clone = $("#clone_editAdsCrop_"+index).html();                      
+            $("#contentPreview").find("#editAdsIndex").val(index);
+            $("#contentPreview").html(clone); 
+            var actionLink = newHomeCmsLink + "/setAdsSection";
+            $(".cropFormButton").attr("id","editAdsSection");            
+            $(".cropFormButton").attr("data-url",actionLink);            
+            $("#previewImage").find("form").attr("action",actionLink);
+            $("#previewImage").find("#displayFormGroup").css("display","block");  
+        }
+
+    });
+
+    /*********************** JCROP ******************************/
+    $("#photoFile").on("change", function(){
+        var jcrop;
+        var currValue  = $(this).val();
+        var oldIE;
+        var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+        
+        if ($('html').is('.ie6, .ie7, .ie8, .ie9')){
+            oldIE = true;
+        }
+
+        if (oldIE || isSafari){
+            $('#form_image').submit();
+        }
+        else{
+
+            $("#scaleAndCrop").css("display","block");
+            imageprev(this);
+        }
+    });   
+
+
+    $(' #previewImage').bind('hidden.bs.modal', function () {
+        $("#contentPreview").find("#photoFile").val("");
+        jcrop_api = $.Jcrop($('#user_image_prev'));  
+        resetCoords();        
+        jcrop_api.destroy();         
+        $("#scaleAndCrop").css("display","none");        
+    });  
+
+    /***************    Image preview for cropping  ************************/
+function imageprev(input) {
+
+    var jcrop_api, width, height;
+    
+    if (input.files && input.files[0] && input.files[0].type.match(/(gif|png|jpeg|jpg)/g) && input.files[0].size <= 5000000) {
+        var reader = new FileReader();
+
+        reader.onload = function(e){
+            var image = new Image();
+            image.src = e.target.result;
+            image.onload = function(){
+                width = this.width;
+                height = this.height;
+
+                $('#user_image_prev').attr('src', this.src);
+                if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
+
+                    jcrop_api = $.Jcrop($('#user_image_prev'),{
+                        boxWidth: 500,
+                        boxHeight: 500,
+                        minSize: [width*0.1,height*0.1],
+                        trueSize: [width,height],
+                        onChange: showCoords,
+                        onSelect: showCoords,
+                        onRelease: resetCoords
+                    });    
+   
+
+                    $(' #previewImage').bind('hidden.bs.modal', function () {
+
+                        $('#user_image_prev').attr('src', '');
+                        resetCoords();
+                        jcrop_api.destroy(); 
+                        var img = $('<img id="user_image_prev">');
+                        img.attr('src', "");
+                        img.appendTo("#imgContainer");
+                    });                                        
+                  
+
+                }
+                else if(width > 5000 || height > 5000) {
+                    showErrorModal("Failed to upload image. Max image dimensions: 5000px x 5000px");
+                }                    
+                else {
+                    $('#div_user_image_prev span:first').html('Preview');
+                }                    
+            }
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+    else {
+        showErrorModal("You can only upload gif|png|jpeg|jpg files at a max size of 5MB!");
+    }
+
+    
+}
+
+function showCoords(c){
+    $('.cropFormButton').prop('disabled', false);    
+    $('#image_x').val(c.x);
+    $('#image_y').val(c.y);
+    $('#image_w').val(c.w);
+    $('#image_h').val(c.h);
+}
+
+function resetCoords(){
+    $('#image_x').val(0);
+    $('#image_y').val(0);
+    $('#image_w').val(0);
+    $('#image_h').val(0);
+}
+                                   
 
 })(jQuery);    
 

@@ -4,26 +4,27 @@
                             <a1 href="#" class="btn btn-success text-center" id="commitSliderChanges">Commit Slider Changes
                             </a1>
                             <a1 href="#" class="btn btn-success text-center" id="discardChanges" data-url="{{$newHomeCmsLink}}/syncTempHomeFiles">Sync to Current Home Page
-                            </a1>                             
+                            </a1>                                                        
                         </center>
                     </div>
                 </div>                  
                 <legend>     
                     <h4 class="tbl-title">
                         <span class="glyphicon glyphicon-list-alt"></span>
-                        Current Slider Section
+                        Current Slider Section 
                     </h4>
                 </legend> 
-                <div id="sliderPreview"> 
+                <div id="sliderPreview">
                     <div class="row">
                         <div class='col-md-12'>
-                       <iframe class="well" style='min-height:460px !important;min-width:100%;'
-                                src="{{{$newHomeCmsLink}}}/fetchPreviewSlider">
-                       </iframe>
+                           <iframe id="iframe" class="well" style='min-height:460px !important;min-width:100%;'
+                                   src="{{{$newHomeCmsLink}}}/fetchPreviewSlider">
+                           </iframe>
                        </div>
                     </div> 
-                </div> 
-                <legend>        
+                </div>
+
+                <legend>     
                     <h4 class="tbl-title">
                         <span class="glyphicon glyphicon-list-alt"></span>
                         Add Main Slider Section
@@ -48,24 +49,25 @@
                 </form>
                 @foreach($templateLists[0] as $templates)                                               
                     <span id="template_{{$templates->templateName}}" data-name="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" style="display:none;">{{$templates->templateName}}</span>
-                @endforeach 
+                @endforeach                  
                 <span style="display:none;">{{$sliderIndex = 0}}</span>
-                <span style="display:none;">{{$parentSliderCount = 1}}</span>                
+                <span style="display:none;">{{$parentSliderCount = 1}}</span>
                 <div class="panel-group" id="accordion">
                     @foreach($sliderSection as $slides)
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$sliderIndex}}">Add Main Slide</a>
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$sliderIndex}}">Manage Slides</a>
                                     <span class="glyphicon glyphicon-remove pull-right" id="removeMainSlider" data-nodename="mainSliderSection" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style='cursor:pointer;'></span>
                                     <span class="glyphicon glyphicon-chevron-up pull-right" id="moveParentSlider" data-nodename="mainSliderSection" data-action="up" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/setPositionParentSlider" style='cursor:pointer;'></span>
                                     <span class="glyphicon glyphicon-chevron-down pull-right" id="moveParentSlider" data-nodename="mainSliderSection" data-action="down" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/setPositionParentSlider" style='cursor:pointer;'></span>
-                                </h4>                               
+                                </h4>
                             </div>
                             <div id="collapse_{{$sliderIndex}}" class="panel-collapse collapse">
                                 <div class="panel-body"> 
                                     <!-- Add Main Slide Start -->
-                                    <form id='left' target="test"  class="form-horizontal">                                           
+                                    <form id='left' target="test"  class="form-horizontal">         
+                                        <input type="hidden" id="sliderTemplate{{$sliderIndex}}" value="{{$slides->template}}">                                  
                                         <div class="form-group">
                                             <div class="col-sm-10">
                                                 {{ Form::hidden('index', $sliderIndex, array('id' => 'index','class' => 'form-control')) }}                        
@@ -81,63 +83,34 @@
                                                         @else
                                                             <option value="{{$templates->templateName}}" data-count="{{$templates->imageCount}}" >{{$templates->templateName}}</option>
                                                         @endif
-                                                    @endforeach   
+                                                    @endforeach  
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <div class="col-xs-offset-2 col-xs-10">
-                                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addSubCategories" data-subcategories = "#subcategories_test" id="addSubCategoryNavigation">Set Slider Design Template</a>
+                                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/setSliderDesignTemplate" id="setSliderDesignTemplate">Set Slider Design Template</a>
                                             </div>
                                         </div>  
                                     </form>
                                     <!-- Add Main Slide End -->
-                                    <!-- Add Sub Slider Start -->
-                                    <legend>        
-                                        <h4 class="tbl-title">
-                                            <span class="glyphicon glyphicon-list-alt"></span>
-                                            Add Sub Slider Section
-                                        </h4>
-                                    </legend>                                     
-                                     <form id='mainSlideForm{{$sliderIndex}}' target="test" action="{{ $newHomeCmsLink}}/addmainslide" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('index', $sliderIndex, array('id' => 'index','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div> 
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>  
-                                        <div class="form-group">
-                                            <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
-                                            <div class="col-xs-10">
-                                                <input type="file" id="photoFile" name='myfile'> 
-                                            </div>
-                                        </div>  
-                                        <div class="form-group">
-                                            <label for="inputPassword" class="control-label col-xs-2">Target</label>
 
-                                            <div class="col-sm-10">
-                                                {{ Form::text('target', "", array('id' => 'target','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>                                                                               
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>                                          
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('hash', "", array('id' => "hashMainSlide",'class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>                                                                                               
-                                        <div class="form-group">
-                                            <div class="col-xs-offset-2 col-xs-10">
-                                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addSubSlider" id="addSubSlider">Add Sub Slider</a>
-                                            </div>
+                                    <!-- Add Sub Slider Start -->                                    
+                                    <form id='mainSlideForm{{$sliderIndex}}' target="test" action="{{ $newHomeCmsLink}}/addmainslide" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
+                                        <div id="cloneForm_addSubSlider">
+                                            {{ Form::hidden('index', $sliderIndex, array('id' => 'modalSliderIndex','class' => 'form-control')) }}                                                        
+                                            {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
+                                            <div class="form-group" id="displayFormGroup" style="display:none;">
+                                                <label for="inputPassword" class="control-label col-xs-2">Target</label>
+                                                <div class="col-sm-10">
+                                                    {{ Form::text('target', "/", array('id' => 'target','class' => 'form-control')) }}                        
+                                                </div>
+                                            </div>                                                                               
+                                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
+                                            {{ Form::hidden('hash', "", array('id' => "hashMainSlide",'class' => 'form-control')) }}                        
+
+
                                         </div>
                                     </form>
                                     <!-- End Sub Slider Start -->
@@ -147,7 +120,7 @@
                                         <legend>        
                                             <h4 class="tbl-title">
                                                 <span class="glyphicon glyphicon-list-alt"></span>
-                                                Manage Sub Slider
+                                                Manage Sub Slider <a href="#previewImage" class='pull-right' data-index = "{{$sliderIndex}}" data-nodename="addMainSlider" data-toggle="modal" id="addSliderCrop">Add Slider <span class="glyphicon glyphicon-plus"></span></a>
                                             </h4>
                                         </legend>                   
                       
@@ -161,7 +134,7 @@
                                                             <img src="{{$easyShopLink}}{{$subSlides->path}}" class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                         </div>
 
-                                                        <a href="#myMain_{{$sliderIndex}}_{{$subSlideIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                                        <a href="#previewImage" id="editSubSliderCrop" data-toggle="modal" data-index="{{$sliderIndex}}" data-subindex="{{$subSlideIndex}}" data-nodename="editMainSlider" style="position:absolute;top:235px;left:112px;"><span  href="" id="editSubSliderCrop" data-toggle="modal" data-index="{{$sliderIndex}}" data-subindex="{{$subSlideIndex}}" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                         <a class="btn btn-default" 
                                                             id="removeSubSlide" 
                                                             data-index="{{$sliderIndex}}" 
@@ -201,48 +174,20 @@
                                                                     <h4 class="modal-title white_header" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span>Edit Box Content</h4>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <form id='editSlideForm_{{$sliderIndex}}_{{$subSlideIndex}}' target="test" action="{{ $newHomeCmsLink}}/editSubSlider" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
-
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::hidden('index', $sliderIndex, array('id' => 'index','class' => 'form-control')) }}                        
-                                                                            </div>
-                                                                        </div> 
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::hidden('subIndex', $subSlideIndex, array('id' => 'subIndex','class' => 'form-control')) }}                        
-                                                                            </div>
-                                                                        </div>                                                                         
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
-                                                                            </div>
-                                                                        </div>  
-                                                                        <div class="form-group">
-                                                                            <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
-                                                                            <div class="col-xs-10">
-                                                                                <input type="file" id="photoFile" name='myfile'> 
-                                                                            </div>
-                                                                        </div>  
-                                                                        <div class="form-group">
-                                                                            <label for="inputPassword" class="control-label col-xs-2">Target</label>
-
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::text('target', $subSlides->target, array('id' => 'target','class' => 'form-control')) }}                        
-                                                                            </div>
-                                                                        </div>                                                                               
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
-                                                                            </div>
-                                                                        </div>                                          
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::hidden('hash', "", array('id' => "editHashMainSlide",'class' => 'form-control')) }}                        
-                                                                            </div>
+                                                                    <form id='' target="test" action="{{ $newHomeCmsLink}}/editSubSlider" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
+                                                                        <div id="editSlideForm_{{$sliderIndex}}_{{$subSlideIndex}}">
+                                                                            {{ Form::hidden('index', $sliderIndex, array('id' => 'editModalSliderIndex','class' => 'form-control')) }}                        
+                                                                            {{ Form::hidden('subIndex', $subSlideIndex, array('id' => 'editModalSliderSubIndex','class' => 'form-control')) }}                        
+                                                                            {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
+                                                                            <div class="form-group" id="displayFormGroup" style="display:none;">
+                                                                                <label for="inputPassword"  class="control-label col-xs-2">Target</label>
+                                                                                <div class="col-sm-10">
+                                                                                    {{ Form::text('target', $subSlides->target, array('id' => 'target','class' => 'form-control')) }}                        
+                                                                                </div>
+                                                                            </div>                                                                               
+                                                                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
+                                                                            {{ Form::hidden('hash', "", array('id' => "editHashMainSlide",'class' => 'form-control')) }}                        
                                                                         </div>
-                                                                        <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/editSubSlider" id="editSubSlider">Add Sub Slider</button>
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                                     </form>
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -254,18 +199,17 @@
                                                     <!--End Edit Slide Modal -->
 
                                                 <span style="display:none;">{{$subSlideIndex++}}</span>  
-                                                <span style="display:none;">{{$slideCount++}}</span>
+                                                <span style="display:none;" class='subSlide_{{$sliderIndex}}'>{{$slideCount++}}</span>
                                                 </div>
                                             @endforeach
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <span style="display:none;">{{$sliderIndex++}}</span>    
-                            <span style="display:none;" class="parentSliderCount">{{$parentSliderCount++}}</span>                                                                                
+                            <span style="display:none;">{{$sliderIndex++}}</span>                            
+                            <span style="display:none;" class="parentSliderCount">{{$parentSliderCount++}}</span>                            
                         </div>
                     @endforeach
-                <div>     
+                <div> 
 
-                               
- 
+                    

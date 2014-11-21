@@ -11,12 +11,17 @@
 
 @section('content')
 
+    <link type="text/css" href="{{{ asset('css/src/jquery.Jcrop.min.css') }}}" rel="stylesheet"  media="screen"/>   
     <link type="text/css" href="{{{ asset('css/dashboard.css') }}}" rel="stylesheet"  media="screen"/>
+    <style type="text/css">.jcrop-holder{margin: auto !important;}</style>
+    <span id='newHomeCmsLink' style="display:none;">{{$newHomeCmsLink}}</span>
     <div class="row">
         <section id="tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
+
                 <li class="active"><a href="#manageSliderSection" role="tab"  data-toggle="tab">Manage Slider Section</a></li>                
                 <li><a href="#manageBrands" role="tab"  data-toggle="tab">Manage Brands Section</a></li>                
+
                 <li><a href="#manageCategorySection" role="tab"  data-toggle="tab">Manage Category Section</a></li>                
                 <li><a href="#manageAdSection" role="tab"  data-toggle="tab">Manage Ad Section</a></li>                
                 <li ><a href="#manageSellerSection" role="tab"  data-toggle="tab">Manage Seller Section</a></li>                
@@ -708,28 +713,18 @@
             </div>
 
             <div class="tab-pane fade" id="manageAdSection">
-                    <form id='addAdsForm' target="test" action="{{ $newHomeCmsLink}}/addAdds" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
-                        <legend>        
-                            <h4 class="tbl-title">
-                                <span class="glyphicon glyphicon-list-alt"></span>
-                                Add Ads
-                            </h4>
-                        </legend>                         
-                        {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
- 
-                        <div class="form-group">
-                            <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
-                            <div class="col-xs-10">
-                                <input type="file" id="photoFile" name='myfile' class='form-control'> 
-                            </div>
-                        </div>            
-                        {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
-                        {{ Form::hidden('hash', "", array('id' => "hashAddAds",'class' => 'form-control')) }}                        
-                                                                                               
-                        <div class="form-group">
-                            <div class="col-xs-offset-2 col-xs-10">
-                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addAdds" data-prev="navigation_{{{$navigation->categorySlug}}}" id="addAdSection">Add Ads</a>
-                            </div>
+                    <form id='addAdsForm' target="test" action="{{ $newHomeCmsLink}}/addAdds" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                                              
+                        <div id="cloneForm_addAds">
+                            <div class="form-group" id="displayFormGroup" style='display:none;'>
+                                <label for="inputPassword" class="control-label col-xs-2">Target</label>
+
+                                <div class="col-sm-10">
+                                    {{ Form::text('target',"/", array('id' => 'target','class' => 'form-control')) }}                        
+                                </div>
+                            </div>                             
+                            {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                                    
+                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
+                            {{ Form::hidden('hash', "", array('id' => "hashAddAds",'class' => 'form-control')) }}                        
                         </div>
                     </form>   
 
@@ -738,7 +733,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Manage Ads Panel</a>
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Manage Ads Panel <a href="#previewImage" class='pull-right' data-nodename="addAds" data-toggle="modal" id="addAdsCrop">Add Ads <span class="glyphicon glyphicon-plus"></span></a></a>
                                 </h4>
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in">
@@ -754,7 +749,8 @@
                                                         <img src="{{$easyShopLink}}/{{$ads->img}}" class="img-responsive" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                     </div>
 
-                                                    <a href="#adsPanel{{$adsSectionIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                                    <a href="#previewImage" id="editAdsCrop" data-index="{{$adsSectionIndex}}" data-nodename="editAds" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span  data-index="{{$adsSectionIndex}}" data-nodename="editAds" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+
                                                     <a class="btn btn-default" 
                                                         id="removeAdsSection" 
                                                         data-index="{{$adsSectionIndex}}" 
@@ -775,35 +771,21 @@
                                                                 <div class="modal-body">
                                                                                                          
                                                                     <form id='adSectionForm{{$adsSectionIndex}}' target="test" action="{{ $newHomeCmsLink}}/setAdsSection" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
+                                                                        <div id="clone_editAdsCrop_{{$adsSectionIndex}}">
+                                                                            {{ Form::hidden('index',$adsSectionIndex, array('id' => 'editAdsIndex','class' => 'form-control')) }}                        
+                                                                            {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
+                                                                            <div class="form-group" id="displayFormGroup" style='display:none;'>
+                                                                                <label for="inputPassword" class="control-label col-xs-2">Target</label>
 
-                                                                        
-                                                                        {{ Form::hidden('index',$adsSectionIndex, array('id' => 'index','class' => 'form-control')) }}                        
-                                                                        {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
-                                                                         
-                                                                        <div class="form-group">
-                                                                            <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
-                                                                            <div class="col-xs-10">
-                                                                                <input type="file" id="photoFile" name='myfile' class='form-control'> 
-                                                                            </div>
-                                                                        </div>  
-                                                                        <div class="form-group">
-                                                                            <label for="inputPassword" class="control-label col-xs-2">Target</label>
-
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::text('target', $ads->target, array('id' => 'target','class' => 'form-control')) }}                        
-                                                                            </div>
-                                                                        </div>                                                                               
-                                                                        
-                                                                        {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
-                                                                                                                
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::hidden('hash', "", array('id' => "editAdsSectionHash",'class' => 'form-control')) }}                        
-                                                                            </div>
+                                                                                <div class="col-sm-10">
+                                                                                    {{ Form::text('target', $ads->target, array('id' => 'target','class' => 'form-control')) }}                        
+                                                                                </div>
+                                                                            </div>                                                                               
+                                                                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
+                                                                            {{ Form::hidden('hash', "", array('id' => "editAdsSectionHash",'class' => 'form-control')) }}                        
                                                                         </div>
-                                                                        <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setAdsSection" id="editAdsSection">Submit</button>
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                    </form>                                                                        
+
+                                                                    </form>                                                                  
                                                                    
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -871,7 +853,7 @@
                         <div class="form-group">
                             <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
                             <div class="col-xs-10">
-                                <input type="file" id="photoFile" name='myfile' class='form-control'> 
+                                <input type="file" id="sellerFile" name='myfile' class='form-control'> 
                             </div>
                         </div>            
                         {{ Form::hidden('action', "banner", array('id' => 'action','class' => 'form-control')) }}                        
@@ -897,7 +879,7 @@
                         <div class="form-group">
                             <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
                             <div class="col-xs-10">
-                                <input type="file" id="photoFile" name='myfile' class='form-control'> 
+                                <input type="file" id="sellerFile" name='myfile' class='form-control'> 
                             </div>
                         </div>                                                                                 
                         {{ Form::hidden('action', "logo", array('id' => 'action','class' => 'form-control')) }}                        
@@ -1288,7 +1270,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$sliderIndex}}">Add Main Slide</a>
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$sliderIndex}}">Manage Slides</a>
                                     <span class="glyphicon glyphicon-remove pull-right" id="removeMainSlider" data-nodename="mainSliderSection" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/removeContent" style='cursor:pointer;'></span>
                                     <span class="glyphicon glyphicon-chevron-up pull-right" id="moveParentSlider" data-nodename="mainSliderSection" data-action="up" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/setPositionParentSlider" style='cursor:pointer;'></span>
                                     <span class="glyphicon glyphicon-chevron-down pull-right" id="moveParentSlider" data-nodename="mainSliderSection" data-action="down" data-index="{{$sliderIndex}}" data-url="{{$newHomeCmsLink}}/setPositionParentSlider" style='cursor:pointer;'></span>
@@ -1326,56 +1308,22 @@
                                         </div>  
                                     </form>
                                     <!-- Add Main Slide End -->
-                                    <!-- Add Sub Slider Start -->
-                                    <legend>        
-                                        <h4 class="tbl-title">
-                                            <span class="glyphicon glyphicon-list-alt"></span>
-                                            Add Sub Slider Section
-                                        </h4>
-                                    </legend>                                     
-                                     <form id='mainSlideForm{{$sliderIndex}}' target="test" action="{{ $newHomeCmsLink}}/addmainslide" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('index', $sliderIndex, array('id' => 'index','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div> 
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('preview', "preview", array('id' => 'preview','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>                                         
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>  
-                                        <div class="form-group">
-                                            <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
-                                            <div class="col-xs-10">
-                                                <input type="file" id="photoFile" name='myfile'> 
-                                            </div>
-                                        </div>  
-                                        <div class="form-group">
-                                            <label for="inputPassword" class="control-label col-xs-2">Target</label>
 
-                                            <div class="col-sm-10">
-                                                {{ Form::text('target', "", array('id' => 'target','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>                                                                               
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>                                          
-                                        <div class="form-group">
-                                            <div class="col-sm-10">
-                                                {{ Form::hidden('hash', "", array('id' => "hashMainSlide",'class' => 'form-control')) }}                        
-                                            </div>
-                                        </div>                                                                                               
-                                        <div class="form-group">
-                                            <div class="col-xs-offset-2 col-xs-10">
-                                                <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addSubSlider" id="addSubSlider">Add Sub Slider</a>
-                                            </div>
+                                    <!-- Add Sub Slider Start -->                                    
+                                    <form id='mainSlideForm{{$sliderIndex}}' target="test" action="{{ $newHomeCmsLink}}/addmainslide" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
+                                        <div id="cloneForm_addSubSlider">
+                                            {{ Form::hidden('index', $sliderIndex, array('id' => 'modalSliderIndex','class' => 'form-control')) }}                                                        
+                                            {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
+                                            <div class="form-group" id="displayFormGroup" style="display:none;">
+                                                <label for="inputPassword" class="control-label col-xs-2">Target</label>
+                                                <div class="col-sm-10">
+                                                    {{ Form::text('target', "/", array('id' => 'target','class' => 'form-control')) }}                        
+                                                </div>
+                                            </div>                                                                               
+                                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
+                                            {{ Form::hidden('hash', "", array('id' => "hashMainSlide",'class' => 'form-control')) }}                        
+
+
                                         </div>
                                     </form>
                                     <!-- End Sub Slider Start -->
@@ -1385,7 +1333,7 @@
                                         <legend>        
                                             <h4 class="tbl-title">
                                                 <span class="glyphicon glyphicon-list-alt"></span>
-                                                Manage Sub Slider
+                                                Manage Sub Slider <a href="#previewImage" class='pull-right' data-index = "{{$sliderIndex}}" data-nodename="addMainSlider" data-toggle="modal" id="addSliderCrop">Add Slider <span class="glyphicon glyphicon-plus"></span></a>
                                             </h4>
                                         </legend>                   
                       
@@ -1399,7 +1347,7 @@
                                                             <img src="{{$easyShopLink}}{{$subSlides->path}}" class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                         </div>
 
-                                                        <a href="#myMain_{{$sliderIndex}}_{{$subSlideIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                                        <a href="#previewImage" id="editSubSliderCrop" data-toggle="modal" data-index="{{$sliderIndex}}" data-subindex="{{$subSlideIndex}}" data-nodename="editMainSlider" style="position:absolute;top:235px;left:112px;"><span  href="" id="editSubSliderCrop" data-toggle="modal" data-index="{{$sliderIndex}}" data-subindex="{{$subSlideIndex}}" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                         <a class="btn btn-default" 
                                                             id="removeSubSlide" 
                                                             data-index="{{$sliderIndex}}" 
@@ -1439,48 +1387,20 @@
                                                                     <h4 class="modal-title white_header" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span>Edit Box Content</h4>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <form id='editSlideForm_{{$sliderIndex}}_{{$subSlideIndex}}' target="test" action="{{ $newHomeCmsLink}}/editSubSlider" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
-
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::hidden('index', $sliderIndex, array('id' => 'index','class' => 'form-control')) }}                        
-                                                                            </div>
-                                                                        </div> 
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::hidden('subIndex', $subSlideIndex, array('id' => 'subIndex','class' => 'form-control')) }}                        
-                                                                            </div>
-                                                                        </div>                                                                         
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
-                                                                            </div>
-                                                                        </div>  
-                                                                        <div class="form-group">
-                                                                            <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
-                                                                            <div class="col-xs-10">
-                                                                                <input type="file" id="photoFile" name='myfile'> 
-                                                                            </div>
-                                                                        </div>  
-                                                                        <div class="form-group">
-                                                                            <label for="inputPassword" class="control-label col-xs-2">Target</label>
-
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::text('target', $subSlides->target, array('id' => 'target','class' => 'form-control')) }}                        
-                                                                            </div>
-                                                                        </div>                                                                               
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
-                                                                            </div>
-                                                                        </div>                                          
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::hidden('hash', "", array('id' => "editHashMainSlide",'class' => 'form-control')) }}                        
-                                                                            </div>
+                                                                    <form id='' target="test" action="{{ $newHomeCmsLink}}/editSubSlider" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
+                                                                        <div id="editSlideForm_{{$sliderIndex}}_{{$subSlideIndex}}">
+                                                                            {{ Form::hidden('index', $sliderIndex, array('id' => 'editModalSliderIndex','class' => 'form-control')) }}                        
+                                                                            {{ Form::hidden('subIndex', $subSlideIndex, array('id' => 'editModalSliderSubIndex','class' => 'form-control')) }}                        
+                                                                            {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
+                                                                            <div class="form-group" id="displayFormGroup" style="display:none;">
+                                                                                <label for="inputPassword"  class="control-label col-xs-2">Target</label>
+                                                                                <div class="col-sm-10">
+                                                                                    {{ Form::text('target', $subSlides->target, array('id' => 'target','class' => 'form-control')) }}                        
+                                                                                </div>
+                                                                            </div>                                                                               
+                                                                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
+                                                                            {{ Form::hidden('hash', "", array('id' => "editHashMainSlide",'class' => 'form-control')) }}                        
                                                                         </div>
-                                                                        <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/editSubSlider" id="editSubSlider">Add Sub Slider</button>
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                                     </form>
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -1608,12 +1528,56 @@
                 </div>
             </div>
         </div>
-    </div>        
+    </div>       
+
+
+    <div class="modal fade user_modal" id="previewImage" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title white_header" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span>Upload Image</h4>
+                </div>     
+
+                <div class="modal-body" style='text-align:center;padding:20px;'>     
+                  
+                     <form id='cropForm' target="test" action="" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
+                        
+                        <input type='hidden' name='x' value='0' id='image_x'>
+                        <input type='hidden' name='y' value='0' id='image_y'>
+                        <input type='hidden' name='w' value='0' id='image_w'>
+                        <input type='hidden' name='h' value='0' id='image_h'>                    
+                        <div class="form-group">
+                            <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
+                            <div class="col-xs-10">
+                                <input type="file" id="photoFile" name='myfile' class='form-control'> 
+                            </div>
+                        </div>                            
+                        <div id="contentPreview"></div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="cropClose">Close</button>
+                                <a1 href="#"  class="btn btn-primary text-center cropFormButton" data-dismiss="modal" data-url = "" id="">Save</a>                                       
+                            </div>
+                        </div>                    
+                        <div id="scaleAndCrop" style="display:none;">
+                            <h3>Position and scale your photo</h3><br/>
+                            <div class="img-editor-container" id="imgContainer">
+                                <span></span>
+                                <img src=""  id="user_image_prev" style="border: black 1px solid;">
+                            </div>
+                        </div>   <br/>                          
+                    </form> 
+                </div>                            
+            </div>
+        </div>
+    </div>      
 
 @stop
 @section('page_js') 
 {{ HTML::script('js/src/sha1.js') }}
 {{ HTML::script('js/src/jquery.form.js') }}
+{{ HTML::script('js/src/jquery.Jcrop.min.js') }}
 {{ HTML::script('js/cms_newhome.js') }}
 
 @stop
