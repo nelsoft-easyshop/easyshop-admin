@@ -504,11 +504,10 @@
                 contentType: "application/json",
                 dataType: 'jsonp',
                 success: function(json) {
-                        $("#loading").modal('hide');
+                    $("#loading").modal('hide');
                 },
                 error: function(e) {
-                        $("#loading").modal('success');
-                        $("#loading").modal('hide');
+                    $("#loading").modal('hide');
                 }
             }); 
         }  
@@ -1116,10 +1115,10 @@
     });
 
     $("#myTabContent").on('click','#productslide',function (e) { 
- 
+    
         var index = $(this).data('index');
         var nodename = $(this).data('nodename');
-        var nodename = nodename == "map/feedFeaturedProduct/product" ? nodename : (nodename == "map/feedPopularItems/product" ? nodename : "map/feedPromoItems/product");
+        var nodename = nodename == "//feedFeaturedProduct" ? nodename : (nodename == "//feedPopularItems" ? nodename : "//feedPromoItems");
         var userid = globalUserId;
         var password = globalPassword;
         var url = $(this).data('url');
@@ -1138,8 +1137,8 @@
                 dataType: 'jsonp',
                 success: function(json) {
                     $("#loading").modal('hide');                        
-                    div = nodename == "map/feedFeaturedProduct/product" ? "addFeaturedProduct" : (nodename == "map/feedPopularItems/product" ? "addPopularItemsDiv" : "addfeedPromoItems");
-                    load = nodename == "map/feedFeaturedProduct/product" ? "featuredProduct" : (nodename == "map/feedPopularItems/product" ? "popularItem" : "promoItems");
+                    div = nodename == "//feedFeaturedProduct" ? "addFeaturedProduct" : (nodename == "//feedPopularItems" ? "addPopularItemsDiv" : "addfeedPromoItems");
+                    load = nodename == "//feedFeaturedProduct" ? "featuredProduct" : (nodename == "//feedPopularItems" ? "popularItem" : "promoItems");
                     div += "#" + div;
                     $("#" + div).load(load);               
                 },
