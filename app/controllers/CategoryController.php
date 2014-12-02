@@ -1,5 +1,4 @@
 <?php
-use Easyshop\Services\StringHelperService;
 use Illuminate\Support\Facades\DB;
 class CategoryController extends BaseController
 {
@@ -30,7 +29,7 @@ class CategoryController extends BaseController
         $categoryRepository = App::make('CategoryRepository');
         $data = Input::except('_method');
         $data['slug'] = $categoryRepository->generateSlug(
-            StringHelperService::clean(strtolower($data['name']))
+            StringHelper::clean(strtolower($data['name']))
         );
 
         $category = $categoryRepository->insert($data);

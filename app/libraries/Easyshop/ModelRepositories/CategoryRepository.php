@@ -1,7 +1,6 @@
 <?php namespace Easyshop\ModelRepositories;
 
 use Category, Product;
-use Easyshop\Services\StringHelperService;
 use Illuminate\Support\Facades\DB;
 
 class CategoryRepository

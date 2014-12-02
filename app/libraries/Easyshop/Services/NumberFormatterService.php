@@ -1,8 +1,7 @@
 <?php namespace Easyshop\Services;
 
 class NumberFormatterService 
-{
-
+{    
    /**
     *  Adds ordinal suffix to end fo numbers.
     * 
