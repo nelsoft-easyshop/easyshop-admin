@@ -296,9 +296,11 @@ class TransactionService
                     $this->orderBillingInfoRepository->createOrderBillingInfo($accountName, $accountNumber, $bankName);
                     $orderBillingInfoId= $this->orderBillingInfoRepository->currentId;
                 }
-
                 $this->orderProductRepository->updateOrderProductStatus($orderProduct, $status);
                 $this->orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
+                
+                $orderProduct->sellerBillingInfo = $orderBillingInfoId;
+                $orderProduct->save();
             }
             
         }

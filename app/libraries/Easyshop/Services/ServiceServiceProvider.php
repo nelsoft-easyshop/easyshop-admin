@@ -40,14 +40,6 @@ class ServiceServiceProvider extends ServiceProvider
             return new EmailService();
         });
 
-        $this->app->bind('NumberFormatter', function(){
-            return new NumberFormatterService();
-        });
-
-        $this->app->bind('StringHelperService', function(){
-            return new StringHelperService();
-        });
-
         $this->app->bind('XMLContentGetterService', function(){
             return new XMLContentGetterService();
         });

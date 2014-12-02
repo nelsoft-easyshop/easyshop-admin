@@ -30,13 +30,17 @@
                             @endforeach
                         </select>
                         
+              
+                        
+                        
                         {{ Form::selectMonth('month', $defaultMonth  , ['class' => 'month', 'name' => 'month']) }}
                         <select id="day" name="day">
                             @foreach($dateSelection as $date)
-                                <option value="{{{ $date['day'] }}}"  {{ ($date['selected'])?'selected':'' }}  >{{{ NumberFormatter::addOrdinalNumberSuffix($date['day']) }}}</option>
+                                <option value="{{{ $date['day'] }}}"  {{ ($date['selected'])?'selected':'' }}  >{{{ NumberFormatterHelper::addOrdinalNumberSuffix($date['day']) }}}</option>
                             @endforeach  
                         </select>
                         
+                   
                         <button id="search" class="btn">Search</button>    
                 {{ Form::close() }}
                 
