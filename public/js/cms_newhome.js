@@ -1984,6 +1984,7 @@ function imageprev(input) {
                         boxWidth: 500,
                         boxHeight: 500,
                         minSize: [width*0.1,height*0.1],
+                        setSelect:[0,0,width*0.5,height*0.5],
                         trueSize: [width,height],
                         onChange: showCoords,
                         onSelect: showCoords,
