@@ -1981,9 +1981,11 @@ function imageprev(input) {
                 if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
 
                     jcrop_api = $.Jcrop($('#user_image_prev'),{
+                        aspectRatio: 1,
                         boxWidth: 500,
                         boxHeight: 500,
                         minSize: [width*0.1,height*0.1],
+                        setSelect:[0,0,width*0.5,height*0.5],
                         trueSize: [width,height],
                         onChange: showCoords,
                         onSelect: showCoords,
