@@ -1883,9 +1883,9 @@
         $('.cropFormButton').prop('disabled', true);
         var nodename = $(this).data("nodename");
         if(nodename == "addMainSlider") {
-            $("#contentPreview").find("#modalSliderIndex").val($(this).data("index"));
             var clone = $("#cloneForm_addSubSlider").html();
             $("#contentPreview").html(clone);
+            $("#contentPreview").find("#modalSliderIndex").val($(this).data("index"));
             var actionLink = newHomeCmsLink + "/addSubSlider";
             $(".cropFormButton").attr("data-url",actionLink);
             $(".cropFormButton").attr("id","addSubSlider");
