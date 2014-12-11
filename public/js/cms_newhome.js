@@ -1945,15 +1945,7 @@
         var currValue  = $(this).val();
         var oldIE;
         var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-        var display = $("#scaleAndCrop").css("display");
-        if(display !== "none") {
-            console.log(display);
-            jcrop_api = $.Jcrop($('#user_image_prev'));  
-            resetCoords();        
-            jcrop_api.release();
-            jcrop_api.disable();          
-            jcrop_api.enable();   
-        }
+
         if ($('html').is('.ie6, .ie7, .ie8, .ie9')){
             oldIE = true;
         }
