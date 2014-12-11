@@ -2,9 +2,9 @@
     var userid = $("#userid").val();
     var password = $("#password").val();
     var newHomeCmsLink = $("#newHomeCmsLink").text();
-    $("#discardChanges").trigger("click");
     var minimumCategoryProductPanel = 2;
     var minimumCategorySectionProductPanel = 3;
+
     $("#myTabContent").on('click','#addSubCategorySection',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
