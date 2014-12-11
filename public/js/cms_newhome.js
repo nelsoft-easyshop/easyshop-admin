@@ -2,7 +2,7 @@
     var userid = $("#userid").val();
     var password = $("#password").val();
     var newHomeCmsLink = $("#newHomeCmsLink").text();
-
+    $("#discardChanges").trigger("click");
     var minimumCategoryProductPanel = 2;
     var minimumCategorySectionProductPanel = 3;
     $("#myTabContent").on('click','#addSubCategorySection',function (e) { 
@@ -647,7 +647,8 @@
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
-
+        var template = $("#clonedSliderCountConstant").text();
+        var sliderConstant = $("#template_" + template).data("count");
         var count = parseInt($(".subSlide_"+index).last().text());
 
         if(target.trim() === "") {
@@ -664,6 +665,9 @@
         if(value == "") {
             $("#previewImage").modal("hide");
             showErrorModal("Please upload na Image")
+        }
+        else if(count >= sliderConstant) {
+            showErrorModal("Sorry, but you have reached the maximum number of images for this slider template");
         }
         else {
             addSubSlider(mainSlideForm, url, tableSelector, reloadurl, count, index);
@@ -1883,6 +1887,8 @@
         $('.cropFormButton').prop('disabled', true);
         var nodename = $(this).data("nodename");
         if(nodename == "addMainSlider") {
+            var template = $(this).data("template");
+            $("#clonedSliderCountConstant").text(template);
             var clone = $("#cloneForm_addSubSlider").html();
             $("#contentPreview").html(clone);
             $("#contentPreview").find("#modalSliderIndex").val($(this).data("index"));
