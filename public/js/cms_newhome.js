@@ -2,9 +2,9 @@
     var userid = $("#userid").val();
     var password = $("#password").val();
     var newHomeCmsLink = $("#newHomeCmsLink").text();
-
     var minimumCategoryProductPanel = 2;
     var minimumCategorySectionProductPanel = 3;
+
     $("#myTabContent").on('click','#addSubCategorySection',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
@@ -647,7 +647,8 @@
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
-
+        var template = $("#clonedSliderCountConstant").text();
+        var sliderConstant = $("#template_" + template).data("count");
         var count = parseInt($(".subSlide_"+index).last().text());
 
         if(target.trim() === "") {
@@ -664,6 +665,9 @@
         if(value == "") {
             $("#previewImage").modal("hide");
             showErrorModal("Please upload na Image")
+        }
+        else if(count >= sliderConstant) {
+            showErrorModal("Sorry, but you have reached the maximum number of images for this slider template");
         }
         else {
             addSubSlider(mainSlideForm, url, tableSelector, reloadurl, count, index);
@@ -1883,6 +1887,8 @@
         $('.cropFormButton').prop('disabled', true);
         var nodename = $(this).data("nodename");
         if(nodename == "addMainSlider") {
+            var template = $(this).data("template");
+            $("#clonedSliderCountConstant").text(template);
             var clone = $("#cloneForm_addSubSlider").html();
             $("#contentPreview").html(clone);
             $("#contentPreview").find("#modalSliderIndex").val($(this).data("index"));
@@ -1934,11 +1940,12 @@
 
     /*********************** JCROP ******************************/
     $("#photoFile").on("change", function(){
+        $(this).prop('disabled',true);
         var jcrop;
         var currValue  = $(this).val();
         var oldIE;
         var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-        
+
         if ($('html').is('.ie6, .ie7, .ie8, .ie9')){
             oldIE = true;
         }
@@ -1953,8 +1960,11 @@
         }
     });   
 
-
-    $(' #previewImage').bind('hidden.bs.modal', function () {
+    $(' #previewImage').on('shown.bs.modal', function () {
+        $("#photoFile").prop('disabled',false);
+       
+    });      
+    $(' #previewImage').on('hidden.bs.modal', function () {
         $("#contentPreview").find("#photoFile").val("");
         jcrop_api = $.Jcrop($('#user_image_prev'));  
         resetCoords();        
