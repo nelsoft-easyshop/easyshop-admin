@@ -666,9 +666,6 @@
             $("#previewImage").modal("hide");
             showErrorModal("Please upload na Image")
         }
-        else if(count >= sliderConstant) {
-            showErrorModal("Sorry, but you have reached the maximum number of images for this slider template");
-        }
         else {
             addSubSlider(mainSlideForm, url, tableSelector, reloadurl, count, index);
         }
@@ -1498,7 +1495,8 @@
                 error: function(e) {
                     loader.hidePleaseWait();
                 }
-            });           
+            });    
+            getSliderPreview();                        
         }
         else {
             $(this).closest("form").find('#drop_actionType option[value="'+ currentSliderTemplate +'"]').attr("selected", "selected");
@@ -1939,8 +1937,12 @@
     });
 
     /*********************** JCROP ******************************/
+    $("#photoFile").on("click", function(){
+        if($(this).val() !== "") {
+            return false;
+        }
+    });
     $("#photoFile").on("change", function(){
-        $(this).prop('disabled',true);
         var jcrop;
         var currValue  = $(this).val();
         var oldIE;
@@ -1961,7 +1963,7 @@
     });   
 
     $(' #previewImage').on('shown.bs.modal', function () {
-        $("#photoFile").prop('disabled',false);
+        $("#photoFile").val("");
        
     });      
     $(' #previewImage').on('hidden.bs.modal', function () {
