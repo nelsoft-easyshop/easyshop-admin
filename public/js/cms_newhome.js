@@ -1937,6 +1937,11 @@
     });
 
     /*********************** JCROP ******************************/
+    $("#photoFile").on("click", function(){
+        if($(this).val() !== "") {
+            return false;
+        }
+    });
     $("#photoFile").on("change", function(){
         var jcrop;
         var currValue  = $(this).val();
@@ -1958,7 +1963,7 @@
     });   
 
     $(' #previewImage').on('shown.bs.modal', function () {
-        $("#photoFile").prop('disabled',false);
+        $("#photoFile").val("");
        
     });      
     $(' #previewImage').on('hidden.bs.modal', function () {
