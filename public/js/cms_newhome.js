@@ -512,12 +512,12 @@
                 $(this).closest("form").find("#hashChangeSellerLogo").val(hash);
                 var form = "#changeSellerLogoForm";            
             }
-
-            if(value == "") {
+            var ext = value.split('.').pop().toLowerCase();
+            if(value === "" || ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1)) {
                 showErrorModal("Please upload na Image");
             }
             else {
-                changeSellerBanner(form, url);
+                changeSellerBanner(form,url);
             }
         }
 
@@ -1754,10 +1754,12 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                loader.hidePleaseWait();   
+                loader.hidePleaseWait();  
+                $(form).find("#sellerFile").val("");
             },
             error: function(e) {
                 loader.hidePleaseWait();   
+                $(form).find("#sellerFile").val("");                
             }
         }); 
         $(form).submit();        
