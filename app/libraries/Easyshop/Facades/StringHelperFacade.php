@@ -1,4 +1,4 @@
-<?php
+<?php namespace Easyshop\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -11,7 +11,9 @@ class StringHelperFacade extends Facade
      * @return string
      */
     protected static function getFacadeAccessor() {
-        return 'StringHelper';
+        return 'StringHelperAlias';
     }
 
 }
+
+

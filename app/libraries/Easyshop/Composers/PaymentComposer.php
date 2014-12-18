@@ -33,11 +33,18 @@ class PaymentComposer
             $nextPayOutDate = $this->transactionService->getNextPayoutDate();
         }
         $yeardiff = date('Y') - $this->yearStart;
-        $yearSelection = array();
+        $yearSelection = [];
+
+        if(date('M') === 'Dec'){
+           $yeardiff++;
+        }
+        
         do{
             $year = $this->yearStart + $yeardiff;
-            array_push($yearSelection, ['year' => $year, 
-                                        'selected' =>  (intval($year) === intval($nextPayOutDate->format('Y')))]);
+            $yearSelection[] = [
+                'year' => $year, 
+                'selected' => (int)$year === (int)$nextPayOutDate->format('Y'),
+            ];
             $yeardiff--;
         }while($yeardiff >= 0);
         
