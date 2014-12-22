@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 
 class OrderProductTagRepository extends AbstractRepository
 {
-
     /**
      * Update tags of a particular order_products
      * @param int $orderProductId
@@ -46,17 +45,9 @@ class OrderProductTagRepository extends AbstractRepository
      * @param  integer $memberId
      * @return object
      */
-    public function getOrderTags($orderId,$memberId, $isSeller = TRUE)
+    public function getOrderTags($orderProductIds,$memberId, $isSeller = TRUE)
     {
-
-        return OrderProductTag::whereIn('order_product_id', function($query) use($orderId,$memberId, $isSeller) {
-                $query->select('id_order_product');
-                $query->from(with(new OrderProduct)->getTable());
-                $query->where('order_id', '=', $orderId);
-                $query->where('seller_id', '=', $memberId);   
-
-
-                })->get(['es_order_product_tag.*']);
+        return OrderProductTag::whereIn('order_product_id', $orderProductIds)->get(['es_order_product_tag.*']);
     }
 
     /**

@@ -12,16 +12,16 @@ class TagTypeRepository extends AbstractRepository
      */
     public function getSellerTags($default = false)
     {
-        $tagArray = array(
+        $tagArray = [
                 TagType::CONTACTED 
-            );
+            ];
 
         if($default){
-            $tagArray = array( 
+            $tagArray = [
                 TagType::CONFIRMED,
                 TagType::ON_HOLD,
                 TagType::REFUND,
-            );
+            ];
         }
 
         return TagType::whereIn('id_tag_type', $tagArray)->get();
@@ -91,6 +91,15 @@ class TagTypeRepository extends AbstractRepository
     public function getConfirmed()
     {
         return TagType::CONFIRMED;
+    }
+
+    /**
+     * Return Confirmed Tag Id
+     * @return integer
+     */
+    public function getNoTag()
+    {
+        return TagType::NOTAG;
     }
 }
 

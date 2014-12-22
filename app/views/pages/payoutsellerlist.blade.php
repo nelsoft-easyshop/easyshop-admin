@@ -62,7 +62,10 @@
                             <th>Number of Products</th> 
                             <th>Seller Email</th>
                             <th>Seller Contact No.</th>
+                            <th>Transaction Date</th>
+                            @if($tagType)
                             <th>Current Tag</th>
+                            @endif
                         </tr>
                     </thead> 
                     @foreach($transactionRecord as $record)
@@ -75,9 +78,13 @@
                             <td class="td_total">{{{ $record->count }}}</td>
                             <td class="td_email">{{{ $record->email }}}</td>
                             <td class="td_contact">{{{ ($record->contactno) ? $record->contactno : 'N/A' }}}</td>
+                            <td clas="transaction_date">{{{ $record->dateadded }}}</td>
+                            @if($tagType)
                             <td class="td_status">
-                                <span class="org_btn view" style="background-color:{{{ $record->tag_color }}}" >{{{ ($record->tag_type_id) ? $record->tag_description : 'No Tag' }}}</span>
+                                <span class="count-tag">{{{ $record->tag_count }}}</span> / 
+                                <span class="total-tagged">{{{ $record->count }}}</span>
                             </td>
+                            @endif
                         </tr>
                         
                     @endforeach
@@ -87,8 +94,12 @@
         </div>
 
         <div id="hidden-values">
-            <input type="hidden" id="confirmed-constant" value="<?=$constantValues['confirmed']; ?>" />
-            <input type="hidden" id="refund-constant" value="<?=$constantValues['refund']; ?>" />
+            <input type="hidden" id="confirmed-constant" value="{{{ $constantValues['confirmed'] }}}" />
+            <input type="hidden" id="refund-constant" value="{{{ $constantValues['refund'] }}}" />
+            <input type="hidden" id="contacted-constant" value="{{{ $constantValues['contacted'] }}}" />
+            <input id="defaultStatus" type="hidden" value="{{{ $defaultStatus }}}" >
+            <input id="nonDefaultStatus" type="hidden" value="{{{ $nonDefaultStatus }}}" >
+            <input id="currentTag" type="hidden" value="{{{ $tagType }}}" >
         </div>
 @stop
 

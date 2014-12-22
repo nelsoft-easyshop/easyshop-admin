@@ -8,7 +8,7 @@
                                                         <img src="{{$easyShopLink}}/{{$ads->img}}" class="img-responsive" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                     </div>
 
-                                                    <a href="#adsPanel{{$adsSectionIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                                    <a href="#previewImage" id="editAdsCrop" data-index="{{$adsSectionIndex}}" data-nodename="editAds" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span  data-index="{{$adsSectionIndex}}" data-nodename="editAds" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                     <a class="btn btn-default" 
                                                         id="removeAdsSection" 
                                                         data-index="{{$adsSectionIndex}}" 
@@ -29,35 +29,21 @@
                                                                 <div class="modal-body">
                                                                                                          
                                                                     <form id='adSectionForm{{$adsSectionIndex}}' target="test" action="{{ $newHomeCmsLink}}/setAdsSection" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
+                                                                        <div id="clone_editAdsCrop_{{$adsSectionIndex}}">
+                                                                            {{ Form::hidden('index',$adsSectionIndex, array('id' => 'editAdsIndex','class' => 'form-control')) }}                        
+                                                                            {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
+                                                                            <div class="form-group" id="displayFormGroup" style='display:none;'>
+                                                                                <label for="inputPassword" class="control-label col-xs-2">Target</label>
 
-                                                                        
-                                                                        {{ Form::hidden('index',$adsSectionIndex, array('id' => 'index','class' => 'form-control')) }}                        
-                                                                        {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
-                                                                         
-                                                                        <div class="form-group">
-                                                                            <label for="inputPassword" class="control-label col-xs-2">Choose File</label>
-                                                                            <div class="col-xs-10">
-                                                                                <input type="file" id="photoFile" name='myfile' class='form-control'> 
-                                                                            </div>
-                                                                        </div>  
-                                                                        <div class="form-group">
-                                                                            <label for="inputPassword" class="control-label col-xs-2">Target</label>
-
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::text('target', $ads->target, array('id' => 'target','class' => 'form-control')) }}                        
-                                                                            </div>
-                                                                        </div>                                                                               
-                                                                        
-                                                                        {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
-                                                                                                                
-                                                                        <div class="form-group">
-                                                                            <div class="col-sm-10">
-                                                                                {{ Form::hidden('hash', "", array('id' => "editAdsSectionHash",'class' => 'form-control')) }}                        
-                                                                            </div>
+                                                                                <div class="col-sm-10">
+                                                                                    {{ Form::text('target', $ads->target, array('id' => 'target','class' => 'form-control')) }}                        
+                                                                                </div>
+                                                                            </div>                                                                               
+                                                                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
+                                                                            {{ Form::hidden('hash', "", array('id' => "editAdsSectionHash",'class' => 'form-control')) }}                        
                                                                         </div>
-                                                                        <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setAdsSection" id="editAdsSection">Submit</button>
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                    </form>                                                                        
+
+                                                                    </form>                                                                      
                                                                    
                                                                 </div>
                                                                 <div class="modal-footer">

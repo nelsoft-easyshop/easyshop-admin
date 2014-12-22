@@ -228,22 +228,42 @@ class OrderProductRepository extends AbstractRepository
      * @param  integer $seller_id
      * @return Object
      */
-    public function getAllSellersTransaction($row = 100,$filter = false,$userData = array())
+    public function getAllSellersTransaction($row = 100,
+                                             $filter = false,
+                                             $userData = [],
+                                             $forBuyer = false)
     {
-        $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
-        $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+        if(!$forBuyer) {
+          $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
+          $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+        }
+        else {
+          $query = ProductShippingComment::leftJoin("es_order_product", "es_order_product.id_order_product", "=", "es_product_shipping_comment.order_product_id");
+          $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order'); 
+          $query->join("es_member","es_order.buyer_id","=","es_member.id_member");        
+        }
 
         $query->leftJoin('es_order_product_tag',function($leftJoin){
             $leftJoin->on('es_order_product_tag.order_product_id', '=', 'es_order_product.id_order_product');
         });
 
-        $query->leftJoin('es_tag_type',function($leftJoin){
-            $leftJoin->on('es_order_product_tag.tag_type_id', '=', 'es_tag_type.id_tag_type');
-        }); 
+        $rawSql = '(SELECT 
+                        es_order_product.order_id,
+                        COUNT(es_order_product.order_id) as count_tagged
+                    FROM es_order_product 
+                    LEFT JOIN es_order_product_tag on es_order_product.id_order_product = es_order_product_tag.order_product_id
+                    WHERE tag_type_id IS NOT NULL
+                    AND tag_type_id NOT IN (?,?,?)
+                    GROUP BY es_order_product.order_id
+                    ) AS count_temp_table';
+
+        $query->leftJoin(DB::raw($rawSql), function( $query ){
+            $query->on( 'count_temp_table.order_id', '=', 'es_order_product.order_id' );
+        })->setBindings(array_merge($query->getBindings(),[TagType::CONFIRMED,TagType::REFUND,TagType::PAYOUT]));
 
         $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
+              ->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING)
               ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY]);
-
 
         if($filter){
             if($userData['fullname']){
@@ -264,13 +284,10 @@ class OrderProductRepository extends AbstractRepository
             $query->where('es_order_product_tag.tag_type_id', '=', $userData['tag']);
         }
         else{
-            $query->where(function($query)
-                    {
-                        $query->orWhere(function($query)
-                        {
+            $query->where(function($query){
+                        $query->orWhere(function($query){
                             $query->whereNotIn('es_order_product_tag.tag_type_id',[TagType::CONFIRMED,TagType::REFUND,TagType::PAYOUT]);
-                        })->orWhere(function($query)
-                        {
+                        })->orWhere(function($query){
                             $query->whereNull('es_order_product_tag.tag_type_id');
                         });
                         
@@ -278,8 +295,8 @@ class OrderProductRepository extends AbstractRepository
         }
 
         $query->groupBy('es_member.id_member','es_order_product.order_id')
-              ->orderBy('es_order.dateadded','DESC')
-              ->orderBy('es_order_product.id_order_product','DESC');
+              ->orderBy('es_order_product.id_order_product','DESC')
+              ->orderBy('es_order.dateadded','DESC');
 
         $returnTransaction = $query->paginate($row,[
                                             'es_order.id_order', 
@@ -288,12 +305,12 @@ class OrderProductRepository extends AbstractRepository
                                             'es_member.fullname', 
                                             'es_member.email', 
                                             'es_member.contactno', 
-                                            'es_order_product_tag.*',
-                                            'es_tag_type.tag_description',
-                                            'es_tag_type.tag_color',
+                                            'es_order_product_tag.*', 
                                             'es_order.transaction_id',
                                             'es_order.invoice_no',
-                                            DB::raw('COUNT(es_order_product.order_id) as count')
+                                            'es_order.dateadded',
+                                            DB::raw('COUNT(es_order_product.order_id) as count'),
+                                            DB::raw('COALESCE(count_temp_table.count_tagged,0) as tag_count')
                                         ]);
         
         return $returnTransaction;
@@ -317,8 +334,6 @@ class OrderProductRepository extends AbstractRepository
         $query->leftJoin("es_tag_type","es_tag_type.id_tag_type","=","es_order_product_tag.tag_type_id");
         $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID);
         $query->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY]);
-        $query->whereNull('es_order_product_tag.tag_type_id');        
-        $query->orWhere('es_order_product_tag.tag_type_id', '!=', TagType::PAYOUT);
         if($filter != NULL) {
             if($filter == "username") {
                 $query->where('es_member.username', 'LIKE', '%' . $filterBy . '%');
@@ -341,7 +356,9 @@ class OrderProductRepository extends AbstractRepository
             else if($filter === "PAYOUT") {
                 $query->where('es_order_product_tag.tag_type_id', '=', TagType::PAYOUT);
             }                                                           
-        }              
+        } 
+        $query->whereNull('es_order_product_tag.tag_type_id');        
+        $query->orWhere('es_order_product_tag.tag_type_id', '!=', TagType::PAYOUT);                     
 
         $query->groupBy("es_order_product.seller_id", "es_order_product.order_id")
               ->orderBy($sortBy,$sortOrder);
@@ -374,7 +391,7 @@ class OrderProductRepository extends AbstractRepository
      * @param bool $isSeller
      * @return Entity Count
      */
-    public function countUntagTransaction($isSeller = TRUE)
+    public function countUntagTransaction($isSeller = true)
     {
         if($isSeller) {
             $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
@@ -400,6 +417,55 @@ class OrderProductRepository extends AbstractRepository
               ->whereNull('es_order_product_tag.tag_type_id');
 
         return $query->get()->count();
+    }
+
+    /**
+     * Get order product by OrderId where status is on going
+     *
+     * @param integer $orderId
+     * @return OrderProduct[]
+     */
+    public function getOrderProductBySellerOngoing($orderId, $sellerId, $tagType = "",$forBuyer)
+    {
+        if(!$forBuyer) {
+
+          $query = OrderProduct::leftjoin('es_product_shipping_comment','es_order_product.id_order_product','=','es_product_shipping_comment.order_product_id');
+          $query->leftjoin('es_order_product_tag',"es_order_product.id_order_product","=","es_order_product_tag.order_product_id");
+          $query->leftjoin('es_tag_type',"es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type");
+          $query->where('es_order_product.order_id', '=', $orderId);
+          $query->where('es_order_product.seller_id','=',$sellerId);
+        }
+        else {  
+          $query = OrderProduct::join('es_product_shipping_comment','es_order_product.id_order_product','=','es_product_shipping_comment.order_product_id');
+          $query->leftjoin('es_order_product_tag',"es_order_product.id_order_product","=","es_order_product_tag.order_product_id");
+          $query->leftjoin('es_tag_type',"es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type");
+          $query->where('es_order_product.order_id', '=', $orderId);             
+          $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+          $query->where("es_order.buyer_id","=",$sellerId);             
+        }
+        $query->where('es_order_product.status','=',OrderProductStatus::STATUS_ON_GOING);
+       
+        if($tagType){
+            $query->where('es_order_product_tag.tag_type_id', '=', $tagType);
+        }
+        else{
+            $query->where(function($query){
+                    $query->orWhere(function($query){
+                        $query->whereNotIn('es_order_product_tag.tag_type_id',[TagType::CONFIRMED,TagType::REFUND,TagType::PAYOUT]);
+                    })->orWhere(function($query){
+                        $query->whereNull('es_order_product_tag.tag_type_id');
+                    });
+                });
+        }
+
+        return $query->get([
+                    'es_order_product.*',
+                    'es_tag_type.tag_description',
+                    'es_order_product_tag.date_updated',
+                    'es_tag_type.tag_color',
+                    DB::raw('COALESCE(es_order_product_tag.tag_type_id,0) as tag_id'),
+                    DB::raw('COALESCE(es_product_shipping_comment.id_shipping_comment,0) as shipping')
+                ]);
     }
 }
 

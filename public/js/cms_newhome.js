@@ -1,10 +1,11 @@
 (function () {
     var userid = $("#userid").val();
     var password = $("#password").val();
-
+    var newHomeCmsLink = $("#newHomeCmsLink").text();
     var minimumCategoryProductPanel = 2;
     var minimumCategorySectionProductPanel = 3;
-    $(document.body).on('click','#addSubCategorySection',function (e) { 
+
+    $("#myTabContent").on('click','#addSubCategorySection',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
         var subCategoryText = $(this).closest("form").find("#subCategoryText").val();
@@ -16,7 +17,7 @@
         var tableSelector = "#subCategoriesSection_" + index;
         var reloadurl = "getSubCategoriesSection/" + index;
 
-        if($.trim(subCategoryText) == "" || $.trim(subCategorySectionTarget) == "") {
+        if(subCategoryText.trim() == "" || subCategorySectionTarget.trim() == "") {
             showErrorModal("Please enter values to the required fields");
         }
         else {
@@ -39,7 +40,7 @@
         }     
     });  
 
-    $(document.body).on('click','.editCategorySection',function (e) { 
+    $("#myTabContent").on('click','.editCategorySection',function (e) { 
         var dataNode = $(this).attr("data");
         var data = $.parseJSON(dataNode);
 
@@ -51,7 +52,7 @@
 
     });  
 
-    $(document.body).on('click','#setSubCategoriesSectionBtn',function (e) { 
+    $("#modalForCategorySection").on('click','#setSubCategoriesSectionBtn',function (e) { 
         loader.showPleaseWait();          
         var index = $("#edit_categoryText_index").val().toString();
         var subIndex = $("#edit_categoryText_subIndex").val().toString();
@@ -85,7 +86,7 @@
 
     });      
 
-    $(document.body).on('click','#editCategoryProductPanel',function (e) { 
+    $("#myTabContent").on('click','#editCategoryProductPanel',function (e) { 
         loader.showPleaseWait();          
         var value = $(this).closest("form").find("#value").val().toString();
         var index = $(this).closest("form").find("#index").val().toString();
@@ -98,7 +99,7 @@
         var tableSelector = "#categorySectionProductPanel_" + index;
         var reloadurl = "getCategoriesProductPanel/" + index;
 
-        if($.trim(value) == "") {
+        if(value.trim() == "") {
             showErrorModal("Please supply a slug");
         }
         else {
@@ -130,7 +131,7 @@
     
     });     
 
-    $(document.body).on('click','#moveupCategoryProductPanel, #movedownCategoryProductPanel',function (e) { 
+    $("#myTabContent").on('click','#moveupCategoryProductPanel, #movedownCategoryProductPanel',function (e) { 
         loader.showPleaseWait();          
         var action = $(this).data('action').toString();
         var subindex = $(this).data('subindex').toString();
@@ -163,7 +164,7 @@
     
     }); 
 
-    $(document.body).on('click','#removeCategoryProductPanel',function (e) { 
+    $("#myTabContent").on('click','#removeCategoryProductPanel',function (e) { 
         var index = $(this).data("index").toString();
         var subindex = $(this).data("subindex").toString();
         var nodename = $(this).data("nodename");
@@ -197,14 +198,14 @@
     });  
 
 
-    $(document.body).on('click','#moveup, #movedown',function (e) { 
-        loader.showPleaseWait();          
+    $("#manageSliderSection").on('click','#moveup, #movedown',function (e) { 
+       
         var action = $(this).data('action').toString();
         var subindex = $(this).data('subindex').toString();
         var index = $(this).data('index').toString();
         var order = parseInt($(this).data('order'));
         var url = $(this).data('url').toString();
-        var count = parseInt($(".slideCount").last().text());
+        var count = parseInt($(".slideCount_" + index).last().text());
         if(action == "down") {
             if(order == (count - 1)) {
                 order = order;
@@ -220,17 +221,21 @@
             }
     
         }
+        var flag = parseInt(index) + 1;
+
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;        
         order = order.toString();
         var hash =  hex_sha1(index + subindex  + order + userid + password);        
         data = { index: index, subIndex:subindex, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
+
+        loader.showPleaseWait();   
         setSliderPosition(url,data, tableSelector, reloadurl);
+
     
     }); 
 
-    $(document.body).on('click','#moveParentSlider',function (e) { 
-   
+    $("#manageSliderSection").on('click','#moveParentSlider',function (e) { 
         var flag = 0;      
         var action = $(this).data('action').toString();
         var index = parseInt($(this).data('index').toString());
@@ -270,36 +275,7 @@
     
     });
 
-    $(document.body).on('click','#moveupAdsSection, #movedownAdsSection',function (e) { 
-        loader.showPleaseWait();          
-        var action = $(this).data('action').toString();
-        var index = $(this).data('index').toString();
-        var order = parseInt($(this).data('order'));
-        var url = $(this).data('url').toString();
-        var count = parseInt($(".adsCount").last().text());
-        if(action == "down") {
-            if(order == (count - 1)) {
-                order = order;
-            } else {
-                 order = order + 1;
-            }           
-        }
-        else {
-            if(order > 0) {
-                order = order - 1;
-            } else {
-               order = 0;
-            }
-    
-        }
-        order = order.toString();
-        var hash =  hex_sha1(index  + order + userid + password);        
-        data = { index: index, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
-        setPositionAdsSection(url,data);
-    
-    }); 
-
-    $(document.body).on('click','#addCategoryProductPanel',function (e) { 
+    $("#manageCategorySection").on('click','#addCategoryProductPanel',function (e) { 
         loader.showPleaseWait();          
         var value = $(this).closest("form").find("#value").val().toString();
         var index = $(this).data("index");
@@ -310,7 +286,7 @@
 
         var tableSelector = "#categorySectionProductPanel_" + index;
         var reloadurl = "getCategoriesProductPanel/" + index;
-        if($.trim(value) == "") {
+        if(value.trim() == "") {
             showErrorModal("Please supply a slug");
         }
         else {
@@ -341,7 +317,7 @@
         }      
     });  
 
-    $(document.body).on('click','.removeCategorySection',function (e) { 
+    $(".subCategoriesSectionTable").on('click','.removeCategorySection',function (e) { 
         var index = $(this).data("index").toString();
         var subIndex = $(this).data("subindex").toString();
         var nodename = $(this).data("nodename");
@@ -382,7 +358,7 @@
 
 
 
-    $(document.body).on('click','#setMainNavigation',function (e) { 
+    $("#myTabContent").on('click','#setMainNavigation',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
         var categoryName = $(this).closest("form").find("#drop_actionType").val();
@@ -419,20 +395,22 @@
     });  
 
 
-    $(document.body).on('click','#editAdsSection',function (e) { 
+
+    $("#previewImage").on('click','#editAdsSection',function (e) { 
+
         loader.showPleaseWait();
-        var index = $(this).closest("form").find("#index").val().toString();
-        var url = $(this).data('url');
+        var index = $(this).closest("form").find("#editAdsIndex").val().toString();
+        var url = newHomeCmsLink + "/setAdsSection";
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
-        if($.trim(target) === "") {
+        if(target.trim() === "") {
             target = "/";
             $(this).closest("form").find("#target").val("/");            
         }
         var hash =  hex_sha1(index + userid + value + target  + password);
-        var form = "#adSectionForm"+index;
+        var form = "#cropForm";
         $(this).closest("form").find("#editAdsSectionHash").val(hash);
         editAdsSectionForm(form, url);
 
@@ -440,11 +418,11 @@
 
 
 
-    $(document.body).on('click','#editSubSlider',function (e) { 
+    $("#previewImage").on('click','#editSubSlider',function (e) { 
 
-        var index = $(this).closest("form").find("#index").val().toString();
-        var subIndex = $(this).closest("form").find("#subIndex").val().toString();
-        var url = $(this).data('url');
+        var index = $(this).closest("form").find("#editModalSliderIndex").val().toString();
+        var subIndex = $(this).closest("form").find("#editModalSliderSubIndex").val().toString();
+        var url = newHomeCmsLink + "/editSubSlider";;
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
@@ -453,7 +431,7 @@
         var hash =  hex_sha1(index + subIndex + userid + value + target  + password);
         $(this).closest("form").find("#editHashMainSlide").val(hash);
 
-        var editSlideForm_ = "#editSlideForm_"+index+"_"+subIndex;
+        var editSlideForm_ = "#cropForm";
 
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;
@@ -463,25 +441,29 @@
     }); 
 
 
-    $(document.body).on('click', '#addAdSection',function (e) { 
+
+    $("#previewImage").on('click', '#addAdSection',function (e) { 
         
         loader.showPleaseWait();     
-        var url = $(this).data('url');
+
+        var url = newHomeCmsLink + "/addAdds";
+        var target = $(this).closest("form").find("#target").val().toString();
         var userid = $(this).closest("form").find("#userid").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();   
         var password = $(this).closest("form").find("#password").val().toString();
-        var hash =  hex_sha1(userid  + value + password);        
+        var hash =  hex_sha1(value + target + userid + password);        
         $(this).closest("form").find("#hashAddAds").val(hash);
-        var form = "#addAdsForm";
+        var form = "#cropForm";
         if(value == "") {
             showErrorModal("Please upload na image");
         }
         else {
+            loader.showPleaseWait();                 
             addAds(form, url);
         }
     }); 
 
-    $(document.body).on('click','#changeSellerBannerSubmit, #changeSellerLogoSubmit, #changeSellerSlug',function (e) { 
+    $("#manageSellerSection").on('click','#changeSellerBannerSubmit, #changeSellerLogoSubmit, #changeSellerSlug',function (e) { 
         
         loader.showPleaseWait();     
         var url = $(this).data('url');
@@ -490,7 +472,7 @@
         var password = $(this).closest("form").find("#password").val().toString();
         if(action == "slug") {
             var slug = $(this).closest("form").find("#slug").val().toString();
-            if($.trim(slug) == "") {
+            if(slug.trim() == "") {
                 loader.hidePleaseWait();                  
                 showErrorModal("Please enter a valid slug");
             }
@@ -519,7 +501,7 @@
         }
         else {
 
-            var value = $(this).closest("form").find("#photoFile").val().toString();     
+            var value = $(this).closest("form").find("#sellerFile").val().toString();     
             var hash =  hex_sha1(userid +  value + action + password);
             var form = "";
             if(action == "banner") {
@@ -530,12 +512,12 @@
                 $(this).closest("form").find("#hashChangeSellerLogo").val(hash);
                 var form = "#changeSellerLogoForm";            
             }
-
-            if(value == "") {
+            var ext = value.split('.').pop().toLowerCase();
+            if(value === "" || ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1)) {
                 showErrorModal("Please upload na Image");
             }
             else {
-                changeSellerBanner(form, url);
+                changeSellerBanner(form,url);
             }
         }
 
@@ -543,14 +525,14 @@
     }); 
 
 
-    $(document.body).on('click','#editProductPanel',function (e) { 
+    $("#productPanelDiv").on('click','#editProductPanel',function (e) { 
         loader.showPleaseWait();           
         var url = $(this).data("url");
         var value = $(this).closest("form").find("#value").val();   
         var index = $(this).closest("form").find("#index").val();   
         var hash =  hex_sha1(index  + value + userid + password);
         data = { index: index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
-        if($.trim(value) == "") {
+        if(value.trim() == "") {
             showErrorModal("Please supply a slug");
         }
         else {
@@ -580,7 +562,7 @@
         }
     }); 
 
-    $(document.body).on('click','#addProductPanel',function (e) { 
+    $("#manageSellerSection").on('click','#addProductPanel',function (e) { 
         
         loader.showPleaseWait();          
         var value = $(this).closest("form").find("#value").val();
@@ -588,7 +570,7 @@
         var hash =  hex_sha1( userid + value + password);
         data = { userid:userid, value:value,  password:password, hash:hash, callback:'?'};
 
-        if($.trim(value) == "") {
+        if(value.trim() == "") {
             showErrorModal("Please supply a valid slug");
         }
         else {
@@ -618,7 +600,7 @@
     });  
 
 
-    $(document.body).on('click','#removeAdsSection',function (e) { 
+    $("#adsSectionDiv").on('click','#removeAdsSection',function (e) { 
             
         var index = $(this).data("index");
         var nodename = $(this).data("nodename");
@@ -653,64 +635,44 @@
       
     });
 
-    $(document.body).on('click','#movedownProductPanel, #moveupProductPanel',function (e) { 
+    $("#previewImage").on('click','#addSubSlider',function (e) { 
         loader.showPleaseWait();          
-        var action = $(this).data('action').toString();
-        var index = $(this).data('index').toString();
-        var order = parseInt($(this).data('order'));
-        var url = $(this).data('url').toString();
-        var count = parseInt($(".productPanelCount").last().text());
-        if(action == "down") {
-            if(order == (count - 1)) {
-                order = order;
-            } else {
-                 order = order + 1;
-            }           
-        }
-        else {
-            if(order > 0) {
-                order = order - 1;
-            } else {
-               order = 0;
-            }
-    
-        }
-        order = order.toString();
-        var hash =  hex_sha1(index  + order + userid + password);        
-        data = { index: index, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
-        setPositionProductPanel(url,data);
-    
-    });  
-
-  
-
-    $(document.body).on('click','#addSubSlider',function (e) { 
-        
-        loader.showPleaseWait();          
-        var index = $(this).closest("form").find("#index").val().toString();
+        var image_x = $(this).closest("form").find("#image_x").val().toString();
+        var image_y = $(this).closest("form").find("#image_y").val().toString();
+        var image_w = $(this).closest("form").find("#image_w").val().toString();
+        var image_h = $(this).closest("form").find("#image_h").val().toString();
+        var index = $(this).closest("form").find("#modalSliderIndex").val().toString();
         var url = $(this).data('url');
         var userid = $(this).closest("form").find("#userid").val().toString();
         var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
-        target = $.trim(target) == "" ? "/" : target;
-        var hash =  (index + userid+ value + target  + password);
-        var hash =  hex_sha1(index + userid+ value + target  + password);
+        var template = $("#clonedSliderCountConstant").text();
+        var sliderConstant = $("#template_" + template).data("count");
+        var count = parseInt($(".subSlide_"+index).last().text());
+
+        if(target.trim() === "") {
+            target = "/";
+            $("#target").val("/");            
+        }
+        var hash =  hex_sha1(image_x + image_y + image_w + image_h + value +index + userid + target  + password);
+
         $(this).closest("form").find("#hashMainSlide").val(hash);
-        var mainSlideForm = "#mainSlideForm"+index;
+        var mainSlideForm = "#cropForm";
 
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;
         if(value == "") {
+            $("#previewImage").modal("hide");
             showErrorModal("Please upload na Image")
         }
         else {
-            addSubSlider(mainSlideForm, url, tableSelector, reloadurl);
+            addSubSlider(mainSlideForm, url, tableSelector, reloadurl, count, index);
         }
 
     });  
 
-    $(document.body).on('click','#addMainSlider',function (e) { 
+    $("#manageSliderSection").on('click','#addMainSlider',function (e) { 
         loader.showPleaseWait();          
         var template = $(this).closest("form").find("#drop_actionType").val();
         var url = $(this).data('url');
@@ -726,6 +688,7 @@
             dataType: 'jsonp',
             success: function(json) {
                 $("#manageSliderSection").load("getAllSliders");
+                getSliderPreview();
                 loader.hidePleaseWait();   
             },
             error: function(e) {
@@ -735,7 +698,7 @@
 
 
     });  
-    $(document.body).on('click','.removeButton',function (e) { 
+    $("#myTabContent").on('click','.removeButton',function (e) { 
         var dataNode = $(this).attr("data");
         var data = $.parseJSON(dataNode);
         var index = data.index.toString();
@@ -775,7 +738,7 @@
     }); 
 
 
-    $(document.body).on('click','#removeProductPanel',function (e) { 
+    $("#manageSellerSection").on('click','#removeProductPanel',function (e) { 
         var index = $(this).data("index");
         var nodename = $(this).data("nodename");
         var url = $(this).data("url");
@@ -809,7 +772,7 @@
       
     });  
 
-    $(document.body).on('click','#removeSubSlide',function (e) { 
+    $("#manageSliderSection").on('click','#removeSubSlide',function (e) { 
         var index = $(this).data("index").toString();
         var subIndex = $(this).data("subindex").toString();
         var nodename = $(this).data("nodename").toString();
@@ -834,12 +797,14 @@
                 contentType: "application/json",
                 dataType: 'jsonp',
                 success: function(json) {
-                    $(tableSelector).load(reloadurl);                  
+                    $(tableSelector).load(reloadurl);  
+                    getSliderPreview();
                     loader.hidePleaseWait();
                        
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
+                    getSliderPreview();                    
                     showErrorModal("Please try again");
                 }
             });  
@@ -849,15 +814,24 @@
         }  
     });  
 
-    $(document.body).on('click','.editBrands',function (e) { 
+    $("#addBrandsTable").on('click','.editBrands',function (e) { 
         var dataNode = $(this).attr("data");
-        var data = $.parseJSON(dataNode);
+        var data = $.parseJSON(dataNode);   
         $("#editBrandsUrl").val(data.url);
         $("#editBrandsIndex").val(data.index);
         $('#editBrandsDropDown option[value="'+ data.id_brand +'"]').attr("selected", "selected");
     });  
 
-    $(document.body).on('click','.btn-danger',function (e) { 
+    $("#manageTopSellers").on('click','#editTopSellersBtn',function (e) { 
+        var dataNode = $(this).attr("data");
+        var data = $.parseJSON(dataNode);   
+        $("#editTopSellersUrl").val(data.url);
+        $("#editTopSellersIndex").val(data.index);
+        $('#editTopSellersValue').val(data.value);
+    });  
+
+
+    $("#myTabContent").on('click','.btn-danger',function (e) { 
         var dataNode = $(this).attr("data");
         var data = $.parseJSON(dataNode);
         $("#edit_url").val(data.url);
@@ -866,7 +840,7 @@
         $('#drop_actionTypeEdit option[value="'+ data.value +'"]').attr("selected", "selected");
     });  
 
-    $(document.body).on('click','#removeCategorySection, #removeMainSlider',function (e) { 
+    $("#myTabContent").on('click','#removeCategorySection, #removeMainSlider',function (e) { 
          
         var url = $(this).data("url");
         var nodename = $(this).data("nodename");
@@ -898,9 +872,12 @@
                         }
                         else {
                             $("#manageSliderSection").load("getAllSliders");
+                            getSliderPreview();                 
+
                         }
                     },
                     error: function(e) {
+                        getSliderPreview();                                         
                         loader.hidePleaseWait();
                     }
                 });             
@@ -911,7 +888,7 @@
         }
     }); 
 
-    $(document.body).on('click','#addCategorySectionProductPanel',function (e) { 
+    $("#manageCategorySection").on('click','#addCategorySectionProductPanel',function (e) { 
         var value = $('#addCategorySectionValue option:selected').val();
         var url = $(this).data("url");
         var hash =  hex_sha1(value + userid + password);
@@ -943,7 +920,7 @@
   
     });   
 
-    $(document.body).on('click','.removeNewArrival',function (e) { 
+    $("#manageNewArrivals").on('click','.removeNewArrival',function (e) { 
      
         var index = $(this).data("index").toString();
         var nodename = $(this).data("nodename");
@@ -977,7 +954,7 @@
     });  
 
 
-    $(document.body).on('click','#addTopSellers',function (e) { 
+    $("#manageTopSellers").on('click','#addTopSellers',function (e) { 
         loader.showPleaseWait();           
         var url = $(this).data("url");
         var value = $(this).closest("form").find("#value").val();
@@ -1007,7 +984,7 @@
         });          
     }); 
 
-    $(document.body).on('click','.removeBrands',function (e) { 
+    $("#manageBrands").on('click','.removeBrands',function (e) { 
      
         var index = $(this).data("index").toString();
         var nodename = $(this).data("nodename");
@@ -1039,7 +1016,7 @@
         }     
     }); 
 
-    $(document.body).on('click','#addBrandsBtn',function (e) { 
+    $("#manageBrands").on('click','#addBrandsBtn',function (e) { 
         loader.showPleaseWait();           
         var value = $('#addBrandsDropDown option:selected').val();
         var hash =  hex_sha1(value + userid + password);
@@ -1064,7 +1041,7 @@
 
     });    
 
-    $(document.body).on('click','#addTopProducts',function (e) { 
+    $("#manageTopProducts").on('click','#addTopProducts',function (e) { 
         loader.showPleaseWait();           
         var url = $(this).data("url");
         var value = $(this).closest("form").find("#value").val();
@@ -1094,7 +1071,7 @@
             }
         });          
     });   
-    $(document.body).on('click','.removeTopProducts',function (e) { 
+    $("#manageTopProducts").on('click','.removeTopProducts',function (e) { 
      
         var index = $(this).data("index").toString();
         var nodename = $(this).data("nodename");
@@ -1126,7 +1103,7 @@
         }     
     });   
 
-    $(document.body).on('click','.removeTopSellers',function (e) { 
+    $("#manageTopSellers").on('click','.removeTopSellers',function (e) { 
      
         var index = $(this).data("index").toString();
         var nodename = $(this).data("nodename");
@@ -1158,7 +1135,7 @@
         }     
     });    
 
-    $(document.body).on('click','#addNewArrival',function (e) { 
+    $("#manageNewArrivals").on('click','#addNewArrival',function (e) { 
         loader.showPleaseWait();           
         var url = $(this).data("url");
         var value = $(this).closest("form").find("#value").val();
@@ -1186,7 +1163,7 @@
     });      
 
 
-    $(document.body).on('click','#addOtherCategoy',function (e) { 
+    $("#navigation_others").on('click','#addOtherCategory',function (e) { 
         loader.showPleaseWait();           
         var url = $(this).data("url");
         var value = $('#drop_otherCategories option:selected').val();      
@@ -1229,7 +1206,7 @@
         }
     });  
 
-    $(document.body).on('click','#editOtherCategorySubmit',function (e) { 
+    $("#editOtherCategory").on('click','#editOtherCategorySubmit',function (e) { 
         loader.showPleaseWait();           
         var index = $(this).closest("form").find("#editOtherIndex").val();
         var url = $(this).closest("form").find("#editOtherUrl").val();
@@ -1257,7 +1234,7 @@
         
     });  
 
-    $(document.body).on('click','#editBrandsSubmit',function (e) { 
+    $("#editBrandsModal").on('click','#editBrandsSubmit',function (e) { 
         loader.showPleaseWait();           
         var index = $(this).closest("form").find("#editBrandsIndex").val();
         var url = $(this).closest("form").find("#editBrandsUrl").val();
@@ -1284,7 +1261,7 @@
     }); 
 
 
-    $(document.body).on('click','#editTopSellersSubmit',function (e) { 
+    $("#editTopSellers").on('click','#editTopSellersSubmit',function (e) { 
         loader.showPleaseWait();           
         var index = $(this).closest("form").find("#editTopSellersIndex").val();
         var url = $(this).closest("form").find("#editTopSellersUrl").val();
@@ -1316,7 +1293,7 @@
         
     }); 
 
-    $(document.body).on('click','#editTopProductsSubmit',function (e) { 
+    $("#editTopProducts").on('click','#editTopProductsSubmit',function (e) { 
         loader.showPleaseWait();           
         var index = $(this).closest("form").find("#editTopProductsIndex").val();
         var url = $(this).closest("form").find("#editTopProductsUrl").val();
@@ -1349,7 +1326,7 @@
         
     }); 
 
-    $(document.body).on('click','#editNewArrivalSubmit',function (e) { 
+    $("#editNewArrival").on('click','#editNewArrivalSubmit',function (e) { 
         loader.showPleaseWait();           
         var index = $(this).closest("form").find("#editNewArrivalIndex").val();
         var url = $(this).closest("form").find("#editNewArrivalUrl").val();
@@ -1376,7 +1353,7 @@
         });          
         
     });  
-    $(document.body).on('click','#editTopSellersBtn',function (e) { 
+    $("#addBrandsTable").on('click','#editTopSellersBtn',function (e) { 
         var dataNode = $(this).attr("data");
         var data = $.parseJSON(dataNode);
         $("#editTopSellersValue").val(data.value);
@@ -1385,7 +1362,7 @@
 
     });  
 
-    $(document.body).on('click','#editTopProductsBtn',function (e) { 
+    $("#addTopProductsTable").on('click','#editTopProductsBtn',function (e) { 
         var dataNode = $(this).attr("data");
         var data = $.parseJSON(dataNode);
         $("#editTopProductsValue").val(data.value);
@@ -1394,7 +1371,7 @@
 
     });  
 
-    $(document.body).on('click','#editNewArrivalBtn',function (e) { 
+    $("#newArrivalsTable").on('click','#editNewArrivalBtn',function (e) { 
         var dataNode = $(this).attr("data");
         var data = $.parseJSON(dataNode);
         $("#editNewArrivalValue").val(data.value);
@@ -1404,7 +1381,7 @@
 
     });  
 
-    $(document.body).on('click','#editOtherCategoryBtn',function (e) { 
+    $("#otherCategoriesTable").on('click','#editOtherCategoryBtn',function (e) { 
         var dataNode = $(this).attr("data");
         var data = $.parseJSON(dataNode);
         $('#drop_otherCategories_edit option[value="'+ data.value +'"]').attr("selected", "selected");
@@ -1413,7 +1390,7 @@
 
     });     
 
-    $(document.body).on('click','.removeOtherCategory',function (e) { 
+    $("#otherCategoriesTable").on('click','.removeOtherCategory',function (e) { 
      
         var index = $(this).data("index").toString();
         var nodename = $(this).data("nodename");
@@ -1447,7 +1424,7 @@
 
     });  
 
-    $(document.body).on('click','#mdl_save',function (e) { 
+    $("#myModal").on('click','#mdl_save',function (e) { 
         loader.showPleaseWait();           
         var url = $("#edit_url").val();
         var index = $("#edit_index").val().toString();
@@ -1491,9 +1468,7 @@
 
     });      
 
-
-
-    $(document.body).on('click','#setSliderDesignTemplate',function (e) { 
+    $("#myTabContent").on('click','#setSliderDesignTemplate',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
         var value = $(this).closest("form").find("#drop_actionType option:selected").val();
@@ -1520,7 +1495,8 @@
                 error: function(e) {
                     loader.hidePleaseWait();
                 }
-            });           
+            });    
+            getSliderPreview();                        
         }
         else {
             $(this).closest("form").find('#drop_actionType option[value="'+ currentSliderTemplate +'"]').attr("selected", "selected");
@@ -1530,7 +1506,48 @@
    
     });  
 
-    $(document.body).on('click','#addSubCategoryNavigation',function (e) { 
+    $("#manageSliderSection").on('click','#commitSliderChanges',function (e) { 
+        loader.showPleaseWait();
+        var commit = 1;
+        var hash = hex_sha1(userid + password);
+        $.ajax({
+            type: 'post',
+            data: {hash:hash, commit:commit},
+            url: "getSliderPreview",
+            dataType: 'json',
+            success: function(json) {
+                $("#sliderPreview").html(json.html);  
+                loader.hidePleaseWait();
+                   
+            },
+        });   
+    }); 
+
+    $("#manageSliderSection").on('click','#discardChanges',function (e) { 
+        var url = $(this).data("url");
+        loader.showPleaseWait();
+        var hash = hex_sha1(userid + password);
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:{hash:hash, userid:userid},
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',            
+            success: function(json) {
+                $("#manageSliderSection").load("getAllSliders"); 
+                loader.hidePleaseWait();
+                   
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+                showErrorModal("Please try again");
+            }            
+        });   
+    });     
+
+    $("#myTabContent").on('click','#addSubCategoryNavigation',function (e) { 
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
         var categoryName = $(this).closest("form").find("#drop_actionType option:selected").val();
@@ -1610,6 +1627,7 @@
 
     function setSliderPosition(url,data, tableSelector, reloadurl)
     {
+                      
         $.ajax({
             type: 'GET',
             url: url,
@@ -1619,14 +1637,15 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $(tableSelector).load(reloadurl);    
+                $(tableSelector).load(reloadurl);   
                 loader.hidePleaseWait();   
             },
             error: function(e) {
                 $(tableSelector).load(reloadurl);   
                 loader.hidePleaseWait();                   
             }
-        }); 
+        });
+        getSliderPreview();            
     }    
 
     function setPositionAdsSection(url,data)
@@ -1685,11 +1704,13 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $(tableSelector).load(reloadurl);                
+                $(tableSelector).load(reloadurl);  
+                getSliderPreview();                              
                 loader.hidePleaseWait();   
             },
             error: function(e) {
-                $(tableSelector).load(reloadurl);                
+                $(tableSelector).load(reloadurl); 
+                getSliderPreview();                            
                 loader.hidePleaseWait();   
             }
         }); 
@@ -1709,7 +1730,7 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $("#adsSectionDiv").load("getAdsSection");                  
+                $("#adsSectionDiv").load("getAdsSection");   
                 loader.hidePleaseWait();  
             },
             error: function(e) {
@@ -1733,10 +1754,12 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                loader.hidePleaseWait();   
+                loader.hidePleaseWait();  
+                $(form).find("#sellerFile").val("");
             },
             error: function(e) {
                 loader.hidePleaseWait();   
+                $(form).find("#sellerFile").val("");                
             }
         }); 
         $(form).submit();        
@@ -1784,30 +1807,6 @@
         }); 
     }  
 
-
-    function addSubSlider(mainSlideForm, url, tableSelector, reloadurl)
-    {
-        $(mainSlideForm).ajaxForm({
-
-            url: url,
-            type: 'GET', 
-            dataType: 'jsonp',
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $(tableSelector).load(reloadurl);              
-                loader.hidePleaseWait();   
-            },
-            error: function(e) {
-                $(tableSelector).load(reloadurl);             
-                loader.hidePleaseWait();   
-            }
-        }); 
-        $(mainSlideForm).submit();        
-    }
-
     function setPositionParentSlider(url, data)
     {
         $.ajax({
@@ -1819,21 +1818,238 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $("#manageSliderSection").load("getAllSliders");  
+
+                $("#previewImage").modal("hide");                      
+                $(tableSelector).load(reloadurl);              
                 loader.hidePleaseWait();   
             },
             error: function(e) {
-                loader.hidePleaseWait();                   
-                showErrorModal("Please try again");
+                $("#previewImage").modal("hide");               
+                $(tableSelector).load(reloadurl);             
+                loader.hidePleaseWait();   
+
             }
         }); 
+
+    }    
+
+    function getSliderPreview()
+    {
+        var commit = 0;
+        var hash = hex_sha1(userid + password);
+        $.ajax({
+            type: 'post',
+            data: {hash:hash, commit:commit},
+            url: "getSliderPreview",
+            dataType: 'json',
+            success: function(json) {
+                $("#sliderPreview").html(json.html);  
+                loader.hidePleaseWait();
+                   
+            },
+        });         
+    }
+
+
+    function addSubSlider(mainSlideForm, url, tableSelector, reloadurl, count, index)
+    {
+        $(mainSlideForm).ajaxForm({
+
+            url: url,
+            type: 'GET', 
+            dataType: 'jsonp',
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $(tableSelector).load(reloadurl);   
+                getSliderPreview();                           
+                loader.hidePleaseWait();   
+            },
+            error: function(e) {
+                $(tableSelector).load(reloadurl);   
+                getSliderPreview();                          
+                loader.hidePleaseWait();   
+            }
+        }); 
+        $(mainSlideForm).submit();        
     }    
 
     function showErrorModal(messages) {
             loader.hidePleaseWait();
             $("#errorTexts").html(messages); 
             $("#customerror").modal('show');  
-    }                                            
+    }      
+
+    $("#myTabContent").on('click','#addSliderCrop,#editSubSliderCrop,#addAdsCrop,#editAdsCrop',function (e) { 
+
+        $('.cropFormButton').prop('disabled', true);
+        var nodename = $(this).data("nodename");
+        if(nodename == "addMainSlider") {
+            var template = $(this).data("template");
+            $("#clonedSliderCountConstant").text(template);
+            var clone = $("#cloneForm_addSubSlider").html();
+            $("#contentPreview").html(clone);
+            $("#contentPreview").find("#modalSliderIndex").val($(this).data("index"));
+            var actionLink = newHomeCmsLink + "/addSubSlider";
+            $(".cropFormButton").attr("data-url",actionLink);
+            $(".cropFormButton").attr("id","addSubSlider");
+            $("#previewImage").find("form").attr("action",actionLink);       
+            $("#previewImage").find("#displayFormGroup").css("display","block");
+
+        }
+        else if(nodename == "editMainSlider" ) {
+            var index = $(this).data("index");
+            var subindex = $(this).data("subindex");
+            var clone = $("#editSlideForm_"+index+"_"+subindex).html();
+            $("#contentPreview").find("#editModalSliderIndex").val(index);
+            $("#contentPreview").find("#editModalSliderSubIndex").val(subindex);
+            $("#contentPreview").html(clone); 
+            var actionLink = newHomeCmsLink + "/editSubSlider";
+            $(".cropFormButton").attr("id","editSubSlider");            
+            $(".cropFormButton").attr("data-url",actionLink);            
+            $("#previewImage").find("form").attr("action",actionLink);
+            $("#previewImage").find("#displayFormGroup").css("display","block");
+
+        }
+        else if(nodename == "addAds") {
+            var clone = $("#cloneForm_addAds").html();
+            $("#contentPreview").html(clone);
+            var actionLink = newHomeCmsLink + "/addAdds";
+            $(".cropFormButton").attr("id","addAdSection");            
+            $(".cropFormButton").attr("data-url",actionLink);             
+            $("#previewImage").find("form").attr("action",actionLink);    
+            $("#previewImage").find("#displayFormGroup").css("display","block");
+
+        }
+        else if(nodename == "editAds"){
+
+            var index = $(this).data("index"); 
+            var clone = $("#clone_editAdsCrop_"+index).html();                      
+            $("#contentPreview").find("#editAdsIndex").val(index);
+            $("#contentPreview").html(clone); 
+            var actionLink = newHomeCmsLink + "/setAdsSection";
+            $(".cropFormButton").attr("id","editAdsSection");            
+            $(".cropFormButton").attr("data-url",actionLink);            
+            $("#previewImage").find("form").attr("action",actionLink);
+            $("#previewImage").find("#displayFormGroup").css("display","block");  
+        }
+
+    });
+
+    /*********************** JCROP ******************************/
+    $("#photoFile").on("click", function(){
+        if($(this).val() !== "") {
+            return false;
+        }
+    });
+    $("#photoFile").on("change", function(){
+        var jcrop;
+        var currValue  = $(this).val();
+        var oldIE;
+        var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+
+        if ($('html').is('.ie6, .ie7, .ie8, .ie9')){
+            oldIE = true;
+        }
+
+        if (oldIE || isSafari){
+            $('#form_image').submit();
+        }
+        else{
+
+            $("#scaleAndCrop").css("display","block");
+            imageprev(this);
+        }
+    });   
+
+    $(' #previewImage').on('shown.bs.modal', function () {
+        $("#photoFile").val("");
+       
+    });      
+    $(' #previewImage').on('hidden.bs.modal', function () {
+        $("#contentPreview").find("#photoFile").val("");
+        jcrop_api = $.Jcrop($('#user_image_prev'));  
+        resetCoords();        
+        jcrop_api.destroy();         
+        $("#scaleAndCrop").css("display","none");        
+    });  
+
+    /***************    Image preview for cropping  ************************/
+function imageprev(input) {
+
+    var jcrop_api, width, height;
+    
+    if (input.files && input.files[0] && input.files[0].type.match(/(gif|png|jpeg|jpg)/g) && input.files[0].size <= 5000000) {
+        var reader = new FileReader();
+
+        reader.onload = function(e){
+            var image = new Image();
+            image.src = e.target.result;
+            image.onload = function(){
+                width = this.width;
+                height = this.height;
+
+                $('#user_image_prev').attr('src', this.src);
+                if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
+
+                    jcrop_api = $.Jcrop($('#user_image_prev'),{
+                        boxWidth: 500,
+                        boxHeight: 500,
+                        minSize: [width*0.1,height*0.1],
+                        setSelect:[0,0,width*0.5,height*0.5],
+                        trueSize: [width,height],
+                        onChange: showCoords,
+                        onSelect: showCoords,
+                        onRelease: resetCoords
+                    });    
+   
+
+                    $(' #previewImage').bind('hidden.bs.modal', function () {
+
+                        $('#user_image_prev').attr('src', '');
+                        resetCoords();
+                        jcrop_api.destroy(); 
+                        var img = $('<img id="user_image_prev">');
+                        img.attr('src', "");
+                        img.appendTo("#imgContainer");
+                    });                                        
+                  
+
+                }
+                else if(width > 5000 || height > 5000) {
+                    showErrorModal("Failed to upload image. Max image dimensions: 5000px x 5000px");
+                }                    
+                else {
+                    $('#div_user_image_prev span:first').html('Preview');
+                }                    
+            }
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+    else {
+        showErrorModal("You can only upload gif|png|jpeg|jpg files at a max size of 5MB!");
+    }
+
+    
+}
+
+function showCoords(c){
+    $('.cropFormButton').prop('disabled', false);    
+    $('#image_x').val(c.x);
+    $('#image_y').val(c.y);
+    $('#image_w').val(c.w);
+    $('#image_h').val(c.h);
+}
+
+function resetCoords(){
+    $('#image_x').val(0);
+    $('#image_y').val(0);
+    $('#image_w').val(0);
+    $('#image_h').val(0);
+}
+                                   
 
 })(jQuery);    
 
