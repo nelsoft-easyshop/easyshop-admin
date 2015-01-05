@@ -21,7 +21,7 @@ class OrderProductController extends BaseController
         if(Input::has('year') && Input::has('month') && Input::has('day')) {
             $dateFilter = Carbon::createFromFormat('Y-m-d', Input::get('year').'-'.Input::get('month').'-'.Input::get('day'));
         } 
-        else {
+        else{
             $dateFilter = $transactionService->getNextPayOutDate();
         }
             

@@ -72,6 +72,7 @@ class OrderProductRepository extends AbstractRepository
                         ->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=',  'es_bank_info.id_bank')
                         ->leftJoin('es_order_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_billing_info.id_order_billing_info')
                         ->whereIn('es_order_product.id_order_product', $orderProductIds);
+
         $billingInfoChangeDate = \Config::get('transaction.billingInfoChangeDate');   
         $orderProducts = $query->get(['es_order_product.*', 
                             'es_order.invoice_no', 
@@ -84,6 +85,7 @@ class OrderProductRepository extends AbstractRepository
                             DB::raw('COALESCE(IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_name, es_order_billing_info.account_name), "") as account_name'), 
                             DB::raw('COALESCE(IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_number, es_order_billing_info.account_number), "") as account_number'),
                         ]);
+
         return $orderProducts;
     }
  
