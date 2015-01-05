@@ -15,7 +15,7 @@
         var order_product_ids = $this.data('order-product-ids');
         
         var url = $this.hasClass('buyer_detail') ? 'orderproduct/refund' : 'orderproduct/pay';
-        loader.showPleaseWait();        
+        loader.showPleaseWait();       
         $.ajax({
                 url: url,
                 data:{order_product_ids:order_product_ids},

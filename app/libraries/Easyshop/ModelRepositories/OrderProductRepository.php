@@ -89,7 +89,6 @@ class OrderProductRepository extends AbstractRepository
         return $orderProducts;
     }
  
-
     /**
      * Returns all order products to be refunded for a particular buyer
      *
