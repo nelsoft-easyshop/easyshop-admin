@@ -131,9 +131,11 @@ class MemberRepository extends AbstractRepository
         });
         
         $query->leftJoin('es_product_shipping_comment','es_product_shipping_comment.order_product_id', '=', 'es_order_product.id_order_product');
-        
-        $query->where('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::PAYPAL));
-        $query->orWhere('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::DRAGONPAY));
+
+        $query->where(function ($query) {
+            $query->where('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::PAYPAL));
+            $query->orWhere('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::DRAGONPAY));
+        });
         
         $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
             $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
@@ -217,8 +219,10 @@ class MemberRepository extends AbstractRepository
         });
         $query->whereNotNull('easyshop-paid-marker.id_order_product_history');
 
-        $query->where('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::PAYPAL));
-        $query->orWhere('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::DRAGONPAY));
+        $query->where(function ($query) {
+            $query->where('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::PAYPAL));
+            $query->orWhere('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::DRAGONPAY));
+        });
         
         
         $query->where(function ($query) {
