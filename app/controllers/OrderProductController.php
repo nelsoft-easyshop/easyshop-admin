@@ -20,7 +20,8 @@ class OrderProductController extends BaseController
         
         if(Input::has('year') && Input::has('month') && Input::has('day')) {
             $dateFilter = Carbon::createFromFormat('Y-m-d', Input::get('year').'-'.Input::get('month').'-'.Input::get('day'));
-        } else {
+        } 
+        else {
             $dateFilter = $transactionService->getNextPayOutDate();
         }
             
@@ -84,27 +85,20 @@ class OrderProductController extends BaseController
      */
     public function getOrderProductsToPay()
     {
-        $userdata = Input::get();
-        
-        $dateFrom =  Carbon::createFromFormat('Y/m/d',$userdata['dateFrom'])->startOfDay();
-        $dateTo =  Carbon::createFromFormat('Y/m/d',$userdata['dateTo'] )->endOfDay();
-        
+        $orderProductIds = explode(',' , Input::get('order_product_ids'));
+
         $orderProductRepository = App::make('OrderProductRepository');
         $orderProductStatusRepository = App::make('OrderProductStatusRepository');
         
         $completedStatus = $orderProductStatusRepository->getSellerPaidStatus();
-        $orderProducts = $orderProductRepository->getOrderProductsToPay($userdata['username'], 
-                                                                        $userdata['accountname'],
-                                                                        $userdata['accountno'], 
-                                                                        $userdata['bankname'],
-                                                                        $dateFrom, 
-                                                                        $dateTo);                                        
-                                                            
+        $orderProducts = $orderProductRepository->getOrderProductsToPay($orderProductIds);                                        
+        $firstOrderProduct = $orderProducts[0];
+                     
         $html = View::make('partials.orderproductlist')
                     ->with('orderproducts', $orderProducts)
-                    ->with('accountname', $userdata['accountname'])
-                    ->with('accountno', $userdata['accountno'])
-                    ->with('bankname', $userdata['bankname'])
+                    ->with('accountname', $firstOrderProduct->account_name)
+                    ->with('accountno',  $firstOrderProduct->account_number)
+                    ->with('bankname', $firstOrderProduct->bank_name)
                     ->with('memberTitle', 'Buyer')
                     ->with('completedStatus', $completedStatus)
                     ->render();
@@ -119,15 +113,12 @@ class OrderProductController extends BaseController
      */
     public function getOrderProductsToRefund()
     {
-        $userdata = Input::get();
-        
-        $dateFrom =  Carbon::createFromFormat('Y/m/d',$userdata['dateFrom'])->startOfDay();
-        $dateTo =  Carbon::createFromFormat('Y/m/d',$userdata['dateTo'])->endOfDay();
-        
+        $orderProductIds = explode(',' , Input::get('order_product_ids'));
+
         $orderProductRepository = App::make('OrderProductRepository');
         $orderProductStatusRepository = App::make('OrderProductStatusRepository');
  
-        $orderProducts = $orderProductRepository->getOrderProductsToRefund($userdata['username'], $dateFrom, $dateTo);      
+        $orderProducts = $orderProductRepository->getOrderProductsToRefund($orderProductIds);      
         $completedStatus = $orderProductStatusRepository->getBuyerPaidStatus();
 
         $html = View::make('partials.orderproductlist')

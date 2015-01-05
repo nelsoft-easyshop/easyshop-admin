@@ -58,14 +58,10 @@ class OrderProductRepository extends AbstractRepository
     /**
      * Returns all order products to be paid that are tied to a certain payment account_name
      *
-     * @param string username
-     * @param string accountname
-     * @param string accountno
-     * @param Carbon dateFrom
-     * @param Carbon dateTo
+     * @param integer[] $orderProductIds
      * @return Collection
      */
-    public function getOrderProductsToPay($username, $accountname, $accountno, $bankname, $dateFrom = null, $dateTo = null)
+    public function getOrderProductsToPay($orderProductIds = [])
     {       
         $query = OrderProduct::leftJoin('es_billing_info', 'es_order_product.seller_billing_id', '=', 'es_billing_info.id_billing_info')
                         ->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member')
@@ -73,48 +69,9 @@ class OrderProductRepository extends AbstractRepository
                         ->join('es_member as buyer','es_order.buyer_id', '=', 'buyer.id_member')
                         ->join('es_product','es_order_product.product_id','=','es_product.id_product')
                         ->join('es_order_product_status','es_order_product.status','=','es_order_product_status.id_order_product_status')
-                        ->leftJoin('es_order_product_history', function($join){
-                                $join->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
-                                $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_FORWARD_SELLER));
-                         })->leftJoin('es_product_shipping_comment','es_product_shipping_comment.order_product_id', '=', 'es_order_product.id_order_product')
                         ->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=',  'es_bank_info.id_bank')
                         ->leftJoin('es_order_billing_info', 'es_order_product.seller_billing_id', '=', 'es_order_billing_info.id_order_billing_info')
-                        ->where('seller.username', '=', $username);
-
-        if($dateFrom && $dateTo){
-            $dateFrom = $dateFrom->format('Y-m-d H:i:s');
-            $dateTo = $dateTo->format('Y-m-d H:i:s');
-            
-            $query->where(function ($query) use ($dateFrom, $dateTo){
-                $query->where(function ($query) use ($dateFrom, $dateTo){
-                    $query->where('es_order_product_history.date_added', '>=', $dateFrom);
-                    $query->where('es_order_product_history.date_added', '<', $dateTo);
-                });
-                
-                $query->orWhere(function ($query) use ($dateFrom, $dateTo) {
-                    $query->where(function ($query) {
-                                    $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
-                                        ->orWhere('es_order.order_status', '=',  OrderStatus::STATUS_COMPLETED);
-                            });      
-                    $query->where(function ($query) {
-                                $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING)
-                                    ->orWhere(function ($query) {
-                                            $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_PAID_SELLER)
-                                                  ->whereNull('es_order_product_history.id_order_product_history');
-                                        }
-                                    );
-                            });         
-                    $query->where('es_order_product.is_reject', '=', '0');
-                    $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
-                    $query->whereRaw("DATEDIFF(?,es_product_shipping_comment.delivery_date) >= 15");
-                    $query->setBindings(array_merge($query->getBindings(),array($dateTo)));
-                    $query->whereRaw(" DATE_ADD(es_product_shipping_comment.`delivery_date`, INTERVAL 15 DAY) BETWEEN ? AND ?");                    
-                    $query->setBindings(array_merge($query->getBindings(),array($dateFrom, $dateTo)));
-                }); 
-            
-            });
-
-        }
+                        ->whereIn('es_order_product.id_order_product', $orderProductIds);
         $billingInfoChangeDate = \Config::get('transaction.billingInfoChangeDate');   
         $orderProducts = $query->get(['es_order_product.*', 
                             'es_order.invoice_no', 
@@ -127,30 +84,16 @@ class OrderProductRepository extends AbstractRepository
                             DB::raw('COALESCE(IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_name, es_order_billing_info.account_name), "") as account_name'), 
                             DB::raw('COALESCE(IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_number, es_order_billing_info.account_number), "") as account_number'),
                         ]);
-                        
-              
- 
-        $orderProducts = $orderProducts->filter(function($orderProduct) use ($accountname, $accountno, $bankname)
-        {
-            $isValid = (trim($orderProduct->account_name) === trim($accountname) &&
-                        trim($orderProduct->account_number) === trim($accountno) &&
-                        trim($orderProduct->bank_name) === trim($bankname));
-            return $isValid;
-        });
-        
         return $orderProducts;
     }
  
-
     /**
      * Returns all order products to be refunded for a particular buyer
      *
-     * @param string username
-     * @param Carbon dateFrom
-     * @param Carbon dateTo
+     * @param integer[] $orderProductIds
      * @return Collection
      */
-    public function getOrderProductsToRefund($username = null, $dateFrom = null, $dateTo = null)
+    public function getOrderProductsToRefund($orderProductIds = [])
     {               
         $query = OrderProduct::join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
         $query->join('es_member','es_order.buyer_id', '=', 'es_member.id_member');
@@ -161,27 +104,8 @@ class OrderProductRepository extends AbstractRepository
             $leftJoin->on('es_billing_info.member_id', '=', 'es_member.id_member');
             $leftJoin->on('es_billing_info.is_default', '=',  DB::raw('1'));
         });
-        
         $query->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=', 'es_bank_info.id_bank');
-        
-        $query->join('es_order_product_history', function($join){
-            $join->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
-            $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_RETURN_BUYER));
-        });
-        
-        if($dateFrom && $dateTo){
-            $dateFrom = $dateFrom->format('Y-m-d H:i:s');
-            $dateTo = $dateTo->format('Y-m-d H:i:s');
-        
-            $query->where(function ($query) use ($dateFrom, $dateTo){
-                $query->where('es_order_product_history.date_added', '>=', $dateFrom);
-                $query->where('es_order_product_history.date_added', '<', $dateTo);
-            });
-        }
-        
-        if($username !== null){
-            $query->where('es_member.username', '=', $username);
-        }     
+        $query->whereIn('es_order_product.id_order_product', $orderProductIds);
         
         $returnedOrders = $query->get(['es_order_product.*', 
                                     'es_order.invoice_no', 
