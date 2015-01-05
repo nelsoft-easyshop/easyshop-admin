@@ -205,18 +205,20 @@ class MemberRepository extends AbstractRepository
         
         $query->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=', 'es_bank_info.id_bank');
         $query->leftJoin('es_order_billing_info', 'es_order_product.buyer_billing_id', '=', 'es_order_billing_info.id_order_billing_info');        
-       
+
         $query->leftJoin('es_order_product_history', function($leftJoin){
             $leftJoin->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
             $leftJoin->on('es_order_product_history.order_product_status', '!=',  DB::raw(OrderProductStatus::STATUS_ON_GOING));
         });
+
         /**
          * Ensures that the transaction payment has been received by easyshop
          */
         $query->leftJoin('es_order_product_history as easyshop-paid-marker', function($leftJoin){
-            $leftJoin->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
-            $leftJoin->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_ON_GOING));
+            $leftJoin->on('es_order_product.id_order_product', '=', 'easyshop-paid-marker.order_product_id');
+            $leftJoin->on('easyshop-paid-marker.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_ON_GOING));
         });
+  
         $query->whereNotNull('easyshop-paid-marker.id_order_product_history');
 
         $query->where(function ($query) {
@@ -253,8 +255,9 @@ class MemberRepository extends AbstractRepository
                                         DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_number, es_billing_info.bank_account_number) as account_number"),
                                         DB::raw('SUM(es_order_product.net) as net'),
                                         DB::raw('GROUP_CONCAT(es_order_product.id_order_product) as order_product_ids'),
+                                        'easyshop-paid-marker.id_order_product_history',
                                     ]);
-                
+
         return $returnedOrders;
     
     }
