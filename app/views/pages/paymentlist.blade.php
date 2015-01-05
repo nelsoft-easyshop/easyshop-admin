@@ -69,7 +69,7 @@
                     </tr>
                 </thead>
                 @foreach($accountsToPay as $account)
-                    <tr class="seller_detail">
+                    <tr class="seller_detail" data-order-product-ids = "{{{ $account->order_product_ids }}}">
                         <td class="td_username">{{{ $account->username }}}</td>
                         <td class="td_bankname">{{{ $account->bank_name }}} </td>
                         <td class="td_accountname">{{{ $account->account_name }}} </td>

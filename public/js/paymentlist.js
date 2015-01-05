@@ -12,18 +12,13 @@
         var $this = $(this);
         var username = $this.find('.td_username').html();
         var accountname = $this.find('.td_accountname').html();
-        var accountno = $this.find('.td_accountno').html();
-        var bankname = $this.find('.td_bankname').html();
-
-        var dateFrom = $('input#date-from').val();
-        var dateTo = $('input#date-to').val();
-
-        var url = $this.hasClass('buyer_detail') ? 'orderproduct/refund' : 'orderproduct/pay';
+        var order_product_ids = $this.data('order-product-ids');
         
-        loader.showPleaseWait();        
+        var url = $this.hasClass('buyer_detail') ? 'orderproduct/refund' : 'orderproduct/pay';
+        loader.showPleaseWait();       
         $.ajax({
                 url: url,
-                data:{username:username,accountname:accountname,accountno:accountno, bankname:bankname, dateFrom: dateFrom, dateTo: dateTo},
+                data:{order_product_ids:order_product_ids},
                 type: 'get',
                 dataType: 'JSON',                      
                 success: function(result){
