@@ -64,7 +64,10 @@ class NewHomeContentManagerController extends BaseController
         {
             foreach($categoryPanel->productPanel as $productPanel)
             {
-                $categoryProductPanel[] = $productEntity->getProductBySlug($productPanel->slug);
+                $productObj = $productEntity->getProductBySlug($productPanel->slug);
+                if(count($productObj) > 0) {
+                    $categoryProductPanel[] = $productObj;
+                }
             }
             $categorySection[] = $categoryPanel;   
             $categoryProductPanelList[] = array_flatten(array($index => $categoryProductPanel ));
