@@ -198,9 +198,17 @@ class MemberRepository extends AbstractRepository
         
         $query = DB::table('es_order_product')->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
         $query->join('es_member','es_order.buyer_id', '=', 'es_member.id_member');
-        $query->leftJoin('es_billing_info',function($leftJoin){
+
+        $query->leftJoin(DB::raw('
+            (SELECT 
+                * 
+            FROM es_billing_info 
+            WHERE 
+                es_billing_info.is_default = 1 AND 
+                es_billing_info.is_delete = 0 
+            GROUP BY es_billing_info.member_id) es_billing_info '), function($leftJoin)
+        {
             $leftJoin->on('es_billing_info.member_id', '=', 'es_member.id_member');
-            $leftJoin->on('es_billing_info.is_default', '=',  DB::raw('1'));
         });
         
         $query->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=', 'es_bank_info.id_bank');
@@ -257,7 +265,7 @@ class MemberRepository extends AbstractRepository
                                         DB::raw('GROUP_CONCAT(es_order_product.id_order_product) as order_product_ids'),
                                         'easyshop-paid-marker.id_order_product_history',
                                     ]);
-
+        
         return $returnedOrders;
     
     }
