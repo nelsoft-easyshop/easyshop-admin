@@ -77,7 +77,7 @@ class NewHomeContentManagerController extends BaseController
             $categorySection[] = $categoryPanel;   
             $categoryProductPanelList[] = array_flatten(array($index => $categoryProductPanel ));
             $index++;
-            $categoryProductPanel = array();
+            $categoryProductPanel = [];
         }
 
         $newArrivals = [];
