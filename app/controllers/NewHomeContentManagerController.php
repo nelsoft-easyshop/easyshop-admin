@@ -57,6 +57,7 @@ class NewHomeContentManagerController extends BaseController
         foreach($this->map->adSection as $ads) {
             $adsSection[] = $ads;
         }     
+        
         $product = [];
         $productEntity = App::make('ProductRepository');
         foreach($this->map->sellerSection->productPanel as $productPanel)
