@@ -16,7 +16,7 @@ class NewHomeContentManagerController extends BaseController
         $this->map = simplexml_load_string(trim($xmlString));
 
         $sliderXmlString = $this->XMLService->getTempHomeXml();
-        $this->sliderMap = simplexml_load_string(trim($sliderXmlString));        
+        $this->temporarySliderMap = simplexml_load_string(trim($sliderXmlString));        
     
     }      
       
@@ -25,11 +25,12 @@ class NewHomeContentManagerController extends BaseController
      */      
     public function getHomeContent()
     {
-
+        $otherCategories = [];
         foreach($this->map->categoryNavigation->otherCategories as $map) {
             $otherCategories[] = $map;
         }        
 
+        $categoryNavigation = [];
         foreach($this->map->categoryNavigation->category as $map) {
             $categoryNavigation[] = $map;
         }         
@@ -37,22 +38,27 @@ class NewHomeContentManagerController extends BaseController
         $adminEntity = App::make('AdminMemberRepository');          
         $categoryRepository = App::make('CategoryRepository');          
 
+        $categoryLists = [];
         foreach ($categoryRepository->getParentCategories() as $value) {
             $categoryLists[] = array("slug" => $value->slug, "name" => $value->name);
         }
 
+        $childCategoryLists = [];
         foreach ($categoryRepository->getChildCategories() as $value) {
             $childCategoryLists[] = array("slug" => $value->slug, "name" => $value->name);
         }               
 
-        foreach($this->sliderMap->sliderSection->slide as $slides) {
+        $sliders = [];
+        foreach($this->temporarySliderMap->sliderSection->slide as $slides) {
             $sliders[] = $slides;
         }
         
+        $adsSection[] = [];        
         foreach($this->map->adSection as $ads) {
             $adsSection[] = $ads;
         }     
-
+        
+        $product = [];
         $productEntity = App::make('ProductRepository');
         foreach($this->map->sellerSection->productPanel as $productPanel)
         {
@@ -60,6 +66,8 @@ class NewHomeContentManagerController extends BaseController
         }
 
         $index = 0;
+        $categoryProductPanel = [];
+        $categoryProductPanelList = [];
         foreach($this->map->categorySection as $categoryPanel)
         {
             foreach($categoryPanel->productPanel as $productPanel)
@@ -69,26 +77,29 @@ class NewHomeContentManagerController extends BaseController
             $categorySection[] = $categoryPanel;   
             $categoryProductPanelList[] = array_flatten(array($index => $categoryProductPanel ));
             $index++;
-            $categoryProductPanel = array();
+            $categoryProductPanel = [];
         }
 
+        $newArrivals = [];
         foreach($this->map->menu->newArrivals[0] as $arrivals)
         {
             $newArrivals[] = $arrivals;
         }
 
+        $topProducts = [];
         foreach($this->map->menu->topProducts as $tProducts)
         {
             $topProducts[] = $tProducts;
         }   
 
+        $topSellers = [];
         foreach($this->map->menu->topSellers as $tSellers)
         {
             $topSellers[] = $tSellers;
         }           
         $brandRepository = App::make("BrandRepository");
 
-
+        $brandsLists = [];
         foreach($this->map->brandSection->brandId as $brands) 
         {
             $brandsLists[] = $brandRepository->getBrandById($brands);                  
@@ -105,7 +116,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('categoryProductPanelList', $categoryProductPanelList)
                     ->with('productList', array_flatten($product))
                     ->with('childCategoryLists', $childCategoryLists)
-                    ->with('templateLists', array_flatten($this->getTemplates($this->sliderMap->sliderTemplate)))
+                    ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))
                     ->with('categoryNavigation', $categoryNavigation)
                     ->with('password', $adminEntity->getAdminMemberById(Auth::id()))
                     ->with('sliderSection', $sliders)
@@ -122,13 +133,14 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getBrandsSection()
     {
+        $topSellers = [];        
         foreach($this->map->menu->topSellers as $tSellers)
         {
             $topSellers[] = $tSellers;
         }           
         $brandRepository = App::make("BrandRepository");
 
-
+        $brandsLists = [];
         foreach($this->map->brandSection->brandId as $brands) 
         {
             $brandsLists[] = $brandRepository->getBrandById($brands);                  
@@ -152,7 +164,9 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAdSection()
     {
-        $adminEntity = App::make('AdminMemberRepository');            
+        $adminEntity = App::make('AdminMemberRepository');  
+
+        $adsSection = [];                  
         foreach($this->map->adSection as $ads) {
             $adsSection[] = $ads;
         }   
@@ -172,6 +186,8 @@ class NewHomeContentManagerController extends BaseController
         $index = (int) $index;
         $productEntity = App::make('ProductRepository');
         $categoryIndex = 0;
+        $categoryProductPanel = [];        
+        $categoryProductPanelList = [];        
         foreach($this->map->categorySection as $categoryPanel)
         {
 
@@ -200,6 +216,7 @@ class NewHomeContentManagerController extends BaseController
     public function getSubCategoryNavigation($index)
     {
         $index = (int) $index;
+        $subCategoryNavigation = [];        
         foreach($this->map->categoryNavigation->category[$index]->sub as $subCategories)
         {
             $subCategoryNavigation[] = $subCategories;   
@@ -218,7 +235,8 @@ class NewHomeContentManagerController extends BaseController
     public function getSubCategoriesSection($index)
     {
         $index = (int) $index;
-        $adminEntity = App::make('AdminMemberRepository');            
+        $adminEntity = App::make('AdminMemberRepository');
+        $categorySection = [];                    
         foreach($this->map->categorySection[$index]->sub as $subCategories)
         {
             $categorySection[] = $subCategories;   
@@ -238,6 +256,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $adminEntity = App::make('AdminMemberRepository');             
         $productEntity = App::make('ProductRepository');
+        $product = [];        
         foreach($this->map->sellerSection->productPanel as $productPanel)
         {
             $product[] = $productEntity->getProductBySlug($productPanel->slug);
@@ -261,7 +280,7 @@ class NewHomeContentManagerController extends BaseController
         $adminEntity = App::make('AdminMemberRepository'); 
         $sliderXmlString = $this->XMLService->getTempHomeXml();
         $this->map = simplexml_load_string(trim($sliderXmlString));                           
-
+        $sliders = [];
         foreach($this->map->sliderSection->slide[$index]->image as $slides) {
             $sliders[] = $slides;
         }
@@ -271,7 +290,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('slides', $sliders)
                     ->with('userid', Auth::id())  
                     ->with('password', $adminEntity->getAdminMemberById(Auth::id()))    
-                    ->with('templateLists', array_flatten($this->getTemplates($this->sliderMap->sliderTemplate)))                    
+                    ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))                    
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());  
     }
@@ -285,7 +304,7 @@ class NewHomeContentManagerController extends BaseController
 
         $sliderXmlString = $this->XMLService->getTempHomeXml();
         $this->map = simplexml_load_string(trim($sliderXmlString));                          
-
+        $sliders = [];
         foreach($this->map->sliderSection->slide as $slides) {
             $sliders[] = $slides;
         }
@@ -293,7 +312,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('sliderSection', $sliders)
                     ->with('userid', Auth::id())  
                     ->with('password', $adminEntity->getAdminMemberById(Auth::id()))    
-                    ->with('templateLists', array_flatten($this->getTemplates($this->sliderMap->sliderTemplate)))                    
+                    ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))                    
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());  
     }
@@ -304,11 +323,12 @@ class NewHomeContentManagerController extends BaseController
     public function getOtherCategories()
     {
         $adminEntity = App::make('AdminMemberRepository');          
-        $categoryRepository = App::make('CategoryRepository');              
+        $categoryRepository = App::make('CategoryRepository');  
+        $otherCategories = [];            
         foreach($this->map->categoryNavigation->otherCategories as $map) {
             $otherCategories[] = $map;            
         }   
-
+        $childCategoryLists = [];
         foreach ($categoryRepository->getChildCategories() as $value) {
             $childCategoryLists[] = array("slug" => $value->slug, "name" => $value->name);
         }           
@@ -328,6 +348,8 @@ class NewHomeContentManagerController extends BaseController
     public function getTopSellers()
     {
         $adminEntity = App::make('AdminMemberRepository');          
+
+        $topSellers = [];        
         foreach($this->map->menu->topSellers as $tSellers)
         {
             $topSellers[] = $tSellers;
@@ -346,7 +368,8 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getTopProducts()
     {
-        $adminEntity = App::make('AdminMemberRepository');          
+        $adminEntity = App::make('AdminMemberRepository');  
+        $topProducts = [];               
         foreach($this->map->menu->topProducts as $tProducts)
         {
             $topProducts[] = $tProducts;
@@ -365,7 +388,8 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getNewArrivals()
     {
-        $adminEntity = App::make('AdminMemberRepository');          
+        $adminEntity = App::make('AdminMemberRepository'); 
+        $newArrivals = [];                 
         foreach($this->map->menu->newArrivals[0] as $arrivals)
         {
             $newArrivals[] = $arrivals;
@@ -399,7 +423,8 @@ class NewHomeContentManagerController extends BaseController
         $adminEntity = App::make('AdminMemberRepository');          
         $categoryRepository = App::make('CategoryRepository');          
         $productEntity = App::make('ProductRepository');
-
+        $categoryProductPanel = [];        
+        $categoryProductPanelList = [];        
         $index = 0;
         foreach($this->map->categorySection as $categoryPanel)
         {
@@ -435,6 +460,7 @@ class NewHomeContentManagerController extends BaseController
      */
     public function getTemplates($templatesObj)
     {
+        $templateLists = [];        
         foreach($templatesObj as $template) {
             $templateLists[] = $template;
         } 
