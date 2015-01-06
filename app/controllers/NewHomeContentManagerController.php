@@ -16,7 +16,7 @@ class NewHomeContentManagerController extends BaseController
         $this->map = simplexml_load_string(trim($xmlString));
 
         $sliderXmlString = $this->XMLService->getTempHomeXml();
-        $this->sliderMap = simplexml_load_string(trim($sliderXmlString));        
+        $this->temporarySliderMap = simplexml_load_string(trim($sliderXmlString));        
     
     }      
       
@@ -49,7 +49,7 @@ class NewHomeContentManagerController extends BaseController
         }               
 
         $sliders = [];
-        foreach($this->sliderMap->sliderSection->slide as $slides) {
+        foreach($this->temporarySliderMap->sliderSection->slide as $slides) {
             $sliders[] = $slides;
         }
         
@@ -115,7 +115,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('categoryProductPanelList', $categoryProductPanelList)
                     ->with('productList', array_flatten($product))
                     ->with('childCategoryLists', $childCategoryLists)
-                    ->with('templateLists', array_flatten($this->getTemplates($this->sliderMap->sliderTemplate)))
+                    ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))
                     ->with('categoryNavigation', $categoryNavigation)
                     ->with('password', $adminEntity->getAdminMemberById(Auth::id()))
                     ->with('sliderSection', $sliders)
@@ -289,7 +289,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('slides', $sliders)
                     ->with('userid', Auth::id())  
                     ->with('password', $adminEntity->getAdminMemberById(Auth::id()))    
-                    ->with('templateLists', array_flatten($this->getTemplates($this->sliderMap->sliderTemplate)))                    
+                    ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))                    
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());  
     }
@@ -311,7 +311,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('sliderSection', $sliders)
                     ->with('userid', Auth::id())  
                     ->with('password', $adminEntity->getAdminMemberById(Auth::id()))    
-                    ->with('templateLists', array_flatten($this->getTemplates($this->sliderMap->sliderTemplate)))                    
+                    ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))                    
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());  
     }
