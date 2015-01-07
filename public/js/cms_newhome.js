@@ -687,9 +687,17 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $("#manageSliderSection").load("getAllSliders");
+                $( "#manageSliderSection" ).load("getAllSliders", function( response, status, xhr ) {
+                    var accordionId = "#collapse_" + (parseInt($(".parentSliderCount").last().text())-1);
+                    if ( status !== "error" ) {
+                        var aTag = $("a[href='"+ accordionId +"']");
+                        $('html,body').animate({scrollTop: aTag.offset().top},'slow');                        
+                    }
+                    $(accordionId).addClass("in");
+                });                
                 getSliderPreview();
                 loader.hidePleaseWait();   
+              
             },
             error: function(e) {
                 loader.hidePleaseWait();
