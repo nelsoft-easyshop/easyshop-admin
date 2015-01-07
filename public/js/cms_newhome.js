@@ -1,4 +1,14 @@
 (function () {
+
+    var formSubmitted = 0;
+
+    $(window).on('beforeunload', function(){
+        if(formSubmitted === 1) {
+            return "Don't you want to save your changes first?";
+        }
+    });
+
+
     var userid = $("#userid").val();
     var password = $("#password").val();
     var newHomeCmsLink = $("#newHomeCmsLink").text();
@@ -199,7 +209,7 @@
 
 
     $("#manageSliderSection").on('click','#moveup, #movedown',function (e) { 
-       
+        formSubmitted = 1;
         var action = $(this).data('action').toString();
         var subindex = $(this).data('subindex').toString();
         var index = $(this).data('index').toString();
@@ -419,7 +429,7 @@
 
 
     $("#previewImage").on('click','#editSubSlider',function (e) { 
-
+        formSubmitted = 1;
         var index = $(this).closest("form").find("#editModalSliderIndex").val().toString();
         var subIndex = $(this).closest("form").find("#editModalSliderSubIndex").val().toString();
         var url = newHomeCmsLink + "/editSubSlider";;
@@ -636,6 +646,7 @@
     });
 
     $("#previewImage").on('click','#addSubSlider',function (e) { 
+        formSubmitted = 1;        
         loader.showPleaseWait();          
         var image_x = $(this).closest("form").find("#image_x").val().toString();
         var image_y = $(this).closest("form").find("#image_y").val().toString();
@@ -673,6 +684,7 @@
     });  
 
     $("#manageSliderSection").on('click','#addMainSlider',function (e) { 
+        formSubmitted = 1;
         loader.showPleaseWait();          
         var template = $(this).closest("form").find("#drop_actionType").val();
         var url = $(this).data('url');
@@ -781,6 +793,7 @@
     });  
 
     $("#manageSliderSection").on('click','#removeSubSlide',function (e) { 
+        formSubmitted = 1;        
         var index = $(this).data("index").toString();
         var subIndex = $(this).data("subindex").toString();
         var nodename = $(this).data("nodename").toString();
@@ -1477,6 +1490,7 @@
     });      
 
     $("#myTabContent").on('click','#setSliderDesignTemplate',function (e) { 
+        formSubmitted = 1;        
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
         var value = $(this).closest("form").find("#drop_actionType option:selected").val();
