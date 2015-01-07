@@ -24,6 +24,7 @@ return array(
     'getMobileXml'=> "$baseUrl/webservice/mobilewebservice/getcontents",
     'getNewHomeXml'=> "$baseUrl/webservice/newhomewebservice/getcontents",
     'getTempHomeXml'=> "$baseUrl/webservice/newhomewebservice/getTempContents",
+    'syncXmlFileLink'=> "$baseUrl/webservice/newhomewebservice/syncTempHomeFiles",
 );
 
 
