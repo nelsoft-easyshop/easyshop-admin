@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Member, OrderStatus, OrderProductStatus, Product;
+use Member, OrderStatus, OrderProductStatus, Product, PaymentMethod;
 
 class MemberRepository extends AbstractRepository
 {
@@ -125,16 +125,38 @@ class MemberRepository extends AbstractRepository
         
         $query->join('es_member','es_order_product.seller_id', '=', 'es_member.id_member');
         $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
-        $query->leftJoin('es_order_product_history', function($join){
-            $join->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
-            $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_FORWARD_SELLER));
+        
+        /**
+         * Prevents possible cases where order_product_history with status STATUS_FORWARD_SELLER
+         * exists more than once leading to incorrect net amount calculation. 
+         */
+        $query->leftJoin(DB::raw('
+            (SELECT 
+                * 
+            FROM es_order_product_history 
+            WHERE 
+                es_order_product_history.order_product_status = '. OrderProductStatus::STATUS_FORWARD_SELLER .'
+            GROUP BY 
+                es_order_product_history.order_product_id, 
+                es_order_product_history.order_product_status
+            ) forwarded_marker '), function($leftJoin)
+        {
+            $leftJoin->on('es_order_product.id_order_product', '=', 'forwarded_marker.order_product_id');
         });
         
+        
+        
         $query->leftJoin('es_product_shipping_comment','es_product_shipping_comment.order_product_id', '=', 'es_order_product.id_order_product');
+        
+        $query->where(function ($query) {
+            $query->where('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::PAYPAL));
+            $query->orWhere('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::DRAGONPAY));
+        });
+        
         $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
             $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
-                $query->where('es_order_product_history.date_added', '>=', $formattedDateFrom);
-                $query->where('es_order_product_history.date_added', '<', $formattedDateTo);
+                $query->where('forwarded_marker.date_added', '>=', $formattedDateFrom);
+                $query->where('forwarded_marker.date_added', '<', $formattedDateTo);
             });
 
             $query->orWhere(function ($query) use ($formattedDateFrom, $formattedDateTo) {
@@ -146,10 +168,10 @@ class MemberRepository extends AbstractRepository
                                 $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING)
                                     ->orWhere(function ($query) {
                                             $query->where('es_order_product.status', '=', OrderProductStatus::STATUS_PAID_SELLER)
-                                                  ->whereNull('es_order_product_history.id_order_product_history');
+                                                  ->whereNull('forwarded_marker.id_order_product_history');
                                         }
                                     );
-                            });        
+                            }); 
                             
                 $query->where('es_order_product.is_reject', '=', '0');
                 $query->whereNotNull('es_product_shipping_comment.id_shipping_comment');
@@ -192,21 +214,75 @@ class MemberRepository extends AbstractRepository
         
         $query = DB::table('es_order_product')->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
         $query->join('es_member','es_order.buyer_id', '=', 'es_member.id_member');
-        $query->leftJoin('es_billing_info',function($leftJoin){
+        /**
+         * Safeguard for multiple default billing infos 
+         */
+        $query->leftJoin(DB::raw('
+            (SELECT 
+                * 
+            FROM es_billing_info 
+            WHERE 
+                es_billing_info.is_default = 1 AND 
+                es_billing_info.is_delete = 0 
+            GROUP BY es_billing_info.member_id) es_billing_info '), function($leftJoin)
+        {
             $leftJoin->on('es_billing_info.member_id', '=', 'es_member.id_member');
-            $leftJoin->on('es_billing_info.is_default', '=',  DB::raw('1'));
         });
         
         $query->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=', 'es_bank_info.id_bank');
         $query->leftJoin('es_order_billing_info', 'es_order_product.buyer_billing_id', '=', 'es_order_billing_info.id_order_billing_info');        
 
-        $query->join('es_order_product_history', function($join){
-            $join->on('es_order_product.id_order_product', '=', 'es_order_product_history.order_product_id');
-            $join->on('es_order_product_history.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_RETURN_BUYER));
+        $query->leftJoin(DB::raw('
+            (SELECT 
+                * 
+            FROM es_order_product_history 
+            WHERE 
+                es_order_product_history.order_product_status != '. OrderProductStatus::STATUS_ON_GOING .'
+            GROUP BY 
+                es_order_product_history.order_product_id, 
+                es_order_product_history.order_product_status
+            ) ongoing_marker '), function($leftJoin)
+        {
+            $leftJoin->on('es_order_product.id_order_product', '=', 'ongoing_marker.order_product_id');
         });
+
+        /**
+         * Ensures that the transaction payment has been received by easyshop
+         */
+        $query->leftJoin(DB::raw('
+            (SELECT 
+                * 
+            FROM es_order_product_history 
+            WHERE 
+                es_order_product_history.order_product_status = '. OrderProductStatus::STATUS_ON_GOING .'
+            GROUP BY 
+                es_order_product_history.order_product_id, 
+                es_order_product_history.order_product_status
+            ) paid_marker '), function($leftJoin)
+        {
+            $leftJoin->on('es_order_product.id_order_product', '=', 'paid_marker.order_product_id');
+        });
+        $query->whereNotNull('paid_marker.id_order_product_history');
+
+        $query->where(function ($query) {
+            $query->where('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::PAYPAL));
+            $query->orWhere('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::DRAGONPAY));
+        });
+        
+        
+        $query->where(function ($query) {
+            $query->where('ongoing_marker.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_RETURN_BUYER));
+            $query->orWhere(function ($query) {
+                $query->where('ongoing_marker.order_product_status', '=',  DB::raw(OrderProductStatus::STATUS_CANCEL));
+                $query->where('es_order_product.status', '=',  DB::raw(OrderProductStatus::STATUS_CANCEL));
+                $query->where('es_order.order_status', '=',  DB::raw(OrderStatus::STATUS_VOID));
+                $query->where('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::PAYPAL));
+            });
+        });
+
         $query->where(function ($query) use ($formattedDateFrom, $formattedDateTo){
-            $query->where('es_order_product_history.date_added', '>=', $formattedDateFrom);
-            $query->where('es_order_product_history.date_added', '<', $formattedDateTo);
+            $query->where('ongoing_marker.date_added', '>=', $formattedDateFrom);
+            $query->where('ongoing_marker.date_added', '<', $formattedDateTo);
         });
 
         if($username !== null){
@@ -222,8 +298,9 @@ class MemberRepository extends AbstractRepository
                                         DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_number, es_billing_info.bank_account_number) as account_number"),
                                         DB::raw('SUM(es_order_product.net) as net'),
                                         DB::raw('GROUP_CONCAT(es_order_product.id_order_product) as order_product_ids'),
+                                        'paid_marker.id_order_product_history',
                                     ]);
-        
+
         return $returnedOrders;
     
     }
