@@ -40,12 +40,18 @@ class NewHomeContentManagerController extends BaseController
 
         $categoryLists = [];
         foreach ($categoryRepository->getParentCategories() as $value) {
-            $categoryLists[] = array("slug" => $value->slug, "name" => $value->name);
+            $categoryLists[] = [
+                "slug" => $value->slug, 
+                "name" => $value->name
+            ];
         }
 
         $childCategoryLists = [];
         foreach ($categoryRepository->getChildCategories() as $value) {
-            $childCategoryLists[] = array("slug" => $value->slug, "name" => $value->name);
+            $childCategoryLists[] = [
+                "slug" => $value->slug, 
+                "name" => $value->name
+            ];
         }               
 
         $sliders = [];
@@ -62,7 +68,10 @@ class NewHomeContentManagerController extends BaseController
         $productEntity = App::make('ProductRepository');
         foreach($this->map->sellerSection->productPanel as $productPanel)
         {
-            $product[] = $productEntity->getProductBySlug($productPanel->slug);   
+            $productObj = $productEntity->getProductBySlug($productPanel->slug);   
+            if(count($productObj) > 0) {
+                $product[] = $productObj;
+            }            
         }
 
         $index = 0;
@@ -72,10 +81,15 @@ class NewHomeContentManagerController extends BaseController
         {
             foreach($categoryPanel->productPanel as $productPanel)
             {
-                $categoryProductPanel[] = $productEntity->getProductBySlug($productPanel->slug);
+                $productObj = $productEntity->getProductBySlug($productPanel->slug);
+                if(count($productObj) > 0) {
+                    $categoryProductPanel[] = $productObj;
+                }
             }
             $categorySection[] = $categoryPanel;   
-            $categoryProductPanelList[] = array_flatten(array($index => $categoryProductPanel ));
+            $categoryProductPanelList[] = array_flatten([
+                $index => $categoryProductPanel 
+            ]);
             $index++;
             $categoryProductPanel = [];
         }
@@ -193,12 +207,17 @@ class NewHomeContentManagerController extends BaseController
 
             foreach($categoryPanel->productPanel as $productPanel)
             {
-                $categoryProductPanel[] = $productEntity->getProductBySlug($productPanel->slug);
+                $productObj = $productEntity->getProductBySlug($productPanel->slug);   
+                if(count($productObj) > 0) {
+                    $categoryProductPanel[] = $productObj;
+                }                      
             }
             $categorySection[] = $categoryPanel;   
-            $categoryProductPanelList[] = array_flatten(array($categoryIndex => $categoryProductPanel ));
+            $categoryProductPanelList[] = array_flatten([
+                $categoryIndex => $categoryProductPanel 
+            ]);
             $categoryIndex++;
-            $categoryProductPanel = array();
+            $categoryProductPanel = [];
         }
 
         return View::make('partials.categorysectionproductpanel')        
@@ -259,7 +278,10 @@ class NewHomeContentManagerController extends BaseController
         $product = [];        
         foreach($this->map->sellerSection->productPanel as $productPanel)
         {
-            $product[] = $productEntity->getProductBySlug($productPanel->slug);
+            $productObj = $productEntity->getProductBySlug($productPanel->slug);   
+            if(count($productObj) > 0) {
+                $product[] = $productObj;
+            }      
             
         }
 
@@ -330,7 +352,10 @@ class NewHomeContentManagerController extends BaseController
         }   
         $childCategoryLists = [];
         foreach ($categoryRepository->getChildCategories() as $value) {
-            $childCategoryLists[] = array("slug" => $value->slug, "name" => $value->name);
+            $childCategoryLists[] = [
+                "slug" => $value->slug, 
+                "name" => $value->name
+            ];
         }           
 
         return View::make('partials.othercategories')
@@ -431,15 +456,23 @@ class NewHomeContentManagerController extends BaseController
 
             foreach($categoryPanel->productPanel as $productPanel)
             {
-                $categoryProductPanel[] = $productEntity->getProductBySlug($productPanel->slug);
+                $productObj = $productEntity->getProductBySlug($productPanel->slug);   
+                if(count($productObj) > 0) {
+                    $categoryProductPanel[] = $productObj;
+                }                 
             }
             $categorySection[] = $categoryPanel;   
-            $categoryProductPanelList[] = array_flatten(array($index => $categoryProductPanel ));
+            $categoryProductPanelList[] = array_flatten([
+                    $index => $categoryProductPanel
+                ]);
             $index++;
-            $categoryProductPanel = array();
+            $categoryProductPanel = [];
         }  
         foreach ($categoryRepository->getParentCategories() as $value) {
-            $categoryLists[] = array("slug" => $value->slug, "name" => $value->name);
+            $categoryLists[] = [
+                "slug" => $value->slug, 
+                "name" => $value->name
+            ];
         }        
 
         return View::make('partials.categorysection')
