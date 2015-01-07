@@ -712,6 +712,7 @@
               
             },
             error: function(e) {
+                showErrorModal("Something went wrong, please try again later");
                 loader.hidePleaseWait();
             }
         });        
@@ -2014,14 +2015,17 @@ function imageprev(input) {
                 height = this.height;
 
                 $('#user_image_prev').attr('src', this.src);
+                var customWidth = $("#user_image_prev").attr("datawidth");
+                var customHeight = $("#user_image_prev").attr("dataheight");
                 if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
 
                     jcrop_api = $.Jcrop($('#user_image_prev'),{
+                        aspectRatio: customWidth/customHeight,
+                        allowSelect: false,
+                        setSelect:[0,0,width*0.5,height*0.5],
                         boxWidth: 500,
                         boxHeight: 500,
-                        minSize: [width*0.1,height*0.1],
-                        setSelect:[0,0,width*0.5,height*0.5],
-                        trueSize: [width,height],
+                        minSize: [customWidth,customHeight],
                         onChange: showCoords,
                         onSelect: showCoords,
                         onRelease: resetCoords
