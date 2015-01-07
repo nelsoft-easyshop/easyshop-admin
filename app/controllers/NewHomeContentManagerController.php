@@ -205,9 +205,9 @@ class NewHomeContentManagerController extends BaseController
                 }                      
             }
             $categorySection[] = $categoryPanel;   
-            $categoryProductPanelList[] = array_flatten(array($categoryIndex => $categoryProductPanel ));
+            $categoryProductPanelList[] = array_flatten([$categoryIndex => $categoryProductPanel ]);
             $categoryIndex++;
-            $categoryProductPanel = array();
+            $categoryProductPanel = [];
         }
 
         return View::make('partials.categorysectionproductpanel')        
