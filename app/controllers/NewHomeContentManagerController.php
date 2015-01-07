@@ -11,13 +11,7 @@ class NewHomeContentManagerController extends BaseController
 
     public function __construct(XMLService $XMLService) 
     {   
-        $this->XMLService = $XMLService;
-        $xmlString = $this->XMLService->getNewHomeXml();
-        $this->map = simplexml_load_string(trim($xmlString));
-
-        $sliderXmlString = $this->XMLService->getTempHomeXml();
-        $this->temporarySliderMap = simplexml_load_string(trim($sliderXmlString));        
-    
+        $this->XMLService = $XMLService;    
     }      
       
     /**
@@ -25,6 +19,13 @@ class NewHomeContentManagerController extends BaseController
      */      
     public function getHomeContent()
     {
+        $this->XMLService->syncXMLFiles();  
+        $xmlString = $this->XMLService->getNewHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
+        $sliderXmlString = $this->XMLService->getTempHomeXml();
+        $this->temporarySliderMap = simplexml_load_string(trim($sliderXmlString)); 
+
         $otherCategories = [];
         foreach($this->map->categoryNavigation->otherCategories as $map) {
             $otherCategories[] = $map;
@@ -133,7 +134,11 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getBrandsSection()
     {
-        $topSellers = [];        
+        $topSellers = [];  
+
+        $xmlString = $this->XMLService->getNewHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
         foreach($this->map->menu->topSellers as $tSellers)
         {
             $topSellers[] = $tSellers;
@@ -166,6 +171,9 @@ class NewHomeContentManagerController extends BaseController
     {
         $adminEntity = App::make('AdminMemberRepository');  
 
+        $xmlString = $this->XMLService->getNewHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
         $adsSection = [];                  
         foreach($this->map->adSection as $ads) {
             $adsSection[] = $ads;
@@ -187,7 +195,11 @@ class NewHomeContentManagerController extends BaseController
         $productEntity = App::make('ProductRepository');
         $categoryIndex = 0;
         $categoryProductPanel = [];        
-        $categoryProductPanelList = [];        
+        $categoryProductPanelList = [];    
+
+        $xmlString = $this->XMLService->getNewHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
         foreach($this->map->categorySection as $categoryPanel)
         {
 
@@ -216,7 +228,11 @@ class NewHomeContentManagerController extends BaseController
     public function getSubCategoryNavigation($index)
     {
         $index = (int) $index;
-        $subCategoryNavigation = [];        
+        $subCategoryNavigation = [];     
+
+        $xmlString = $this->XMLService->getNewHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
         foreach($this->map->categoryNavigation->category[$index]->sub as $subCategories)
         {
             $subCategoryNavigation[] = $subCategories;   
@@ -236,7 +252,11 @@ class NewHomeContentManagerController extends BaseController
     {
         $index = (int) $index;
         $adminEntity = App::make('AdminMemberRepository');
-        $categorySection = [];                    
+        $categorySection = [];    
+
+        $xmlString = $this->XMLService->getNewHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
         foreach($this->map->categorySection[$index]->sub as $subCategories)
         {
             $categorySection[] = $subCategories;   
@@ -256,7 +276,11 @@ class NewHomeContentManagerController extends BaseController
     {
         $adminEntity = App::make('AdminMemberRepository');             
         $productEntity = App::make('ProductRepository');
-        $product = [];        
+        $product = [];  
+
+        $xmlString = $this->XMLService->getNewHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
         foreach($this->map->sellerSection->productPanel as $productPanel)
         {
             $product[] = $productEntity->getProductBySlug($productPanel->slug);
@@ -279,7 +303,11 @@ class NewHomeContentManagerController extends BaseController
         $index = (int)$index;
         $adminEntity = App::make('AdminMemberRepository'); 
         $sliderXmlString = $this->XMLService->getTempHomeXml();
-        $this->map = simplexml_load_string(trim($sliderXmlString));                           
+        $this->map = simplexml_load_string(trim($sliderXmlString));
+
+        $sliderXmlString = $this->XMLService->getTempHomeXml();
+        $this->temporarySliderMap = simplexml_load_string(trim($sliderXmlString)); 
+
         $sliders = [];
         foreach($this->map->sliderSection->slide[$index]->image as $slides) {
             $sliders[] = $slides;
@@ -303,7 +331,11 @@ class NewHomeContentManagerController extends BaseController
         $adminEntity = App::make('AdminMemberRepository'); 
 
         $sliderXmlString = $this->XMLService->getTempHomeXml();
-        $this->map = simplexml_load_string(trim($sliderXmlString));                          
+        $this->map = simplexml_load_string(trim($sliderXmlString));  
+
+        $sliderXmlString = $this->XMLService->getTempHomeXml();
+        $this->temporarySliderMap = simplexml_load_string(trim($sliderXmlString)); 
+
         $sliders = [];
         foreach($this->map->sliderSection->slide as $slides) {
             $sliders[] = $slides;
@@ -324,7 +356,11 @@ class NewHomeContentManagerController extends BaseController
     {
         $adminEntity = App::make('AdminMemberRepository');          
         $categoryRepository = App::make('CategoryRepository');  
-        $otherCategories = [];            
+        $otherCategories = [];       
+
+        $xmlString = $this->XMLService->getNewHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
         foreach($this->map->categoryNavigation->otherCategories as $map) {
             $otherCategories[] = $map;            
         }   
@@ -349,6 +385,9 @@ class NewHomeContentManagerController extends BaseController
     {
         $adminEntity = App::make('AdminMemberRepository');          
 
+        $xmlString = $this->XMLService->getNewHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
         $topSellers = [];        
         foreach($this->map->menu->topSellers as $tSellers)
         {
@@ -369,7 +408,11 @@ class NewHomeContentManagerController extends BaseController
     public function getTopProducts()
     {
         $adminEntity = App::make('AdminMemberRepository');  
-        $topProducts = [];               
+        $topProducts = [];   
+
+        $xmlString = $this->XMLService->getNewHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
         foreach($this->map->menu->topProducts as $tProducts)
         {
             $topProducts[] = $tProducts;
@@ -389,7 +432,11 @@ class NewHomeContentManagerController extends BaseController
     public function getNewArrivals()
     {
         $adminEntity = App::make('AdminMemberRepository'); 
-        $newArrivals = [];                 
+        $newArrivals = [];           
+
+        $xmlString = $this->XMLService->getNewHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
         foreach($this->map->menu->newArrivals[0] as $arrivals)
         {
             $newArrivals[] = $arrivals;
@@ -401,7 +448,11 @@ class NewHomeContentManagerController extends BaseController
                     ->with('newArrivals', $newArrivals)
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
-    }    
+    }   
+
+    /**
+     * Return iframe partial view for slider preview
+     */
     public function getSliderPreview()
     {
         $adminEntity = App::make('AdminMemberRepository');            
@@ -415,6 +466,7 @@ class NewHomeContentManagerController extends BaseController
         return Response::json(['html' => $html]);           
                     
     }
+    
     /**
      *  Reloads contents of categoriesSection nodes
      */ 
@@ -423,6 +475,10 @@ class NewHomeContentManagerController extends BaseController
         $adminEntity = App::make('AdminMemberRepository');          
         $categoryRepository = App::make('CategoryRepository');          
         $productEntity = App::make('ProductRepository');
+
+        $xmlString = $this->XMLService->getNewHomeXml();
+        $this->map = simplexml_load_string(trim($xmlString));
+
         $categoryProductPanel = [];        
         $categoryProductPanelList = [];        
         $index = 0;
