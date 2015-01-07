@@ -270,11 +270,11 @@ class TransactionService
     {    
         $orderBillingInfoUpdateValidator = new OrderBillingInfoUpdateValidator( App::make('validator') );
 
-        $orderBillingInfoUpdateValidator->with(
-            array('account_name' => $accountName,
-                'account_number' => $accountNumber,
-                'bank_name' => $bankName)
-        );
+        $orderBillingInfoUpdateValidator->with([
+            'account_name' => $accountName,
+            'account_number' => $accountNumber,
+            'bank_name' => $bankName
+        ]);
             
         
         if($orderBillingInfoUpdateValidator->passes()){
@@ -299,7 +299,7 @@ class TransactionService
                 $this->orderProductRepository->updateOrderProductStatus($orderProduct, $status);
                 $this->orderProductHistoryRepository->createOrderProductHistory($orderProductId, $status);
                 
-                $orderProduct->sellerBillingInfo = $orderBillingInfoId;
+                $orderProduct->seller_billing_id = $orderBillingInfoId;
                 $orderProduct->save();
             }
             
