@@ -40,12 +40,18 @@ class NewHomeContentManagerController extends BaseController
 
         $categoryLists = [];
         foreach ($categoryRepository->getParentCategories() as $value) {
-            $categoryLists[] = array("slug" => $value->slug, "name" => $value->name);
+            $categoryLists[] = [
+                "slug" => $value->slug, 
+                "name" => $value->name
+            ];
         }
 
         $childCategoryLists = [];
         foreach ($categoryRepository->getChildCategories() as $value) {
-            $childCategoryLists[] = array("slug" => $value->slug, "name" => $value->name);
+            $childCategoryLists[] = [
+                "slug" => $value->slug, 
+                "name" => $value->name
+            ];
         }               
 
         $sliders = [];
@@ -81,7 +87,9 @@ class NewHomeContentManagerController extends BaseController
                 }
             }
             $categorySection[] = $categoryPanel;   
-            $categoryProductPanelList[] = array_flatten([$index => $categoryProductPanel ]);
+            $categoryProductPanelList[] = array_flatten([
+                $index => $categoryProductPanel 
+            ]);
             $index++;
             $categoryProductPanel = [];
         }
@@ -205,7 +213,9 @@ class NewHomeContentManagerController extends BaseController
                 }                      
             }
             $categorySection[] = $categoryPanel;   
-            $categoryProductPanelList[] = array_flatten([$categoryIndex => $categoryProductPanel ]);
+            $categoryProductPanelList[] = array_flatten([
+                $categoryIndex => $categoryProductPanel 
+            ]);
             $categoryIndex++;
             $categoryProductPanel = [];
         }
@@ -342,7 +352,10 @@ class NewHomeContentManagerController extends BaseController
         }   
         $childCategoryLists = [];
         foreach ($categoryRepository->getChildCategories() as $value) {
-            $childCategoryLists[] = array("slug" => $value->slug, "name" => $value->name);
+            $childCategoryLists[] = [
+                "slug" => $value->slug, 
+                "name" => $value->name
+            ];
         }           
 
         return View::make('partials.othercategories')
@@ -449,12 +462,17 @@ class NewHomeContentManagerController extends BaseController
                 }                 
             }
             $categorySection[] = $categoryPanel;   
-            $categoryProductPanelList[] = array_flatten([$index => $categoryProductPanel]);
+            $categoryProductPanelList[] = array_flatten([
+                $index => $categoryProductPanel
+                ]);
             $index++;
             $categoryProductPanel = [];
         }  
         foreach ($categoryRepository->getParentCategories() as $value) {
-            $categoryLists[] = ["slug" => $value->slug, "name" => $value->name];
+            $categoryLists[] = [
+                "slug" => $value->slug, 
+                "name" => $value->name
+            ];
         }        
 
         return View::make('partials.categorysection')
