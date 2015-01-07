@@ -463,7 +463,7 @@ class NewHomeContentManagerController extends BaseController
             }
             $categorySection[] = $categoryPanel;   
             $categoryProductPanelList[] = array_flatten([
-                $index => $categoryProductPanel
+                    $index => $categoryProductPanel
                 ]);
             $index++;
             $categoryProductPanel = [];
