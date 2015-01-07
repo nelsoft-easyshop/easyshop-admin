@@ -104,5 +104,15 @@ class XMLContentGetterService
     public function getTempHomeXml()
     {
         return file_get_contents(\Config::get('easyshop/webservice.getTempHomeXml'));
-    }              
+    }    
+
+    /**
+     *  Returns result of synxTempHomeFiles()
+     *
+     *  @return json
+     */
+    public function syncXMLFiles()
+    {
+        return file_get_contents(\Config::get('easyshop/webservice.syncXmlFileLink'));
+    }          
 }
