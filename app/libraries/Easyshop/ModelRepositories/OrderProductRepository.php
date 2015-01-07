@@ -103,9 +103,16 @@ class OrderProductRepository extends AbstractRepository
         $query->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member');
         $query->join('es_order_product_status','es_order_product.status', '=', 'es_order_product_status.id_order_product_status');
         $query->join('es_product','es_order_product.product_id', '=', 'es_product.id_product');
-        $query->leftJoin('es_billing_info',function($leftJoin){
+        $query->leftJoin(DB::raw('
+            (SELECT 
+                * 
+            FROM es_billing_info 
+            WHERE 
+                es_billing_info.is_default = 1 AND 
+                es_billing_info.is_delete = 0 
+            GROUP BY es_billing_info.member_id) es_billing_info '), function($leftJoin)
+        {
             $leftJoin->on('es_billing_info.member_id', '=', 'es_member.id_member');
-            $leftJoin->on('es_billing_info.is_default', '=',  DB::raw('1'));
         });
         $query->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=', 'es_bank_info.id_bank');
         $query->whereIn('es_order_product.id_order_product', $orderProductIds);
