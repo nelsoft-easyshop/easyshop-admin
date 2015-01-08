@@ -567,13 +567,13 @@ class NewHomeContentManagerController extends BaseController
         $template = trim(Input::get("template"));
         $imageDimensions = Config::get('easyshop/imagedimensions.mainSlider');
         $defaultTemplateCount = count($imageDimensions[$template]);
-        if($index > $defaultTemplateCount) {
+        if($index >= $defaultTemplateCount) {
             $dimensions = end($imageDimensions[$template]);
         }
         else {
-            $index = ($index + 1 === $currentSliderCount) ? $index + 1 : $index;
             $dimensions = $imageDimensions[$template][$index];
         }
+
         return Response::json($dimensions);
     }
 }
