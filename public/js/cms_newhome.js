@@ -1911,22 +1911,15 @@
         $('.cropFormButton').prop('disabled', true);
         var nodename = $(this).data("nodename");
         if(nodename == "addMainSlider") {
+
             var index = parseInt($(this).data("index"));
             var tempIndex = parseInt($("#collapse_"+index).find(".subSlide_"+index).last().text());
+            tempIndex = isNaN(tempIndex) ? 0 : tempIndex;
             var subSlideIndex = isNaN(tempIndex) ? 0 : tempIndex;
             var template = $(".templateSlider_"+index).text();
-            console.log(".templateSlider_"+index + " "+template);
-            $.ajax({
-                type: 'post',
-                data: {template: template, index:subSlideIndex - 1, currentSliderCount : tempIndex},
-                url: "getTemplateImageDimension",
-                dataType: 'json',
-                success: function(json) {
-                    $(".templateWidth").text(json[0]);  
-                    $(".templateHeight").text(json[1]);  
-                },
-            });              
-            var template = $(this).data("template");
+
+            setImagesCropSizes(template, subSlideIndex, tempIndex);
+
             $("#clonedSliderCountConstant").text(template);
             var clone = $("#cloneForm_addSubSlider").html();
             $("#contentPreview").html(clone);
@@ -1941,6 +1934,12 @@
         else if(nodename == "editMainSlider" ) {
             var index = $(this).data("index");
             var subindex = $(this).data("subindex");
+            tempIndex = isNaN(subindex) ? 0 : subindex;            
+            var tempIndex = tempIndex + 1;
+            var template = $(".templateSlider_"+index).text();
+
+            setImagesCropSizes(template, subindex, tempIndex);            
+
             var clone = $("#editSlideForm_"+index+"_"+subindex).html();
             $("#contentPreview").find("#editModalSliderIndex").val(index);
             $("#contentPreview").find("#editModalSliderSubIndex").val(subindex);
@@ -2015,7 +2014,21 @@
         $("#scaleAndCrop").css("display","none");        
     });  
 
-    /***************    Image preview for cropping  ************************/
+function setImagesCropSizes(template, subSlideIndex, tempIndex)
+{
+    $.ajax({
+        type: 'post',
+        data: {template: template, index:subSlideIndex, currentSliderCount : tempIndex},
+        url: "getTemplateImageDimension",
+        dataType: 'json',
+        success: function(json) {
+            $(".templateWidth").text(json[0]);  
+            $(".templateHeight").text(json[1]);  
+        },
+    }); 
+} 
+
+/***************    Image preview for cropping  ************************/
 function imageprev(input) {
 
     var jcrop_api, width, height;
