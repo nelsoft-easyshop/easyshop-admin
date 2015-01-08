@@ -279,7 +279,7 @@
             order = order.toString();
             var hash =  hex_sha1(action + nodename + index  + order + userid + password);        
             data = { action:action, nodename:nodename, index: index, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
-            setPositionParentSlider(url,data);       
+            setPositionParentSlider(url,data, index, action);       
         }
 
     
@@ -1831,7 +1831,7 @@
         }); 
     }  
 
-    function setPositionParentSlider(url, data)
+    function setPositionParentSlider(url, data, index, action)
     {
         $.ajax({
             type: 'GET',
@@ -1841,19 +1841,22 @@
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
-            success: function(json) {
-
-                $("#previewImage").modal("hide");                      
-                $(tableSelector).load(reloadurl);              
+            success: function(json) {        
                 loader.hidePleaseWait();   
             },
-            error: function(e) {
-                $("#previewImage").modal("hide");               
-                $(tableSelector).load(reloadurl);             
+            error: function(e) {            
                 loader.hidePleaseWait();   
-
             }
         }); 
+        index = (action === "down") ? index + 1: index - 1;
+        $( "#manageSliderSection" ).load("getAllSliders", function( response, status, xhr ) {
+            var accordionId = "#collapse_" + index;
+            if ( status !== "error" ) {
+                var aTag = $("a[href='"+ accordionId +"']");
+                $('html,body').animate({scrollTop: aTag.offset().top},'slow');                        
+            }
+            $(accordionId).addClass("in");
+        });          
 
     }    
 
