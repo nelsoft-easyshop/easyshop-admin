@@ -372,6 +372,9 @@
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
         var categoryName = $(this).closest("form").find("#drop_actionType").val();
+        var catName = $(this).closest("form").find("#drop_actionType option:selected").data("catname");    
+
+
         var url = $(this).data('url');
         var prev = $(this).data('prev');
         var hash =  hex_sha1(index + categoryName + userid + password);
@@ -393,7 +396,7 @@
                 dataType: 'jsonp',
                 success: function(json) {
                     loader.hidePleaseWait();   
-                    $("#mainNavigation_"+index).html(categoryName);
+                    $("#mainNavigation_"+index).html(catName);
                     $("#mainNavigation_"+index).attr("href","#navigation_" + categoryName);
                 },
                 error: function(e) {
