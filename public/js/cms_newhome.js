@@ -2008,11 +2008,9 @@
     });   
 
     $(' #previewImage').on('shown.bs.modal', function () {
-        $("#photoFile").val("");
-        jcrop_api = $.Jcrop($('#user_image_prev'));  
-        jcrop_api.destroy();          
-       
+        $("#photoFile").val("");       
     });      
+    
     $(' #previewImage').on('hidden.bs.modal', function () {
         $("#contentPreview").find("#photoFile").val("");
         jcrop_api = $.Jcrop($('#user_image_prev'));  
