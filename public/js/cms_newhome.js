@@ -2006,6 +2006,8 @@
 
     $(' #previewImage').on('shown.bs.modal', function () {
         $("#photoFile").val("");
+        jcrop_api = $.Jcrop($('#user_image_prev'));  
+        jcrop_api.destroy();          
        
     });      
     $(' #previewImage').on('hidden.bs.modal', function () {
@@ -2045,11 +2047,9 @@ function imageprev(input) {
                 width = this.width;
                 height = this.height;
 
-                //here
                 $('#user_image_prev').attr('src', this.src);
                 var customWidth = $(".templateWidth").html();
                 var customHeight = $(".templateHeight").html();
-                console.log("dimension: " + customWidth + " " + customHeight);
                 if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
 
                     jcrop_api = $.Jcrop($('#user_image_prev'),{
