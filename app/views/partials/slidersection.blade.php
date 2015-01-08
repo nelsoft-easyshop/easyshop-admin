@@ -55,6 +55,7 @@
                 <div class="panel-group" id="accordion">
                     @foreach($sliderSection as $slides)
                         <div class="panel panel-default">
+                            <span class="templateSlider_{{$sliderIndex}}" style="display:none;">{{{ $slides->template }}}</span>                    
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$sliderIndex}}">Manage Slides</a>
