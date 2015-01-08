@@ -1918,7 +1918,7 @@
             var subSlideIndex = isNaN(tempIndex) ? 0 : tempIndex;
             var template = $(".templateSlider_"+index).text();
 
-            setImagesCropSizes(template, subSlideIndex, tempIndex);
+            setImagesCropSizes(template, subSlideIndex, tempIndex, "mainSlider");
 
             $("#clonedSliderCountConstant").text(template);
             var clone = $("#cloneForm_addSubSlider").html();
@@ -1938,7 +1938,7 @@
             var tempIndex = tempIndex + 1;
             var template = $(".templateSlider_"+index).text();
 
-            setImagesCropSizes(template, subindex, tempIndex);            
+            setImagesCropSizes(template, subindex, tempIndex, "mainSlider");            
 
             var clone = $("#editSlideForm_"+index+"_"+subindex).html();
             $("#contentPreview").find("#editModalSliderIndex").val(index);
@@ -1952,8 +1952,10 @@
 
         }
         else if(nodename == "addAds") {
+
             var clone = $("#cloneForm_addAds").html();
             $("#contentPreview").html(clone);
+            setImagesCropSizes(null, null, null, "adsImage");               
             var actionLink = newHomeCmsLink + "/addAdds";
             $(".cropFormButton").attr("id","addAdSection");            
             $(".cropFormButton").attr("data-url",actionLink);             
@@ -1962,7 +1964,7 @@
 
         }
         else if(nodename == "editAds"){
-
+            setImagesCropSizes(null, null, null, "adsImage");  
             var index = $(this).data("index"); 
             var clone = $("#clone_editAdsCrop_"+index).html();                      
             $("#contentPreview").find("#editAdsIndex").val(index);
@@ -2014,11 +2016,11 @@
         $("#scaleAndCrop").css("display","none");        
     });  
 
-function setImagesCropSizes(template, subSlideIndex, tempIndex)
+function setImagesCropSizes(template, subSlideIndex, tempIndex, type)
 {
     $.ajax({
         type: 'post',
-        data: {template: template, index:subSlideIndex, currentSliderCount : tempIndex},
+        data: {template: template, index:subSlideIndex, currentSliderCount : tempIndex, type: type},
         url: "getTemplateImageDimension",
         dataType: 'json',
         success: function(json) {
