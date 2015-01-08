@@ -1501,8 +1501,8 @@
         data = { index: index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
         var count = parseInt($(".slideCount_" + index).last().text());
         var currentSliderTemplate = $("#sliderTemplate" + index).val();
-
-        if(count >= imageCount ) {
+        var allowRequest = isNaN(count) ? isNaN(count) : count >= imageCount; 
+        if(allowRequest) {
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -1514,6 +1514,7 @@
                 success: function(json) {
                     loader.hidePleaseWait();        
                     $("#sliderTemplate" + index).val(value);                                   
+                    $(".templateSlider_" + index).val(value);                                   
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
