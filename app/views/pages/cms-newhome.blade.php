@@ -1006,9 +1006,9 @@
                                     @foreach($categoryLists as $categories)
                                         @if($categories["name"] !== "PARENT")
                                             @if($categories["slug"] == $navigation->categorySlug)
-                                                <option value="{{{$categories['slug']}}}" selected>{{{$categories["name"]}}} - ({{{$categories['slug']}}})</option>
+                                                <option value="{{{$categories['slug']}}}" data-catname="{{{$categories['name']}}}" selected>{{{$categories["name"]}}} - ({{{$categories['slug']}}})</option>
                                             @else$categories["slug"]
-                                                <option value="{{{$categories['slug']}}}">{{{$categories["name"]}}} - ({{{$categories['slug']}}})</option>
+                                                <option value="{{{$categories['slug']}}}" data-catname="{{{$categories['name']}}}">{{{$categories["name"]}}} - ({{{$categories['slug']}}})</option>
                                             @endif
                                         @endif
                                     @endforeach
