@@ -1268,6 +1268,7 @@
                 <div class="panel-group" id="accordion">
                     @foreach($sliderSection as $slides)
                         <div class="panel panel-default">
+                            <span class="templateSlider_{{$sliderIndex}}" style="display:none;">{{{ $slides->template }}}</span>                    
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$sliderIndex}}">Manage Slides</a>
@@ -1567,10 +1568,11 @@
                         <div id="scaleAndCrop" style="display:none;">
                             <h3>Position and scale your photo</h3><br/>
                             <div class="img-editor-container" id="imgContainer">
-                                <span></span>
-                                <img src=""  id="user_image_prev" datawidth="50" dataheight="50" style="border: black 1px solid;">
+                                <span class='templateWidth'></span>
+                                <span class='templateHeight'></span>
+                                <img src=""  id="user_image_prev" datawidth="100" dataheight="100" style="border: black 1px solid;">
                             </div>
-                        </div>   <br/>                          
+                        </div><br/>                          
                     </form> 
                 </div>                            
             </div>
