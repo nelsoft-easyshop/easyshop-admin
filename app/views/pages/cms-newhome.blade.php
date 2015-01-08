@@ -1568,8 +1568,8 @@
                         <div id="scaleAndCrop" style="display:none;">
                             <h3>Position and scale your photo</h3><br/>
                             <div class="img-editor-container" id="imgContainer">
-                                <span class='templateWidth'></span>
-                                <span class='templateHeight'></span>
+                                <span class='templateWidth' style="display:none;"></span>
+                                <span class='templateHeight' style="display:none;"></span>
                                 <img src=""  id="user_image_prev" datawidth="100" dataheight="100" style="border: black 1px solid;">
                             </div>
                         </div><br/>                          
