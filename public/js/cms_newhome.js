@@ -1910,6 +1910,21 @@
         $('.cropFormButton').prop('disabled', true);
         var nodename = $(this).data("nodename");
         if(nodename == "addMainSlider") {
+            var index = parseInt($(this).data("index"));
+            var tempIndex = parseInt($("#collapse_"+index).find(".subSlide_"+index).last().text());
+            var subSlideIndex = isNaN(tempIndex) ? 0 : tempIndex;
+            var template = $(".templateSlider_"+index).text();
+            console.log(".templateSlider_"+index + " "+template);
+            $.ajax({
+                type: 'post',
+                data: {template: template, index:subSlideIndex - 1, currentSliderCount : tempIndex},
+                url: "getTemplateImageDimension",
+                dataType: 'json',
+                success: function(json) {
+                    $(".templateWidth").text(json[0]);  
+                    $(".templateHeight").text(json[1]);  
+                },
+            });              
             var template = $(this).data("template");
             $("#clonedSliderCountConstant").text(template);
             var clone = $("#cloneForm_addSubSlider").html();
@@ -2016,8 +2031,9 @@ function imageprev(input) {
 
                 //here
                 $('#user_image_prev').attr('src', this.src);
-                var customWidth = $("#user_image_prev").attr("datawidth");
-                var customHeight = $("#user_image_prev").attr("dataheight");
+                var customWidth = $(".templateWidth").html();
+                var customHeight = $(".templateHeight").html();
+                console.log("dimension: " + customWidth + " " + customHeight);
                 if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
 
                     jcrop_api = $.Jcrop($('#user_image_prev'),{
