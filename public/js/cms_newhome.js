@@ -1515,8 +1515,8 @@
                 dataType: 'jsonp',
                 success: function(json) {
                     loader.hidePleaseWait();        
-                    $("#sliderTemplate" + index).val(value);                                   
-                    $(".templateSlider_" + index).val(value);                                   
+                    $("#sliderTemplate" + index).val(value); 
+                    $(".templateSlider_" + index).text(value);                                   
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
@@ -2023,16 +2023,25 @@
 
 function setImagesCropSizes(template, subSlideIndex, tempIndex, type)
 {
+
+    var hash =  hex_sha1(subSlideIndex + template + tempIndex+ type + userid + password);
     $.ajax({
-        type: 'post',
-        data: {template: template, index:subSlideIndex, currentSliderCount : tempIndex, type: type},
-        url: "getTemplateImageDimension",
-        dataType: 'json',
+        type: 'GET',
+        url: newHomeCmsLink + "/getTemplateImageDimension",
+        data:{index:subSlideIndex, template: template, currentSliderCount : tempIndex, type: type, userid:userid, password:password, hash:hash},
+        async: false,
+        jsonpCallback: 'jsonCallback',
+        contentType: "application/json",
+        dataType: 'jsonp',
         success: function(json) {
-            $(".templateWidth").text(json[0]);  
-            $(".templateHeight").text(json[1]);  
+            var array = json.sites[0].success.split(',');       
+            $(".templateWidth").text(array[0]);  
+            $(".templateHeight").text(array[1]);
         },
-    }); 
+        error: function(e) {
+            loader.hidePleaseWait();
+        }
+    });  
 } 
 
 /***************    Image preview for cropping  ************************/
