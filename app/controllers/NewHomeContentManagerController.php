@@ -555,4 +555,5 @@ class NewHomeContentManagerController extends BaseController
         } 
         return $templateLists;
     }    
+
 }

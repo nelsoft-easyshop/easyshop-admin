@@ -74,7 +74,7 @@
                                                     <!--End Edit Slide Modal -->
 
                                                 <span style="display:none;">{{$subSlideIndex++}}</span>  
-                                                <span style="display:none;" class='subSlideCount_{{$sliderIndex}}'>{{$slideCount++}}</span>
+                                                <span style="display:none;" class='subSlide_{{$sliderIndex}}'>{{$slideCount++}}</span>
                                                 </div>
                                             @endforeach
                                         </div>
