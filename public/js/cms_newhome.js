@@ -1541,6 +1541,7 @@
     });  
 
     $("#manageSliderSection").on('click','#commitSliderChanges',function (e) { 
+        formSubmitted = 0;
         loader.showPleaseWait();
         var commit = 1;
         var hash = hex_sha1(userid + password);
