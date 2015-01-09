@@ -1559,6 +1559,7 @@
                             </div>
                         </div>                            
                         <div id="contentPreview"></div>
+                        <div id="cropError" style="color:red;"></div>
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <button type="button" class="btn btn-default" data-dismiss="modal" id="cropClose">Close</button>
