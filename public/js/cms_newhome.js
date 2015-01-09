@@ -1,4 +1,14 @@
 (function () {
+
+    var formSubmitted = 0;
+
+    $(window).on('beforeunload', function(){
+        if(formSubmitted === 1) {
+            return "Don't you want to save your changes first?";
+        }
+    });
+
+
     var userid = $("#userid").val();
     var password = $("#password").val();
     var newHomeCmsLink = $("#newHomeCmsLink").text();
@@ -199,7 +209,7 @@
 
 
     $("#manageSliderSection").on('click','#moveup, #movedown',function (e) { 
-       
+        formSubmitted = 1;
         var action = $(this).data('action').toString();
         var subindex = $(this).data('subindex').toString();
         var index = $(this).data('index').toString();
@@ -269,7 +279,7 @@
             order = order.toString();
             var hash =  hex_sha1(action + nodename + index  + order + userid + password);        
             data = { action:action, nodename:nodename, index: index, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
-            setPositionParentSlider(url,data);       
+            setPositionParentSlider(url,data, index, action);       
         }
 
     
@@ -362,6 +372,9 @@
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
         var categoryName = $(this).closest("form").find("#drop_actionType").val();
+        var catName = $(this).closest("form").find("#drop_actionType option:selected").data("catname");    
+
+
         var url = $(this).data('url');
         var prev = $(this).data('prev');
         var hash =  hex_sha1(index + categoryName + userid + password);
@@ -383,7 +396,7 @@
                 dataType: 'jsonp',
                 success: function(json) {
                     loader.hidePleaseWait();   
-                    $("#mainNavigation_"+index).html(categoryName);
+                    $("#mainNavigation_"+index).html(catName);
                     $("#mainNavigation_"+index).attr("href","#navigation_" + categoryName);
                 },
                 error: function(e) {
@@ -419,7 +432,7 @@
 
 
     $("#previewImage").on('click','#editSubSlider',function (e) { 
-
+        formSubmitted = 1;
         var index = $(this).closest("form").find("#editModalSliderIndex").val().toString();
         var subIndex = $(this).closest("form").find("#editModalSliderSubIndex").val().toString();
         var url = newHomeCmsLink + "/editSubSlider";;
@@ -636,6 +649,7 @@
     });
 
     $("#previewImage").on('click','#addSubSlider',function (e) { 
+        formSubmitted = 1;        
         loader.showPleaseWait();          
         var image_x = $(this).closest("form").find("#image_x").val().toString();
         var image_y = $(this).closest("form").find("#image_y").val().toString();
@@ -673,6 +687,7 @@
     });  
 
     $("#manageSliderSection").on('click','#addMainSlider',function (e) { 
+        formSubmitted = 1;
         loader.showPleaseWait();          
         var template = $(this).closest("form").find("#drop_actionType").val();
         var url = $(this).data('url');
@@ -687,11 +702,20 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                $("#manageSliderSection").load("getAllSliders");
+                $( "#manageSliderSection" ).load("getAllSliders", function( response, status, xhr ) {
+                    var accordionId = "#collapse_" + (parseInt($(".parentSliderCount").last().text())-1);
+                    if ( status !== "error" ) {
+                        var aTag = $("a[href='"+ accordionId +"']");
+                        $('html,body').animate({scrollTop: aTag.offset().top},'slow');                        
+                    }
+                    $(accordionId).addClass("in");
+                });                
                 getSliderPreview();
                 loader.hidePleaseWait();   
+              
             },
             error: function(e) {
+                showErrorModal("Something went wrong, please try again later");
                 loader.hidePleaseWait();
             }
         });        
@@ -773,6 +797,7 @@
     });  
 
     $("#manageSliderSection").on('click','#removeSubSlide',function (e) { 
+        formSubmitted = 1;        
         var index = $(this).data("index").toString();
         var subIndex = $(this).data("subindex").toString();
         var nodename = $(this).data("nodename").toString();
@@ -955,33 +980,36 @@
 
 
     $("#manageTopSellers").on('click','#addTopSellers',function (e) { 
-        loader.showPleaseWait();           
         var url = $(this).data("url");
-        var value = $(this).closest("form").find("#value").val();
+        var value = $(this).closest("form").find("#value").val().trim();
         var hash =  hex_sha1(value + userid + password);
-        data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
 
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();  
-                if(json.sites[0]["usererror"]){
-                    showErrorModal(json.sites[0]["usererror"]);
+        if(value !== "") {
+            loader.showPleaseWait();           
+            data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();  
+                    if(json.sites[0]["usererror"]){
+                        showErrorModal(json.sites[0]["usererror"]);
+                    }
+                    else {
+                        $("#addTopSellersTable").load("getTopSellers");
+                    }         
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
                 }
-                else {
-                    $("#addTopSellersTable").load("getTopSellers");
-                }         
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });          
+            });     
+        }     
     }); 
 
     $("#manageBrands").on('click','.removeBrands',function (e) { 
@@ -1042,35 +1070,39 @@
     });    
 
     $("#manageTopProducts").on('click','#addTopProducts',function (e) { 
-        loader.showPleaseWait();           
         var url = $(this).data("url");
-        var value = $(this).closest("form").find("#value").val();
+        var value = $(this).closest("form").find("#value").val().trim();
         var hash =  hex_sha1(value + userid + password);
-        data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
 
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait(); 
-                if(json.sites[0]["success"] != "success") {
-                    loader.hidePleaseWait();    
-                    showErrorModal("Slug Does Not Exist");
-                }            
-                else {
-                    $("#addTopProductsTable").load("getTopProducts");
-                }       
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });          
-    });   
+        if(value !== ""){
+            data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+            loader.showPleaseWait();           
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait(); 
+                    if(json.sites[0]["success"] != "success") {
+                        loader.hidePleaseWait();    
+                        showErrorModal("Slug Does Not Exist");
+                    }            
+                    else {
+                        $("#addTopProductsTable").load("getTopProducts");
+                    }       
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });      
+        }
+    }); 
+
     $("#manageTopProducts").on('click','.removeTopProducts',function (e) { 
      
         var index = $(this).data("index").toString();
@@ -1136,30 +1168,31 @@
     });    
 
     $("#manageNewArrivals").on('click','#addNewArrival',function (e) { 
-        loader.showPleaseWait();           
         var url = $(this).data("url");
-        var value = $(this).closest("form").find("#value").val();
+        var value = $(this).closest("form").find("#value").val().trim();
         var target = $(this).closest("form").find("#target").val();
         var hash =  hex_sha1(value + target + userid + password);
-        data = {value:value, target:target, userid:userid,  password:password, hash:hash, callback:'?'};
+        if(value !==  "") {
+            data = {value:value, target:target, userid:userid,  password:password, hash:hash, callback:'?'};
+            loader.showPleaseWait();           
 
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();  
-                $("#newArrivalsTable").load("getNewArrivals");
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });          
-
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();  
+                    $("#newArrivalsTable").load("getNewArrivals");
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });          
+        }
     });      
 
 
@@ -1469,6 +1502,7 @@
     });      
 
     $("#myTabContent").on('click','#setSliderDesignTemplate',function (e) { 
+        formSubmitted = 1;        
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
         var value = $(this).closest("form").find("#drop_actionType option:selected").val();
@@ -1478,8 +1512,7 @@
         data = { index: index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
         var count = parseInt($(".slideCount_" + index).last().text());
         var currentSliderTemplate = $("#sliderTemplate" + index).val();
-
-        if(count >= imageCount ) {
+        if(isNaN(count) || (count >= imageCount)) {
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -1490,7 +1523,8 @@
                 dataType: 'jsonp',
                 success: function(json) {
                     loader.hidePleaseWait();        
-                    $("#sliderTemplate" + index).val(value);                                   
+                    $("#sliderTemplate" + index).val(value); 
+                    $(".templateSlider_" + index).text(value);                                   
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
@@ -1507,6 +1541,7 @@
     });  
 
     $("#manageSliderSection").on('click','#commitSliderChanges',function (e) { 
+        formSubmitted = 0;
         loader.showPleaseWait();
         var commit = 1;
         var hash = hex_sha1(userid + password);
@@ -1807,7 +1842,7 @@
         }); 
     }  
 
-    function setPositionParentSlider(url, data)
+    function setPositionParentSlider(url, data, index, action)
     {
         $.ajax({
             type: 'GET',
@@ -1817,19 +1852,22 @@
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
-            success: function(json) {
-
-                $("#previewImage").modal("hide");                      
-                $(tableSelector).load(reloadurl);              
+            success: function(json) {        
                 loader.hidePleaseWait();   
             },
-            error: function(e) {
-                $("#previewImage").modal("hide");               
-                $(tableSelector).load(reloadurl);             
+            error: function(e) {            
                 loader.hidePleaseWait();   
-
             }
         }); 
+        index = (action === "down") ? index + 1: index - 1;
+        $( "#manageSliderSection" ).load("getAllSliders", function( response, status, xhr ) {
+            var accordionId = "#collapse_" + index;
+            if ( status !== "error" ) {
+                var aTag = $("a[href='"+ accordionId +"']");
+                $('html,body').animate({scrollTop: aTag.offset().top},'slow');                        
+            }
+            $(accordionId).addClass("in");
+        });          
 
     }    
 
@@ -1884,10 +1922,17 @@
 
     $("#myTabContent").on('click','#addSliderCrop,#editSubSliderCrop,#addAdsCrop,#editAdsCrop',function (e) { 
 
-        $('.cropFormButton').prop('disabled', true);
         var nodename = $(this).data("nodename");
         if(nodename == "addMainSlider") {
-            var template = $(this).data("template");
+
+            var index = parseInt($(this).data("index"));
+            var tempIndex = parseInt($("#collapse_"+index).find(".subSlide_"+index).last().text());
+            tempIndex = isNaN(tempIndex) ? 0 : tempIndex;
+            var subSlideIndex = isNaN(tempIndex) ? 0 : tempIndex;
+            var template = $(".templateSlider_"+index).text();
+
+            setImagesCropSizes(template, subSlideIndex, tempIndex, "mainSlider");
+
             $("#clonedSliderCountConstant").text(template);
             var clone = $("#cloneForm_addSubSlider").html();
             $("#contentPreview").html(clone);
@@ -1902,6 +1947,12 @@
         else if(nodename == "editMainSlider" ) {
             var index = $(this).data("index");
             var subindex = $(this).data("subindex");
+            tempIndex = isNaN(subindex) ? 0 : subindex;            
+            var tempIndex = tempIndex + 1;
+            var template = $(".templateSlider_"+index).text();
+
+            setImagesCropSizes(template, subindex, tempIndex, "mainSlider");            
+
             var clone = $("#editSlideForm_"+index+"_"+subindex).html();
             $("#contentPreview").find("#editModalSliderIndex").val(index);
             $("#contentPreview").find("#editModalSliderSubIndex").val(subindex);
@@ -1914,8 +1965,10 @@
 
         }
         else if(nodename == "addAds") {
+
             var clone = $("#cloneForm_addAds").html();
             $("#contentPreview").html(clone);
+            setImagesCropSizes(null, null, null, "adsImage");               
             var actionLink = newHomeCmsLink + "/addAdds";
             $(".cropFormButton").attr("id","addAdSection");            
             $(".cropFormButton").attr("data-url",actionLink);             
@@ -1924,7 +1977,7 @@
 
         }
         else if(nodename == "editAds"){
-
+            setImagesCropSizes(null, null, null, "adsImage");  
             var index = $(this).data("index"); 
             var clone = $("#clone_editAdsCrop_"+index).html();                      
             $("#contentPreview").find("#editAdsIndex").val(index);
@@ -1965,10 +2018,12 @@
     });   
 
     $(' #previewImage').on('shown.bs.modal', function () {
-        $("#photoFile").val("");
-       
+        $("#photoFile").val("");       
     });      
+    
     $(' #previewImage').on('hidden.bs.modal', function () {
+        $(".cropFormButton").show();        
+        $("#cropError").html("");        
         $("#contentPreview").find("#photoFile").val("");
         jcrop_api = $.Jcrop($('#user_image_prev'));  
         resetCoords();        
@@ -1976,7 +2031,30 @@
         $("#scaleAndCrop").css("display","none");        
     });  
 
-    /***************    Image preview for cropping  ************************/
+function setImagesCropSizes(template, subSlideIndex, tempIndex, type)
+{
+
+    var hash =  hex_sha1(subSlideIndex + template + tempIndex+ type + userid + password);
+    $.ajax({
+        type: 'GET',
+        url: newHomeCmsLink + "/getTemplateImageDimension",
+        data:{index:subSlideIndex, template: template, currentSliderCount : tempIndex, type: type, userid:userid, password:password, hash:hash},
+        async: false,
+        jsonpCallback: 'jsonCallback',
+        contentType: "application/json",
+        dataType: 'jsonp',
+        success: function(json) {
+            var array = json.sites[0].success.split(',');       
+            $(".templateWidth").text(array[0]);  
+            $(".templateHeight").text(array[1]);
+        },
+        error: function(e) {
+            loader.hidePleaseWait();
+        }
+    });  
+} 
+
+/***************    Image preview for cropping  ************************/
 function imageprev(input) {
 
     var jcrop_api, width, height;
@@ -1992,14 +2070,21 @@ function imageprev(input) {
                 height = this.height;
 
                 $('#user_image_prev').attr('src', this.src);
+                var customWidth = $(".templateWidth").html();
+                var customHeight = $(".templateHeight").html();
                 if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
 
+                    if(width < customWidth || width < customHeight) {
+                        $(".cropFormButton").hide();
+                        $("#cropError").html("The dimensions of the image must be at least "+customWidth+"px x "+customHeight+"px");
+                    }
                     jcrop_api = $.Jcrop($('#user_image_prev'),{
+                        aspectRatio: customWidth/customHeight,
+                        allowSelect: false,
+                        setSelect:[0,0,width*0.5,height*0.5],
                         boxWidth: 500,
                         boxHeight: 500,
-                        minSize: [width*0.1,height*0.1],
-                        setSelect:[0,0,width*0.5,height*0.5],
-                        trueSize: [width,height],
+                        minSize: [customWidth,customHeight],
                         onChange: showCoords,
                         onSelect: showCoords,
                         onRelease: resetCoords
@@ -2007,7 +2092,8 @@ function imageprev(input) {
    
 
                     $(' #previewImage').bind('hidden.bs.modal', function () {
-
+                        $(".cropFormButton").show();
+                        $("#cropError").html("");
                         $('#user_image_prev').attr('src', '');
                         resetCoords();
                         jcrop_api.destroy(); 
@@ -2029,6 +2115,7 @@ function imageprev(input) {
         reader.readAsDataURL(input.files[0]);
     }
     else {
+        $("#cropForm").modal("hide");
         showErrorModal("You can only upload gif|png|jpeg|jpg files at a max size of 5MB!");
     }
 
