@@ -1922,7 +1922,6 @@
 
     $("#myTabContent").on('click','#addSliderCrop,#editSubSliderCrop,#addAdsCrop,#editAdsCrop',function (e) { 
 
-        $('.cropFormButton').prop('disabled', true);
         var nodename = $(this).data("nodename");
         if(nodename == "addMainSlider") {
 
