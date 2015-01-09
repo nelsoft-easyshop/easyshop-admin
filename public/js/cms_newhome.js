@@ -980,33 +980,36 @@
 
 
     $("#manageTopSellers").on('click','#addTopSellers',function (e) { 
-        loader.showPleaseWait();           
         var url = $(this).data("url");
-        var value = $(this).closest("form").find("#value").val();
+        var value = $(this).closest("form").find("#value").val().trim();
         var hash =  hex_sha1(value + userid + password);
-        data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
 
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();  
-                if(json.sites[0]["usererror"]){
-                    showErrorModal(json.sites[0]["usererror"]);
+        if(value !== "") {
+            loader.showPleaseWait();           
+            data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();  
+                    if(json.sites[0]["usererror"]){
+                        showErrorModal(json.sites[0]["usererror"]);
+                    }
+                    else {
+                        $("#addTopSellersTable").load("getTopSellers");
+                    }         
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
                 }
-                else {
-                    $("#addTopSellersTable").load("getTopSellers");
-                }         
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });          
+            });     
+        }     
     }); 
 
     $("#manageBrands").on('click','.removeBrands',function (e) { 
@@ -1067,35 +1070,39 @@
     });    
 
     $("#manageTopProducts").on('click','#addTopProducts',function (e) { 
-        loader.showPleaseWait();           
         var url = $(this).data("url");
-        var value = $(this).closest("form").find("#value").val();
+        var value = $(this).closest("form").find("#value").val().trim();
         var hash =  hex_sha1(value + userid + password);
-        data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
 
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait(); 
-                if(json.sites[0]["success"] != "success") {
-                    loader.hidePleaseWait();    
-                    showErrorModal("Slug Does Not Exist");
-                }            
-                else {
-                    $("#addTopProductsTable").load("getTopProducts");
-                }       
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });          
-    });   
+        if(value !== ""){
+            data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+            loader.showPleaseWait();           
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait(); 
+                    if(json.sites[0]["success"] != "success") {
+                        loader.hidePleaseWait();    
+                        showErrorModal("Slug Does Not Exist");
+                    }            
+                    else {
+                        $("#addTopProductsTable").load("getTopProducts");
+                    }       
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });      
+        }
+    }); 
+
     $("#manageTopProducts").on('click','.removeTopProducts',function (e) { 
      
         var index = $(this).data("index").toString();
@@ -1161,30 +1168,31 @@
     });    
 
     $("#manageNewArrivals").on('click','#addNewArrival',function (e) { 
-        loader.showPleaseWait();           
         var url = $(this).data("url");
-        var value = $(this).closest("form").find("#value").val();
+        var value = $(this).closest("form").find("#value").val().trim();
         var target = $(this).closest("form").find("#target").val();
         var hash =  hex_sha1(value + target + userid + password);
-        data = {value:value, target:target, userid:userid,  password:password, hash:hash, callback:'?'};
+        if(value !==  "") {
+            data = {value:value, target:target, userid:userid,  password:password, hash:hash, callback:'?'};
+            loader.showPleaseWait();           
 
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            async: false,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();  
-                $("#newArrivalsTable").load("getNewArrivals");
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });          
-
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                async: false,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();  
+                    $("#newArrivalsTable").load("getNewArrivals");
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });          
+        }
     });      
 
 
@@ -1533,6 +1541,7 @@
     });  
 
     $("#manageSliderSection").on('click','#commitSliderChanges',function (e) { 
+        formSubmitted = 0;
         loader.showPleaseWait();
         var commit = 1;
         var hash = hex_sha1(userid + password);
@@ -1913,7 +1922,6 @@
 
     $("#myTabContent").on('click','#addSliderCrop,#editSubSliderCrop,#addAdsCrop,#editAdsCrop',function (e) { 
 
-        $('.cropFormButton').prop('disabled', true);
         var nodename = $(this).data("nodename");
         if(nodename == "addMainSlider") {
 
@@ -2014,6 +2022,8 @@
     });      
     
     $(' #previewImage').on('hidden.bs.modal', function () {
+        $(".cropFormButton").show();        
+        $("#cropError").html("");        
         $("#contentPreview").find("#photoFile").val("");
         jcrop_api = $.Jcrop($('#user_image_prev'));  
         resetCoords();        
@@ -2064,6 +2074,10 @@ function imageprev(input) {
                 var customHeight = $(".templateHeight").html();
                 if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
 
+                    if(width < customWidth || width < customHeight) {
+                        $(".cropFormButton").hide();
+                        $("#cropError").html("The dimensions of the image must be at least "+customWidth+"px x "+customHeight+"px");
+                    }
                     jcrop_api = $.Jcrop($('#user_image_prev'),{
                         aspectRatio: customWidth/customHeight,
                         allowSelect: false,
@@ -2078,7 +2092,8 @@ function imageprev(input) {
    
 
                     $(' #previewImage').bind('hidden.bs.modal', function () {
-
+                        $(".cropFormButton").show();
+                        $("#cropError").html("");
                         $('#user_image_prev').attr('src', '');
                         resetCoords();
                         jcrop_api.destroy(); 
@@ -2100,6 +2115,7 @@ function imageprev(input) {
         reader.readAsDataURL(input.files[0]);
     }
     else {
+        $("#cropForm").modal("hide");
         showErrorModal("You can only upload gif|png|jpeg|jpg files at a max size of 5MB!");
     }
 
