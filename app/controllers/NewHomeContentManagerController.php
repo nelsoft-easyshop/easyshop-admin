@@ -556,32 +556,4 @@ class NewHomeContentManagerController extends BaseController
         return $templateLists;
     }    
 
-    /**
-     * Retrieves template dimensions for the posted index and templateName
-     * @return JSON
-     */
-    public function getTemplateImageDimension()
-    {
-        $index = (int)Input::get("index");
-        $type = Input::get("type");
-        $currentSliderCount = (int)Input::get("currentSliderCount");
-        $template = trim(Input::get("template"));
-        $imageDimensions = Config::get('easyshop/imagedimensions');
-        $imageDimensions = $imageDimensions[$type];
-
-        if($type === "mainSlider") {
-            $defaultTemplateCount = count($imageDimensions[$template]);
-            if($index >= $defaultTemplateCount) {
-                $dimensions = end($imageDimensions[$template]);
-            }
-            else {
-                $dimensions = $imageDimensions[$template][$index];
-            }
-        }
-        else {
-            $dimensions = $imageDimensions;
-        }
-
-        return Response::json($dimensions);
-    }
 }
