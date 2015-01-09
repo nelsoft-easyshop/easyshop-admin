@@ -2077,7 +2077,7 @@ function imageprev(input) {
 
                     if(width < customWidth || width < customHeight) {
                         $(".cropFormButton").hide();
-                        $("#cropError").html("The dimensions of the image must be at least than "+customWidth+"px x "+customHeight+"px");
+                        $("#cropError").html("The dimensions of the image must be at least "+customWidth+"px x "+customHeight+"px");
                     }
                     jcrop_api = $.Jcrop($('#user_image_prev'),{
                         aspectRatio: customWidth/customHeight,
@@ -2116,6 +2116,7 @@ function imageprev(input) {
         reader.readAsDataURL(input.files[0]);
     }
     else {
+        $("#cropForm").modal("hide");
         showErrorModal("You can only upload gif|png|jpeg|jpg files at a max size of 5MB!");
     }
 
