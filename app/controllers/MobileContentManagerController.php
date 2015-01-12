@@ -30,15 +30,23 @@ class MobileContentManagerController extends BaseController
         foreach($this->map->section as $map) {
             $section[] = $map;
         }
+
         foreach($this->map->mainSlide as $slides)
         {
             $mainSlides[] =  $slides;
-        }        
+        }
+
+        foreach($this->map->actionLists as $actions)
+        {
+            $actionTypes[] =  $actions->type;
+        }
+       
         return View::make('pages.cms-mobilehome')
                     ->with('userid', Auth::id())
                     ->with('password', $adminEntity->getAdminMemberById(Auth::id()))
                     ->with('sectionContent', $section)
                     ->with('mainSlides',  $mainSlides)
+                    ->with('actionTypes',  $actionTypes[0])
                     ->with('mainSlideId',  0)
                     ->with('mainSlideCount',  count($mainSlides))                    
                     ->with('mobileCmsLink', $this->XMLService->getMobileCmsLink())
