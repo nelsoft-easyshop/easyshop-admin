@@ -372,7 +372,7 @@
                         </div>
                         <div class="form-group address_div">
                             <label>Action Type : </label>
-                            <div id="editBoxContent">
+                            <div>
                                 <select name="c_stateregion" id="drop_actionTypeEdit"  class="form-control" data-status="">
                                     @foreach($actionTypes as $types)
                                         <option value="{{{ $types }}}">{{{ $types }}}</option>
