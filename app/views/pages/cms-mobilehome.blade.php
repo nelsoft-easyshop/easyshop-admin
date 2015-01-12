@@ -263,12 +263,9 @@
                             <label for="userId" class="col-sm-2 control-label">Action Type</label>
                             <div class="col-sm-10">
                                 <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
-                                    <option value="show product details">show product details</option>
-                                    <option value="go to site">go to site</option>
-                                    <option value="go to page">go to page</option>
-                                    <option value="show product list">show product list</option>
-                                    
-
+                                    @foreach($actionTypes as $types)
+                                        <option value="{{{ $types }}}">{{{ $types }}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>                          
@@ -375,13 +372,11 @@
                         </div>
                         <div class="form-group address_div">
                             <label>Action Type : </label>
-                            <div>
+                            <div id="editBoxContent">
                                 <select name="c_stateregion" id="drop_actionTypeEdit"  class="form-control" data-status="">
-                                    <option value="show product details">show product details</option>
-                                    <option value="go to site">go to site</option>
-                                    <option value="go to page">go to page</option>
-                                    <option value="show product list">show product list</option>
-
+                                    @foreach($actionTypes as $types)
+                                        <option value="{{{ $types }}}">{{{ $types }}}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
