@@ -26,17 +26,19 @@ class MobileContentManagerController extends BaseController
     {
 
         $adminEntity = App::make('AdminMemberRepository');        
-
+        $section = [];
         foreach($this->map->section as $map) 
         {
             $section[] = $map;
         }
 
+        $mainSlides = [];
         foreach($this->map->mainSlide as $slides)
         {
             $mainSlides[] =  $slides;
         }
 
+        $actionTypes = [];
         foreach($this->map->actionLists as $actions)
         {
             $actionTypes[] =  $actions->type;
