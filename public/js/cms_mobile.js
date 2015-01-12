@@ -245,7 +245,7 @@
         $("#edit_url").val(data.url);
         $("#edit_boxindex").val(data.boxIndex);
         $("#edit_sectionIndex").val(data.sectionIndex);
-        $('#drop_actionType option[value="'+ data.actionType +'"]');
+        $('#drop_actionTypeEdit option[value="'+data.actionType+'"]').attr("selected", "selected");
     });  
 
     $("#myModal").on('click','#mdl_save',function (e) { 
