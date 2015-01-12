@@ -468,7 +468,7 @@
         $(this).closest("form").find("#hashAddAds").val(hash);
         var form = "#cropForm";
         if(value == "") {
-            showErrorModal("Please upload na image");
+            showErrorModal("Please upload an image");
         }
         else {
             loader.showPleaseWait();                 
@@ -527,7 +527,7 @@
             }
             var ext = value.split('.').pop().toLowerCase();
             if(value === "" || ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1)) {
-                showErrorModal("Please upload na Image");
+                showErrorModal("Please upload an image");
             }
             else {
                 changeSellerBanner(form,url);
@@ -678,7 +678,7 @@
         var reloadurl = "getSlideSection/" + index;
         if(value == "") {
             $("#previewImage").modal("hide");
-            showErrorModal("Please upload na Image")
+            showErrorModal("Please upload an image")
         }
         else {
             addSubSlider(mainSlideForm, url, tableSelector, reloadurl, count, index);
