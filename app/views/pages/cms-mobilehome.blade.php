@@ -266,6 +266,8 @@
                                     <option value="show product details">show product details</option>
                                     <option value="go to site">go to site</option>
                                     <option value="go to page">go to page</option>
+                                    <option value="show product list">show product list</option>
+                                    
 
                                 </select>
                             </div>
@@ -378,6 +380,7 @@
                                     <option value="show product details">show product details</option>
                                     <option value="go to site">go to site</option>
                                     <option value="go to page">go to page</option>
+                                    <option value="show product list">show product list</option>
 
                                 </select>
                             </div>
