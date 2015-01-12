@@ -2074,7 +2074,7 @@ function imageprev(input) {
                 var customHeight = $(".templateHeight").html();
                 if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
 
-                    if(width < customWidth || width < customHeight) {
+                    if(width < customWidth || height < customHeight) {
                         $(".cropFormButton").hide();
                         $("#cropError").html("The dimensions of the image must be at least "+customWidth+"px x "+customHeight+"px");
                     }
