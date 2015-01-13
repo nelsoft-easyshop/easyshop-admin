@@ -203,8 +203,8 @@ class OrderProductRepository extends AbstractRepository
             if($userData['fullname']){
                 $query->where('es_member.fullname', 'LIKE', '%' . $userData['fullname'] . '%');
             }
-            if($userData['username']){
-                $query->where('es_member.username', 'LIKE', '%' . $userData['username'] . '%');
+            if($userData['store_name']){
+                $query->where('es_member.store_name', 'LIKE', '%' . $userData['store_name'] . '%');
             }
             if($userData['contactno']){
                 $query->where('es_member.contactno', 'LIKE', '%' . $userData['contactno'] . '%');
@@ -234,7 +234,7 @@ class OrderProductRepository extends AbstractRepository
 
         $returnTransaction = $query->paginate($row,[
                                             'es_order.id_order', 
-                                            'es_member.username', 
+                                            'es_member.store_name', 
                                             'es_member.id_member', 
                                             'es_member.fullname', 
                                             'es_member.email', 
