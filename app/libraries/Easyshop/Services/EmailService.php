@@ -19,8 +19,10 @@ class EmailService{
     */
     public function sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber,$bankName, $dateFrom, $dateTo, $isRefund = false)
     {    
-        $data = array(
-            'recipient' => $member->username,
+        $storename = $member->getStoreName();
+
+        $data = [
+            'recipient' => $storename . ($member->username === $storename ? '/'.$member->username : ''),
             'startPayOutDate' => $dateFrom,
             'endPayOutDate' => $dateTo,
             'orderProducts' => $orderProducts,
@@ -28,8 +30,8 @@ class EmailService{
             'accountNumber' => $accountNumber,
             'bankName' => $bankName,
             'isRefund' => $isRefund,
-        );
-        
+        ];
+
         $subject = $isRefund ? 'Fund transfer for Refund Request' : 'Payment for you sales';
 
         Mail::send('emails.payment', $data, function($message) use ($member, $subject)

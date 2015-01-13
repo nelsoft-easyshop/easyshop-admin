@@ -78,6 +78,7 @@ class OrderProductRepository extends AbstractRepository
                             'es_order.invoice_no', 
                             'es_order.buyer_id as buyer_seller_id', 
                             'buyer.username as buyer_seller_username', 
+                            DB::raw('COALESCE(NULLIF(buyer.store_name, ""), buyer.username) as buyer_storename'),
                             'es_product.name as productname', 
                             'es_order_product_status.name as statusname',
                             'es_order.dateadded',
