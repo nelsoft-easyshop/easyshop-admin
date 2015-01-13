@@ -85,7 +85,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('categoryAdd', array('uses' => 'CategoryController@ajaxAddCategory'));
 
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
-    Route::get('items', array('uses' => 'ProductController@doSearchItem'));
+    Route::post('items', array('uses' => 'ProductController@showAllItems'));
 
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
     Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));
