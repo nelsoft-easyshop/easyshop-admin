@@ -7,11 +7,21 @@ use Product,ProductImage,  LocationLookUp, ProductItem, OptionalAttrDetail, Opti
 
 class ProductRepository
 {
+
+    /**
+     * Get paginated products
+     * @return Entity
+     */     
     public function getAll($row)
     {
         return Product::paginate($row);
     }
 
+    
+    /**
+     * Get all viewable products
+     * @return Entity
+     */
     public function getAllViewable($row)
     {
         return Product::where('is_delete', '=', 0)
@@ -49,7 +59,7 @@ class ProductRepository
                 ->where('es_product.createddate', '<=', str_replace('/', '-', $userData['enddate']) . ' 23:59:59', 'AND');
         }
         if($userData['seller']){
-            $product->where('es_member.username', 'LIKE', '%' . $userData['seller'] . '%');
+            $product->where('es_member.store_name', 'LIKE', '%' . $userData['seller'] . '%');
         }
         if($userData['brand']){
             $product->where('es_brand.name', 'LIKE', '%' . $userData['brand'] . '%');
