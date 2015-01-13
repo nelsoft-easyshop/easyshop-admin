@@ -17,7 +17,7 @@ class ProductController extends BaseController
      */
     public function showAllItems()
     {
-        $productData = array(
+        $productData = [
             'item' => Input::get('item'),
             'category' => Input::get('category'),
             'brand' => Input::get('brand'),
@@ -25,7 +25,7 @@ class ProductController extends BaseController
             'seller' => Input::get('seller'),
             'startdate' => Input::get('startdate'),
             'enddate' => Input::get('enddate')
-        );
+        ];
 
         $products = App::make('ProductRepository')->search($productData, 5);
         $pagination = $products->appends(Input::except(['page','_token']))->links();
