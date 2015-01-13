@@ -64,9 +64,9 @@
                     <td style="padding: 4px;">{{{ $orderProduct->order->invoice_no }}}</td>
                     
                     @if($isRefund)  
-                        <td style="padding: 4px;">{{{ $orderProduct->seller->username }}} </td>
+                        <td style="padding: 4px;">{{{ $orderProduct->seller->getStoreName() }}} </td>
                     @else
-                        <td style="padding: 4px;">{{{ $orderProduct->order->buyer->username }}}</td>
+                        <td style="padding: 4px;">{{{ $orderProduct->order->buyer->getStoreName() }}}</td>
                     @endif
                     
                     <td style="padding: 4px;">{{{ $orderProduct->product->name }}}</td>

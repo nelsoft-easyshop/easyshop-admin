@@ -19,7 +19,7 @@
 
             {{ Form::open(array('url' => 'refund', 'method' => 'get')) }}
 
-                    {{ Form::text('username', $username, array('id' => 'username', 'placeholder' => 'Username')) }}
+                    {{ Form::text('username', $username, array('id' => 'username', 'placeholder' => 'Storename/Username')) }}
                     
                     <label class='date-label'> From: </label for="dateFrom"> {{ Form::text('dateFrom', $dateFrom, array('class' => 'date', 'id' => 'date-from')) }}
                     <label class='date-label'> To: </label for="dateTo"> {{ Form::text('dateTo', $dateTo, array('class' => 'date', 'id' => 'date-to')) }}
@@ -36,7 +36,7 @@
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Username</th>
+                        <th>Buyer</th>
                         <th>Bank</th>
                         <th>Account Name</th>
                         <th>Account No.</th>
@@ -48,7 +48,7 @@
                 
                 @foreach($accountsToRefund as $account)
                     <tr class="buyer_detail" data-order-product-ids = "{{{ $account->order_product_ids }}}">
-                        <td class="td_username">{{{ $account->username }}}</td>
+                        <td class="td_username">{{{ $account->storename }}}</td>
                         <td class="td_bankname">{{{ $account->bank_name }}} </td>
                         <td class="td_accountname">{{{ $account->account_name }}} </td>
                         <td class="td_accountno">{{{ $account->account_number }}} </td>
