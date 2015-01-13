@@ -57,7 +57,7 @@
                             <th>Transaction ID</th>
                             <th>Invoice Number</th>
                             <th>Buyer Fullname</th>
-                            <th>Buyer Username</th>
+                            <th>Buyer Store Name</th>
                             <th>Buyer Email</th>
                             <th>Buyer Contact No.</th>
                             <th>Transaction Date</th>
