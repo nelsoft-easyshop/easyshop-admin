@@ -76,14 +76,14 @@
                             <table id="table3" class="display">
                                 <thead>
                                     <tr id="heading">
-                                        <th width="50%">Username</th>
+                                        <th width="50%">Store Name</th>
                                         <th width="50%"># of Uploaded Products</th>
                                     </tr>
                                 </thead>
                                 <tbody >
                                     @foreach($membersProductCounts as $member)
                                         <tr>
-                                            <td>{{{$member->username}}}</td>
+                                            <td>{{{$member->store_name}}}</td>
                                             <td>{{{ $member->uploadCount }}}</td>
                                         </tr>
                                     @endforeach

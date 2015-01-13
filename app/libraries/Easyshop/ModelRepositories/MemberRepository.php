@@ -24,7 +24,7 @@ class MemberRepository extends AbstractRepository
     {
         $findProductOfUsers = DB::table('es_member')
                             ->leftJoin("es_product","es_product.member_id","=","es_member.id_member")
-                            ->select(DB::raw("es_member.username as username, COUNT(es_product.id_product) as uploadCount"))
+                            ->select(DB::raw("es_member.store_name as store_name, COUNT(es_product.id_product) as uploadCount"))
                             ->where("es_product.is_draft","=",0)
                             ->where("es_product.is_delete","=",0)
                             ->orderBy("uploadCount", "desc")
