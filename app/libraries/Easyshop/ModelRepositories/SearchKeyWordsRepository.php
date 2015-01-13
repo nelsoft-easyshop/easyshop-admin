@@ -19,7 +19,7 @@ class SearchKeyWordsRepository
                          ->groupBy('keywords')
                          ->orderBy('hits','desc');
 
-        if($query !== null) {
+        if($keyword !== null) {
             $query->where('keywords', 'LIKE', "%$keyword%");
         }
         return $query->paginate($row);
