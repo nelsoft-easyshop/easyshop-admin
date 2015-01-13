@@ -313,7 +313,7 @@ class OrderProductController extends BaseController
 
         $userData = [
             'fullname' => Input::get('fullname'),
-            'username' => Input::get('username'),
+            'store_name' => Input::get('store_name'),
             'contactno' => Input::get('number'),
             'email' => Input::get('email'),
             'tag' => Input::get('tag'),
