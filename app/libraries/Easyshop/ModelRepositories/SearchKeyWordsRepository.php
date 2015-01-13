@@ -8,7 +8,8 @@ class SearchKeyWordsRepository
 
     /**
      *  Renders all keywords
-     *
+     *  @param  string $keyword
+     *  @param  int $row
      *  @return Entity
      */
     public function listAllKeyWords($keyword = null, $row)
