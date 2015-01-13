@@ -10,6 +10,7 @@ class ProductRepository
 
     /**
      * Get paginated products
+     * @param int $row     
      * @return Entity
      */     
     public function getAll($row)
@@ -20,6 +21,7 @@ class ProductRepository
     
     /**
      * Get all viewable products
+     * @param int $row
      * @return Entity
      */
     public function getAllViewable($row)
