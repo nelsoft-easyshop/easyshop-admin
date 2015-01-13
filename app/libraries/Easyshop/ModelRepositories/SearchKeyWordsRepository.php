@@ -11,36 +11,19 @@ class SearchKeyWordsRepository
      *
      *  @return Entity
      */
-    public function listAllKeyWords($row)
+    public function listAllKeyWords($keyword = null, $row)
     {
 
-        $keywords = DB::table('es_keywords_temp')
+        $query = DB::table('es_keywords_temp')
                          ->select('keywords', DB::raw('count(*) as hits'))
                          ->groupBy('keywords')
-                         ->orderBy('hits','desc')                         
-                         ->paginate($row);
-        return $keywords;          
+                         ->orderBy('hits','desc');
+
+        if($query !== null) {
+            $query->where('keywords', 'LIKE', "%$keyword%");
+        }
+        return $query->paginate($row);
     }
-
-    /**
-     *  Returns custom search
-     *
-     *  @return Entity
-     */
-    public function searchKey($keyword, $row)
-    {
-   
-        $keywords = DB::table('es_keywords_temp')
-                         ->select('keywords', DB::raw('count(*) as hits'))
-                         ->groupBy('keywords')
-                         ->orderBy('hits','desc')
-                         ->where('keywords', 'LIKE', "%$keyword%")
-                         ->paginate($row);
-        $keywords->setBaseUrl("searchkeywords");
-        return $keywords;          
-    }
-
-
-    
 }
+
 
