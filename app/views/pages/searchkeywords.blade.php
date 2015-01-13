@@ -16,7 +16,7 @@
                 <div class="input-group srch_div" style="padding:12px">
                     <div class="inner-addon left-addon">
                         <i class="glyphicon glyphicon-search"></i>
-                            <input type="text" id="searchBox" name="keyword" class="form-control" placeholder="Search all keywords" />
+                            <input type="text" id="searchBox" name="keyword" class="form-control" placeholder="Search Keyword" />
                     </div>
                     <div class="input-group-btn">
                         &nbsp;
