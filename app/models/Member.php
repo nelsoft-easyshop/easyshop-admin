@@ -44,9 +44,10 @@ class Member extends Eloquent
     {
         $trimmedStorename = trim($this->attributes['store_name']);
         if ( strlen($trimmedStorename) <= 0 || !$trimmedStorename ){ 
-            return $this->attributes['username'];
+            $storename = $this->attributes['username'];
         }
-        return $this->attributes['store_name'];
+        $storename = $this->attributes['store_name'];
+        return $storename;
     }
 }
 
