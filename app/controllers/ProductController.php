@@ -27,7 +27,7 @@ class ProductController extends BaseController
             'enddate' => Input::get('enddate')
         ];
 
-        $products = App::make('ProductRepository')->search($productData, 5);
+        $products = App::make('ProductRepository')->search($productData, 100);
         $pagination = $products->appends(Input::except(['page','_token']))->links();
         return View::make('pages.itemlist')
                     ->with('pagination', $pagination)
