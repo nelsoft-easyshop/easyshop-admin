@@ -277,7 +277,7 @@
 
     $('.drct_search').on('click', function(){
         var id = $(this).attr('data');
-        var text = $('#searchBox').val();
+        var text = $('#searchBox').val().trim();
         $('#' + id).val(text);
         $('#searchForm').submit();
     });
