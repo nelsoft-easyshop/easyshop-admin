@@ -32,12 +32,16 @@ class OrderRepository extends AbstractRepository
         $statusDraft = OrderStatus::STATUS_DRAFT;
         $query = Order::where('order_status', '!=', $statusDraft);
         $query->leftJoin('es_payment_method','es_order.payment_method_id','=','es_payment_method.id_payment_method');
+        $query->leftJoin('es_member as buyer','es_order.buyer_id','=','buyer.id_member');
+        $query->leftJoin('es_order_product','es_order.id_order','=','es_order_product.order_id');
+        $query->leftJoin('es_member as seller', 'es_order_product.seller_id', '=', 'seller.id_member');
+
         if($dateFrom){
-            $query->where('dateadded', '>=', $dateFrom);
+            $query->where('es_order.dateadded', '>=', $dateFrom);
         }
         
         if($dateTo){
-            $query->where('dateadded', '<=', $dateTo);
+            $query->where('es_order.dateadded', '<=', $dateTo);
         }
         
         if($stringFilter){
@@ -45,10 +49,12 @@ class OrderRepository extends AbstractRepository
                 $query->where('id_order', 'LIKE', '%'.$stringFilter.'%');
                 $query->orWhere('transaction_id', 'LIKE', '%'.$stringFilter.'%');
                 $query->orWhere('invoice_no', 'LIKE', '%'.$stringFilter.'%');
+                $query->orWhereRaw('COALESCE(buyer.store_name, buyer.username) = ?', [$stringFilter]);
+                $query->orWhereRaw('COALESCE(seller.store_name, seller.username) = ?', [$stringFilter]);
             });
         }
-          
-        $query->orderBy('dateadded', 'DESC');
+        $query->groupBy('es_order.id_order');
+        $query->orderBy('es_order.dateadded', 'DESC');
           
         return $query->paginate($numberOfRows);
     }
@@ -104,6 +110,7 @@ class OrderRepository extends AbstractRepository
             ->leftJoin('es_product_shipping_comment AS productShippingComment',
                 'productShippingComment.order_product_id', '=', 'orderProduct.id_order_product'
             );
+     
 
         if($startDate){
             $record->where('es_order.dateadded', '>=', $startDate );
@@ -118,6 +125,8 @@ class OrderRepository extends AbstractRepository
                 $record->where('es_order.id_order', 'LIKE', '%'.$stringFilter.'%');
                 $record->orWhere('es_order.transaction_id', 'LIKE', '%'.$stringFilter.'%');
                 $record->orWhere('es_order.invoice_no', 'LIKE', '%'.$stringFilter.'%');
+                $record->orWhereRaw('COALESCE(buyer.store_name, buyer.username) = ?', [$stringFilter]);
+                $record->orWhereRaw('COALESCE(seller.store_name, seller.username) = ?', [$stringFilter]);
             });
 
         }
@@ -140,10 +149,12 @@ class OrderRepository extends AbstractRepository
             'country.location AS Country',
             DB::raw('(CASE WHEN (ISNULL(productShippingComment.`comment`)) THEN "Not yet shipped" ELSE "Shipped" END) AS Delivery_status '),
             'buyer.username AS Buyers_username',
+            DB::raw('COALESCE(buyer.store_name, buyer.username) AS Buyers_storename'),
             'buyer.fullname AS Buyers_fullname',
             'buyer.contactno AS Buyers_contact_number',
             'buyer.email AS Buyers_email_address',
             'seller.username AS Sellers_username',
+            DB::raw('COALESCE(seller.store_name, seller.username) AS Sellers_storename'),
             'seller.fullname AS Sellers_fullname',
             'seller.contactno AS Sellers_contact_number',
             'seller.email AS Sellers_email_address',
