@@ -290,7 +290,10 @@ class MemberRepository extends AbstractRepository
         });
 
         if($username !== null){
-            $query->where('es_member.username', '=', $username);
+            $query->where(function ($query) use ($username) {
+                $query->where('es_member.username', '=', $username);
+                $query->orWhere('es_member.store_name', '=', $username);
+            });
         }     
 
         $query->groupBy('es_member.id_member');

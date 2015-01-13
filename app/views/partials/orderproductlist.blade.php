@@ -39,7 +39,7 @@
             <td>{{{ $orderproduct->order_id }}}</td>
             <td>{{{ $orderproduct->invoice_no }}}</td>
             <td>{{{ $orderproduct->buyer_seller_id }}}</td>
-            <td>{{{ $orderproduct->buyer_storename }}}</td>
+            <td>{{{ $orderproduct->buyer_seller_storename }}}</td>
             <td>{{{ $orderproduct->product_id }}}</td>
             <td>{{{ $orderproduct->productname }}}</td>
             <td>{{{ $orderproduct->order_quantity }}}</td>        
