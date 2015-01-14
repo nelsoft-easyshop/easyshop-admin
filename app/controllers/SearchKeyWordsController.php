@@ -4,7 +4,6 @@
 class SearchKeyWordsController extends BaseController
 {
 
-
     /**
      *  Render the search keywords page
      *
@@ -13,30 +12,12 @@ class SearchKeyWordsController extends BaseController
     public function showSearchKeyWords()
     {
         $searchkeywordRepository = App::make('SearchKeyWordsRepository');
+        $keywordsResult = $searchkeywordRepository->listAllKeyWords(Input::get("keyword"), 150);
+        $pagination = $keywordsResult->appends(Input::except(['page','_token']))->links();
         return View::make('pages.searchkeywords')
-            ->with('list_of_keywords', $searchkeywordRepository->listAllKeyWords(150));
-
+            ->with('list_of_keywords', $keywordsResult)
+            ->with('pagination', $pagination);
     }
-
-    /**
-     *  Performs custom search
-     *
-     *  @return JSON
-     */
-    public function customSearch()    
-    {
-
-        $searchkeywordRepository = App::make('SearchKeyWordsRepository');    
-        $html =  View::make('partials.keywords')
-                    ->with('list_of_keywords', $searchkeywordRepository->searchKey(Input::get("keyword"), 150))
-                    ->render();
-
-        return Response::json(array('html' => $html));                       
-    }
-  
-
-
-
-
-
 }
+
+

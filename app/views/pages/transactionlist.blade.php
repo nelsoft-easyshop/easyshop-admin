@@ -22,7 +22,7 @@
                 {{ Form::open(array('url' => 'transaction', 'id' => 'transaction-form', 'method' => 'get')) }}
                 
                     <div class='search-box-cont pull-left'>
-                        {{ Form::text('stringFilter', $string, array('class' => 'form-control','placeholder' => 'Order ID/Invoice No./Transaction ID')) }}
+                        {{ Form::text('stringFilter', $string, array('class' => 'form-control','placeholder' => 'Order ID/Invoice No./Transaction ID/Seller or Buyer Names')) }}
                         <span class="input-group-addon search-btn">
                             <span class="glyphicon glyphicon-search"></span>
                         </span>                    
@@ -58,7 +58,7 @@
                         <td>{{{ $order->invoice_no }}}</td>
                         <td>{{{ $order->transaction_id }}}</td>
                         <td>PHP {{{ $order->total }}}</td>
-                        <td>{{{ $order->buyer->username }}}</td>
+                        <td>{{{ $order->buyer->getStoreName() }}}</td>
                         <td>{{{ $order->orderStatus->name }}}</td>
 
                         <td>{{{ $order->dateadded }}}</td>
