@@ -47,7 +47,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="src_storename">Stpre Name</label>
+                            <label for="src_storename">Store Name</label>
                             {{ Form::text('store_name', Input::old('item'), array('id' => 'src_storename', 'class' => 'form-control', 'placeholder' => 'Enter Store Name' ) ) }}
                         </div>
                     </div>
@@ -143,7 +143,7 @@
                     <td>{{{ $member->datecreated }}}</td>
                     <td id="{{{ $member->id_member . '_uname'}}}">{{{ $member->fullname }}}</td>
                     <td>{{{ $member->username }}}</td>
-                    <td>{{{ $member->store_name }}}</td>
+                    <td>{{{ $member->getStoreName() }}}</td>
                     <td>{{{ $member->email }}}</td>
                     <td>{{{ (intval($member->gender) === 0) ? 'Male' : 'Female' }}}</td>
                     <td id="{{{ $member->id_member . '_remarks'}}}">{{{ $member->remarks }}}</td>
