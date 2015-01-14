@@ -236,7 +236,7 @@ class OrderProductRepository extends AbstractRepository
 
         $returnTransaction = $query->paginate($row,[
                                             'es_order.id_order', 
-                                            'es_member.store_name', 
+                                            DB::raw('COALESCE(NULLIF(es_member.store_name, ""), es_member.username) as store_name'),
                                             'es_member.id_member', 
                                             'es_member.fullname', 
                                             'es_member.email', 
