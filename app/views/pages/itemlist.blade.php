@@ -16,7 +16,7 @@
                 <span class="glyphicon glyphicon-zoom-in"></span>
                 ADVANCE SEARCH
             </h4>
-            {{ Form::open(array('url' => 'items', 'id' => 'searchForm', 'method' => 'get')) }}
+            {{ Form::open(array('url' => 'items', 'id' => 'searchForm')) }}
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -102,7 +102,7 @@
                 <ul class="dropdown-menu dd-right" role="menu">
                     <li role="presentation" class="dropdown-header">Search by :</li>
                     <li><a class="drct_search" data="src_item" href="javascript:void(0)">Item</a></li>
-                    <li><a class="drct_search" data="src_seller" href="javascript:void(0)">Seller</a></li>
+                    <li><a class="drct_search" data="src_seller" href="javascript:void(0)">Store Name</a></li>
                     <li><a class="drct_search" data="src_category" href="javascript:void(0)">Category</a></li>
                     <li><a class="drct_search" data="src_brand" href="javascript:void(0)">Brand</a></li>
                     <li class="divider"></li>
@@ -120,7 +120,7 @@
                 <tr>
                     <th>Date Created</th>
                     <th>Item</th>
-                    <th>Seller</th>
+                    <th>Store Name</th>
                     <th>Category</th>
                     <th>Brand</th>
                     <th>SKU</th>
@@ -134,7 +134,7 @@
                 <tr>
                     <td>{{{ $item->createddate }}}</td>
                     <td>{{{ $item->name }}}</td>
-                    <td>{{{ $item->Member->username }}}</td>
+                    <td>{{{ $item->Member->store_name }}}</td>
                     <td>{{{ $item->Category->name }}}</td>
                     <td>{{{ $item->Brand->name }}}</td>
                     <td>{{{ $item->sku }}}</td>
@@ -146,7 +146,7 @@
                 </tbody>
             </table>
         </div>
-        {{ $list_of_items->links() }}
+        {{ $pagination }}
         <div class="clear"></div>
     </div>
 </div>

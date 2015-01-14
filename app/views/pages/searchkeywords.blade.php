@@ -12,14 +12,18 @@
 @section('content')
     <div id="mainsection">
         <div class="tbl-container">
-            <div class="input-group srch_div">
-                <div class="inner-addon left-addon">
-                    <form>
+            {{ Form::open(array('url' => 'searchkeywords', 'id' => 'searchForm')) }}
+                <div class="input-group srch_div" style="padding:12px">
+                    <div class="inner-addon left-addon">
                         <i class="glyphicon glyphicon-search"></i>
-                        <input type="text" id="searchBox" name="keyword" class="form-control" placeholder="Search all keywords" />
-                    </form>
+                            <input type="text" id="searchBox" name="keyword" class="form-control" placeholder="Search Keyword" />
+                    </div>
+                    <div class="input-group-btn">
+                        &nbsp;
+                        <input type="submit" class="btn btn-primary dropdown-toggle">
+                    </div>
                 </div>
-            </div>
+            {{ Form::close() }}  
 
             <div id="table_keywords">
                 <h4 class="tbl-title">
