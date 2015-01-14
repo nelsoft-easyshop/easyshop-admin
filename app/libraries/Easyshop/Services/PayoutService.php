@@ -213,7 +213,7 @@ class PayoutService
         else{
             $orderProductStatus = $this->orderProductStatusRepository->getForwardSellerStatus();
         }
-        var_dump($orderProductStatus);
+
         $hasShippingDetails = true;
         $returnMessage = "";
 
