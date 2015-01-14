@@ -186,7 +186,7 @@ class MemberRepository extends AbstractRepository
             $query->where('es_member.username', '=', $username);
         }     
         $billingInfoChangeDate = \Config::get('transaction.billingInfoChangeDate');   
-        $query->groupBy('es_member.id_member', 'es_billing_info.bank_id',  'es_billing_info.bank_account_name',  'es_billing_info.bank_account_number'  );
+        $query->groupBy('es_member.id_member', 'bank_name',  'account_name',  'account_number'  );
         $completedOrders = $query->get(['es_member.username',
                                        'es_member.email', 
                                        'es_member.contactno', 
