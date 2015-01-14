@@ -2,7 +2,7 @@
     <table class="table table-striped table-hover">
         <tr class='head'>
             <td>Invoice No</td>
-            <td>Username</td>
+            <td>User</td>
             <td>Product Name</td>
             <td>Order Quantity</td>
             <td>Unit Price</td>
@@ -17,7 +17,7 @@
         <tr>
            
             <td>{{{ $orderproduct->order->invoice_no }}}</td>
-            <td>{{{ $orderproduct->order->buyer->username }}}</td>
+            <td>{{{ $orderproduct->order->buyer->getStorename() }}}</td>
             <td>{{{ $orderproduct->product->name }}}</td>
             <td>{{{ $orderproduct->order_quantity }}}</td>   
             <td>{{ number_format($orderproduct->price,2,'.',',') }}</td>

@@ -13,11 +13,20 @@ class Member extends Eloquent
     protected $primaryKey = 'id_member';
     public $timestamps = false;
 
+    /**
+     * Returns the address of a member
+     * @return Address
+     */
     public function address()
     {
         return $this->hasOne('Address', 'id_member');
     }
 
+    /**
+     * Returns the products of a certain member
+     * @param boolean $isViewable
+     * @return Product[]
+     */
     public function product($isViewable=false)
     {
         if($isViewable){
@@ -25,6 +34,20 @@ class Member extends Eloquent
         }
 
         return $this->hasMany('Product', 'member_id');
+    }
+    
+    /**
+     * Returns the storename of the member entity
+     * @return string
+     */
+    public function getStoreName()
+    {
+        $trimmedStorename = trim($this->attributes['store_name']);
+        if ( strlen($trimmedStorename) <= 0 || !$trimmedStorename ){ 
+            $storename = $this->attributes['username'];
+        }
+        $storename = $this->attributes['store_name'];
+        return $storename;
     }
 }
 
