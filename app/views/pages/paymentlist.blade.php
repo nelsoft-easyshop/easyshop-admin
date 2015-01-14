@@ -22,7 +22,7 @@
             
                 {{ Form::open(array('url' => 'pay', 'method' => 'get')) }}
 
-                        {{ Form::text('username', $username, array('id' => 'username', 'placeholder' => 'Username')) }}
+                        {{ Form::text('username', $username, array('id' => 'username', 'placeholder' => 'Storename/Username')) }}
                         
                         <select id="year" name="year">                     
                             @foreach($yearSelection as $year)
@@ -59,7 +59,7 @@
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Username</th>
+                        <th>Storename</th>
                         <th>Bank</th>
                         <th>Account Name</th>
                         <th>Account No.</th>
@@ -70,7 +70,7 @@
                 </thead>
                 @foreach($accountsToPay as $account)
                     <tr class="seller_detail" data-order-product-ids = "{{{ $account->order_product_ids }}}" >
-                        <td class="td_username">{{{ $account->username }}}</td>
+                        <td class="td_username">{{{ $account->storename }}}</td>
                         <td class="td_bankname">{{{ $account->bank_name }}} </td>
                         <td class="td_accountname">{{{ $account->account_name }}} </td>
                         <td class="td_accountno">{{{ $account->account_number }}} </td>

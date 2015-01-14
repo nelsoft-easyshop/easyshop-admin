@@ -17,11 +17,11 @@
             <th>STATE REGION</th>
             <th>COUNTRY</th>
             <th>DELIVERY STATUS</th>
-            <th>BUYER'S USERNAME</th>
+            <th>BUYER'S STORENAME/USERNAME</th>
             <th>BUYER'S FULLNAME</th>
             <th>BUYER'S CONTACT NUMBER</th>
             <th>BUYER'S EMAIL ADDRESS</th>
-            <th>SELLER'S USERNAME</th>
+            <th>SELLER'S STORENAME/USERNAME</th>
             <th>SELLER'S FULLNAME</th>
             <th>SELLER'S CONTACT NUMBER</th>
             <th>SELLER'S EMAIL ADDRESS</th>
@@ -48,11 +48,11 @@
             <td>{{{ $record['Region'] }}}</td>
             <td>{{{ $record['Country'] }}}</td>
             <td>{{{ $record['Delivery_status'] }}}</td>
-            <td>{{{ $record['Buyers_username'] }}}</td>
+            <td>{{{ $record['Buyers_storename'] }}} / {{{ $record['Buyers_username'] }}}</td>
             <td>{{{ $record['Buyers_fullname'] }}}</td>
             <td style="text-align: center" >{{{ $record['Buyers_contact_number'] }}}</td>
             <td>{{{ $record['Buyers_email_address'] }}}</td>
-            <td>{{{ $record['Sellers_username'] }}}</td>
+            <td>{{{ $record['Sellers_storename'] }}} / {{{ $record['Sellers_username'] }}}</td>
             <td>{{{ $record['Sellers_fullname'] }}}</td>
             <td style="text-align: center" >{{{ $record['Sellers_contact_number'] }}}</td>
             <td>{{{ $record['Sellers_email_address'] }}}</td>
