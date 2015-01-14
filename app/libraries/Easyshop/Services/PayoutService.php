@@ -202,18 +202,18 @@ class PayoutService
                                                 $tagType,
                                                 $adminMemberId,
                                                 $orderProductIds,
-                                                $forSeller = true)
+                                                $isPayOut = true)
     {
 
         $checkTagTable = $this->orderProductTagRepository->getOrderTags($orderProductIds, $memberId);
 
-        if($forSeller) {
+        if(!$isPayOut) {
             $orderProductStatus = $this->orderProductStatusRepository->getReturnBuyerStatus();
         }
         else{
             $orderProductStatus = $this->orderProductStatusRepository->getForwardSellerStatus();
         }
-
+        var_dump($orderProductStatus);
         $hasShippingDetails = true;
         $returnMessage = "";
 
