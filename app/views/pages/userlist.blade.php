@@ -47,8 +47,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="src_username">Username</label>
-                            {{ Form::text('username', Input::old('item'), array('id' => 'src_username', 'class' => 'form-control', 'placeholder' => 'Enter username' ) ) }}
+                            <label for="src_storename">Store Name</label>
+                            {{ Form::text('store_name', Input::old('item'), array('id' => 'src_storename', 'class' => 'form-control', 'placeholder' => 'Enter Store Name' ) ) }}
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                     <ul class="dropdown-menu dd-right" role="menu">
                         <li role="presentation" class="dropdown-header">Search by :</li>
                         <li><a class="drct_search" data="src_fullname" href="javascript:void(0)">Fullname</a></li>
-                        <li><a class="drct_search" data="src_username" href="javascript:void(0)">Username</a></li>
+                        <li><a class="drct_search" data="src_storename" href="javascript:void(0)">Store Name</a></li>
                         <li><a class="drct_search" data="src_number" href="javascript:void(0)">Contact Number</a></li>
                         <li><a class="drct_search" data="src_email" href="javascript:void(0)">Email</a></li>
                         <li class="divider"></li>
@@ -116,6 +116,7 @@
                     <th>Date Created</th>
                     <th>Fullname</th>
                     <th>Username</th>
+                    <th>Store Name</th>
                     <th>Email</th>
                     <th>Gender</th>
                     <th>Remarks</th>
@@ -142,6 +143,7 @@
                     <td>{{{ $member->datecreated }}}</td>
                     <td id="{{{ $member->id_member . '_uname'}}}">{{{ $member->fullname }}}</td>
                     <td>{{{ $member->username }}}</td>
+                    <td>{{{ $member->getStoreName() }}}</td>
                     <td>{{{ $member->email }}}</td>
                     <td>{{{ (intval($member->gender) === 0) ? 'Male' : 'Female' }}}</td>
                     <td id="{{{ $member->id_member . '_remarks'}}}">{{{ $member->remarks }}}</td>
