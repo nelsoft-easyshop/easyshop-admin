@@ -19,12 +19,12 @@ class MemberRepository extends AbstractRepository
     /**
      * Get Number of uploaded products by users
      * @return Array
-     */  
+     */
     public function getNumberOfUploadedProductsPerAccount()
     {
         $findProductOfUsers = DB::table('es_member')
                             ->leftJoin("es_product","es_product.member_id","=","es_member.id_member")
-                            ->select(DB::raw("es_member.username as username, COUNT(es_product.id_product) as uploadCount"))
+                            ->select(DB::raw("COALESCE(NULLIF(es_member.store_name, ''), es_member.username) as store_name, COUNT(es_product.id_product) as uploadCount"))
                             ->where("es_product.is_draft","=",0)
                             ->where("es_product.is_delete","=",0)
                             ->orderBy("uploadCount", "desc")
@@ -319,8 +319,8 @@ class MemberRepository extends AbstractRepository
         if($userData['fullname']){
             $member->where('es_member.fullname', 'LIKE', '%' . $userData['fullname'] . '%');
         }
-        if($userData['username']){
-            $member->where('es_member.username', 'LIKE', '%' . $userData['username'] . '%');
+        if($userData['store_name']){
+            $member->where('es_member.store_name', 'LIKE', '%' . $userData['store_name'] . '%');
         }
         if($userData['contactno']){
             $member->where('es_member.contactno', 'LIKE', '%' . $userData['contactno'] . '%');

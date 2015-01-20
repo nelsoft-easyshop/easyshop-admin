@@ -31,7 +31,7 @@
                     <ul class="dropdown-menu dd-right" role="menu">
                         <li role="presentation" class="dropdown-header">Search by :</li>
                         <li><a class="drct_search" data="src_fullname" href="javascript:void(0)">Fullname</a></li>
-                        <li><a class="drct_search" data="src_username" href="javascript:void(0)">Username</a></li>
+                        <li><a class="drct_search" data="src_storename" href="javascript:void(0)">Store Name</a></li>
                         <li><a class="drct_search" data="src_number" href="javascript:void(0)">Contact Number</a></li>
                         <li><a class="drct_search" data="src_email" href="javascript:void(0)">Email</a></li>
                         <li class="divider"></li>
@@ -43,7 +43,7 @@
                     </ul>
                 </div>
                 <input type="hidden" id="src_fullname" name="fullname" />
-                <input type="hidden" id="src_username" name="username" />
+                <input type="hidden" id="src_storename" name="store_name" />
                 <input type="hidden" id="src_number" name="number" />
                 <input type="hidden" id="src_email" name="email" />
                 <input type="hidden" id="src_tag" name="tag" />
@@ -58,7 +58,7 @@
                             <th>Transaction ID</th>
                             <th>Invoice Number</th>
                             <th>Seller Fullname</th>
-                            <th>Seller Username</th>
+                            <th>Seller Store Name</th>
                             <th>Number of Products</th> 
                             <th>Seller Email</th>
                             <th>Seller Contact No.</th>
@@ -74,7 +74,7 @@
                             <td class="td_transaction_id">{{{ $record->transaction_id }}}</td>
                             <td class="td_invoice_no">{{{ $record->invoice_no }}}</td>
                             <td class="td_fullname" >{{{ $record->fullname }}}</td>
-                            <td class="td_username" data-member-id="{{{ $record->id_member }}}" >{{{ $record->username }}}</td>
+                            <td class="td_username" data-member-id="{{{ $record->id_member }}}" >{{{ $record->store_name }}}</td>
                             <td class="td_total">{{{ $record->count }}}</td>
                             <td class="td_email">{{{ $record->email }}}</td>
                             <td class="td_contact">{{{ ($record->contactno) ? $record->contactno : 'N/A' }}}</td>
