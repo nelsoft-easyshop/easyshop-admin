@@ -78,6 +78,7 @@ class NewHomeContentManagerController extends BaseController
         $index = 0;
         $categoryProductPanel = [];
         $categoryProductPanelList = [];
+        $categorySection = [];
         foreach($this->map->categorySection as $categoryPanel)
         {
             foreach($categoryPanel->productPanel as $productPanel)
@@ -209,7 +210,8 @@ class NewHomeContentManagerController extends BaseController
         $productEntity = App::make('ProductRepository');
         $categoryIndex = 0;
         $categoryProductPanel = [];        
-        $categoryProductPanelList = [];    
+        $categoryProductPanelList = [];   
+        $categorySection = [];
 
         $xmlString = $this->XMLService->getNewHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
