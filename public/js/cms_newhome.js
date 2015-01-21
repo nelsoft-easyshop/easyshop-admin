@@ -2078,7 +2078,6 @@ function imageprev(input) {
                         $(".cropFormButton").hide();
                         showErrorModal("Sorry, but the dimensions of the image must be at least "+customWidth+"px x "+customHeight+"px.");
                         $("#previewImage").modal("hide");
-                        $("#cropError").html("The dimensions of the image must be at least "+customWidth+"px x "+customHeight+"px");
                     }
                     jcrop_api = $.Jcrop($('#user_image_prev'),{
                         aspectRatio: customWidth/customHeight,
