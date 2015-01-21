@@ -433,6 +433,11 @@
 
     $("#previewImage").on('click','#editSubSlider',function (e) { 
         formSubmitted = 1;
+        var image_x = $(this).closest("form").find("#image_x").val().toString();
+        var image_y = $(this).closest("form").find("#image_y").val().toString();
+        var image_w = $(this).closest("form").find("#image_w").val().toString();
+        var image_h = $(this).closest("form").find("#image_h").val().toString();
+
         var index = $(this).closest("form").find("#editModalSliderIndex").val().toString();
         var subIndex = $(this).closest("form").find("#editModalSliderSubIndex").val().toString();
         var url = newHomeCmsLink + "/editSubSlider";;
@@ -441,7 +446,7 @@
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
         target = target == "" ? "/" : target;
-        var hash =  hex_sha1(index + subIndex + userid + value + target  + password);
+        var hash =  hex_sha1(image_x + image_y + image_w + image_h + value + index + subIndex + userid + target  + password);                
         $(this).closest("form").find("#editHashMainSlide").val(hash);
 
         var editSlideForm_ = "#cropForm";
@@ -1729,6 +1734,7 @@
 
     function editSubSlider(editSlideForm_, url, tableSelector, reloadurl)
     {
+        loader.showPleaseWait();          
         $(editSlideForm_).ajaxForm({
 
             url: url,
