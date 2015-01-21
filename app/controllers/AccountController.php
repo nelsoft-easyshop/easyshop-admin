@@ -76,7 +76,7 @@ class AccountController extends BaseController
                     ->with("adminObj",$adminObj)
                     ->render();  
 
-        return Response::json(array('html' => $html));                           
+        return Response::json(['html' => $html]);
     }
 
     /**
@@ -87,7 +87,7 @@ class AccountController extends BaseController
     {
         $adminRepo = App::make('AdminMemberRepository');
         $result = $adminRepo->resetPassword(Input::get("id"), Input::get("password"));
-        return Response::json(array('result' => $result));   
+        return Response::json(['result' => $result]);   
     }
 
     /**
