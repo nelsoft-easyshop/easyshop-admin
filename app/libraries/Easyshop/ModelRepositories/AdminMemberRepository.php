@@ -11,9 +11,9 @@ class AdminMemberRepository
     * @param string $slug
     * @return Entity
     */
-    public function getAdminMemberById($id, $isForEditAccount = false)
+    public function getAdminMemberById($id)
     {
-        return !$isForEditAccount ? AdminMember::find($id)->password: AdminMember::find($id);
+        return AdminMember::find($id);
     }
 
     /**

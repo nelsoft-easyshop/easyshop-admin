@@ -70,8 +70,8 @@ class AccountController extends BaseController
      */
     public function getAdminAccount()
     {
-        $adminEntity = App::make('AdminMemberRepository');
-        $adminObj = $adminEntity->getAdminMemberById(Input::get("userId"), true);
+        $adminRepo = App::make('AdminMemberRepository');
+        $adminObj = $adminRepo->getAdminMemberById(Input::get("userId"));
         $html =  View::make('partials.editadminaccount')
                     ->with("adminObj",$adminObj)
                     ->render();  
