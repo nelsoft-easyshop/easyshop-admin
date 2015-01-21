@@ -290,7 +290,7 @@
     });
 
     $(".tag_default").on('click', function(){
-        window.location = '/contact/seller';
+        window.location = '/contact/buyer';
     });
 })(jQuery);
 
