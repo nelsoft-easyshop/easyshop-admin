@@ -59,6 +59,8 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('managerole', array('uses' => 'AccountController@showAdminLists'));    
     Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
     Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));   
+    Route::put('getadminaccount', array('uses' => 'AccountController@getAdminAccount'));   
+    Route::put('resetPassword', array('uses' => 'AccountController@resetPassword'));   
 
     Route::get('raffle', array('uses' => 'RaffleManagerController@showRaffle'));    
     Route::post('doRaffle', array('uses' => 'RaffleManagerController@doRaffle'));    
