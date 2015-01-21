@@ -944,7 +944,7 @@
         data = { value:value, userid:userid,  password:password, hash:hash, callback:'?'};
         
         var count = parseInt($(".categorySectionCount").last().text());
-        if(count < minimumCategorySectionProductPanel) {
+        if(isNaN(count) || count < minimumCategorySectionProductPanel) {
             loader.showPleaseWait();                       
             $.ajax({
                 type: 'GET',
