@@ -8,6 +8,12 @@
         }
     });
 
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+    });    
 
     var userid = $("#userid").val();
     var password = $("#password").val();
@@ -412,6 +418,12 @@
     $("#previewImage").on('click','#editAdsSection',function (e) { 
 
         loader.showPleaseWait();
+
+        var image_x = $(this).closest("form").find("#image_x").val().toString();
+        var image_y = $(this).closest("form").find("#image_y").val().toString();
+        var image_w = $(this).closest("form").find("#image_w").val().toString();
+        var image_h = $(this).closest("form").find("#image_h").val().toString();
+
         var index = $(this).closest("form").find("#editAdsIndex").val().toString();
         var url = newHomeCmsLink + "/setAdsSection";
         var userid = $(this).closest("form").find("#userid").val().toString();
@@ -422,7 +434,7 @@
             target = "/";
             $(this).closest("form").find("#target").val("/");            
         }
-        var hash =  hex_sha1(index + userid + value + target  + password);
+        var hash = hex_sha1(image_x + image_y + image_w + image_h + value + index + userid + target + password);
         var form = "#cropForm";
         $(this).closest("form").find("#editAdsSectionHash").val(hash);
         editAdsSectionForm(form, url);
@@ -433,6 +445,11 @@
 
     $("#previewImage").on('click','#editSubSlider',function (e) { 
         formSubmitted = 1;
+        var image_x = $(this).closest("form").find("#image_x").val().toString();
+        var image_y = $(this).closest("form").find("#image_y").val().toString();
+        var image_w = $(this).closest("form").find("#image_w").val().toString();
+        var image_h = $(this).closest("form").find("#image_h").val().toString();
+
         var index = $(this).closest("form").find("#editModalSliderIndex").val().toString();
         var subIndex = $(this).closest("form").find("#editModalSliderSubIndex").val().toString();
         var url = newHomeCmsLink + "/editSubSlider";;
@@ -441,7 +458,7 @@
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
         target = target == "" ? "/" : target;
-        var hash =  hex_sha1(index + subIndex + userid + value + target  + password);
+        var hash =  hex_sha1(image_x + image_y + image_w + image_h + value + index + subIndex + userid + target  + password);                
         $(this).closest("form").find("#editHashMainSlide").val(hash);
 
         var editSlideForm_ = "#cropForm";
@@ -459,12 +476,19 @@
         
         loader.showPleaseWait();     
 
+        var image_x = $(this).closest("form").find("#image_x").val().toString();
+        var image_y = $(this).closest("form").find("#image_y").val().toString();
+        var image_w = $(this).closest("form").find("#image_w").val().toString();
+        var image_h = $(this).closest("form").find("#image_h").val().toString();
+
         var url = newHomeCmsLink + "/addAdds";
         var target = $(this).closest("form").find("#target").val().toString();
         var userid = $(this).closest("form").find("#userid").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();   
         var password = $(this).closest("form").find("#password").val().toString();
-        var hash =  hex_sha1(value + target + userid + password);        
+
+        var hash =  hex_sha1(image_x + image_y + image_w + image_h + value + target + userid  + password);
+
         $(this).closest("form").find("#hashAddAds").val(hash);
         var form = "#cropForm";
         if(value == "") {
@@ -878,7 +902,7 @@
         else {
             var count = parseInt($(".parentSliderCount").last().text());
         }
-        if(count > 0) {
+        if(count > 1) {
             var $confirm = confirm("Are you sure you want to remove?");   
             if($confirm) {
                 loader.showPleaseWait();              
@@ -1729,6 +1753,7 @@
 
     function editSubSlider(editSlideForm_, url, tableSelector, reloadurl)
     {
+        loader.showPleaseWait();          
         $(editSlideForm_).ajaxForm({
 
             url: url,
@@ -1968,7 +1993,7 @@
 
             var clone = $("#cloneForm_addAds").html();
             $("#contentPreview").html(clone);
-            setImagesCropSizes(null, null, null, "adsImage");               
+            setImagesCropSizes(0, null, null, "adsImage");               
             var actionLink = newHomeCmsLink + "/addAdds";
             $(".cropFormButton").attr("id","addAdSection");            
             $(".cropFormButton").attr("data-url",actionLink);             
@@ -1977,7 +2002,7 @@
 
         }
         else if(nodename == "editAds"){
-            setImagesCropSizes(null, null, null, "adsImage");  
+            setImagesCropSizes(0, null, null, "adsImage");  
             var index = $(this).data("index"); 
             var clone = $("#clone_editAdsCrop_"+index).html();                      
             $("#contentPreview").find("#editAdsIndex").val(index);
@@ -2076,7 +2101,8 @@ function imageprev(input) {
 
                     if(width < customWidth || height < customHeight) {
                         $(".cropFormButton").hide();
-                        $("#cropError").html("The dimensions of the image must be at least "+customWidth+"px x "+customHeight+"px");
+                        showErrorModal("Sorry, but the dimensions of the image must be at least "+customWidth+"px x "+customHeight+"px.");
+                        $("#previewImage").modal("hide");
                     }
                     jcrop_api = $.Jcrop($('#user_image_prev'),{
                         aspectRatio: customWidth/customHeight,
