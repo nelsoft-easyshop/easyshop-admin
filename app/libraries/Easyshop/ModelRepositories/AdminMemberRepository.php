@@ -13,7 +13,7 @@ class AdminMemberRepository
     */
     public function getAdminMemberById($id)
     {
-        return AdminMember::find($id)->password;
+        return AdminMember::find($id);
     }
 
     /**
@@ -79,6 +79,20 @@ class AdminMemberRepository
         $adminEntity->is_active = $activation;
         $isSuccessful = $adminEntity->save();        
         return $isSuccessful;        
+    }    
+
+    /**
+     *  Resets password
+     *
+     *  @param int $adminId
+     *  @param string $password
+     *  @return bool
+     */
+    public function resetPassword($adminId, $password)
+    {            
+        $adminEntity = AdminMember::find($adminId);
+        $adminEntity->password = \Hash::make($password);
+        return $adminEntity->save();        
     }    
 
     /**

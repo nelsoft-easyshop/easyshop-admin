@@ -36,7 +36,8 @@ class NewHomeContentManagerController extends BaseController
             $categoryNavigation[] = $map;
         }         
 
-        $adminEntity = App::make('AdminMemberRepository');          
+        $adminRepo = App::make('AdminMemberRepository');   
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());                   
         $categoryRepository = App::make('CategoryRepository');          
 
         $categoryLists = [];
@@ -134,7 +135,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('childCategoryLists', $childCategoryLists)
                     ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))
                     ->with('categoryNavigation', $categoryNavigation)
-                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))
+                    ->with('password', $adminObject->password)
                     ->with('sliderSection', $sliders)
                     ->with('topProducts', $topProducts)
                     ->with('topSellers', $topSellers)
@@ -165,14 +166,15 @@ class NewHomeContentManagerController extends BaseController
         {
             $brandsLists[] = $brandRepository->getBrandById($brands);                  
 
-        }   
-        $adminEntity = App::make('AdminMemberRepository');            
+        }  
+        $adminRepo = App::make('AdminMemberRepository');            
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());       
 
         return View::make('partials.brandsection')        
                     ->with('allBrandsLists', $brandRepository->getAllBrands())
                     ->with('brandsLists', $brandsLists)
                     ->with('userid', Auth::id())  
-                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))          
+                    ->with('password', $adminObject->password)          
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());            
 
@@ -184,8 +186,8 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAdSection()
     {
-        $adminEntity = App::make('AdminMemberRepository');  
-
+        $adminRepo = App::make('AdminMemberRepository');  
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());  
         $xmlString = $this->XMLService->getNewHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
@@ -196,7 +198,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.adssection')        
                     ->with('adSection', array_flatten($adsSection))
                     ->with('userid', Auth::id())  
-                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))          
+                    ->with('password', $adminObject->password)          
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());          
     }
@@ -272,7 +274,6 @@ class NewHomeContentManagerController extends BaseController
     public function getSubCategoriesSection($index)
     {
         $index = (int) $index;
-        $adminEntity = App::make('AdminMemberRepository');
         $categorySection = [];    
 
         $xmlString = $this->XMLService->getNewHomeXml();
@@ -295,7 +296,8 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getProductPanel()
     {
-        $adminEntity = App::make('AdminMemberRepository');             
+        $adminRepo = App::make('AdminMemberRepository');
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());                    
         $productEntity = App::make('ProductRepository');
         $product = [];  
 
@@ -314,7 +316,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.productpanel')        
                     ->with('productList',array_flatten($product))
                     ->with('userid', Auth::id())  
-                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))          
+                    ->with('password', $adminObject->password)          
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());  
     }
@@ -325,7 +327,8 @@ class NewHomeContentManagerController extends BaseController
     public function getSlideSection($index)
     {
         $index = (int)$index;
-        $adminEntity = App::make('AdminMemberRepository'); 
+        $adminRepo = App::make('AdminMemberRepository');
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());          
         $sliderXmlString = $this->XMLService->getTempHomeXml();
         $this->map = simplexml_load_string(trim($sliderXmlString));
 
@@ -341,7 +344,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('sliderIndex', $index)
                     ->with('slides', $sliders)
                     ->with('userid', Auth::id())  
-                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))    
+                    ->with('password', $adminObject->password)    
                     ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))                    
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());  
@@ -352,8 +355,8 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAllSliders()
     {
-        $adminEntity = App::make('AdminMemberRepository'); 
-
+        $adminRepo = App::make('AdminMemberRepository'); 
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());  
         $sliderXmlString = $this->XMLService->getTempHomeXml();
         $this->map = simplexml_load_string(trim($sliderXmlString));  
 
@@ -367,7 +370,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.slidersection')        
                     ->with('sliderSection', $sliders)
                     ->with('userid', Auth::id())  
-                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))    
+                    ->with('password', $adminObject->password)    
                     ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))                    
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());  
@@ -378,7 +381,8 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getOtherCategories()
     {
-        $adminEntity = App::make('AdminMemberRepository');          
+        $adminRepo = App::make('AdminMemberRepository');
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());         
         $categoryRepository = App::make('CategoryRepository');  
         $otherCategories = [];       
 
@@ -398,7 +402,7 @@ class NewHomeContentManagerController extends BaseController
 
         return View::make('partials.othercategories')
                     ->with('userid', Auth::id())
-                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))                       
+                    ->with('password', $adminObject->password)                       
                     ->with('otherCategories', $otherCategories)
                     ->with('childCategoryLists', $childCategoryLists)
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
@@ -410,8 +414,8 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getTopSellers()
     {
-        $adminEntity = App::make('AdminMemberRepository');          
-
+        $adminRepo = App::make('AdminMemberRepository');          
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());  
         $xmlString = $this->XMLService->getNewHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
@@ -423,7 +427,7 @@ class NewHomeContentManagerController extends BaseController
         
         return View::make('partials.topsellers')
                     ->with('userid', Auth::id())
-                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))                       
+                    ->with('password', $adminObject->password)                       
                     ->with('topSellers', $topSellers)
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
@@ -434,7 +438,8 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getTopProducts()
     {
-        $adminEntity = App::make('AdminMemberRepository');  
+        $adminRepo = App::make('AdminMemberRepository');
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());          
         $topProducts = [];   
 
         $xmlString = $this->XMLService->getNewHomeXml();
@@ -447,7 +452,7 @@ class NewHomeContentManagerController extends BaseController
         
         return View::make('partials.topproducts')
                     ->with('userid', Auth::id())
-                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))                       
+                    ->with('password', $adminObject->password)                       
                     ->with('topProducts', $topProducts)
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
@@ -458,7 +463,8 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getNewArrivals()
     {
-        $adminEntity = App::make('AdminMemberRepository'); 
+        $adminRepo = App::make('AdminMemberRepository'); 
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());           
         $newArrivals = [];           
 
         $xmlString = $this->XMLService->getNewHomeXml();
@@ -471,7 +477,7 @@ class NewHomeContentManagerController extends BaseController
         
         return View::make('partials.newarrivals')
                     ->with('userid', Auth::id())
-                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))                       
+                    ->with('password', $adminObject->password)                       
                     ->with('newArrivals', $newArrivals)
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
@@ -482,13 +488,14 @@ class NewHomeContentManagerController extends BaseController
      */
     public function getSliderPreview()
     {
-        $adminEntity = App::make('AdminMemberRepository');            
+        $adminRepo = App::make('AdminMemberRepository');
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());                        
         $html =  View::make("partials.sliderpreview")
                     ->with("newHomeCmsLink",$this->XMLService->getNewHomeCmsLink())
                     ->with('userid', Auth::id())
                     ->with('hash', Input::get("hash"))
                     ->with('commit', Input::get("commit"))
-                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))                    
+                    ->with('password', $adminObject->password)                    
                     ->render();
         return Response::json(['html' => $html]);           
                     
@@ -499,7 +506,9 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAllCategories()
     {
-        $adminEntity = App::make('AdminMemberRepository');          
+        $adminRepo = App::make('AdminMemberRepository');    
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());    
+
         $categoryRepository = App::make('CategoryRepository');          
         $productEntity = App::make('ProductRepository');
 
@@ -538,7 +547,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('categorySection', $categorySection)
                     ->with('categoryLists', $categoryLists)
                     ->with('categoryProductPanelList', $categoryProductPanelList)
-                    ->with('password', $adminEntity->getAdminMemberById(Auth::id()))
+                    ->with('password', $adminObject->password)
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());              
 
