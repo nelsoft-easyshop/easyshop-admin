@@ -1968,7 +1968,7 @@
 
             var clone = $("#cloneForm_addAds").html();
             $("#contentPreview").html(clone);
-            setImagesCropSizes(null, null, null, "adsImage");               
+            setImagesCropSizes(0, null, null, "adsImage");               
             var actionLink = newHomeCmsLink + "/addAdds";
             $(".cropFormButton").attr("id","addAdSection");            
             $(".cropFormButton").attr("data-url",actionLink);             
@@ -1977,7 +1977,7 @@
 
         }
         else if(nodename == "editAds"){
-            setImagesCropSizes(null, null, null, "adsImage");  
+            setImagesCropSizes(0, null, null, "adsImage");  
             var index = $(this).data("index"); 
             var clone = $("#clone_editAdsCrop_"+index).html();                      
             $("#contentPreview").find("#editAdsIndex").val(index);
@@ -2076,6 +2076,8 @@ function imageprev(input) {
 
                     if(width < customWidth || height < customHeight) {
                         $(".cropFormButton").hide();
+                        showErrorModal("Sorry, but the dimensions of the image must be at least "+customWidth+"px x "+customHeight+"px.");
+                        $("#previewImage").modal("hide");
                         $("#cropError").html("The dimensions of the image must be at least "+customWidth+"px x "+customHeight+"px");
                     }
                     jcrop_api = $.Jcrop($('#user_image_prev'),{
