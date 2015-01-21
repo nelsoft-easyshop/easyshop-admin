@@ -146,6 +146,7 @@
                         $("#changeTextError").html(errors);
                         $("#error").modal('show');  
                         $("#loading").modal('hide');
+
                    
                     }
                 }
@@ -157,6 +158,9 @@
                  $("#loading").modal('hide');
             }
         });
+        $("#inputUsername").val("");
+        $("#inputPassword").val("");
+        $("#inputFullname").val("");
     }    
 
 })(jQuery);
