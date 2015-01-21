@@ -878,7 +878,7 @@
         else {
             var count = parseInt($(".parentSliderCount").last().text());
         }
-        if(count > 0) {
+        if(count > 1) {
             var $confirm = confirm("Are you sure you want to remove?");   
             if($confirm) {
                 loader.showPleaseWait();              
