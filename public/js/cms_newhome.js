@@ -8,6 +8,12 @@
         }
     });
 
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+    });    
 
     var userid = $("#userid").val();
     var password = $("#password").val();
@@ -412,6 +418,12 @@
     $("#previewImage").on('click','#editAdsSection',function (e) { 
 
         loader.showPleaseWait();
+
+        var image_x = $(this).closest("form").find("#image_x").val().toString();
+        var image_y = $(this).closest("form").find("#image_y").val().toString();
+        var image_w = $(this).closest("form").find("#image_w").val().toString();
+        var image_h = $(this).closest("form").find("#image_h").val().toString();
+
         var index = $(this).closest("form").find("#editAdsIndex").val().toString();
         var url = newHomeCmsLink + "/setAdsSection";
         var userid = $(this).closest("form").find("#userid").val().toString();
@@ -422,7 +434,7 @@
             target = "/";
             $(this).closest("form").find("#target").val("/");            
         }
-        var hash =  hex_sha1(index + userid + value + target  + password);
+        var hash = hex_sha1(image_x + image_y + image_w + image_h + value + index + userid + target + password);
         var form = "#cropForm";
         $(this).closest("form").find("#editAdsSectionHash").val(hash);
         editAdsSectionForm(form, url);
@@ -459,12 +471,19 @@
         
         loader.showPleaseWait();     
 
+        var image_x = $(this).closest("form").find("#image_x").val().toString();
+        var image_y = $(this).closest("form").find("#image_y").val().toString();
+        var image_w = $(this).closest("form").find("#image_w").val().toString();
+        var image_h = $(this).closest("form").find("#image_h").val().toString();
+
         var url = newHomeCmsLink + "/addAdds";
         var target = $(this).closest("form").find("#target").val().toString();
         var userid = $(this).closest("form").find("#userid").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();   
         var password = $(this).closest("form").find("#password").val().toString();
-        var hash =  hex_sha1(value + target + userid + password);        
+
+        var hash =  hex_sha1(image_x + image_y + image_w + image_h + value + target + userid  + password);
+
         $(this).closest("form").find("#hashAddAds").val(hash);
         var form = "#cropForm";
         if(value == "") {
