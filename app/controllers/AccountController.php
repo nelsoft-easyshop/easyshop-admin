@@ -132,6 +132,7 @@ class AccountController extends BaseController
             }
         }
         else {
+            Input::flash();
             return Response::json(array('errors' => $validator->errors()));
         }
     }
