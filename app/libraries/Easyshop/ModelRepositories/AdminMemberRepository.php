@@ -11,9 +11,9 @@ class AdminMemberRepository
     * @param string $slug
     * @return Entity
     */
-    public function getAdminMemberById($id)
+    public function getAdminMemberById($id, $isForEditAccount = false)
     {
-        return AdminMember::find($id)->password;
+        return !$isForEditAccount ? AdminMember::find($id)->password: AdminMember::find($id);
     }
 
     /**
@@ -79,6 +79,20 @@ class AdminMemberRepository
         $adminEntity->is_active = $activation;
         $isSuccessful = $adminEntity->save();        
         return $isSuccessful;        
+    }    
+
+    /**
+     *  Resets password
+     *
+     *  @param int $adminId
+     *  @param string $password
+     *  @return bool
+     */
+    public function resetPassword($adminId, $password)
+    {            
+        $adminEntity = AdminMember::find($adminId);
+        $adminEntity->password = \Hash::make($password);
+        return $adminEntity->save();        
     }    
 
     /**
