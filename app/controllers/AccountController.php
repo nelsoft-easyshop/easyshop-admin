@@ -65,6 +65,32 @@ class AccountController extends BaseController
     }
 
     /**
+     * Retrieves account details
+     * @return JSON
+     */
+    public function getAdminAccount()
+    {
+        $adminEntity = App::make('AdminMemberRepository');
+        $adminObj = $adminEntity->getAdminMemberById(Input::get("userId"), true);
+        $html =  View::make('partials.editadminaccount')
+                    ->with("adminObj",$adminObj)
+                    ->render();  
+
+        return Response::json(array('html' => $html));                           
+    }
+
+    /**
+     * Resets password
+     * @return JSON
+     */
+    public function resetPassword()
+    {
+        $adminRepo = App::make('AdminMemberRepository');
+        $result = $adminRepo->resetPassword(Input::get("id"), Input::get("password"));
+        return Response::json(array('result' => $result));   
+    }
+
+    /**
      *  Render the registration page
      *
      *  @return View
