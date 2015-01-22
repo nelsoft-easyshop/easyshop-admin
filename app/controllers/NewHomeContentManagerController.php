@@ -517,6 +517,7 @@ class NewHomeContentManagerController extends BaseController
 
         $categoryProductPanel = [];        
         $categoryProductPanelList = [];        
+        $categorySection = [];
         $index = 0;
         foreach($this->map->categorySection as $categoryPanel)
         {
