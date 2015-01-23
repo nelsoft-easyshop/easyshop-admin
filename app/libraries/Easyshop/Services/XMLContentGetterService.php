@@ -111,8 +111,13 @@ class XMLContentGetterService
      *
      *  @return json
      */
-    public function syncXMLFiles()
+    public function syncXMLFiles($id, $password)
     {
-        return file_get_contents(\Config::get('easyshop/webservice.syncXmlFileLink'));
+        $syncXmlLink = \Config::get('easyshop/webservice.syncXmlFileLink');
+        $syncXmlLink .= "?".http_build_query(array_merge($_GET, [
+            "userid" => \Auth::id(), 
+            "hash" => sha1(\Auth::id().$password)
+        ]));
+        return file_get_contents($syncXmlLink);
     }          
 }
