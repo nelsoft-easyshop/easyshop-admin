@@ -114,5 +114,15 @@ class XMLContentGetterService
     public function syncXMLFiles()
     {
         return file_get_contents(\Config::get('easyshop/webservice.syncXmlFileLink'));
-    }          
+    }   
+
+    /**
+     * Returns assets link
+     * @return json
+     */
+    public function getAssetsLink()       
+    {
+        return file_get_contents(\Config::get('easyshop/webservice.assetsLink'));
+
+    }
 }
