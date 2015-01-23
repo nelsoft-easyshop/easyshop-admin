@@ -902,7 +902,7 @@
         else {
             var count = parseInt($(".parentSliderCount").last().text());
         }
-        if(count > 1) {
+        if(nodename === "categorySectionPanel" || count > 1) {
             var $confirm = confirm("Are you sure you want to remove?");   
             if($confirm) {
                 loader.showPleaseWait();              
