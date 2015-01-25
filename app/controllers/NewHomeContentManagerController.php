@@ -19,7 +19,10 @@ class NewHomeContentManagerController extends BaseController
      */      
     public function getHomeContent()
     {
-        $this->XMLService->syncXMLFiles();  
+        $adminRepo = App::make('AdminMemberRepository');   
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id()); 
+
+        $this->XMLService->syncXMLFiles(Auth::id(), $adminObject->password);
         $xmlString = $this->XMLService->getNewHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
@@ -36,8 +39,6 @@ class NewHomeContentManagerController extends BaseController
             $categoryNavigation[] = $map;
         }         
 
-        $adminRepo = App::make('AdminMemberRepository');   
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id());                   
         $categoryRepository = App::make('CategoryRepository');          
 
         $categoryLists = [];
