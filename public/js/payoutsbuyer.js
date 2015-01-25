@@ -1,6 +1,6 @@
 (function ($) {
 
-
+    var forBuyer = 1;
 
     var updateStatus = function(order_id,member_id,tag_type,$rowStatus,forBuyer,dialogRef){
 
@@ -133,7 +133,7 @@
     }
 
     $('.seller_detail').click(function(){
-        var $forBuyer = 1;
+
         loader.showPleaseWait();
         var $this = $(this);
         var $url = '/contact/seller/view-transactions-details/'; 
@@ -148,11 +148,11 @@
                         order_id:$orderId,
                         member_id:$memberId,
                         current_tag:$currentTag,
-                        forBuyer:$forBuyer
+                        forBuyer:forBuyer
                     },
                 type: 'get',
                 dataType: 'JSON',
-                success: function(result, forBuyer){
+                success: function(result){
                     var modal_container = $('<div></div>');
                     modal_container.append(result.html); 
                     loader.hidePleaseWait();
@@ -277,7 +277,7 @@
 
     $('.drct_search').on('click', function(){
         var id = $(this).attr('data');
-        var text = $('#searchBox').val();
+        var text = $('#searchBox').val().trim();
         $('#' + id).val(text);
         $('#searchForm').submit();
     });
@@ -290,7 +290,7 @@
     });
 
     $(".tag_default").on('click', function(){
-        window.location = '/contact/seller';
+        window.location = '/contact/buyer';
     });
 })(jQuery);
 

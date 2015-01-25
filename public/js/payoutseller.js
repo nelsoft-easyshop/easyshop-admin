@@ -1,6 +1,6 @@
 (function ($) {
 
-
+    var forBuyer = 0;   
     var updateStatus = function(order_id,member_id,tag_type,$rowStatus,forBuyer,dialogRef){
 
         var checkValues = $('input[name=order-id-checkbox]:checked').map(function(){
@@ -133,7 +133,7 @@
     }
 
     $('.seller_detail').click(function(){
-        var $forBuyer = 0;        
+     
         loader.showPleaseWait();
         var $this = $(this);
         var $url = '/contact/seller/view-transactions-details'; 
@@ -151,7 +151,7 @@
                     },
                 type: 'get',
                 dataType: 'JSON',
-                success: function(result, forBuyer){
+                success: function(result){
                     var modal_container = $('<div></div>');
                     modal_container.append(result.html); 
                     loader.hidePleaseWait();
@@ -276,7 +276,7 @@
 
     $('.drct_search').on('click', function(){
         var id = $(this).attr('data');
-        var text = $('#searchBox').val();
+        var text = $('#searchBox').val().trim();
         $('#' + id).val(text);
         $('#searchForm').submit();
     });

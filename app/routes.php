@@ -59,6 +59,8 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('managerole', array('uses' => 'AccountController@showAdminLists'));    
     Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
     Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));   
+    Route::put('getadminaccount', array('uses' => 'AccountController@getAdminAccount'));   
+    Route::put('resetPassword', array('uses' => 'AccountController@resetPassword'));   
 
     Route::get('raffle', array('uses' => 'RaffleManagerController@showRaffle'));    
     Route::post('doRaffle', array('uses' => 'RaffleManagerController@doRaffle'));    
@@ -77,7 +79,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get("reports", array('uses' => 'ReportsController@showReportsConsole'));    
 
     Route::get('searchkeywords', array('uses' => 'SearchKeyWordsController@showSearchKeyWords'));    
-    Route::post('customsearchkeywords', array('uses' => 'SearchKeyWordsController@customSearch'));    
+    Route::post('searchkeywords', array('uses' => 'SearchKeyWordsController@showSearchKeyWords'));    
 
     Route::get('category', array('uses' => 'CategoryController@showAllCategory'));
     Route::post('category', array('uses' => 'CategoryController@doSearchCategory'));
@@ -85,7 +87,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('categoryAdd', array('uses' => 'CategoryController@ajaxAddCategory'));
 
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
-    Route::get('items', array('uses' => 'ProductController@doSearchItem'));
+    Route::post('items', array('uses' => 'ProductController@showAllItems'));
 
     Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
     Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));

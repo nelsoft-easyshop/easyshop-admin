@@ -16,9 +16,9 @@ class MessagesRepository extends AbstractRepository
         $messages = DB::select(DB::raw("SELECT 
                           a.`id_msg`,
                           a.`to_id`,
-                          c.`username` AS `recipient`,
+                          COALESCE(NULLIF(b.`store_name`, ''), b.`username`) as recipient,
                           a.`from_id`,
-                          b.`username` AS `sender`,
+                          COALESCE(NULLIF(b.`store_name`, ''), b.`username`) as sender,
                           a.`message`,
                           a.`time_sent`,
                           a.`opened` AS opened,
@@ -43,9 +43,9 @@ class MessagesRepository extends AbstractRepository
         $messages = DB::select(DB::raw("SELECT 
                           a.`id_msg`,
                           a.`to_id`,
-                          c.`username` AS `recipient`,
+                          COALESCE(NULLIF(b.`store_name`, ''), b.`username`) as recipient,
                           a.`from_id`,
-                          b.`username` AS `sender`,
+                          COALESCE(NULLIF(b.`store_name`, ''), b.`username`) as sender,
                           a.`message`,
                           a.`time_sent`,
                           a.`opened` AS opened,

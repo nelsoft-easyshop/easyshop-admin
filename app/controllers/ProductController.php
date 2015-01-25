@@ -11,20 +11,13 @@ class ProductController extends BaseController
         $this->XMLService = $XMLService;
     }
 
+    /**
+     * Get all products
+     * @return Entity
+     */
     public function showAllItems()
     {
-        return View::make('pages.itemlist')
-            ->with(
-                'list_of_items',
-                App::make('ProductRepository')
-                    ->getAll(100)
-            )
-            ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
-    }
-
-    public function doSearchItem()
-    {
-        $userData = array(
+        $productData = [
             'item' => Input::get('item'),
             'category' => Input::get('category'),
             'brand' => Input::get('brand'),
@@ -32,11 +25,14 @@ class ProductController extends BaseController
             'seller' => Input::get('seller'),
             'startdate' => Input::get('startdate'),
             'enddate' => Input::get('enddate')
-        );
+        ];
 
+        $products = App::make('ProductRepository')->search($productData, 100);
+        $pagination = $products->appends(Input::except(['page','_token']))->links();
         return View::make('pages.itemlist')
-            ->with('list_of_items', App::make('ProductRepository')->search($userData))
-            ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
-            ->withInput(Input::flash());
+                    ->with('pagination', $pagination)
+                    ->with('list_of_items', $products)
+                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
     }
+
 }

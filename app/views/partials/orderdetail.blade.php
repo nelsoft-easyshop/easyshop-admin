@@ -22,7 +22,7 @@
              <div>
                 <label>Buyer:</label>
                 <span>
-                    {{{ $order->buyer->username }}}
+                    {{{ $order->buyer->getStoreName() }}}
                 </span>
             </div>
             
@@ -103,7 +103,7 @@
                 <tr>
                     <td>{{{ $orderProduct->id_order_product }}}</td>
                     <td>{{{ $orderProduct->product->name }}}</td>
-                    <td>{{{ $orderProduct->seller->username }}}</td>
+                    <td>{{{ $orderProduct->seller->getStoreName() }}}</td>
                     <td>{{{ $orderProduct->order_quantity }}}</td>
                     <td>PHP {{{ number_format($orderProduct->price,2,'.',',') }}}</td>
                     <td>PHP {{{ number_format($orderProduct->handling_fee,2,'.',',') }}}</td>

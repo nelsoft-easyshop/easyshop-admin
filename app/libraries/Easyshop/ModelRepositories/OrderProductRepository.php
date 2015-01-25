@@ -78,6 +78,7 @@ class OrderProductRepository extends AbstractRepository
                             'es_order.invoice_no', 
                             'es_order.buyer_id as buyer_seller_id', 
                             'buyer.username as buyer_seller_username', 
+                            DB::raw('COALESCE(NULLIF(buyer.store_name, ""), buyer.username) as buyer_seller_storename'),
                             'es_product.name as productname', 
                             'es_order_product_status.name as statusname',
                             'es_order.dateadded',
@@ -119,6 +120,7 @@ class OrderProductRepository extends AbstractRepository
         $returnedOrders = $query->get(['es_order_product.*', 
                                     'es_order.invoice_no', 
                                     'es_order_product.seller_id as buyer_seller_id',
+                                     DB::raw('COALESCE(NULLIF(seller.store_name, ""), seller.username) as buyer_seller_storename'),
                                     'seller.username as buyer_seller_username' , 
                                     'es_product.name as productname', 
                                     'es_order_product_status.name as statusname']);
@@ -167,13 +169,15 @@ class OrderProductRepository extends AbstractRepository
                                              $forBuyer = false)
     {
         if(!$forBuyer) {
-          $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
-          $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+            $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
+            $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+            $arrayNotInTag = [TagType::CONFIRMED, TagType::REFUND, TagType::PAYOUT];
         }
         else {
-          $query = ProductShippingComment::leftJoin("es_order_product", "es_order_product.id_order_product", "=", "es_product_shipping_comment.order_product_id");
-          $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order'); 
-          $query->join("es_member","es_order.buyer_id","=","es_member.id_member");        
+            $query = ProductShippingComment::leftJoin("es_order_product", "es_order_product.id_order_product", "=", "es_product_shipping_comment.order_product_id");
+            $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order'); 
+            $query->join("es_member","es_order.buyer_id","=","es_member.id_member");
+            $arrayNotInTag = [TagType::CONTACTED, TagType::REFUND, TagType::PAYOUT];
         }
 
         $query->leftJoin('es_order_product_tag',function($leftJoin){
@@ -192,7 +196,7 @@ class OrderProductRepository extends AbstractRepository
 
         $query->leftJoin(DB::raw($rawSql), function( $query ){
             $query->on( 'count_temp_table.order_id', '=', 'es_order_product.order_id' );
-        })->setBindings(array_merge($query->getBindings(),[TagType::CONFIRMED,TagType::REFUND,TagType::PAYOUT]));
+        })->setBindings(array_merge($query->getBindings(), $arrayNotInTag));
 
         $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
               ->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING)
@@ -202,8 +206,8 @@ class OrderProductRepository extends AbstractRepository
             if($userData['fullname']){
                 $query->where('es_member.fullname', 'LIKE', '%' . $userData['fullname'] . '%');
             }
-            if($userData['username']){
-                $query->where('es_member.username', 'LIKE', '%' . $userData['username'] . '%');
+            if($userData['store_name']){
+                $query->where('es_member.store_name', 'LIKE', '%' . $userData['store_name'] . '%');
             }
             if($userData['contactno']){
                 $query->where('es_member.contactno', 'LIKE', '%' . $userData['contactno'] . '%');
@@ -217,12 +221,15 @@ class OrderProductRepository extends AbstractRepository
             $query->where('es_order_product_tag.tag_type_id', '=', $userData['tag']);
         }
         else{
-            $query->where(function($query){
-                        $query->orWhere(function($query){
-                            $query->whereNotIn('es_order_product_tag.tag_type_id',[TagType::CONFIRMED,TagType::REFUND,TagType::PAYOUT]);
-                        })->orWhere(function($query){
-                            $query->whereNull('es_order_product_tag.tag_type_id');
+            $query->where(function($query) use($arrayNotInTag, $forBuyer) {
+                        $query->orWhere(function($query) use($arrayNotInTag){
+                            $query->whereNotIn('es_order_product_tag.tag_type_id', $arrayNotInTag);
                         });
+                        if(!$forBuyer) {
+                            $query->orWhere(function($query){
+                                $query->whereNull('es_order_product_tag.tag_type_id');
+                            });
+                        }
                         
                     });
         }
@@ -233,7 +240,7 @@ class OrderProductRepository extends AbstractRepository
 
         $returnTransaction = $query->paginate($row,[
                                             'es_order.id_order', 
-                                            'es_member.username', 
+                                            DB::raw('COALESCE(NULLIF(es_member.store_name, ""), es_member.username) as store_name'),
                                             'es_member.id_member', 
                                             'es_member.fullname', 
                                             'es_member.email', 
@@ -358,23 +365,24 @@ class OrderProductRepository extends AbstractRepository
      * @param integer $orderId
      * @return OrderProduct[]
      */
-    public function getOrderProductBySellerOngoing($orderId, $sellerId, $tagType = "",$forBuyer)
+    public function getOrderProductBySellerOngoing($orderId, $sellerId, $tagType = "", $forBuyer)
     {
         if(!$forBuyer) {
-
-          $query = OrderProduct::leftjoin('es_product_shipping_comment','es_order_product.id_order_product','=','es_product_shipping_comment.order_product_id');
-          $query->leftjoin('es_order_product_tag',"es_order_product.id_order_product","=","es_order_product_tag.order_product_id");
-          $query->leftjoin('es_tag_type',"es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type");
-          $query->where('es_order_product.order_id', '=', $orderId);
-          $query->where('es_order_product.seller_id','=',$sellerId);
+            $query = OrderProduct::leftjoin('es_product_shipping_comment','es_order_product.id_order_product','=','es_product_shipping_comment.order_product_id');
+            $query->leftjoin('es_order_product_tag',"es_order_product.id_order_product","=","es_order_product_tag.order_product_id");
+            $query->leftjoin('es_tag_type',"es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type");
+            $query->where('es_order_product.order_id', '=', $orderId);
+            $query->where('es_order_product.seller_id','=',$sellerId);
+            $arrayNotInTag = [TagType::CONFIRMED, TagType::REFUND, TagType::PAYOUT];
         }
         else {  
-          $query = OrderProduct::join('es_product_shipping_comment','es_order_product.id_order_product','=','es_product_shipping_comment.order_product_id');
-          $query->leftjoin('es_order_product_tag',"es_order_product.id_order_product","=","es_order_product_tag.order_product_id");
-          $query->leftjoin('es_tag_type',"es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type");
-          $query->where('es_order_product.order_id', '=', $orderId);             
-          $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
-          $query->where("es_order.buyer_id","=",$sellerId);             
+            $query = OrderProduct::join('es_product_shipping_comment','es_order_product.id_order_product','=','es_product_shipping_comment.order_product_id');
+            $query->leftjoin('es_order_product_tag',"es_order_product.id_order_product","=","es_order_product_tag.order_product_id");
+            $query->leftjoin('es_tag_type',"es_order_product_tag.tag_type_id","=","es_tag_type.id_tag_type");
+            $query->where('es_order_product.order_id', '=', $orderId);             
+            $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+            $query->where("es_order.buyer_id","=",$sellerId);
+            $arrayNotInTag = [TagType::CONTACTED, TagType::REFUND, TagType::PAYOUT];
         }
         $query->where('es_order_product.status','=',OrderProductStatus::STATUS_ON_GOING);
        
@@ -382,12 +390,15 @@ class OrderProductRepository extends AbstractRepository
             $query->where('es_order_product_tag.tag_type_id', '=', $tagType);
         }
         else{
-            $query->where(function($query){
-                    $query->orWhere(function($query){
-                        $query->whereNotIn('es_order_product_tag.tag_type_id',[TagType::CONFIRMED,TagType::REFUND,TagType::PAYOUT]);
-                    })->orWhere(function($query){
-                        $query->whereNull('es_order_product_tag.tag_type_id');
+            $query->where(function($query) use ($arrayNotInTag, $forBuyer){
+                    $query->orWhere(function($query) use ($arrayNotInTag) {
+                        $query->whereNotIn('es_order_product_tag.tag_type_id', $arrayNotInTag);
                     });
+                    if(!$forBuyer) {
+                        $query->orWhere(function($query){
+                            $query->whereNull('es_order_product_tag.tag_type_id');
+                        });
+                    }
                 });
         }
 

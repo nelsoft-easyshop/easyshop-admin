@@ -78,6 +78,7 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
+                                <th>/</th>
                                 <th>ID</th>
                                 <th>Username</th>
                                 <th>Fullname</th>
@@ -88,7 +89,8 @@
                         <span style="display:none">{{$accessor=0}}</span>   
                         @foreach($users as $adminUsers)
 
-                            <tr class="seller_detail">
+                            <tr class="">
+                                <td class="admin_detail" data-id="{{$adminUsers->id_admin_member}}"><span href="" id="editSubSliderCrop" data-toggle="modal" data-index="0" data-subindex="0" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></td>
                                 <td class="td_id">{{$adminUsers->id_admin_member}}</td>
                                 <td class="td_username">{{$adminUsers->username}}</td>
                                 <td class="td_fullname">{{$adminUsers->fullname}}</td>

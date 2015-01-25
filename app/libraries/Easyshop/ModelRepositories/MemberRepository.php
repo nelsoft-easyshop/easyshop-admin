@@ -19,12 +19,12 @@ class MemberRepository extends AbstractRepository
     /**
      * Get Number of uploaded products by users
      * @return Array
-     */  
+     */
     public function getNumberOfUploadedProductsPerAccount()
     {
         $findProductOfUsers = DB::table('es_member')
                             ->leftJoin("es_product","es_product.member_id","=","es_member.id_member")
-                            ->select(DB::raw("es_member.username as username, COUNT(es_product.id_product) as uploadCount"))
+                            ->select(DB::raw("COALESCE(NULLIF(es_member.store_name, ''), es_member.username) as store_name, COUNT(es_product.id_product) as uploadCount"))
                             ->where("es_product.is_draft","=",0)
                             ->where("es_product.is_delete","=",0)
                             ->orderBy("uploadCount", "desc")
@@ -183,20 +183,23 @@ class MemberRepository extends AbstractRepository
         });
         
         if($username !== null){
-            $query->where('es_member.username', '=', $username);
+            $query->where(function ($query) use ($username) {
+                $query->where('es_member.username', '=', $username);
+                $query->orWhere('es_member.store_name', '=', $username);
+            });
         }     
         $billingInfoChangeDate = \Config::get('transaction.billingInfoChangeDate');   
-        $query->groupBy('es_member.id_member', 'bank_name',  'account_name',  'account_number'  );
-        $completedOrders = $query->get(['es_member.username',
-                                       'es_member.email', 
-                                       'es_member.contactno', 
-                                        DB::raw('IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_bank_info.bank_name, es_order_billing_info.bank_name) as bank_name'), 
-                                        DB::raw('IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_name, es_order_billing_info.account_name) as account_name'), 
-                                        DB::raw('IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_number, es_order_billing_info.account_number) as account_number'),
-                                        DB::raw('SUM(es_order_product.net) as net'),
-                                        DB::raw('GROUP_CONCAT(es_order_product.id_order_product) as order_product_ids'),
-                                    ]);
-                            
+        $query->groupBy('es_member.id_member', 'bank_name',  'account_name',  'account_number' );
+        $completedOrders = $query->get([
+                                DB::raw('COALESCE(NULLIF(es_member.store_name, ""), es_member.username) as storename'),
+                                'es_member.email', 
+                                'es_member.contactno', 
+                                DB::raw('IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_bank_info.bank_name, es_order_billing_info.bank_name) as bank_name'), 
+                                DB::raw('IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_name, es_order_billing_info.account_name) as account_name'), 
+                                DB::raw('IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_number, es_order_billing_info.account_number) as account_number'),
+                                DB::raw('SUM(es_order_product.net) as net'),
+                                DB::raw('GROUP_CONCAT(es_order_product.id_order_product) as order_product_ids'),
+                            ]);
         return $completedOrders;
     }
 
@@ -286,20 +289,24 @@ class MemberRepository extends AbstractRepository
         });
 
         if($username !== null){
-            $query->where('es_member.username', '=', $username);
+            $query->where(function ($query) use ($username) {
+                $query->where('es_member.username', '=', $username);
+                $query->orWhere('es_member.store_name', '=', $username);
+            });
         }     
 
         $query->groupBy('es_member.id_member');
-        $returnedOrders = $query->get(['es_member.username',
-                                       'es_member.email', 
-                                       'es_member.contactno', 
-                                        DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.bank_name, es_bank_info.bank_name) as bank_name"), 
-                                        DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_name, es_billing_info.bank_account_name) as account_name"), 
-                                        DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_number, es_billing_info.bank_account_number) as account_number"),
-                                        DB::raw('SUM(es_order_product.net) as net'),
-                                        DB::raw('GROUP_CONCAT(es_order_product.id_order_product) as order_product_ids'),
-                                        'paid_marker.id_order_product_history',
-                                    ]);
+        $returnedOrders = $query->get([
+                                DB::raw('COALESCE(NULLIF(es_member.store_name, ""), es_member.username) as storename'),
+                                'es_member.email', 
+                                'es_member.contactno', 
+                                DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.bank_name, es_bank_info.bank_name) as bank_name"), 
+                                DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_name, es_billing_info.bank_account_name) as account_name"), 
+                                DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_number, es_billing_info.bank_account_number) as account_number"),
+                                DB::raw('SUM(es_order_product.net) as net'),
+                                DB::raw('GROUP_CONCAT(es_order_product.id_order_product) as order_product_ids'),
+                                'paid_marker.id_order_product_history',
+                            ]);
 
         return $returnedOrders;
     
@@ -311,8 +318,8 @@ class MemberRepository extends AbstractRepository
         if($userData['fullname']){
             $member->where('es_member.fullname', 'LIKE', '%' . $userData['fullname'] . '%');
         }
-        if($userData['username']){
-            $member->where('es_member.username', 'LIKE', '%' . $userData['username'] . '%');
+        if($userData['store_name']){
+            $member->where('es_member.store_name', 'LIKE', '%' . $userData['store_name'] . '%');
         }
         if($userData['contactno']){
             $member->where('es_member.contactno', 'LIKE', '%' . $userData['contactno'] . '%');

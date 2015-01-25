@@ -27,7 +27,7 @@ class MemberController extends BaseController
     {
         $userData = array(
             'fullname' => Input::get('fullname'),
-            'username' => Input::get('username'),
+            'store_name' => Input::get('store_name'),
             'contactno' => Input::get('number'),
             'email' => Input::get('email'),
             'startdate' => Input::get('startdate'),

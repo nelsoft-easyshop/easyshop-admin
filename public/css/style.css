@@ -3367,7 +3367,11 @@ top:0px !important;
 
 
 .payment-dialog .modal-dialog {
-width: 1200px;
+    width: 1200px;
+}
+
+.account-dialog .modal-dialog {
+    width: 700px;
 }
 
 .modal-header {
