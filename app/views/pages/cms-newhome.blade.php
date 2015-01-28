@@ -713,7 +713,7 @@
             </div>
 
             <div class="tab-pane fade" id="manageAdSection">
-                    <form id='addAdsForm' target="test" action="{{ $newHomeCmsLink}}/addAdds" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                                              
+                    <form id='addAdsForm' target="test" action="{{ $newHomeCmsLink}}/addAdSection" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                                              
                         <div id="cloneForm_addAds">
                             <div class="form-group" id="displayFormGroup" style='display:none;'>
                                 <label for="inputPassword" class="control-label col-xs-2">Target</label>

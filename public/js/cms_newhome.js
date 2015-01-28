@@ -481,7 +481,7 @@
         var image_w = $(this).closest("form").find("#image_w").val().toString();
         var image_h = $(this).closest("form").find("#image_h").val().toString();
 
-        var url = newHomeCmsLink + "/addAdds";
+        var url = newHomeCmsLink + "/addAdSection";
         var target = $(this).closest("form").find("#target").val().toString();
         var userid = $(this).closest("form").find("#userid").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();   
@@ -1994,7 +1994,7 @@
             var clone = $("#cloneForm_addAds").html();
             $("#contentPreview").html(clone);
             setImagesCropSizes(0, null, null, "adsImage");               
-            var actionLink = newHomeCmsLink + "/addAdds";
+            var actionLink = newHomeCmsLink + "/addAdSection";
             $(".cropFormButton").attr("id","addAdSection");            
             $(".cropFormButton").attr("data-url",actionLink);             
             $("#previewImage").find("form").attr("action",actionLink);    
