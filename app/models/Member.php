@@ -43,10 +43,11 @@ class Member extends Eloquent
     public function getStoreName()
     {
         $trimmedStorename = trim($this->attributes['store_name']);
+        $storename = $this->attributes['store_name'];
         if ( strlen($trimmedStorename) <= 0 || !$trimmedStorename ){ 
             $storename = $this->attributes['username'];
         }
-        $storename = $this->attributes['store_name'];
+
         return $storename;
     }
 }

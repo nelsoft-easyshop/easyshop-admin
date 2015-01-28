@@ -902,7 +902,7 @@
         else {
             var count = parseInt($(".parentSliderCount").last().text());
         }
-        if(count > 1) {
+        if(nodename === "categorySectionPanel" || count > 1) {
             var $confirm = confirm("Are you sure you want to remove?");   
             if($confirm) {
                 loader.showPleaseWait();              
@@ -944,7 +944,7 @@
         data = { value:value, userid:userid,  password:password, hash:hash, callback:'?'};
         
         var count = parseInt($(".categorySectionCount").last().text());
-        if(count < minimumCategorySectionProductPanel) {
+        if(isNaN(count) || count < minimumCategorySectionProductPanel) {
             loader.showPleaseWait();                       
             $.ajax({
                 type: 'GET',

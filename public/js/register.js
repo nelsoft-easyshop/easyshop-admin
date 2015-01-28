@@ -35,6 +35,61 @@
         
     });  
 
+    $('.admin_detail').click(function(){
+        loader.showPleaseWait();
+        var $this = $(this);
+        var userId = $this.data("id");
+
+        $.ajax({
+            type: 'post',
+            dataType: 'JSON', 
+            url: "/getadminaccount",
+            data: {userId:userId, _method:"put"},
+            success: function(json) {
+                loader.hidePleaseWait();
+                var modal_container = $('<div class="order_product"></div>');
+                modal_container.append(json.html);
+                BootstrapDialog.show({
+                    title: "Reset Password",
+                    message: modal_container,
+                    cssClass: 'account-dialog',
+                });
+            },
+            error: function(e) {
+                loader.hidePleaseWait();   
+            }
+        }); 
+        loader.hidePleaseWait();
+    });
+
+    $(document.body).on('click','#updateBtn', function(e){
+
+        var password = $("#editPassword").val().trim();
+        var id = $(this).data("id");
+
+
+        if(password === "") {
+            $("#editPassword").css("border-color","red");
+        }
+        else {
+            $(".bootstrap-dialog-close-button").trigger("click");
+            loader.showPleaseWait();   
+            $.ajax({
+                type: 'post',
+                dataType: 'JSON', 
+                url: "/resetPassword",
+                data: {id:id, password:password, _method:"put"},
+                success: function(json) {
+                    loader.hidePleaseWait();
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();                     
+                }
+            }); 
+        }
+
+    });
+
     $("#rolesDiv").on('click','#rolesLink',function (e) { 
 
         var role = $(this).data('role');
@@ -57,6 +112,7 @@
                  }
             },
             error: function(e) {
+                showErrorModal("<h4>Something went wrong, please try again</h4>");                
                 loader.hidePleaseWait();   
             }
         }); 
@@ -90,6 +146,7 @@
                         $("#changeTextError").html(errors);
                         $("#error").modal('show');  
                         $("#loading").modal('hide');
+
                    
                     }
                 }
@@ -101,6 +158,9 @@
                  $("#loading").modal('hide');
             }
         });
+        $("#inputUsername").val("");
+        $("#inputPassword").val("");
+        $("#inputFullname").val("");
     }    
 
 })(jQuery);

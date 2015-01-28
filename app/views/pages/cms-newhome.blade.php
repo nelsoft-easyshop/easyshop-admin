@@ -1343,7 +1343,7 @@
                                             <span style="display:none;">{{$subSlideIndex=0}}</span>                      
                                             <span style="display:none;">{{$slideCount=1}}</span>  
                                             @foreach($slides->image as $subSlides)
-                                                @if((string)$subSlides->path !== "")
+                                                @if((string)trim($subSlides->path) !== "")
                                                     <div style="position:relative;display:inline-block;">
                                                         <div class='well' style="height:auto;">
                                                         <center>
