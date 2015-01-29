@@ -43,10 +43,9 @@ class ProductCSVService
      */ 
     public function insertData($productsObject, $optionalAttributesObject, $shipmentObject, $imagesObject)
     {
-        $images = array();
-        $attrHeadArray = array();
+        $images = [];
+        $attrHeadArray = [];
         foreach($productsObject as $value) {
-
             $category = Category::where("name",$value->category_name)->first();
             $brand = Brand::where("name",$value->brand_name)->first();
             $style = Style::where("name",$value->style)->first();
@@ -84,9 +83,8 @@ class ProductCSVService
                 $productImage->product_id = $product->id_product;
                 $productImage->is_primary = "1";
                 $productImage->save();  
-
                 foreach($imagesObject as $images) {
-                    if($value->number === $images->product_number) {
+                    if($value->number === $images->product_number && ($value->product_image_file !== $images->product_image_file)) {
                         $productImage = new ProductImage();
                         $productImage->product_image_path = "assets/product/".$images->product_image_file;
                         $extension = substr($images->product_image_file, strpos($images->product_image_file, ".") + 1);
@@ -99,6 +97,7 @@ class ProductCSVService
                     $imagesArr[] = $productImage->id_product_image;
                     $imagesIDsArr[] = $productImage->product_image_path;
                 }                
+                
                 foreach($optionalAttributesObject as $attributes){
                     if($value->number === $attributes->product_number) {
                         if(!in_array($attributes->option_name, $attrHeadArray)) {
