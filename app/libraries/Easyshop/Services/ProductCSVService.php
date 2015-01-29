@@ -46,12 +46,12 @@ class ProductCSVService
         $images = [];
         $attrHeadArray = [];
         foreach($productsObject as $value) {
-            $category = Category::where("name",$value->category_name)->first();
-            $brand = Brand::where("name",$value->brand_name)->first();
-            $style = Style::where("name",$value->style)->first();
-            $member = Member::where("username",$value->seller)->first();
-                                        
             try{
+                $category = Category::where("name",$value->category_name)->first();
+                $brand = Brand::where("name",$value->brand_name)->first();
+                $style = Style::where("name",$value->style)->first();
+                $member = Member::where("username",$value->seller)->first();
+                
                 $product = new Product();
                 $product->name = $value->product_name;
                 $product->brief = $value->brief_description;
