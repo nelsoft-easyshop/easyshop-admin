@@ -61,6 +61,14 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
+                            <label for="src_email">Username</label>
+                            {{ Form::text('username', Input::old('username'), array('id' => 'src_username', 'class' => 'form-control', 'placeholder' => 'Enter username' ) ) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
                             <label for="src_email">Email</label>
                             {{ Form::text('email', Input::old('email'), array('id' => 'src_email', 'class' => 'form-control', 'placeholder' => 'Enter email' ) ) }}
                         </div>
@@ -70,14 +78,17 @@
                             <label for="btn_close_search">&nbsp</label>
                             <button type="button" id="btn_close_search" class="btn btn-default"> Cancel </button>
                         </div>
-                    </div>
+                    </div>                    
                     <div class="col-md-1">
                         <div class="form-group">
                             <label for="btn_search">&nbsp</label>
                             {{ Form::submit(' Search ', array('id' => 'btn_search', 'class' => 'btn btn-primary')) }}
                         </div>
-                    </div>
+                    </div>                    
                 </div>
+
+
+
                 {{ Form::close() }}
             </div>
         </div>
@@ -96,6 +107,7 @@
                     <ul class="dropdown-menu dd-right" role="menu">
                         <li role="presentation" class="dropdown-header">Search by :</li>
                         <li><a class="drct_search" data="src_fullname" href="javascript:void(0)">Fullname</a></li>
+                        <li><a class="drct_search" data="src_username" href="javascript:void(0)">Username</a></li>
                         <li><a class="drct_search" data="src_storename" href="javascript:void(0)">Store Name</a></li>
                         <li><a class="drct_search" data="src_number" href="javascript:void(0)">Contact Number</a></li>
                         <li><a class="drct_search" data="src_email" href="javascript:void(0)">Email</a></li>
