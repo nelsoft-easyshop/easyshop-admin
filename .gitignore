@@ -2,6 +2,8 @@
 /vendor
 /public/misc/*
 !/public/misc/CSV_Upload.xlsx
+!/public/misc/TableTools
+!/public/misc/readme.md
 composer.phar
 composer.lock
 .env.*.php
