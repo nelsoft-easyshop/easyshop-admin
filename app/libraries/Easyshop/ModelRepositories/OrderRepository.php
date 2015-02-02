@@ -55,6 +55,8 @@ class OrderRepository extends AbstractRepository
         }
         $query->groupBy('es_order.id_order');
         $query->orderBy('es_order.dateadded', 'DESC');
+        
+        $query->select('es_order.*', 'es_payment_method.*');
           
         return $query->paginate($numberOfRows);
     }
