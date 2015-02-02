@@ -25,14 +25,15 @@ class MemberController extends BaseController
 
     public function search()
     {
-        $userData = array(
+        $userData = [
             'fullname' => Input::get('fullname'),
             'store_name' => Input::get('store_name'),
             'contactno' => Input::get('number'),
             'email' => Input::get('email'),
             'startdate' => Input::get('startdate'),
-            'enddate' => Input::get('enddate')
-        );
+            'enddate' => Input::get('enddate'),
+            'username' => Input::get('username')
+        ];
         $locationLookUpRepository = App::make('LocationLookUpRepository');
         $locationService = $this->locationService;
         $data = $locationService->location($locationLookUpRepository->getByType());
