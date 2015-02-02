@@ -1,5 +1,7 @@
 /bootstrap/compiled.php
 /vendor
+/public/misc/*
+!/public/misc/CSV_Upload.xlsx
 composer.phar
 composer.lock
 .env.*.php
