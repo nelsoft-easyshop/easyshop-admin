@@ -76,21 +76,16 @@ class ProductCSVService
                 $productItem->quantity = $value->quantity;
                 $productItem->save();
 
-                $productImage = new ProductImage();
-                $productImage->product_image_path = "assets/product/".$value->product_image_file;
-                $extension = substr($value->product_image_file, strpos($value->product_image_file, ".") + 1);
-                $productImage->product_image_type = $extension;
-                $productImage->product_id = $product->id_product;
-                $productImage->is_primary = "1";
-                $productImage->save();  
+                $primaryImage = trim($value->product_image_file);
                 foreach($imagesObject as $images) {
-                    if($value->number === $images->product_number && ($value->product_image_file !== $images->product_image_file)) {
+                    if($value->number === $images->product_number) {
+                        $imageFile = trim($images->product_image_file);
                         $productImage = new ProductImage();
-                        $productImage->product_image_path = "assets/product/".$images->product_image_file;
-                        $extension = substr($images->product_image_file, strpos($images->product_image_file, ".") + 1);
+                        $productImage->product_image_path = "assets/product/".$imageFile;
+                        $extension = substr($imageFile, strpos($imageFile, ".") + 1);
                         $productImage->product_image_type = $extension;
                         $productImage->product_id = $product->id_product;
-                        $productImage->is_primary = "0";
+                        $productImage->is_primary = ($primaryImage === $imageFile) ? "1" : "0";
                         $productImage->save();  
                     }
 
