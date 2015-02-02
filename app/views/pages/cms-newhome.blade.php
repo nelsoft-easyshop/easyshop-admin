@@ -627,7 +627,7 @@
                                                     <div style="position:relative;display:inline-block;">
                                                         <div class='well' style="height:auto;">
                                                             <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                                <img src="{{$easyShopLink}}{{ltrim($categorySectionProducts->product_image_path, '.')}}"class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                                <img src="{{$assetLink}}{{ltrim($categorySectionProducts->product_image_path, '.')}}"class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                             </div>
                                                             <a href="#categoryProductPanel_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                             <a class="btn btn-default" 
@@ -713,7 +713,7 @@
             </div>
 
             <div class="tab-pane fade" id="manageAdSection">
-                    <form id='addAdsForm' target="test" action="{{ $newHomeCmsLink}}/addAdds" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                                              
+                    <form id='addAdsForm' target="test" action="{{ $newHomeCmsLink}}/addAdSection" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                                              
                         <div id="cloneForm_addAds">
                             <div class="form-group" id="displayFormGroup" style='display:none;'>
                                 <label for="inputPassword" class="control-label col-xs-2">Target</label>
@@ -746,7 +746,7 @@
                                             <div style="position:relative;display:inline-block;">
                                                 <div class='well' style="height:auto;">
                                                     <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                        <img src="{{$easyShopLink}}/{{$ads->img}}" class="img-responsive" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                        <img src="{{$assetLink}}/{{$ads->img}}" class="img-responsive" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                     </div>
 
                                                     <a href="#previewImage" id="editAdsCrop" data-index="{{$adsSectionIndex}}" data-nodename="editAds" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span  data-index="{{$adsSectionIndex}}" data-nodename="editAds" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
@@ -932,7 +932,7 @@
                                             <div style="position:relative;display:inline-block;">
                                                 <div class='well' style="height:auto;">
                                                     <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                        <img src="{{$easyShopLink}}{{ltrim($productPanel->product_image_path, '.')}}" class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                        <img src="{{$assetLink}}{{ltrim($productPanel->product_image_path, '.')}}" class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                     </div>
 
                                                     <a href="#productPanel{{$productPanelindex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
@@ -1348,7 +1348,7 @@
                                                         <div class='well' style="height:auto;">
                                                         <center>
                                                             <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                                <img src="{{$easyShopLink}}{{$subSlides->path}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                                                <img src="{{$assetLink}}{{$subSlides->path}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
                                                             </div>
 
                                                             <a href="#previewImage" id="editSubSliderCrop" data-toggle="modal" data-index="{{$sliderIndex}}" data-subindex="{{$subSlideIndex}}" data-nodename="editMainSlider" style="position:absolute;top:235px;left:112px;"><span  href="" id="editSubSliderCrop" data-toggle="modal" data-index="{{$sliderIndex}}" data-subindex="{{$subSlideIndex}}" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
