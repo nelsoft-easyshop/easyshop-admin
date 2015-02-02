@@ -154,7 +154,7 @@
                                                     <div style="position:relative;display:inline-block;">
                                                         <div class='well' style="height:210px;">
                                                             <p>
-                                                                <img src="{{$easyShopLink}}{{ltrim($categorySectionProducts->product_image_path, '.')}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
+                                                                <img src="{{$assetLink}}{{ltrim($categorySectionProducts->product_image_path, '.')}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
                                                             </p>
                                                             <a href="#categoryProductPanel_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}" data-toggle="modal" style="position:absolute;top:180px;left:135px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                             <a class="btn btn-default" 

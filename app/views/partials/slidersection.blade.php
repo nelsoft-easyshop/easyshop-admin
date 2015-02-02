@@ -134,7 +134,7 @@
                                                         <div class='well' style="height:auto;">
                                                         <center>
                                                             <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                                <img src="{{$easyShopLink}}{{$subSlides->path}}" class="img-responsive" data-div="" style="border: black 1px solid; height: auto; max-height: 200px;"/>
+                                                                <img src="{{$assetLink}}{{$subSlides->path}}" class="img-responsive" data-div="" style="border: black 1px solid; height: auto; max-height: 200px;"/>
                                                             </div>
 
                                                             <a href="#previewImage" id="editSubSliderCrop" data-toggle="modal" data-index="{{$sliderIndex}}" data-subindex="{{$subSlideIndex}}" data-nodename="editMainSlider" style="position:absolute;top:235px;left:112px;"><span  href="" id="editSubSliderCrop" data-toggle="modal" data-index="{{$sliderIndex}}" data-subindex="{{$subSlideIndex}}" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
