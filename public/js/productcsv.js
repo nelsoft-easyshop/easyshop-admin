@@ -45,9 +45,9 @@
                 $.each(json.error[0].dataNotFound , function( index, obj ) {
                     errorString += "<h4 style='padding-top:5px;'>" + obj + "</h4>";
                 });                  
-                showErrorModal(errorString);
                 $( "input#productIds" ).remove();
                 loader.hidePleaseWait();                  
+                showErrorModal(errorString);
             }          
             else if(typeof json.html !== "undefined" && json.html !== "Database Error"){
                 $.each(json.html , function( index, obj ) {
