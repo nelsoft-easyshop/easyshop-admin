@@ -20,6 +20,9 @@ class ProductCSVService
         foreach ($productsObject as $value ) {
 
             $product = Product::where("slug",$value->slug)->first();
+            if(!$product) {
+                continue;
+            }
             $headObject = OptionalAttrHead::where('product_id','=',$product->id_product)->get();            
 
             foreach ($headObject as $head) {
@@ -45,13 +48,32 @@ class ProductCSVService
     {
         $images = [];
         $attrHeadArray = [];
-        foreach($productsObject as $value) {
+        $resultsIDS = [];
+        $errors = [];
+
+        foreach($productsObject as $key => $value) {
             try{
                 $category = Category::where("name",$value->category_name)->first();
+                if(!$category) {
+                    $errors[] = "Category '$value->category_name'  does not exist";
+                }
                 $brand = Brand::where("name",$value->brand_name)->first();
+                if(!$brand) {
+                    $errors[] = "Brand '$value->category_name' does not exist";                
+                }
                 $style = Style::where("name",$value->style)->first();
+                if(!$style) {
+                    $errors[] = "Style '$value->style' does not exist";
+                }
                 $member = Member::where("username",$value->seller)->first();
+                if(!$member) {
+                    $errors[] = "Seller '$value->seller' does not exist";
+                }
                 
+                if(!empty($errors)) {
+                    return ["dataNotFound" => $errors];
+                }
+
                 $product = new Product();
                 $product->name = $value->product_name;
                 $product->brief = $value->brief_description;
@@ -135,9 +157,9 @@ class ProductCSVService
                         $shippingDetail->save();                        
                     }
                 }
-            } 
+            }
             catch(\Exception $e) {
-                return $resultsIDS[] = "error";
+                return $resultsIDS[] = "Database Error";
             }
         }   
         return $resultsIDS;
