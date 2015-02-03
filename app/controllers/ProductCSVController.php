@@ -85,14 +85,13 @@ class ProductCSVController extends BaseController
                 File::delete($destinationPath.$file);
             }                    
         }
-
-        if($data[0] !== "error") {
-            return Response::json(array('html' => $data));    
+        if(isset($data[0]["dataNotFound"])) {
+            $this->ProductCSVService->removeErrorData($productsObject);
+            return Response::json(['error' => $data]); 
         }
         else {
-            $this->ProductCSVService->removeErrorData($productsObject);
-            return Response::json(array('error' => "Error in CSV")); 
-        }            
+            return Response::json(['html' => $data]);
+        }
     }
 }
 
