@@ -87,10 +87,10 @@ class ProductCSVController extends BaseController
         }
         if(isset($data[0]["dataNotFound"])) {
             $this->ProductCSVService->removeErrorData($productsObject);
-            return Response::json(array('error' => $data)); 
+            return Response::json(['error' => $data]); 
         }
         else {
-            return Response::json(array('html' => $data));              
+            return Response::json(['html' => $data]);
         }
     }
 }
