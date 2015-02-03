@@ -59,7 +59,7 @@ class ProductCSVService
                 }
                 $brand = Brand::where("name",$value->brand_name)->first();
                 if(!$brand) {
-                    $errors[] = "Brand '$value->category_name' name does not exist";                
+                    $errors[] = "Brand '$value->category_name' does not exist";                
                 }
                 $style = Style::where("name",$value->style)->first();
                 if(!$style) {
