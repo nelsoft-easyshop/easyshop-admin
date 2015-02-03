@@ -45,11 +45,11 @@
                 $.each(json.error[0].dataNotFound , function( index, obj ) {
                     errorString += "<h4 style='padding-top:5px;'>" + obj + "</h4>";
                 });                  
-                showErrorModal(errorString);
                 $( "input#productIds" ).remove();
                 loader.hidePleaseWait();                  
+                showErrorModal(errorString);
             }          
-            else if(typeof json.html !== "undefined"){    
+            else if(typeof json.html !== "undefined" && json.html !== "Database Error"){
                 $.each(json.html , function( index, obj ) {
                     $.each(obj, function( key, value ) {
                         $("#sendToWebservice").append('<input type="hidden" name="product[]" class = "removeme" id="productIds" value="' + value +'"/>');                
