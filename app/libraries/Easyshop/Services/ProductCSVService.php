@@ -8,6 +8,7 @@ use OptionalAttrHead;
 use ProductShippingDetail;
 use ProductShippingHead;
 use Category, Brand, Style, Member, LocationLookUp;
+use Carbon\Carbon;
 
 class ProductCSVService
 {
@@ -89,6 +90,10 @@ class ProductCSVService
                 $product->condition = $value->condition;
                 $product->keywords = $value->keywords;
                 $product->price = $value->price;
+                $product->createddate = Carbon::now();
+                $product->lastmodifieddate = Carbon::now();
+                $product->startdate = Carbon::now();
+                $product->enddate = Carbon::now();
                 $product->save(); 
 
                 $resultsIDS[] = $product->id_product; 
