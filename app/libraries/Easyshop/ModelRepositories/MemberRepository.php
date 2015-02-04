@@ -321,6 +321,13 @@ class MemberRepository extends AbstractRepository
         }
         if($userData['store_name']){
             $member->where('es_member.store_name', 'LIKE', '%' . $userData['store_name'] . '%');
+            $member->orWhere(function ($member) use ($userData) {
+                $member->where(function ($query){
+                    $query->whereNull('es_member.store_name');
+                    $query->orWhere('es_member.store_name', '=', '');
+                });
+                $member->where('es_member.username', 'LIKE', '%' . $userData['store_name']);
+            });       
         }
         if($userData['username']){
             $member->where('es_member.username', 'LIKE', '%' . $userData['username'] . '%');
