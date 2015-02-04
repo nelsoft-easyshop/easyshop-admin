@@ -321,6 +321,9 @@ class MemberRepository extends AbstractRepository
         if($userData['store_name']){
             $member->where('es_member.store_name', 'LIKE', '%' . $userData['store_name'] . '%');
         }
+        if($userData['username']){
+            $member->where('es_member.username', 'LIKE', '%' . $userData['username'] . '%');
+        }        
         if($userData['contactno']){
             $member->where('es_member.contactno', 'LIKE', '%' . $userData['contactno'] . '%');
         }

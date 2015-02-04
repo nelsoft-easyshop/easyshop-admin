@@ -19,7 +19,7 @@ return array(
     'mobileCmsLink' => "$baseUrl/webservice/mobilewebservice",
     'getHomeXML'=> "$baseUrl/webservice/homewebservice/getContents/",
     'getFeedXML'=> "$baseUrl/webservice/feedwebservice/getcontents/",
-    'productCSVwebservice'=> "$baseUrl/webservice/synccsvImage",
+    'productCSVwebservice'=> "$baseUrl/webservice/synccsvimage",
     'easyShopLink'=> "$baseUrl",
     'getMobileXml'=> "$baseUrl/webservice/mobilewebservice/getcontents",
     'getNewHomeXml'=> "$baseUrl/webservice/newhomewebservice/getcontents",

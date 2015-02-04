@@ -40,8 +40,16 @@
         type: 'post', 
         dataType: 'json',            
         success: function(json) { 
-
-            if(json.html){    
+            if(json.error && typeof json.error[0].dataNotFound !== "undefined") {
+                var errorString = "";
+                $.each(json.error[0].dataNotFound , function( index, obj ) {
+                    errorString += "<h4 style='padding-top:5px;'>" + obj + "</h4>";
+                });                  
+                $( "input#productIds" ).remove();
+                loader.hidePleaseWait();                  
+                showErrorModal(errorString);
+            }          
+            else if(typeof json.html !== "undefined" && json.html !== "Database Error"){
                 $.each(json.html , function( index, obj ) {
                     $.each(obj, function( key, value ) {
                         $("#sendToWebservice").append('<input type="hidden" name="product[]" class = "removeme" id="productIds" value="' + value +'"/>');                
@@ -49,15 +57,10 @@
                 });     
                 submitToWebService();
             }
-            else if(json.error) {
+            else {
                 showErrorModal("Error in CSV File");                                        
                 $( "input#productIds" ).remove();
-                loader.hidePleaseWait();        
-            }        
-            else{
-                loader.hidePleaseWait();
-                showErrorModal("Product Name/Slug Name: " + json.existing[0].existing + " already exists in the database<br/>**product names and slugs must be unique");
-
+                loader.hidePleaseWait();                   
             }
 
         },

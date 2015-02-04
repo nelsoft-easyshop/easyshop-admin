@@ -8,6 +8,7 @@ use OptionalAttrHead;
 use ProductShippingDetail;
 use ProductShippingHead;
 use Category, Brand, Style, Member, LocationLookUp;
+use Carbon\Carbon;
 
 class ProductCSVService
 {
@@ -20,6 +21,9 @@ class ProductCSVService
         foreach ($productsObject as $value ) {
 
             $product = Product::where("slug",$value->slug)->first();
+            if(!$product) {
+                continue;
+            }
             $headObject = OptionalAttrHead::where('product_id','=',$product->id_product)->get();            
 
             foreach ($headObject as $head) {
@@ -43,16 +47,34 @@ class ProductCSVService
      */ 
     public function insertData($productsObject, $optionalAttributesObject, $shipmentObject, $imagesObject)
     {
-        $images = array();
-        $attrHeadArray = array();
-        foreach($productsObject as $value) {
+        $images = [];
+        $attrHeadArray = [];
+        $resultsIDS = [];
+        $errors = [];
 
-            $category = Category::where("name",$value->category_name)->first();
-            $brand = Brand::where("name",$value->brand_name)->first();
-            $style = Style::where("name",$value->style)->first();
-            $member = Member::where("username",$value->seller)->first();
-                                        
+        foreach($productsObject as $key => $value) {
             try{
+                $category = Category::where("name",$value->category_name)->first();
+                if(!$category) {
+                    $errors[] = "Category '$value->category_name'  does not exist";
+                }
+                $brand = Brand::where("name",$value->brand_name)->first();
+                if(!$brand) {
+                    $errors[] = "Brand '$value->category_name' does not exist";                
+                }
+                $style = Style::where("name",$value->style)->first();
+                if(!$style) {
+                    $errors[] = "Style '$value->style' does not exist";
+                }
+                $member = Member::where("username",$value->seller)->first();
+                if(!$member) {
+                    $errors[] = "Seller '$value->seller' does not exist";
+                }
+                
+                if(!empty($errors)) {
+                    return ["dataNotFound" => $errors];
+                }
+
                 $product = new Product();
                 $product->name = $value->product_name;
                 $product->brief = $value->brief_description;
@@ -68,6 +90,10 @@ class ProductCSVService
                 $product->condition = $value->condition;
                 $product->keywords = $value->keywords;
                 $product->price = $value->price;
+                $product->createddate = Carbon::now();
+                $product->lastmodifieddate = Carbon::now();
+                $product->startdate = Carbon::now();
+                $product->enddate = Carbon::now();
                 $product->save(); 
 
                 $resultsIDS[] = $product->id_product; 
@@ -77,28 +103,23 @@ class ProductCSVService
                 $productItem->quantity = $value->quantity;
                 $productItem->save();
 
-                $productImage = new ProductImage();
-                $productImage->product_image_path = "assets/product/".$value->product_image_file;
-                $extension = substr($value->product_image_file, strpos($value->product_image_file, ".") + 1);
-                $productImage->product_image_type = $extension;
-                $productImage->product_id = $product->id_product;
-                $productImage->is_primary = "1";
-                $productImage->save();  
-
+                $primaryImage = trim($value->product_image_file);
                 foreach($imagesObject as $images) {
                     if($value->number === $images->product_number) {
+                        $imageFile = trim($images->product_image_file);
                         $productImage = new ProductImage();
-                        $productImage->product_image_path = "assets/product/".$images->product_image_file;
-                        $extension = substr($images->product_image_file, strpos($images->product_image_file, ".") + 1);
+                        $productImage->product_image_path = "assets/product/".$imageFile;
+                        $extension = substr($imageFile, strpos($imageFile, ".") + 1);
                         $productImage->product_image_type = $extension;
                         $productImage->product_id = $product->id_product;
-                        $productImage->is_primary = "0";
+                        $productImage->is_primary = ($primaryImage === $imageFile) ? "1" : "0";
                         $productImage->save();  
                     }
 
                     $imagesArr[] = $productImage->id_product_image;
                     $imagesIDsArr[] = $productImage->product_image_path;
                 }                
+                
                 foreach($optionalAttributesObject as $attributes){
                     if($value->number === $attributes->product_number) {
                         if(!in_array($attributes->option_name, $attrHeadArray)) {
@@ -141,9 +162,9 @@ class ProductCSVService
                         $shippingDetail->save();                        
                     }
                 }
-            } 
+            }
             catch(\Exception $e) {
-                return $resultsIDS[] = "error";
+                return $resultsIDS[] = "Database Error";
             }
         }   
         return $resultsIDS;
