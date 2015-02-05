@@ -5,7 +5,7 @@
         previewFileType: ['image'],
         'showUpload':true,
     });
-    $('#success, #customerror').bind('hidden.bs.modal', function () {
+    $('#success').bind('hidden.bs.modal', function () {
 
             window.location.href = location.href;  
     })  
