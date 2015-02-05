@@ -13,6 +13,8 @@
 
     $("button:nth-child(2)").attr('id', 'uploadPhotosSubmit');      
     $(document.body).delegate('#uploadPhotosSubmit', 'click', function(event) {
+        var maxDimensions = 5000;
+        var maxFileSize = 5;
         var files = $('#uploadImageOnly').prop("files");
         var proceed = 1;
         if($("#uploadImageOnly").val() == "")   {
@@ -26,9 +28,10 @@
                     proceed = 0;
                     showErrorModal("Images only are allowed");                                        
                 }
-                if(file.size > 5000000 || (file.width > 5000 || file.height > 5000)) {
+                if(file.size > (maxFileSize*1000000) || 
+                   (file.width > maxDimensions || file.height > maxDimensions)) {
                     proceed = 0;
-                    showErrorModal("Failed to upload Image<br/><br/>Max image dimensions: 5000px x 5000px<br/>Max Image Size: 5 MB");
+                    showErrorModal("Failed to upload Image<br/><br/>Max image dimensions: "+maxDimensions+"px x "+maxDimensions+"px<br/>Max Image Size: "+maxFileSize+" MB");
                 }
             }
         }
