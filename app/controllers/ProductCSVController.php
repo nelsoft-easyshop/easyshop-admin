@@ -84,7 +84,10 @@ class ProductCSVController extends BaseController
                && count($optionalAttributesObject) > 0
                && count($shipmentObject) > 0
                && count($imagesObject) > 0) {
-               $data[] =  $this->ProductCSVService->insertData($productsObject, $optionalAttributesObject, $shipmentObject, $imagesObject);
+               $data[] =  $this->ProductCSVService->insertData($productsObject, 
+                                                               $optionalAttributesObject, 
+                                                               $shipmentObject, 
+                                                               $imagesObject);
                 if (File::exists($destinationPath.$file)) {
                     File::delete($destinationPath.$file);
                 }
