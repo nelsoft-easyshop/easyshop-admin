@@ -64,7 +64,15 @@
     $('#uploadData').ajaxForm({
         url: 'productcsv',
         type: 'post', 
-        dataType: 'json',            
+        dataType: 'json', 
+        beforeSubmit: function(event) {
+            var files = $('#uploadCSV').prop("files");
+            if(files.length < 1) {
+                loader.hidePleaseWait();
+                showErrorModal("Please upload a file");
+                return false;
+            }
+        },
         success: function(json) { 
             if(json.error && typeof json.error[0].dataNotFound !== "undefined") {
                 var errorString = "";
