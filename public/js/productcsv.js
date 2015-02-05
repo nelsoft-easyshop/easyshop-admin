@@ -29,7 +29,7 @@
                     showErrorModal("Images only are allowed");                                        
                 }
                 if(file.size > (maxFileSize*1000000) || 
-                   (file.width > maxDimensions || file.height > maxDimensions)) {
+                  (file.width > maxDimensions || file.height > maxDimensions)) {
                     proceed = 0;
                     showErrorModal("Failed to upload Image<br/><br/>Max image dimensions: "+maxDimensions+"px x "+maxDimensions+"px<br/>Max Image Size: "+maxFileSize+" MB");
                 }
