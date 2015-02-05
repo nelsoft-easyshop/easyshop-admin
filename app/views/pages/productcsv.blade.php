@@ -54,8 +54,9 @@
                                             <div style="position:relative;display:inline-block;">
                                                 <div class='well' style="height: 250px;" >
                                                     <a class="btn btn-default" 
-                                                                id="removeSubSlide" 
-                                                                data-url = "/removeContent"
+                                                                id="removeAdminImage" 
+                                                                data-imageid="{{{ $images->id_admin_image }}}"
+                                                                data-imagename="{{{ trim($images->image_name) }}}"
                                                                 style="position:absolute;top:2px;left:5px;"
                                                              ><font color='red'><b>X</b></font>
                                                     </a>
