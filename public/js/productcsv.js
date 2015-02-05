@@ -44,7 +44,6 @@
                 url : urlLink + "/deleteImage",
                 type: 'GET', 
                 dataType: 'jsonp',
-                async: false,
                 data: { "imageId": imageId, "imageName":imageName},
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
