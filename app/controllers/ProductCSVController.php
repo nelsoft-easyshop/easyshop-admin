@@ -96,13 +96,15 @@ class ProductCSVController extends BaseController
                 continue;
             }
         }
-
-        if(isset($data[0]["dataNotFound"])) {
-            $this->ProductCSVService->removeErrorData($productsObject);
-            return Response::json(['error' => $data]); 
+        
+        if( !isset($data[0]["dataNotFound"]) && !isset($data[0]["databaseError"]) ) {
+            return Response::json(['html' => $data]);            
         }
         else {
-            return Response::json(['html' => $data]);
+            if(isset($data[0]["partialProductIds"]) && count($data[0]["partialProductIds"]) > 0) {
+                $this->ProductCSVService->removeErrorData($data[0]["partialProductIds"]);
+            }
+            return Response::json(['error' => $data]);
         }
     }
 }

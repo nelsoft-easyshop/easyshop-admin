@@ -21,7 +21,7 @@ class ProductCSVService
     {
         foreach ($productsObject as $value ) {
 
-            $product = Product::where("slug",$value->slug)->first();
+            $product = Product::find($value);
             if(!$product) {
                 continue;
             }
@@ -50,21 +50,23 @@ class ProductCSVService
     {
         $images = [];
         $attrHeadArray = [];
-        $resultsIDS = [];
         $errors = [];
-
+        $resultsIDS["partialProductIds"] = [];
         foreach($productsObject as $key => $value) {
             try{
-                $category = Category::where("name",$value->category_name)->first();
+                $category = trim($value->category_name) !== "" ?
+                            Category::where("name",$value->category_name)->first() : false;
                 if(!$category) {
                     $errors[] = "Category '$value->category_name'  does not exist";
                 }
-                $brand = Brand::where("name",$value->brand_name)->first();
+                $brand = trim($value->brand_name) !== "" ?
+                         Brand::where("name",$value->brand_name)->first() : false;
                 if(!$brand) {
                     $errors[] = "Brand '$value->category_name' does not exist";                
                 }
 
-                $member = Member::where("username",$value->seller)->first();
+                $member = trim($value->seller) !== "" ?
+                          Member::where("username",$value->seller)->first() : false;
                 if(!$member) {
                     $errors[] = "Seller '$value->seller' does not exist";
                 }
@@ -93,7 +95,7 @@ class ProductCSVService
                 $product->enddate = Carbon::now();
                 $product->save(); 
 
-                $resultsIDS[] = $product->id_product; 
+                $resultsIDS["partialProductIds"][] = $product->id_product; 
               
                 $productItem = new ProductItem();
                 $productItem->product_id = $product->id_product;
@@ -161,7 +163,7 @@ class ProductCSVService
                 }
             }
             catch(\Exception $e) {
-                return $resultsIDS[] = "Database Error";
+                $resultsIDS["databaseError"] = true;
             }
         }   
         return $resultsIDS;
