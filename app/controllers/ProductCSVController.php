@@ -83,7 +83,7 @@ class ProductCSVController extends BaseController
             if(count($productsObject) > 0
                && count($optionalAttributesObject) > 0
                && count($shipmentObject) > 0
-               && count($imagesObject)) {
+               && count($imagesObject) > 0) {
                $data[] =  $this->ProductCSVService->insertData($productsObject, $optionalAttributesObject, $shipmentObject, $imagesObject);
                 if (File::exists($destinationPath.$file)) {
                     File::delete($destinationPath.$file);
@@ -93,7 +93,7 @@ class ProductCSVController extends BaseController
                 continue;
             }
         }
-        
+
         if(isset($data[0]["dataNotFound"])) {
             $this->ProductCSVService->removeErrorData($productsObject);
             return Response::json(['error' => $data]); 
