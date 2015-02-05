@@ -43,8 +43,8 @@
             var files = $('#uploadCSV').prop("files");
             if(files.length < 1) {
                 showErrorModal("Please upload a file");
+                return false;
             }
-            return false;
         },
         success: function(json) { 
             if(json.error && typeof json.error[0].dataNotFound !== "undefined") {
