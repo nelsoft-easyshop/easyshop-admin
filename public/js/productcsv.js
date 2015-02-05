@@ -35,6 +35,32 @@
         event.preventDefault();
     });
 
+    $("#profile").on("click","#removeAdminImage", function() {
+        loader.showPleaseWait();
+        var imageId = $(this).data("imageid");
+        var imageName = $(this).data("imagename");
+            $.ajax(
+            {
+                url : urlLink + "/deleteImage",
+                type: 'GET', 
+                dataType: 'jsonp',
+                data: { "imageId": imageId, "imageName":imageName},
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                success:function(data, textStatus, jqXHR) 
+                {
+                    loader.hidePleaseWait();  
+                    $("#success").modal("show");  
+                },
+                error: function(jqXHR, textStatus, errorThrown) 
+                {
+                    loader.hidePleaseWait();
+                    showErrorModal("Something went wrong, please try again");
+                }
+            });
+
+    });
+
     $('#uploadData').ajaxForm({
         url: 'productcsv',
         type: 'post', 
