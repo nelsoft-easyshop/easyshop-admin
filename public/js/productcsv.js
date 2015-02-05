@@ -5,7 +5,7 @@
         previewFileType: ['image'],
         'showUpload':true,
     });
-    $('#success, #customerror').bind('hidden.bs.modal', function () {
+    $('#success').bind('hidden.bs.modal', function () {
 
             window.location.href = location.href;  
     })  
@@ -35,10 +35,44 @@
         event.preventDefault();
     });
 
+    $("#profile").on("click","#removeAdminImage", function() {
+        loader.showPleaseWait();
+        var imageId = $(this).data("imageid");
+        var imageName = $(this).data("imagename");
+            $.ajax(
+            {
+                url : urlLink + "/deleteImage",
+                type: 'GET', 
+                dataType: 'jsonp',
+                data: { "imageId": imageId, "imageName":imageName},
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                success:function(data, textStatus, jqXHR) 
+                {
+                    loader.hidePleaseWait();  
+                    $("#success").modal("show");  
+                },
+                error: function(jqXHR, textStatus, errorThrown) 
+                {
+                    loader.hidePleaseWait();
+                    showErrorModal("Something went wrong, please try again");
+                }
+            });
+
+    });
+
     $('#uploadData').ajaxForm({
         url: 'productcsv',
         type: 'post', 
-        dataType: 'json',            
+        dataType: 'json', 
+        beforeSubmit: function(event) {
+            var files = $('#uploadCSV').prop("files");
+            if(files.length < 1) {
+                loader.hidePleaseWait();
+                showErrorModal("Please upload a file");
+                return false;
+            }
+        },
         success: function(json) { 
             if(json.error && typeof json.error[0].dataNotFound !== "undefined") {
                 var errorString = "";
@@ -106,37 +140,42 @@
         {
             event.preventDefault();
             var postData = $(this).serializeArray();
-            $.ajax(
-            {
-                url : urlLink,
-                type: 'GET', 
-                dataType: 'jsonp',
-                async: false,
-                data: postData,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                success:function(data, textStatus, jqXHR) 
+            if(postData.length < 1) {
+                loader.hidePleaseWait();
+                showErrorModal("Error Occured. Kindly check for missing data in your excel files");
+                return false;
+            }
+            else {
+                $.ajax(
                 {
-                    loader.hidePleaseWait();  
-                    if(data.sites[0].success != "success") {
-                        showErrorModal(data.sites[0].success);                                     
-                        $( "input#productIds" ).remove();
+                    url : urlLink,
+                    type: 'GET', 
+                    dataType: 'jsonp',
+                    async: false,
+                    data: postData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    success:function(data, textStatus, jqXHR) 
+                    {
+                        loader.hidePleaseWait();  
+                        if(data.sites[0].success != "success") {
+                            showErrorModal(data.sites[0].success);                                     
+                            $( "input#productIds" ).remove();
+                        }
+                        else {
+                            $("#success").modal('show');                                         
+                        }
+
+
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) 
+                    {
+                        loader.hidePleaseWait();
+                        showErrorModal("Error Occured. Kindly check for missing data in your excel files"); 
+                        $( "input#productIds" ).remove();                                          
                     }
-                    else {
-                        $("#success").modal('show');                                         
-                    }
-
-
-                },
-                error: function(jqXHR, textStatus, errorThrown) 
-                {
-                    loader.hidePleaseWait();
-                    showErrorModal("Error Occured. Kindly check for missing data in your excel files"); 
-                    $( "input#productIds" ).remove();                                          
-                }
-            });
-
-
+                });
+            }
         });
          
         $("#sendToWebservice").submit(); 
