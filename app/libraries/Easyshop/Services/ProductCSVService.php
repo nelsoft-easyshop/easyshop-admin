@@ -81,7 +81,6 @@ class ProductCSVService
                 $product->member_id = $member->id_member;
                 $product->discount = $value->discount;
                 $product->is_cod = $value->cash_on_delivery;
-                $product->slug = $value->slug;
                 $product->condition = $value->condition;
                 $product->keywords = $value->keywords;
                 $product->price = $value->price;
