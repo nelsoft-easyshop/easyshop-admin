@@ -53,6 +53,12 @@
                                         @foreach($adminImages as $images)
                                             <div style="position:relative;display:inline-block;">
                                                 <div class='well' style="height: 250px;" >
+                                                    <a class="btn btn-default" 
+                                                                id="removeSubSlide" 
+                                                                data-url = "/removeContent"
+                                                                style="position:absolute;top:2px;left:5px;"
+                                                             ><font color='red'><b>X</b></font>
+                                                    </a>
                                                     <div style="width: 200px; height: 200px;max-width: 200px; max-height: 200px; display: table-cell; vertical-align: middle;">
                                                         <img src="{{{$easyShopLink}}}/assets/admin/{{{$images->image_name}}}" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                         <p>{{{$images->image_name}}}</p>
