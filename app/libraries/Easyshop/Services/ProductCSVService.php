@@ -12,11 +12,7 @@ use Carbon\Carbon;
 
 class ProductCSVService
 {
-    /*
-     * Constant value for style column
-     */
-    const STYLE = 1;
-    
+
     /**
      * Removes data from the current csv files that was detected to have errors in table dependencies
      * @param object $values
@@ -90,7 +86,7 @@ class ProductCSVService
                 $product->condition = $value->condition;
                 $product->keywords = $value->keywords;
                 $product->price = $value->price;
-                $product->style_id = self::STYLE;
+                $product->style_id = Style::DEFAULT_STYLE_ID;
                 $product->createddate = Carbon::now();
                 $product->lastmodifieddate = Carbon::now();
                 $product->startdate = Carbon::now();
