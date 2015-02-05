@@ -42,6 +42,7 @@
         beforeSubmit: function(event) {
             var files = $('#uploadCSV').prop("files");
             if(files.length < 1) {
+                loader.hidePleaseWait();
                 showErrorModal("Please upload a file");
                 return false;
             }
