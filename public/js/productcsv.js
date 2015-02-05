@@ -106,37 +106,42 @@
         {
             event.preventDefault();
             var postData = $(this).serializeArray();
-            $.ajax(
-            {
-                url : urlLink,
-                type: 'GET', 
-                dataType: 'jsonp',
-                async: false,
-                data: postData,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                success:function(data, textStatus, jqXHR) 
+            if(postData.length < 1) {
+                loader.hidePleaseWait();
+                showErrorModal("Error Occured. Kindly check for missing data in your excel files");
+                return false;
+            }
+            else {
+                $.ajax(
                 {
-                    loader.hidePleaseWait();  
-                    if(data.sites[0].success != "success") {
-                        showErrorModal(data.sites[0].success);                                     
-                        $( "input#productIds" ).remove();
+                    url : urlLink,
+                    type: 'GET', 
+                    dataType: 'jsonp',
+                    async: false,
+                    data: postData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    success:function(data, textStatus, jqXHR) 
+                    {
+                        loader.hidePleaseWait();  
+                        if(data.sites[0].success != "success") {
+                            showErrorModal(data.sites[0].success);                                     
+                            $( "input#productIds" ).remove();
+                        }
+                        else {
+                            $("#success").modal('show');                                         
+                        }
+
+
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) 
+                    {
+                        loader.hidePleaseWait();
+                        showErrorModal("Error Occured. Kindly check for missing data in your excel files"); 
+                        $( "input#productIds" ).remove();                                          
                     }
-                    else {
-                        $("#success").modal('show');                                         
-                    }
-
-
-                },
-                error: function(jqXHR, textStatus, errorThrown) 
-                {
-                    loader.hidePleaseWait();
-                    showErrorModal("Error Occured. Kindly check for missing data in your excel files"); 
-                    $( "input#productIds" ).remove();                                          
-                }
-            });
-
-
+                });
+            }
         });
          
         $("#sendToWebservice").submit(); 
