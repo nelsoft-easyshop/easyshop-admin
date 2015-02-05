@@ -62,6 +62,10 @@ class ProductCSVService
                 if(!$brand) {
                     $errors[] = "Brand '$value->category_name' does not exist";                
                 }
+                $style = Style::where("name",$value->style)->first();
+                if(!$style) {
+                    $errors[] = "Style '$value->style' does not exist";
+                }                
                 $member = Member::where("username",$value->seller)->first();
                 if(!$member) {
                     $errors[] = "Seller '$value->seller' does not exist";
@@ -84,6 +88,7 @@ class ProductCSVService
                 $product->condition = $value->condition;
                 $product->keywords = $value->keywords;
                 $product->price = $value->price;
+                $product->style_id = $style->id_style;
                 $product->createddate = Carbon::now();
                 $product->lastmodifieddate = Carbon::now();
                 $product->startdate = Carbon::now();
