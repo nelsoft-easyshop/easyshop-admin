@@ -96,7 +96,7 @@ class ProductCSVController extends BaseController
                 continue;
             }
         }
-        
+
         if( !isset($data[0]["dataNotFound"]) && !isset($data[0]["databaseError"]) ) {
             return Response::json(['html' => $data]);            
         }
