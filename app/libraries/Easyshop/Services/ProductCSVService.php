@@ -12,6 +12,7 @@ use Carbon\Carbon;
 
 class ProductCSVService
 {
+
     /**
      * Removes data from the current csv files that was detected to have errors in table dependencies
      * @param object $values
@@ -62,10 +63,7 @@ class ProductCSVService
                 if(!$brand) {
                     $errors[] = "Brand '$value->category_name' does not exist";                
                 }
-                $style = Style::where("name",$value->style)->first();
-                if(!$style) {
-                    $errors[] = "Style '$value->style' does not exist";
-                }
+
                 $member = Member::where("username",$value->seller)->first();
                 if(!$member) {
                     $errors[] = "Seller '$value->seller' does not exist";
@@ -82,14 +80,13 @@ class ProductCSVService
                 $product->keywords = $value->keywords;
                 $product->cat_id = $category->id_cat;
                 $product->brand_id = $brand->id_brand;
-                $product->style_id = $style->id_style;
                 $product->member_id = $member->id_member;
                 $product->discount = $value->discount;
                 $product->is_cod = $value->cash_on_delivery;
-                $product->slug = $value->slug;
                 $product->condition = $value->condition;
                 $product->keywords = $value->keywords;
                 $product->price = $value->price;
+                $product->style_id = Style::DEFAULT_STYLE_ID;
                 $product->createddate = Carbon::now();
                 $product->lastmodifieddate = Carbon::now();
                 $product->startdate = Carbon::now();
