@@ -21,7 +21,7 @@ class ProductCSVService
     {
         foreach ($productsObject as $value ) {
 
-            $product = Product::where("slug",$value->slug)->first();
+            $product = Product::find($value);
             if(!$product) {
                 continue;
             }
@@ -50,23 +50,54 @@ class ProductCSVService
     {
         $images = [];
         $attrHeadArray = [];
-        $resultsIDS = [];
         $errors = [];
-
+        $resultsIDS["partialProductIds"] = [];
         foreach($productsObject as $key => $value) {
             try{
-                $category = Category::where("name",$value->category_name)->first();
+                $category = trim($value->category_name) !== "" ?
+                            Category::where("name",$value->category_name)->first() : false;
                 if(!$category) {
                     $errors[] = "Category '$value->category_name'  does not exist";
                 }
-                $brand = Brand::where("name",$value->brand_name)->first();
+                $brand = trim($value->brand_name) !== "" ?
+                         Brand::where("name",$value->brand_name)->first() : false;
                 if(!$brand) {
                     $errors[] = "Brand '$value->category_name' does not exist";                
                 }
 
-                $member = Member::where("username",$value->seller)->first();
+                $member = trim($value->seller) !== "" ?
+                          Member::where("username",$value->seller)->first() : false;
                 if(!$member) {
                     $errors[] = "Seller '$value->seller' does not exist";
+                }
+
+                if(trim($value->product_name) === "") {
+                    $errors[] = "Product Name is required";
+                }
+
+                if(trim($value->condition) === "" || !in_array($value->condition,  
+                        ['New', 'New other (see details)','Manufacturer refurbished','Used','For parts or not working'])) {
+                    $errors[] = "Invalid Product Conditions";
+                }
+
+                if(!is_numeric($value->price)) {
+                    $errors[] = "Invalid Product Price";
+                }
+
+                if(!is_numeric($value->discount)) {
+                    $errors[] = "Invalid Discount Price";
+                }
+
+                if(!in_array($value->cash_on_delivery, [0,1])) {
+                    $errors[] = "Invalid value for Cash on Delivery";
+                }
+
+                if(trim($value->product_image_file) === "") {
+                    $errors[] = "Please indicate a product image";
+                }
+
+                if(!is_numeric($value->quantity)) {
+                    $errors[] = "Invalid quantity value";
                 }
                 
                 if(!empty($errors)) {
@@ -93,16 +124,20 @@ class ProductCSVService
                 $product->enddate = Carbon::now();
                 $product->save(); 
 
-                $resultsIDS[] = $product->id_product; 
+                $resultsIDS["partialProductIds"][] = $product->id_product; 
               
                 $productItem = new ProductItem();
                 $productItem->product_id = $product->id_product;
                 $productItem->quantity = $value->quantity;
                 $productItem->save();
-
+                $errors = [];
                 $primaryImage = trim($value->product_image_file);
                 foreach($imagesObject as $images) {
                     if($value->number === $images->product_number) {
+                        if(trim($images->product_image_file) === "") {
+                            $errors[] = "Invalid value for image file. Kindly check your Image sheet";
+                            return ["dataNotFound" => $errors];
+                        }
                         $imageFile = trim($images->product_image_file);
                         $productImage = new ProductImage();
                         $productImage->product_image_path = "assets/product/".$imageFile;
@@ -115,10 +150,22 @@ class ProductCSVService
 
                     $imagesArr[] = $productImage->id_product_image;
                     $imagesIDsArr[] = $productImage->product_image_path;
-                }                
-                
+                }    
+
+                $errors = [];
                 foreach($optionalAttributesObject as $attributes){
                     if($value->number === $attributes->product_number) {
+                        if(trim($attributes->option_name) === ""
+                           || trim($attributes->option_value) === ""
+                           || trim($attributes->option_image) === "") {
+                            $errors[] = "Kindly check for missing data under attributes sheet";
+                        }
+                        if(!is_numeric($attributes->option_price)) {
+                            $errors[] = "Kindly check for invalid option price under attributes sheet";                            
+                        }
+                        if(count($errors) > 0 ) {
+                            return ["dataNotFound" => $errors];
+                        }
                         if(!in_array($attributes->option_name, $attrHeadArray)) {
                             $attrHeadArray[] = $attributes->option_name;
                             $attrHead = new OptionalAttrHead();
@@ -142,11 +189,21 @@ class ProductCSVService
                         $attrDetail->save();   
                     }
                 }
-                $attrHeadArray = array();
-
+                $attrHeadArray =[];
+                $errors = [];
                 foreach($shipmentObject as $shipment) {
                     if($value->number === $shipment->product_number) {
                         $location = LocationLookUp::where("location",$shipment->shipping_location)->first();
+
+                        if(trim($shipment->shipping_location) === "") {
+                            $errors[] = "Kindly check for missing data under shipment sheet";
+                        }
+                        if(!is_numeric($shipment->shipping_price)) {
+                            $errors[] = "Kindly check for invalid shipment price under shipment sheet";                            
+                        }
+                        if(count($errors) > 0 ) {
+                            return ["dataNotFound" => $errors];
+                        }                        
                         $shippingHead = new ProductShippingHead;
                         $shippingHead->location_id = $location->id_location;
                         $shippingHead->price = $shipment->shipping_price;             
@@ -161,7 +218,7 @@ class ProductCSVService
                 }
             }
             catch(\Exception $e) {
-                return $resultsIDS[] = "Database Error";
+                $resultsIDS["databaseError"] = true;
             }
         }   
         return $resultsIDS;
