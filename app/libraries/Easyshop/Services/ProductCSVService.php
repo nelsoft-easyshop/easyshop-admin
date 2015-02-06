@@ -88,7 +88,7 @@ class ProductCSVService
                     $errors[] = "Invalid Discount Price";
                 }
 
-                if(!is_bool((bool)$value->cash_on_delivery)) {
+                if(!in_array($value->cash_on_delivery, [0,1])) {
                     $errors[] = "Invalid value for Cash on Delivery";
                 }
 
