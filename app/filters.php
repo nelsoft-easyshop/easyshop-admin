@@ -13,7 +13,7 @@
 App::before(function($request)
 {
     $request = Request::instance();
-    $request->setTrustedProxies(array('172.31.7.121', '172.31.11.121'));
+    $request->setTrustedProxies(array('172.31.7.121', '172.31.11.121', '172.31.0.205', '172.31.1.244'));
     $clientIp = $request->getClientIp();
 
     $arrayWhiteListIp = [
