@@ -90,7 +90,7 @@
                 loader.hidePleaseWait();                  
                 showErrorModal(errorString);
             }          
-            else if(typeof json.html !== "undefined" && json.html[0][0] !== "Database Error"){
+            else if(typeof json.html !== "undefined"){
                 $.each(json.html , function( index, obj ) {
                     $.each(obj, function( key, value ) {
                         $("#sendToWebservice").append('<input type="hidden" name="product[]" class = "removeme" id="productIds" value="' + value +'"/>');                
