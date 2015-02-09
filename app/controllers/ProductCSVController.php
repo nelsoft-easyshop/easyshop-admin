@@ -67,7 +67,8 @@ class ProductCSVController extends BaseController
     public function insertData($destinationPath,$files)
     {
         $productCSVRepo = App::make('ProductRepository');        
-        $excel = App::make('excel');           
+        $excel = App::make('excel');
+        $data = [];
         foreach($files as $file) {
 
             $product = $excel->selectSheets("Products")->load("./public/misc/$file"); 
@@ -79,19 +80,32 @@ class ProductCSVController extends BaseController
             $optionalAttributesObject = $attributes->get();
             $shipmentObject = $shipments->get();
             $imagesObject = $images->ignoreEmpty()->get();
-            $result = $this->ProductCSVService->insertData($productsObject, $optionalAttributesObject, $shipmentObject, $imagesObject);
-            
-            $data[]  = $result;
-            if (File::exists($destinationPath.$file)) {
-                File::delete($destinationPath.$file);
-            }                    
+
+            if(count($productsObject) > 0
+               && count($optionalAttributesObject) > 0
+               && count($shipmentObject) > 0
+               && count($imagesObject) > 0) {
+               $data[] =  $this->ProductCSVService->insertData($productsObject, 
+                                                               $optionalAttributesObject, 
+                                                               $shipmentObject, 
+                                                               $imagesObject);
+                if (File::exists($destinationPath.$file)) {
+                    File::delete($destinationPath.$file);
+                }
+            }
+            else {
+                continue;
+            }
         }
-        if(isset($data[0]["dataNotFound"])) {
-            $this->ProductCSVService->removeErrorData($productsObject);
-            return Response::json(['error' => $data]); 
+
+        if( !isset($data[0]["dataNotFound"]) && !isset($data[0]["databaseError"]) ) {
+            return Response::json(['html' => $data]);            
         }
         else {
-            return Response::json(['html' => $data]);
+            if(isset($data[0]["partialProductIds"]) && count($data[0]["partialProductIds"]) > 0) {
+                $this->ProductCSVService->removeErrorData($data[0]["partialProductIds"]);
+            }
+            return Response::json(['error' => $data]);
         }
     }
 }

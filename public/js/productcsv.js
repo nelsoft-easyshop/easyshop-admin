@@ -5,7 +5,7 @@
         previewFileType: ['image'],
         'showUpload':true,
     });
-    $('#success, #customerror').bind('hidden.bs.modal', function () {
+    $('#success').bind('hidden.bs.modal', function () {
 
             window.location.href = location.href;  
     })  
@@ -13,6 +13,8 @@
 
     $("button:nth-child(2)").attr('id', 'uploadPhotosSubmit');      
     $(document.body).delegate('#uploadPhotosSubmit', 'click', function(event) {
+        var maxDimensions = 5000;
+        var maxFileSize = 5;
         var files = $('#uploadImageOnly').prop("files");
         var proceed = 1;
         if($("#uploadImageOnly").val() == "")   {
@@ -26,6 +28,11 @@
                     proceed = 0;
                     showErrorModal("Images only are allowed");                                        
                 }
+                if(file.size > (maxFileSize*1000000) || 
+                  (file.width > maxDimensions || file.height > maxDimensions)) {
+                    proceed = 0;
+                    showErrorModal("Failed to upload Image<br/><br/>Max image dimensions: "+maxDimensions+"px x "+maxDimensions+"px<br/>Max Image Size: "+maxFileSize+" MB");
+                }
             }
         }
         if(proceed == 1) {
@@ -35,10 +42,44 @@
         event.preventDefault();
     });
 
+    $("#profile").on("click","#removeAdminImage", function() {
+        loader.showPleaseWait();
+        var imageId = $(this).data("imageid");
+        var imageName = $(this).data("imagename");
+            $.ajax(
+            {
+                url : urlLink + "/deleteImage",
+                type: 'GET', 
+                dataType: 'jsonp',
+                data: { "imageId": imageId, "imageName":imageName},
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                success:function(data, textStatus, jqXHR) 
+                {
+                    loader.hidePleaseWait();  
+                    $("#success").modal("show");  
+                },
+                error: function(jqXHR, textStatus, errorThrown) 
+                {
+                    loader.hidePleaseWait();
+                    showErrorModal("Something went wrong, please try again");
+                }
+            });
+
+    });
+
     $('#uploadData').ajaxForm({
         url: 'productcsv',
         type: 'post', 
-        dataType: 'json',            
+        dataType: 'json', 
+        beforeSubmit: function(event) {
+            var files = $('#uploadCSV').prop("files");
+            if(files.length < 1) {
+                loader.hidePleaseWait();
+                showErrorModal("Please upload a file");
+                return false;
+            }
+        },
         success: function(json) { 
             if(json.error && typeof json.error[0].dataNotFound !== "undefined") {
                 var errorString = "";
@@ -49,7 +90,7 @@
                 loader.hidePleaseWait();                  
                 showErrorModal(errorString);
             }          
-            else if(typeof json.html !== "undefined" && json.html !== "Database Error"){
+            else if(typeof json.html !== "undefined" && json.html[0][0] !== "Database Error"){
                 $.each(json.html , function( index, obj ) {
                     $.each(obj, function( key, value ) {
                         $("#sendToWebservice").append('<input type="hidden" name="product[]" class = "removeme" id="productIds" value="' + value +'"/>');                
@@ -106,37 +147,42 @@
         {
             event.preventDefault();
             var postData = $(this).serializeArray();
-            $.ajax(
-            {
-                url : urlLink,
-                type: 'GET', 
-                dataType: 'jsonp',
-                async: false,
-                data: postData,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                success:function(data, textStatus, jqXHR) 
+            if(postData.length < 1) {
+                loader.hidePleaseWait();
+                showErrorModal("Error Occured. Kindly check for missing data in your excel files");
+                return false;
+            }
+            else {
+                $.ajax(
                 {
-                    loader.hidePleaseWait();  
-                    if(data.sites[0].success != "success") {
-                        showErrorModal(data.sites[0].success);                                     
-                        $( "input#productIds" ).remove();
+                    url : urlLink,
+                    type: 'GET', 
+                    dataType: 'jsonp',
+                    async: false,
+                    data: postData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    success:function(data, textStatus, jqXHR) 
+                    {
+                        loader.hidePleaseWait();  
+                        if(data.sites[0].success != "success") {
+                            showErrorModal(data.sites[0].success);                                     
+                            $( "input#productIds" ).remove();
+                        }
+                        else {
+                            $("#success").modal('show');                                         
+                        }
+
+
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) 
+                    {
+                        loader.hidePleaseWait();
+                        showErrorModal("Error Occured. Kindly check for missing data in your excel files"); 
+                        $( "input#productIds" ).remove();                                          
                     }
-                    else {
-                        $("#success").modal('show');                                         
-                    }
-
-
-                },
-                error: function(jqXHR, textStatus, errorThrown) 
-                {
-                    loader.hidePleaseWait();
-                    showErrorModal("Error Occured. Kindly check for missing data in your excel files"); 
-                    $( "input#productIds" ).remove();                                          
-                }
-            });
-
-
+                });
+            }
         });
          
         $("#sendToWebservice").submit(); 
