@@ -13,6 +13,8 @@
 
     $("button:nth-child(2)").attr('id', 'uploadPhotosSubmit');      
     $(document.body).delegate('#uploadPhotosSubmit', 'click', function(event) {
+        var maxDimensions = 5000;
+        var maxFileSize = 5;
         var files = $('#uploadImageOnly').prop("files");
         var proceed = 1;
         if($("#uploadImageOnly").val() == "")   {
@@ -25,6 +27,11 @@
                 if (!file.type.match('image.*')) {
                     proceed = 0;
                     showErrorModal("Images only are allowed");                                        
+                }
+                if(file.size > (maxFileSize*1000000) || 
+                  (file.width > maxDimensions || file.height > maxDimensions)) {
+                    proceed = 0;
+                    showErrorModal("Failed to upload Image<br/><br/>Max image dimensions: "+maxDimensions+"px x "+maxDimensions+"px<br/>Max Image Size: "+maxFileSize+" MB");
                 }
             }
         }
@@ -83,7 +90,7 @@
                 loader.hidePleaseWait();                  
                 showErrorModal(errorString);
             }          
-            else if(typeof json.html !== "undefined" && json.html !== "Database Error"){
+            else if(typeof json.html !== "undefined" && json.html[0][0] !== "Database Error"){
                 $.each(json.html , function( index, obj ) {
                     $.each(obj, function( key, value ) {
                         $("#sendToWebservice").append('<input type="hidden" name="product[]" class = "removeme" id="productIds" value="' + value +'"/>');                
