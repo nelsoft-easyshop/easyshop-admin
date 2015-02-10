@@ -14,7 +14,7 @@
         var accountname = $this.find('.td_accountname').html();
         var order_product_ids = $this.data('order-product-ids');
         
-        var url = $this.hasClass('buyer_detail') ? 'orderproduct/refund' : 'orderproduct/pay';
+        var url = $this.hasClass('buyer_detail') ? '/transaction/orderproduct/refund' : '/transaction/orderproduct/pay';
         loader.showPleaseWait();        
         $.ajax({
                 url: url,
@@ -39,7 +39,7 @@
     $(document.body).on('click','.view',function(){
         var order_product_id =  $(this).closest('.order_product').data('orderproductid');
          $.ajax({
-                url: 'orderproduct-detail',
+                url: '/transaction/orderproduct-detail',
                 data:{order_product_id:order_product_id},
                 type: 'get',
                 dataType: 'JSON',                      
@@ -67,7 +67,7 @@
     
     
     $(document.body).on('click','.op-pay-btn',function(){
-        var url =  $(this).hasClass('seller') ? 'orderproduct-payment/refund' : 'orderproduct-payment/pay';
+        var url =  $(this).hasClass('seller') ? '/transaction/orderproduct-payment/refund' : '/transaction/orderproduct-payment/pay';
         var orderProductIdCollection =  [];
         $('.order_product td.order-product-id').each(function(){
             orderProductIdCollection.push( parseInt($(this).html().trim(), 10));
@@ -177,7 +177,7 @@
             };
         }
         $.ajax({
-            url: 'billinginfo',
+            url: '/transaction/billinginfo',
             data: json_data,
             type: 'post',
             dataType: 'JSON',                      
@@ -258,7 +258,7 @@
     {
         var isPayment = ($('#action').val() == 'pay');
         var member_id =  isPayment  ?  $('#seller_id').val() : $('#buyer_id').val();
-        var url = isPayment ? 'orderproduct-status/pay' : 'orderproduct-status/refund'; 
+        var url = isPayment ? '/transaction/orderproduct-status/pay' : '/transaction/orderproduct-status/refund'; 
         
         var selected_option = $('#account_collection').find('option:selected');
         
