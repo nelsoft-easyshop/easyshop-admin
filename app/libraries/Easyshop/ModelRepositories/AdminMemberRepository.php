@@ -46,7 +46,7 @@ class AdminMemberRepository
     {
          $query = AdminMember::leftJoin('es_admin_member_role', 'es_admin_member.role_id', '=', 'es_admin_member_role.id_role')
          ->where('es_admin_member.id_admin_member','=', $adminId)
-         ->get();
+         ->first();
 
          return $query;
     }  
@@ -105,31 +105,6 @@ class AdminMemberRepository
     {
         return AdminMember::find($adminId)->role_id;
     }   
-    /**
-     * Returns the role name retrieved from AdminRoles model
-     *
-     * @param string $roleName
-     * @return Entity
-     */
-    public function getRoleNames($roleName)
-    {
-        if($roleName == "CONTENT") {
-            return AdminRoles::CONTENT;
-        }
-        else if($roleName == "CSR") {
-            return AdminRoles::CSR;
-        }
-        else if($roleName == "MARKETING") {
-            return AdminRoles::MARKETING;
-        }
-        else if($roleName == "SUPER-USER") {
-            return AdminRoles::SUPER_USER;
-        }
-        else if($roleName == "GUEST") {
-            return AdminRoles::GUEST;
-        }  
-    }
 
-    
 }
 
