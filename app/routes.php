@@ -83,8 +83,8 @@ Route::group(array('before' => 'auth'), function(){
 
     Route::get('category', array('uses' => 'CategoryController@showAllCategory'));
     Route::post('category', array('uses' => 'CategoryController@doSearchCategory'));
-    Route::put('categoryUpdate', array('uses' => 'CategoryController@ajaxUpdateCategory'));
-    Route::put('categoryAdd', array('uses' => 'CategoryController@ajaxAddCategory'));
+    Route::put('category/categoryUpdate', array('uses' => 'CategoryController@ajaxUpdateCategory'));
+    Route::put('category/categoryAdd', array('uses' => 'CategoryController@ajaxAddCategory'));
 
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
     Route::post('items', array('uses' => 'ProductController@showAllItems'));
