@@ -70,16 +70,16 @@ class AdminMemberManagerService
         if($currentRole === AdminRoles::CONTENT ) {
             $pages = array_merge($pages, $this->urlWhiteList['contentManagement']);
         }
-        else if($currentRole == AdminRoles::CSR ) {
+        else if($currentRole === AdminRoles::CSR ) {
             $pages = array_merge($pages, $this->urlWhiteList['transactionManagement']);
             $pages = array_merge($pages, $this->urlWhiteList['dataManagement']);
         }
-        else if($currentRole == AdminRoles::MARKETING ) {
+        else if($currentRole === AdminRoles::MARKETING ) {
             $pages = array_merge($pages, $this->urlWhiteList['transactionManagement']);
             $pages = array_merge($pages, $this->urlWhiteList['dataManagement']);
             $pages = array_merge($pages, $this->urlWhiteList['contentManagement']);
         }
-        else if($currentRole == AdminRoles::SUPER_USER ) {
+        else if($currentRole === AdminRoles::SUPER_USER ) {
             $pages = array_merge($pages, $this->urlWhiteList['transactionManagement']);
             $pages = array_merge($pages, $this->urlWhiteList['dataManagement']);
             $pages = array_merge($pages, $this->urlWhiteList['contentManagement']);
