@@ -15,7 +15,8 @@
 @section('content')
 
 <div id="mainsection">
-
+        <span class='userid' style="display:none;">{{{ $adminMemberId }}}</span>
+        <span class='password' style="display:none;">{{{ $password }}}</span>
         <div class='registration_form' id="registration_form">
             {{ Form::input('hidden', 'productCSVwebservice', $productCSVwebservice, array("id" => "webServiceLink")) }}
             <div class="bs-example bs-example-tabs">
@@ -32,7 +33,7 @@
                             {{ Form::open(array('url' => 'productcsv','enctype'=>'multipart/form-data', "id" => "uploadData", 'method'=>'post')) }}
                                 <legend>Upload Product Excel/CSV Data </legend>
                                 <div class="form-group">
-                                    {{ Form::file('image[]', ['multiple' => true, 'class' => 'file ', 'id' => 'uploadCSV','data-preview-file-type' => 'any']) }}
+                                    {{ Form::file('image[]', ['class' => 'file ', 'id' => 'uploadCSV','data-preview-file-type' => 'any']) }}
                                 </div>
                             {{ Form::close() }}
                             <a href="{{{ asset('misc/CSV_Upload.xlsx') }}}" class="btn btn-default btn-sm" id="download-btn"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Download CSV Template</a>
@@ -46,6 +47,9 @@
                                 <div class="form-group">
                                     {{ Form::file('image[]', ['multiple' => true, 'class' => 'file file-loading', 'id' => 'uploadImageOnly','data-preview-file-type' => 'any','accept' => "image/*"]) }}
                                 </div>
+                                    {{ Form::text('userid', $adminMemberId, ['id' => 'userid']) }}
+                                    {{ Form::text('password', $password, ['id' => 'password']) }}                                    
+                                    {{ Form::text('hash', '', ['id' => 'hash'])}}
                             {{ Form::close() }}
                                 <legend>Images uploaded by the administrator</legend>
                                 <div class="form-group">
@@ -106,7 +110,7 @@
 @stop
 
 @section('page_js')
- 
+{{ HTML::script('js/src/sha1.js') }}
 {{ HTML::script('js/src/fileinput.js') }}
 {{ HTML::script('js/src/jquery.form.js') }}
 {{ HTML::script('js/productcsv.js') }}
