@@ -8,7 +8,11 @@
     $('#success').bind('hidden.bs.modal', function () {
 
             window.location.href = location.href;  
-    })  
+    });
+
+    var userid = $(".userid").html();
+    var password = $(".password").html();
+    var hash = hex_sha1(userid + password);
 
 
     $("button:nth-child(2)").attr('id', 'uploadPhotosSubmit');      
@@ -36,6 +40,7 @@
             }
         }
         if(proceed == 1) {
+            $("#uploadphoto").find("#hash").val(hash);            
             loader.showPleaseWait();
             submitPhotos();
         }
@@ -112,8 +117,6 @@
         }
     }); 
     
-
-
     $(document.body).delegate('#uploadData', 'submit', function(event) {
         loader.showPleaseWait();   
         event.preventDefault();
@@ -128,7 +131,7 @@
                 async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
-                dataType: 'jsonp',
+                dataType: 'jsonp',              
                 success: function(json) {
                     loader.hidePleaseWait();             
                     $("#success").modal("show");   
@@ -143,7 +146,9 @@
 
     function submitToWebService(){
 
-       $("#sendToWebservice").submit(function(event)
+        $("#sendToWebservice").append('<input type="hidden" name="userid" id="userid" value="' + userid +'"/>');                
+        $("#sendToWebservice").append('<input type="hidden" name="hash" id="hash" value="' + hash +'"/>');                
+        $("#sendToWebservice").submit(function(event)
         {
             event.preventDefault();
             var postData = $(this).serializeArray();
