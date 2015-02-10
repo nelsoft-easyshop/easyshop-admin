@@ -15,8 +15,8 @@
 @section('content')
 
 <div id="mainsection">
-        <span class='userid' style="display:none;">{{{ $adminMemberId }}}</span>
-        <span class='password' style="display:none;">{{{ $password }}}</span>
+        <span class='userid' style="display:none;">{{{ $adminObj->id_admin_member }}}</span>
+        <span class='password' style="display:none;">{{{ $adminObj->password }}}</span>
         <div class='registration_form' id="registration_form">
             {{ Form::input('hidden', 'productCSVwebservice', $productCSVwebservice, array("id" => "webServiceLink")) }}
             <div class="bs-example bs-example-tabs">
@@ -47,8 +47,8 @@
                                 <div class="form-group">
                                     {{ Form::file('image[]', ['multiple' => true, 'class' => 'file file-loading', 'id' => 'uploadImageOnly','data-preview-file-type' => 'any','accept' => "image/*"]) }}
                                 </div>
-                                    {{ Form::hidden('userid', $adminMemberId, ['id' => 'userid']) }}
-                                    {{ Form::hidden('password', $password, ['id' => 'password']) }}                                    
+                                    {{ Form::hidden('userid', $adminObj->id_admin_member, ['id' => 'userid']) }}
+                                    {{ Form::hidden('password', $adminObj->password, ['id' => 'password']) }}                                    
                                     {{ Form::hidden('hash', '', ['id' => 'hash'])}}
                             {{ Form::close() }}
                                 <legend>Images uploaded by the administrator</legend>

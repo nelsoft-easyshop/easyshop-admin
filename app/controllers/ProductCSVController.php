@@ -27,8 +27,7 @@ class ProductCSVController extends BaseController
                 ->with("easyShopLink",\Config::get('easyshop/webservice.easyShopLink'))
                 ->with("productCSVwebservice",\Config::get('easyshop/webservice.productCSVwebservice'))
                 ->with("adminImages",$productCSVRepo->getAllAdminImages())
-                ->with("adminMemberId",Auth::id())
-                ->with("password",$adminObject->password);
+                ->with("adminObj",$adminObject);
     }
 
     /**
