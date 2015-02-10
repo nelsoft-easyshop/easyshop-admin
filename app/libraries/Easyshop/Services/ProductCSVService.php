@@ -180,8 +180,9 @@ class ProductCSVService
                         $attrDetail->value_price = $attributes->option_price;
 
                         foreach ($imagesArr as $imageId) {
-                            $images = ProductImage::find($imageId);                            
-                            if(strtolower(str_replace("assets/product/", "", $images->product_image_path)) === $attributes->option_image){
+                            $images = ProductImage::find($imageId);
+                            if(strtolower(str_replace("assets/product/", "", $images->product_image_path)) === $attributes->option_image
+                               && $images->product_id === $product->id_product){
                                  $attrDetail->product_img_id = $images->id_product_image;
                                  break;
                             }
