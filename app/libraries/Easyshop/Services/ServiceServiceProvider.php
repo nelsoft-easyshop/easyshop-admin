@@ -45,7 +45,9 @@ class ServiceServiceProvider extends ServiceProvider
         });
 
         $this->app->bind('AdminMemberManagerService', function(){
-            return new AdminMemberManagerService();
+            return new AdminMemberManagerService(
+                new \Easyshop\ModelRepositories\AdminMemberRepository
+            );
         });
 
         $this->app->bind('RaffleManagerService', function(){
