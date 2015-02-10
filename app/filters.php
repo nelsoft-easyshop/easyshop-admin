@@ -13,7 +13,7 @@
 App::before(function($request)
 {
     $request = Request::instance();
-    $request->setTrustedProxies(array('172.31.7.121', '172.31.11.121', '172.31.0.205', '172.31.1.244'));
+    $request->setTrustedProxies(['172.31.0.0/20']);
     $clientIp = $request->getClientIp();
 
     $arrayWhiteListIp = [
@@ -21,7 +21,7 @@ App::before(function($request)
         '124.104.99.90',
         '127.0.0.1',
     ];
-
+ 
     if(!in_array($clientIp, $arrayWhiteListIp)){
         exit("You are not allowed to access this page.");
     }
