@@ -14,7 +14,7 @@
     
     $('#download-btn').click(function(){
         var action = $('#transaction-form').attr('action');
-        $('#transaction-form').attr('action','orderproduct-download');
+        $('#transaction-form').attr('action','/transaction/orderproduct-download');
         $('#transaction-form').submit();
         $('#transaction-form').attr('action',action);
     });
@@ -25,7 +25,7 @@
         var orderId = $this.siblings('.order-id').html();
 
          $.ajax({
-                url: 'order-detail',
+                url: '/transaction/order-detail',
                 data:{order_id:orderId},
                 type: 'get',
                 dataType: 'JSON',                      
@@ -52,7 +52,7 @@
     $(document.body).on('click', '#order-product-tbl .view', function(){
         var orderProductId =  parseInt($(this).parent().data('order-product-id'), 10);
         $.ajax({
-                url: 'orderproduct-detail',
+                url: '/transaction/orderproduct-detail',
                 data:{order_product_id:orderProductId},
                 type: 'get',
                 dataType: 'JSON',                      
@@ -83,7 +83,7 @@
         if(canProceed){
             loader.showPleaseWait();  
             $.ajax({
-                    url: 'order-product-void',
+                    url: '/transaction/order-product-void',
                     data:{ _method: 'put', order_product_id:orderProductId },
                     type: 'post',
                     dataType: 'JSON',                      
@@ -108,7 +108,7 @@
         var canProceed = confirm("You are about to void the entire transaction: " + transactionId + ", would you like to proceed?");
         if(canProceed){
             $.ajax({
-                    url: 'order-void',
+                    url: '/transaction/order-void',
                     data:{ _method: 'put', order_id:orderId },
                     type: 'post',
                     dataType: 'JSON',                      

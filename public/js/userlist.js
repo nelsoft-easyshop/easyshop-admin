@@ -71,7 +71,7 @@
             }
             loader.showPleaseWait();
             $.ajax({
-                url:'user',
+                url:'/users',
                 dataType:'JSON',
                 type:'POST',
                 data:{

@@ -24,7 +24,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('/', array('uses' => 'HomeController@index'));
     Route::get('users', array('uses' => 'MemberController@showAllUsers'));
     Route::post('users', array('uses' => 'MemberController@search'));
-    Route::put('user', array('uses' => 'MemberController@ajaxUpdateUsers'));
+    Route::put('users', array('uses' => 'MemberController@ajaxUpdateUsers'));
 
     Route::get('cms/home', array('uses' => 'HomeContentManagerController@getHomeContent'));
     Route::get('home', array('uses' => 'NewHomeContentManagerController@getHomeContent'));
@@ -83,44 +83,41 @@ Route::group(array('before' => 'auth'), function(){
 
     Route::get('category', array('uses' => 'CategoryController@showAllCategory'));
     Route::post('category', array('uses' => 'CategoryController@doSearchCategory'));
-    Route::put('categoryUpdate', array('uses' => 'CategoryController@ajaxUpdateCategory'));
-    Route::put('categoryAdd', array('uses' => 'CategoryController@ajaxAddCategory'));
+    Route::put('category/categoryUpdate', array('uses' => 'CategoryController@ajaxUpdateCategory'));
+    Route::put('category/categoryAdd', array('uses' => 'CategoryController@ajaxAddCategory'));
 
     Route::get('items',array('uses'=>'ProductController@showAllItems'));
     Route::post('items', array('uses' => 'ProductController@showAllItems'));
 
-    Route::get('pay', array('uses' => 'OrderProductController@getUsersToPay'));
-    Route::get('refund', array('uses' => 'OrderProductController@getUsersToRefund'));
-    Route::get('orderproduct/pay', array('uses' => 'OrderProductController@getOrderProductsToPay'));
-    Route::get('orderproduct/refund', array('uses' => 'OrderProductController@getOrderProductsToRefund'));
-    Route::get('orderproduct-detail', array('uses' => 'OrderProductController@getOrderProductDetail'));
-    Route::get('orderproduct-payment/pay', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToPay'));
-    Route::get('orderproduct-payment/refund', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToRefund'));
-    Route::put('orderproduct-status/pay', array('uses' => 'OrderProductController@payOrderProducts'));
-    Route::get('orderproduct-download', array('uses' => 'OrderProductController@downloadTransactionRecord'));
-    Route::put('orderproduct-status/refund', array('uses' => 'OrderProductController@refundOrderProducts'));
-    Route::put('billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
-    Route::post('billinginfo', array('uses' => 'BillingInfoController@createOrderProductPaymentAccount'));
+    Route::get('transaction/pay', array('uses' => 'OrderProductController@getUsersToPay'));
+    Route::get('transaction/refund', array('uses' => 'OrderProductController@getUsersToRefund'));
+    Route::get('transaction/orderproduct/pay', array('uses' => 'OrderProductController@getOrderProductsToPay'));
+    Route::get('transaction/orderproduct/refund', array('uses' => 'OrderProductController@getOrderProductsToRefund'));
+    Route::get('transaction/orderproduct-detail', array('uses' => 'OrderProductController@getOrderProductDetail'));
+    Route::get('transaction/orderproduct-payment/pay', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToPay'));
+    Route::get('transaction/orderproduct-payment/refund', array('uses' => 'OrderProductController@getOrderProductPaymentDetailToRefund'));
+    Route::put('transaction/orderproduct-status/pay', array('uses' => 'OrderProductController@payOrderProducts'));
+    Route::get('transaction/orderproduct-download', array('uses' => 'OrderProductController@downloadTransactionRecord'));
+    Route::put('transaction/orderproduct-status/refund', array('uses' => 'OrderProductController@refundOrderProducts'));
+    Route::put('transaction/billinginfo', array('uses' => 'BillingInfoController@updateOrderProductPaymentAccount'));
+    Route::post('transaction/billinginfo', array('uses' => 'BillingInfoController@createOrderProductPaymentAccount'));
 
     Route::get('transaction', array('uses' => 'OrderController@getAllValidOrders'));
-    Route::get('order-detail', array('uses' => 'OrderController@getOrderDetail'));
-    Route::put('order-void', array('uses' => 'OrderController@voidOrder'));
-    Route::put('order-product-void', array('uses' => 'OrderProductController@voidOrderProduct'));
+    Route::get('transaction/order-detail', array('uses' => 'OrderController@getOrderDetail'));
+    Route::put('transaction/order-void', array('uses' => 'OrderController@voidOrder'));
+    Route::put('transaction/order-product-void', array('uses' => 'OrderProductController@voidOrderProduct'));
 
     Route::get('prohibited', array('uses' => 'AccountController@prohibited'));
 
-    // routes for payout notifs
     Route::get('contact/seller', array('uses' => 'OrderProductController@getSellersTransactions'));
     Route::post('contact/seller', array('uses' => 'OrderProductController@getSellersTransactions'));
     Route::get('contact/seller/view-transactions-details', array('uses' => 'OrderProductController@getSellerTransactionDetailsByOrderId'));
     Route::get('contact/seller/add-transactions-details', array('uses' => 'OrderProductController@getAddShippingDetailsView'));
     Route::get('contact/seller/update-transaction', array('uses' => 'OrderProductController@updateOrderProductTagStatus'));
     Route::get('contact/seller/view-transaction-shipping', array('uses' => 'OrderProductController@getOrderProductShippingDetails'));
-
     Route::get('contact/buyer', array('uses' => 'OrderProductController@getOrderProductsContactBuyer'));   
     Route::post('contact/buyer', array('uses' => 'OrderProductController@getOrderProductsContactBuyer'));   
     Route::get('contact/buyer/view-transaction-details', array('uses' => 'OrderProductController@getBuyerTransactionDetailsByOrderId'));
-
-    Route::get('shippingdetails/add', array('uses' => 'OrderProductController@addShippingDetails'));
+    Route::get('contact/shippingdetails/add', array('uses' => 'OrderProductController@addShippingDetails'));
 
 });

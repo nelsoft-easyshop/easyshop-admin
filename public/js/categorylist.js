@@ -186,7 +186,7 @@
         }
 
         $.ajax({
-            url:'categoryAdd',
+            url:'/category/categoryAdd',
             dataType:'JSON',
             type:'POST',
             data:{
@@ -206,7 +206,7 @@
     function update(cat_id, cat_name, cat_description, cat_keyword, cat_sort, cat_main)
     {
         $.ajax({
-            url:'categoryUpdate',
+            url:'/category/categoryUpdate',
             dataType:'JSON',
             type:'POST',
             data:{
