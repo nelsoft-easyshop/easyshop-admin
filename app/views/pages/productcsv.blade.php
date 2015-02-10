@@ -47,9 +47,9 @@
                                 <div class="form-group">
                                     {{ Form::file('image[]', ['multiple' => true, 'class' => 'file file-loading', 'id' => 'uploadImageOnly','data-preview-file-type' => 'any','accept' => "image/*"]) }}
                                 </div>
-                                    {{ Form::text('userid', $adminMemberId, ['id' => 'userid']) }}
-                                    {{ Form::text('password', $password, ['id' => 'password']) }}                                    
-                                    {{ Form::text('hash', '', ['id' => 'hash'])}}
+                                    {{ Form::hidden('userid', $adminMemberId, ['id' => 'userid']) }}
+                                    {{ Form::hidden('password', $password, ['id' => 'password']) }}                                    
+                                    {{ Form::hidden('hash', '', ['id' => 'hash'])}}
                             {{ Form::close() }}
                                 <legend>Images uploaded by the administrator</legend>
                                 <div class="form-group">
