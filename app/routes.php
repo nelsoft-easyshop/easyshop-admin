@@ -24,7 +24,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('/', array('uses' => 'HomeController@index'));
     Route::get('users', array('uses' => 'MemberController@showAllUsers'));
     Route::post('users', array('uses' => 'MemberController@search'));
-    Route::put('user', array('uses' => 'MemberController@ajaxUpdateUsers'));
+    Route::put('users', array('uses' => 'MemberController@ajaxUpdateUsers'));
 
     Route::get('cms/home', array('uses' => 'HomeContentManagerController@getHomeContent'));
     Route::get('home', array('uses' => 'NewHomeContentManagerController@getHomeContent'));
