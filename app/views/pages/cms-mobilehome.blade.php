@@ -307,6 +307,11 @@
                                                     <span class="glyphicon-center glyphicon glyphicon-cog"></span>
                                                 </button>
                                             </div>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn edit_btn removeButton" data-url="{{{ $mobileCmsLink }}}/removeContent" data-nodename="boxContent" data-index="{{{ $index }}}" data-subindex= "{{{ $boxContentIndex }}}" >
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                </button>
+                                            </div>                                            
                                         </div>
                                     </td>
                                     <td id="value_{{$index}}_{{$boxContentIndex}}">{{{$content->value}}}</td>
