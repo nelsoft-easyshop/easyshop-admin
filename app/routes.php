@@ -52,7 +52,7 @@ Route::group(array('before' => 'auth'), function(){
     
 
     Route::get('cms/mobile', array('uses' => 'MobileContentManagerController@showMobileCms'));
-    Route::get('cms/mobile/mobileSlides', array('uses' => 'MobileContentManagerController@getMainSlides'));\
+    Route::get('cms/mobileSlides', array('uses' => 'MobileContentManagerController@getMainSlides'));\
     Route::get('cms/mobile/getBoxContent/{index}', array('uses' => 'MobileContentManagerController@getBoxContent'));
 
     Route::get('register', array('uses' => 'AccountController@showRegistration'));
