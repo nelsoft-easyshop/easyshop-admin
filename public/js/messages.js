@@ -14,7 +14,7 @@
         var to_id = $this.find('.to_id').html();    
         var from_id = $this.find('.from_id').html();
         $.ajax({
-            url: "messages/getmessage",
+            url: "/messages/getmessage",
             data:{messageid:messageid, sender:sender, recipient:recipient, message:message,
                     to_id:to_id,from_id:from_id},
             type: 'post',
@@ -34,12 +34,12 @@
         if(message != "") {
             loader.showPleaseWait();        
             $.ajax({
-                url: "messages/sendMessage",
+                url: "/messages/sendMessage",
                 type: 'post',
                 data: {to_id:to_id, from_id:from_id, message:message},
                 dataType: 'JSON',                      
                 success: function(result){
-                    var url = "messages/refreshConversation/" + to_id + "/" + from_id;
+                    var url = "/messages/refreshConversation/" + to_id + "/" + from_id;
                     $("#conversations").load(url);
                     $("#messageForm").val("");
                     loader.hidePleaseWait();                   
@@ -61,7 +61,7 @@
             data: {to_id:to_id, from_id:from_id},
             dataType: 'JSON',                      
             success: function(result){
-                var url = "messages/refreshConversation/" + to_id + "/" + from_id;
+                var url = "/messages/refreshConversation/" + to_id + "/" + from_id;
                 $("#conversations").load(url);
                 loader.hidePleaseWait();                   
             }

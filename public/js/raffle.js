@@ -47,12 +47,12 @@
         loader.showPleaseWait();   
 
         $('#registration_form').ajaxForm({
-            url: 'raffle/doRaffle',
+            url: '/raffle/doRaffle',
             type: 'post', 
             dataType: 'json',            
             success: function(json) {  
                 loader.hidePleaseWait(); 
-                $("#rolesDiv").load('raffle/showRaffleList');                   
+                $("#rolesDiv").load('/raffle/showRaffleList');                   
                 $.each(json.errors, function (i, v) {
                     if(json.errors[i] != "undefined") {
                         errors += "<h4>" + json.errors[i] + "</h4>";
@@ -112,12 +112,12 @@
         var id = $(this).data("id");    
             $.ajax({
                 type: 'post',
-                url: "raffle/deleteRaffle",
+                url: "/raffle/deleteRaffle",
                 data:{id:id},
                 dataType: 'json',
                 success: function(json) {
                     loader.hidePleaseWait();    
-                    $("#rolesDiv").load('raffle/showRaffleList');                 
+                    $("#rolesDiv").load('/raffle/showRaffleList');                 
                 },
                 error: function(e) {
                     $("#changeTextError").html("<h4>Please try again</h4>");
