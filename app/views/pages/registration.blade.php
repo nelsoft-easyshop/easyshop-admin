@@ -97,7 +97,7 @@
                                 <td class="td_role" style="width:20%;">
 
                                     <div class="btn-group">
-                                      <button class="btn btn-default dropdown-toggle" id="action{{$accessor}}">{{$specificRoles[$accessor]->role_name}}</button>
+                                      <button class="btn btn-default dropdown-toggle" id="action{{$accessor}}">{{$specificRoles[$accessor][0]->role_name}}</button>
                                       <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                             &nbsp;<span class="caret"></span>
                                       </button>

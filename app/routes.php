@@ -55,11 +55,11 @@ Route::group(array('before' => 'auth'), function(){
 
     Route::get('register', array('uses' => 'AccountController@showRegistration'));
     Route::put('register', array('uses' => 'AccountController@doRegister'));    
-    Route::get('managerole', array('uses' => 'AccountController@showAdminLists'));    
-    Route::put('adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
-    Route::put('adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));   
-    Route::put('getadminaccount', array('uses' => 'AccountController@getAdminAccount'));   
-    Route::put('resetPassword', array('uses' => 'AccountController@resetPassword'));   
+    Route::get('register/managerole', array('uses' => 'AccountController@showAdminLists'));    
+    Route::put('register/adminroles', array('uses' => 'AccountController@updateAdministratorRole'));    
+    Route::put('register/adminactivation', array('uses' => 'AccountController@updateAdministratorActivation'));   
+    Route::put('register/getadminaccount', array('uses' => 'AccountController@getAdminAccount'));   
+    Route::put('register/resetPassword', array('uses' => 'AccountController@resetPassword'));   
 
     Route::get('raffle', array('uses' => 'RaffleManagerController@showRaffle'));    
     Route::post('raffle/doRaffle', array('uses' => 'RaffleManagerController@doRaffle'));    
