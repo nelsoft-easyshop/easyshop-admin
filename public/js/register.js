@@ -21,7 +21,7 @@
         $.ajax({
             type: 'post',
             dataType: 'JSON', 
-            url: "adminactivation",
+            url: "/register/adminactivation",
             data:{_method: 'put', adminid:adminId, activation:IsActive},
             success: function(json) {
                 if(json[0] == true) {
@@ -43,7 +43,7 @@
         $.ajax({
             type: 'post',
             dataType: 'JSON', 
-            url: "/getadminaccount",
+            url: "/register/getadminaccount",
             data: {userId:userId, _method:"put"},
             success: function(json) {
                 loader.hidePleaseWait();
@@ -77,7 +77,7 @@
             $.ajax({
                 type: 'post',
                 dataType: 'JSON', 
-                url: "/resetPassword",
+                url: "/register/resetPassword",
                 data: {id:id, password:password, _method:"put"},
                 success: function(json) {
                     loader.hidePleaseWait();
@@ -104,7 +104,7 @@
         $.ajax({
             type: 'post',
             dataType: 'JSON', 
-            url: "adminroles",
+            url: "/register/adminroles",
             data:data,
             success: function(json) {
                 if(json[0] == true) {
@@ -151,7 +151,7 @@
                     }
                 }
 
-                $("#rolesDiv").load('managerole'); 
+                $("#rolesDiv").load('register/managerole'); 
             },
             error: function(e) {
                  $("#error").modal('show');  
