@@ -32,8 +32,8 @@
             </ul>
         </section>
 
-        {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
-        {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}    
+        {{ Form::hidden('userid', $adminObject->id_admin_member, array('id' => 'userid','class' => 'form-control')) }}                        
+        {{ Form::hidden('password', $adminObject->password, array('id' => 'password','class' => 'form-control')) }}    
 
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade active in" id="manageMainSlide">
@@ -66,13 +66,13 @@
                                             <input type="text" id="mainSlideTarget" class="form-control" name='target' value="target" placeholder="Value" >
                                         </div>
                                     </div>
-                                    <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userid}}'  placeholder="Value" >
+                                    <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="Value" >
                                     <input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
                         
 
                                     <div class="form-group">
                                         <div class="col-xs-offset-2 col-xs-10">
-                                            <a1 href="#"  class="btn btn-default text-center" data-password="{{$password}}" data-url = "{{ $mobileCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
+                                            <a1 href="#"  class="btn btn-default text-center" data-password="{{$adminObject->password}}" data-url = "{{ $mobileCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
                                         </div>
                                     </div>
                                  </form>
@@ -164,7 +164,7 @@
                                                                     </div>
                                                                 </div>
                                                                 {{ Form::hidden('hash', $mainSlide->imagemap->target, array('id' => 'hashEditMainSlide','class' => 'form-control')) }}
-                                                                <input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$userid}}'  placeholder="Value" >                    
+                                                                <input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="Value" >                    
 
 
                                                                 <div class="form-group">
