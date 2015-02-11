@@ -67,10 +67,10 @@ Route::group(array('before' => 'auth'), function(){
     Route::post('raffle/deleteRaffle', array('uses' => 'RaffleManagerController@deleteRaffle'));  
 
     Route::get('messages', array('uses' => 'MessageController@showMessages'));    
-    Route::post('getmessage', array('uses' => 'MessageController@getConversation'));    
-    Route::post('getInbox', array('uses' => 'MessageController@getAllMessages'));    
-    Route::post('sendMessage', array('uses' => 'MessageController@sendMessage'));    
-    Route::get("refreshConversation/{to_id}/{from_id}", array('uses' => 'MessageController@refreshConversation'));    
+    Route::post('messages/getmessage', array('uses' => 'MessageController@getConversation'));    
+    Route::post('messages/getInbox', array('uses' => 'MessageController@getAllMessages'));    
+    Route::post('messages/sendMessage', array('uses' => 'MessageController@sendMessage'));    
+    Route::get("messages/refreshConversation/{to_id}/{from_id}", array('uses' => 'MessageController@refreshConversation'));    
 
     Route::get("productcsv", array('uses' => 'ProductCSVController@showCSVupload'));    
     Route::post("productcsv", array('uses' => 'ProductCSVController@doUpload'));    
