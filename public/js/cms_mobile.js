@@ -299,6 +299,37 @@
 
     });    
 
+    $(document.body).on('click','.removeButton',function (e) { 
+
+        var index = $(this).data("index").toString();
+        var subIndex = $(this).data("subindex").toString();
+        var nodename = $(this).data("nodename").toString();
+        var url = $(this).data("url");
+
+        var hash = hex_sha1(index + subIndex + nodename + userid +  password);
+        data = { index:index, subIndex:subIndex, nodename:nodename, userid:userid, userid:userid, hash:hash};
+        loader.showPleaseWait();
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                loader.hidePleaseWait();   
+                var reloadUrl = "/cms/mobile/getBoxContent/"+index;
+                var tableSelector = "#tableIndex_"+index;
+                $(tableSelector).load(reloadUrl);        
+            },
+            error: function(e) {
+                loader.hidePleaseWait();   
+            }
+        });
+
+    });    
+
     function addBoxContent(data, url, boxIndex,sectionIndex, value, type, target, actionType, tableIndex)
     {
   
@@ -324,7 +355,6 @@
             },
             error: function(e) {
                 loader.hidePleaseWait();   
-                console.log("error");          
             }
         });
                
@@ -358,7 +388,6 @@
             },
             error: function(e) {
                 loader.hidePleaseWait();   
-                console.log("error");          
             }
         });
     }
