@@ -36,9 +36,15 @@
         var hash = hex_sha1(myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide);
         $("#hashMainSlide").val(hash);
 
-        if( myvalue == "" || myvalue == "undefined" || value == ""){
+        var ext = myvalue.split('.').pop().toLowerCase();
+
+        if( ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) 
+            || myvalue == "" 
+            || myvalue == "undefined" 
+            || value == ""){
             showErrorModal("Please upload an image");         
         }
+
         else {
             loader.showPleaseWait();    
             addMainSlide(url);
@@ -144,8 +150,14 @@
         $(this).closest("form").find("#hashEditMainSlide").val(hash);
         data = { index: index, value: value, coordinate:coordinate,  target:target,  password:password, hash:hash, callback:'?'};
 
+
+        var ext = value.split('.').pop().toLowerCase();
+
         if(coordinate == "") {
             showErrorModal("Please supply a coordinate");
+        }
+        else if( ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) ) {
+            shwoErrorModal("Please upload an image");
         }
         else {
             setDataMainSlide(url, data,order,mainSlideForm);
