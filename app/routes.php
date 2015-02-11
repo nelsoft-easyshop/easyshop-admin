@@ -62,9 +62,9 @@ Route::group(array('before' => 'auth'), function(){
     Route::put('resetPassword', array('uses' => 'AccountController@resetPassword'));   
 
     Route::get('raffle', array('uses' => 'RaffleManagerController@showRaffle'));    
-    Route::post('doRaffle', array('uses' => 'RaffleManagerController@doRaffle'));    
-    Route::get('showRaffleList', array('uses' => 'RaffleManagerController@showRaffleList'));    
-    Route::post('deleteRaffle', array('uses' => 'RaffleManagerController@deleteRaffle'));  
+    Route::post('raffle/doRaffle', array('uses' => 'RaffleManagerController@doRaffle'));    
+    Route::get('raffle/showRaffleList', array('uses' => 'RaffleManagerController@showRaffleList'));    
+    Route::post('raffle/deleteRaffle', array('uses' => 'RaffleManagerController@deleteRaffle'));  
 
     Route::get('messages', array('uses' => 'MessageController@showMessages'));    
     Route::post('getmessage', array('uses' => 'MessageController@getConversation'));    
