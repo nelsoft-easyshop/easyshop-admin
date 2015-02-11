@@ -76,6 +76,24 @@ class MobileContentManagerController extends BaseController
             ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
     }    
 
+    /**
+     * Retrieves box contents
+     * @param int $index
+     * @return View
+     */
+    public function getBoxContent($index)
+    {
+        $section = [];
+        $sectionContent = $this->map->section[(int)$index]->boxContent;
+        foreach($sectionContent as $map) 
+        {
+             $section[] = $map;
+        }
+        return View::make('partials.boxcontent')        
+                     ->with("index",$index)
+                     ->with("boxContent",$section)
+                     ->with("mobileCmsLink", $this->XMLService->getMobileCmsLink());
+    }
 
 }
 
