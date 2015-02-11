@@ -52,7 +52,7 @@ class FeedsContentManagerController extends BaseController
         }
         return View::make('pages.cms-contents_files')
             ->with('contentCmsLink',$this->XMLService->GetContentCmsLink())
-            ->with('adminPassword', $adminEntity->getAdminMemberById($id))
+            ->with('adminObject', $adminEntity->getAdminMemberById($id))
             ->with('feedFeaturedProduct', $feedfeaturedproducts)
             ->with('feedPopularItems', $feedpopularitems)
             ->with('feedPromoItems', $feedpromoitems)
@@ -66,7 +66,6 @@ class FeedsContentManagerController extends BaseController
             ->with('midBannerTarget',  $map->feedBanner->mid->target)
             ->with('rightBannerImg',  $map->feedBanner->right->img)
             ->with('rightBannerTarget',  $map->feedBanner->right->target)
-            ->with('userId', $id)
             ->with('selectNodes', $selectNodes)
             ->with('easyShopLink',$this->XMLService->GetEasyShopLink())            
             ->with('collapse', 0);
@@ -93,12 +92,11 @@ class FeedsContentManagerController extends BaseController
 
         return View::make('partials.featuredproducts')
             ->with('contentCmsLink',$this->XMLService->GetContentCmsLink())
-            ->with('adminPassword', $adminEntity->getAdminMemberById($id))
+            ->with('adminObject', $adminEntity->getAdminMemberById($id))
             ->with('feedFeaturedProduct', $feedfeaturedproducts)
             ->with('featuredProductCount',  count($feedfeaturedproducts))
             ->with('indexForEach', 0)
-            ->with('collapse', 0)
-            ->with('userId', $id);
+            ->with('collapse', 0);
     }
     /**
      *  GET method for displaying the xml contents for feedpopularitems
@@ -120,12 +118,11 @@ class FeedsContentManagerController extends BaseController
 
         return View::make('partials.popularitems')
             ->with('contentCmsLink',$this->XMLService->GetContentCmsLink())
-            ->with('adminPassword', $adminEntity->getAdminMemberById($id))
+            ->with('adminObject', $adminEntity->getAdminMemberById($id))
             ->with('feedPopularItems', $feedpopularitems)
             ->with('popularItemsCount',  count($feedpopularitems))
             ->with('indexForEach', 0)
-            ->with('collapse', 0)
-            ->with('userId', $id);
+            ->with('collapse', 0);
 
     }
 
@@ -149,12 +146,11 @@ class FeedsContentManagerController extends BaseController
 
         return View::make('partials.promoitems')
             ->with('contentCmsLink',$this->XMLService->GetContentCmsLink())
-            ->with('adminPassword', $adminEntity->getAdminMemberById($id))
+            ->with('adminObject', $adminEntity->getAdminMemberById($id))
             ->with('feedPromoItems', $feedpromoitems)
             ->with('promoItemsCount',  count($feedpromoitems))
             ->with('indexForEach', 0)
-            ->with('collapse', 0)
-            ->with('userId', $id);
+            ->with('collapse', 0);
 
 
     }
