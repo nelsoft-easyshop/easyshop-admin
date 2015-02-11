@@ -252,6 +252,7 @@
         var dataNode = $(this).attr("data");
         var data = $.parseJSON(dataNode);
         $("#edit_value").val(data.value);
+        $("#edittable_index").val(data.tableindex);
         $("#edit_type").val(data.type);
         $("#edit_target").val(data.target);
         $("#edit_url").val(data.url);
@@ -261,6 +262,7 @@
     });  
 
     $("#myModal").on('click','#mdl_save',function (e) { 
+        var tableIndex = $("#edittable_index").val();
         var value = $("#edit_value").val();
         var type = $("#edit_type").val();
         var target = $("#edit_target").val();
@@ -271,7 +273,7 @@
         var order = "";
         var hash = hex_sha1(order + sectionIndex + value + type +  boxIndex + target + actionType  +userid +  password);
         data = {order:order, sectionIndex:sectionIndex, value:value, type:type, boxIndex:boxIndex, target:target,  actionType:actionType, userid:userid , password:password,hash:hash};
-        setBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType);
+        setBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType, tableIndex);
     });
 
     $(document.body).on('click','#addBoxContent',function (e) { 
@@ -351,8 +353,9 @@
         $("#data_"+ sectionIndex + "_" + boxIndex).attr('data', obj);                                        
     }       
 
-    function setBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType) 
+    function setBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType, tableIndex) 
     {
+
         loader.showPleaseWait();        
         $.ajax({
             type: 'GET',
@@ -368,8 +371,10 @@
                     showErrorModal("Slug Does Not Exist");
                 }
                 else {
-                    loader.hidePleaseWait();   
-                    updateDataContainer(url, boxIndex, sectionIndex, value, type, target, actionType);             
+                    loader.hidePleaseWait();  
+                    var reloadUrl = "/cms/mobile/getBoxContent/"+tableIndex;
+                    var tableSelector = "#tableIndex_"+tableIndex;
+                    $(tableSelector).load(reloadUrl);                      
                 }
 
 
@@ -379,23 +384,6 @@
                 console.log("error");          
             }
         });
-    }
-
-    function updateDataContainer(url, boxIndex, sectionIndex, value, type, target, actionType)
-    {
-        $("#value_" + sectionIndex + "_" + boxIndex).html(value);
-        $("#type_" + sectionIndex + "_" + boxIndex).html(type);
-        $("#target_" + sectionIndex + "_" + boxIndex).html(target);
-        $("#actionType_" + sectionIndex + "_" + boxIndex).html(actionType);
-        var obj = '{"url":"' + url +
-            '","sectionIndex":"' +  sectionIndex +
-            '","boxIndex":"' + boxIndex +
-            '","value":"' +value +
-            '","type":"' + type +
-            '","target":"' + target +
-            '","actionType":"' + actionType +'"}';
-
-        $("#data_"+ sectionIndex + "_" + boxIndex).attr('data', obj);
     }
 
     function showErrorModal(messages) {
