@@ -50,8 +50,10 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('cms/popularItem', array('uses' => 'FeedsContentManagerController@getPopularItems'));
     Route::get('cms/promoItems', array('uses' => 'FeedsContentManagerController@getPromoItems'));
     
+
     Route::get('cms/mobile', array('uses' => 'MobileContentManagerController@showMobileCms'));
-    Route::get('cms/mobileSlides', array('uses' => 'MobileContentManagerController@getMainSlides'));
+    Route::get('cms/mobile/mobileSlides', array('uses' => 'MobileContentManagerController@getMainSlides'));\
+    Route::get('cms/mobile/getBoxContent/{index}', array('uses' => 'MobileContentManagerController@getBoxContent'));
 
     Route::get('register', array('uses' => 'AccountController@showRegistration'));
     Route::put('register', array('uses' => 'AccountController@doRegister'));    
