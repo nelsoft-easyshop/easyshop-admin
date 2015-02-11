@@ -1,7 +1,7 @@
 <?php namespace Easyshop\Services;
 
 use Easyshop\ModelRepositories\AdminMemberRepository as AdminMemberRepository;
-
+use AdminRoles as AdminRoles;
 
 class AdminMemberManagerService
 {
@@ -9,9 +9,23 @@ class AdminMemberManagerService
     /**
      * AdminMemberRepository Repository
      *
-     * @var adminMemberRepo
+     * @var Easyshop\ModelRepositories\AdminMemberRepository
      */
     private $adminMemberRepo;
+    
+    
+    /**
+     * URL white list
+     *
+     * @var string[]
+     */
+    private $urlWhiteList = [];
+    
+    public function __construct(AdminMemberRepository $adminMemberRepository)
+    {
+        $this->adminMemberRepo = $adminMemberRepository;
+        $this->urlWhiteList = \Config::get('easyshop/role-route-whitelist');
+    }
 
     /**
      * Determines the accessible pages of the current administrator
@@ -22,17 +36,14 @@ class AdminMemberManagerService
      */    
     public function getPrivilege($currentUrl)
     {
-        $this->adminMemberRepo = new AdminMemberRepository;
         $url = str_replace(\URL::to('/'),"", $currentUrl);
         $currentAdminId = \Auth::id();
-    
-        $roleOfCurrentAdmin = $this->adminMemberRepo->getAdminRoleById($currentAdminId);
 
-        foreach($roleOfCurrentAdmin as $role)
-        {
-            $currentRole = $role->role_name;
-        }
+        $roleOfCurrentAdmin = $this->adminMemberRepo->getAdminRoleById($currentAdminId);
+        $currentRole = $roleOfCurrentAdmin->role_name;
+
         $pages = $this->getPages($currentRole);
+
         if(in_array($url, $pages)) {
             return true;
         }
@@ -48,31 +59,34 @@ class AdminMemberManagerService
      *
      * @return array
      */    
-    public function getPages($currentRole) {
+    public function getPages($currentRole) 
+    {
         /**
          * $pages = array("first_url_segment_of_accessible_page_of_a_particular_role")
          * "" and "prohibited" pages that must be accessble by all admin roles
-         */          
-        $this->adminMemberRepo = new AdminMemberRepository;
-
-        if($currentRole == $this->adminMemberRepo->getRoleNames("CONTENT")) {
-            $pages = array("cms","register","users","prohibited","");
+         */      
+         
+        $pages = [];
+        if($currentRole === AdminRoles::CONTENT ) {
+            $pages = array_merge($pages, $this->urlWhiteList['contentManagement']);
         }
-        else if($currentRole == $this->adminMemberRepo->getRoleNames("CSR")) {
-            $pages = array("prohibited","");
+        else if($currentRole === AdminRoles::CSR ) {
+            $pages = array_merge($pages, $this->urlWhiteList['transactionManagement']);
+            $pages = array_merge($pages, $this->urlWhiteList['dataManagement']);
         }
-        else if($currentRole == $this->adminMemberRepo->getRoleNames("MARKETING")) {
-            $pages = array("prohibited","");
+        else if($currentRole === AdminRoles::MARKETING ) {
+            $pages = array_merge($pages, $this->urlWhiteList['transactionManagement']);
+            $pages = array_merge($pages, $this->urlWhiteList['dataManagement']);
+            $pages = array_merge($pages, $this->urlWhiteList['contentManagement']);
         }
-        else if($currentRole == $this->adminMemberRepo->getRoleNames("SUPER-USER")) {
-            $pages = array("prohibited","");
-        }
-        else if($currentRole == $this->adminMemberRepo->getRoleNames("SUPER-USER")) {
-            $pages = array("prohibited","");
-        }     
-        else if($currentRole == $this->adminMemberRepo->getRoleNames("GUEST")) {
-            $pages = array("prohibited","/");
-        }                
+        else if($currentRole === AdminRoles::SUPER_USER ) {
+            $pages = array_merge($pages, $this->urlWhiteList['transactionManagement']);
+            $pages = array_merge($pages, $this->urlWhiteList['dataManagement']);
+            $pages = array_merge($pages, $this->urlWhiteList['contentManagement']);
+            $pages = array_merge($pages, $this->urlWhiteList['accountManagement']);
+        }   
+    
+        $pages = array_merge($pages, ["", "prohibited"]);
         return $pages;              
     }
 
