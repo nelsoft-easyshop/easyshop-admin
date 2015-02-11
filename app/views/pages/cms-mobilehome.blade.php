@@ -283,7 +283,7 @@
                             Manage Box Content
                         </h4>
                     </legend>                                            
-                        <table class="table table-striped table-hover tbl-my-style"  id="tableme_{{$index}}">
+                        <table class="table table-striped table-hover tbl-my-style"  id="tableIndex_{{$index}}">
                             <thead>
                             <tr>
                                 <th></th>
@@ -302,7 +302,7 @@
                                         <div class="btn-toolbar" role="toolbar">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-danger edit_btn" id="data_{{$index}}_{{$boxContentIndex}}" 
-                                                    data='{"url":"{{{ $mobileCmsLink }}}/setBoxContent","sectionIndex":"{{{ $index }}}","boxIndex":"{{{ $boxContentIndex}}}","value":"{{{ $content->value }}}","type":"{{{ $content->type }}}","target":"{{{ $content->target }}}","actionType":"{{{ $content->actionType }}}" } '
+                                                    data='{"tableindex":"{{{ $index }}}","url":"{{{ $mobileCmsLink }}}/setBoxContent","sectionIndex":"{{{ $index }}}","boxIndex":"{{{ $boxContentIndex}}}","value":"{{{ $content->value }}}","type":"{{{ $content->type }}}","target":"{{{ $content->target }}}","actionType":"{{{ $content->actionType }}}" } '
                                                     data-toggle="modal" data-target="#myModal" data="">
                                                     <span class="glyphicon-center glyphicon glyphicon-cog"></span>
                                                 </button>
@@ -315,7 +315,7 @@
                                     <td id="actionType_{{$index}}_{{$boxContentIndex}}">{{{$content->actionType}}}</td>
                                     <span style="display:none;">{{$boxContentIndex++}}</span>                            
                                     <input type="hidden" class="boxContentCount_{{$index}}" value="{{$boxContentIndex}}">
-
+                                </tr>
                             @endforeach
                             </tbody>
                         </table>
@@ -360,6 +360,7 @@
                         </div>                        
                         <div class="form-group">
                             <label>Value</label>
+                            <input type="hidden" class="form-control" id="edittable_index" value="" placeholder="Enter fullname">
                             <input type="text" class="form-control" id="edit_value" placeholder="Enter fullname">
                         </div>
                         <div class="form-group">
