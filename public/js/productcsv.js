@@ -49,14 +49,16 @@
 
     $("#profile").on("click","#removeAdminImage", function() {
         loader.showPleaseWait();
+
         var imageId = $(this).data("imageid");
         var imageName = $(this).data("imagename");
+        var hash = hex_sha1(imageId + imageName + userid + password);
             $.ajax(
             {
                 url : urlLink + "/deleteImage",
                 type: 'GET', 
                 dataType: 'jsonp',
-                data: { "imageId": imageId, "imageName":imageName},
+                data: { "imageId" : imageId, "imageName" : imageName, "userid" : userid, "hash" : hash},
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 success:function(data, textStatus, jqXHR) 
