@@ -64,7 +64,13 @@ class MobileContentManagerController extends BaseController
         {
             $actionTypes[] =  $actions->type;
         }
-       
+
+        $themeLists = [];
+        foreach($this->map->themeLists as $themes)
+        {
+            $themeLists[] =  $themes->value;
+        }        
+
         return View::make('pages.cms-mobilehome')
                     ->with('adminObject', $this->adminRepository->getAdminMemberById(Auth::id()))
                     ->with('sectionContent', $section)
@@ -74,7 +80,8 @@ class MobileContentManagerController extends BaseController
                     ->with('mainSlideId',  0)
                     ->with('mainSlideCount',  count($mainSlides))                    
                     ->with('mobileCmsLink', $this->XMLService->getMobileCmsLink())
-                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                    
+                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink())               
+                    ->with('themeLists',$themeLists[0]);                    
     }
 
     /**
