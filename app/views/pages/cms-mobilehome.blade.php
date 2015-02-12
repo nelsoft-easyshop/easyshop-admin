@@ -219,7 +219,7 @@
                         <div class="form-group">
                             <label for="userId" class="col-sm-2 control-label">BGColor</label>
                             <div class="col-sm-10">    
-                                <input type="text" id="text-field" class="form-control bgcolor" value="{{{ $section->bgcolor }}}">
+                                <input name='target' type="text" id="text-field" class="form-control demo" value="{{{  }}}">
                             </div>
                         </div> 
                         <div class="form-group">
