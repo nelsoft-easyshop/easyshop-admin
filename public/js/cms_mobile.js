@@ -48,11 +48,10 @@
         var url = $(this).data('url');
         var value = $("#valueMainSlide").val();
         var myvalue = $("#photoFile").val();
-        var mainSlideCoordinate = $("#mainSlideCoordinate").val();
         var mainSlideTarget = $("#mainSlideTarget").val();
         var useridMainSlide = userid;
         var passwordMainSlide = password;
-        var hash = hex_sha1(myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide);
+        var hash = hex_sha1(myvalue + value  + mainSlideTarget + useridMainSlide + passwordMainSlide);
         $("#hashMainSlide").val(hash);
 
         var ext = myvalue.split('.').pop().toLowerCase();
@@ -77,7 +76,6 @@
         var userid = $("#userid").val();
         var password = $("#password").val();
         var value = $(this).data('value');
-        var coordinate = $(this).data('coordinate');
         var target = $(this).data('target');
         var count = $(this).data('count');
         var order = index;
@@ -91,8 +89,8 @@
         } else {
              order = order + 1;
         }
-        var hash = hex_sha1(index + value + coordinate + target + order + nodename + userid + password);
-        data = { index: index, value: value, coordinate:coordinate, target:target, order:order, nodename:nodename,  userid: userid, hash:hash, callback:'?'};
+        var hash = hex_sha1(index + value+ target + order + nodename + userid + password);
+        data = { index: index, value: value, target:target, order:order, nodename:nodename,  userid: userid, hash:hash, callback:'?'};
         setPositionMainSlide(data,order, url);
     });   
 
@@ -136,7 +134,6 @@
         var userid = $("#userid").val();
         var value = $(this).data('value');
         var url = $(this).data('url');
-        var coordinate = $(this).data('coordinate');
         var target = $(this).data('target');
         var password = $("#password").val();
         var order = index;
@@ -148,8 +145,8 @@
            order = 0;
         }
             
-        var hash = hex_sha1(index + value + coordinate + target + order + nodename + userid + password);
-        data = { index: index, value: value,  coordinate:coordinate, target:target, order:order, nodename:nodename, userid: userid, hash:hash, callback:'?'};
+        var hash = hex_sha1(index + value + target + order + nodename + userid + password);
+        data = { index: index, value: value, target:target, order:order, nodename:nodename, userid: userid, hash:hash, callback:'?'};
         setPositionMainSlide(data,order, url);
     });     
 
@@ -158,24 +155,20 @@
         var userid = $("#userid").val();
         var value = $(this).closest("form").find("#photoFile").val();
         var password = $("#password").val();
-        var coordinate = $(this).closest("form").find("#editMainSlideCoordinate").val();
         var target = $(this).closest("form").find('#editMainSlideTarget').val();
         var count = $(this).data('count');
         var url = $(this).data('url');
         var order = index;
         var mainSlideForm = "#mainSlideForm" + index;
         var hashMainSlide = "#hashEditMainSlide" + index;
-        var hash =  hex_sha1(index + value + coordinate + target  + userid + password);
+        var hash =  hex_sha1(index + value  + target  + userid + password);
         $(this).closest("form").find("#hashEditMainSlide").val(hash);
-        data = { index: index, value: value, coordinate:coordinate,  target:target,  password:password, hash:hash, callback:'?'};
+        data = { index: index, value: value, target:target,  password:password, hash:hash, callback:'?'};
 
 
         var ext = value.split('.').pop().toLowerCase();
 
-        if(coordinate == "") {
-            showErrorModal("Please supply a coordinate");
-        }
-        else if( ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) ) {
+        if( ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) ) {
             shwoErrorModal("Please upload an image");
         }
         else {
