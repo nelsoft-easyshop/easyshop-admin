@@ -1,7 +1,8 @@
 <?php
 
 use Easyshop\Services\XMLContentGetterService as XMLService;
-
+use Easyshop\ModelRepositories\CategoryRepository as CategoryRepository;
+use Easyshop\ModelRepositories\AdminMemberRepository as AdminMemberRepository;
 class MobileContentManagerController extends BaseController
 {
     /**
@@ -9,9 +10,23 @@ class MobileContentManagerController extends BaseController
      */
     protected $XMLService;
 
-    public function __construct(XMLService $XMLService) 
+    /*
+     * The Category Repository
+     */
+    protected $categoryRepository;
+
+    /*
+     * The Administrator Repository
+     */
+    protected $adminRepository;        
+
+    public function __construct(XMLService $XMLService,
+                                CategoryRepository $categoryRepository,
+                                AdminMemberRepository $adminRepository) 
     {   
         $this->XMLService = $XMLService;
+        $this->adminRepository = $adminRepository;
+        $this->categoryRepository = $categoryRepository;
         $xmlString = $this->XMLService->getMobileHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
@@ -24,8 +39,14 @@ class MobileContentManagerController extends BaseController
      */
     public function showMobileCms()
     {
+        $categoryLists = [];
+        foreach ($this->categoryRepository->getParentCategories() as $value) {
+            $categoryLists[] = [
+                "slug" => $value->slug, 
+                "name" => $value->name
+            ];
+        }
 
-        $adminEntity = App::make('AdminMemberRepository');        
         $section = [];
         foreach($this->map->section as $map) 
         {
@@ -43,16 +64,24 @@ class MobileContentManagerController extends BaseController
         {
             $actionTypes[] =  $actions->type;
         }
-       
+
+        $themeLists = [];
+        foreach($this->map->themeLists as $themes)
+        {
+            $themeLists[] =  $themes->value;
+        }        
+
         return View::make('pages.cms-mobilehome')
-                    ->with('adminObject', $adminEntity->getAdminMemberById(Auth::id()))
+                    ->with('adminObject', $this->adminRepository->getAdminMemberById(Auth::id()))
                     ->with('sectionContent', $section)
+                    ->with('categoryLists', $categoryLists)
                     ->with('mainSlides',  $mainSlides)
                     ->with('actionTypes',  $actionTypes[0])
                     ->with('mainSlideId',  0)
                     ->with('mainSlideCount',  count($mainSlides))                    
                     ->with('mobileCmsLink', $this->XMLService->getMobileCmsLink())
-                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                    
+                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink())               
+                    ->with('themeLists',$themeLists[0]);                    
     }
 
     /**
@@ -61,14 +90,12 @@ class MobileContentManagerController extends BaseController
      */
     public function getMainSlides() 
     {
-
-        $adminEntity = App::make('AdminMemberRepository');
         foreach($this->map->mainSlide as $slides)
         {
             $mainSlides[] =  $slides;
         }     
         return View::make('partials.mainslides')
-            ->with('adminObject',$adminEntity->getAdminMemberById(Auth::id()))
+            ->with('adminObject',$this->adminRepository->getAdminMemberById(Auth::id()))
             ->with('mainSlides',$mainSlides)
             ->with('mainSlideId',0)
             ->with('mainSlideCount',  count($mainSlides))
