@@ -5,7 +5,7 @@
 
     $(document.body).on('click','#setSectionHead',function () {    
         var index = $(this).closest("form").find("#index").val();
-        var name = $(this).closest("form").find("#name").val();
+        var name = $(this).closest("form").find("#categoryName option:selected").val();        
         var bgcolor = $(this).closest("form").find('#bgcolor').val();
         var type = $(this).closest("form").find('#type').val();
         var userid = $("#userid").val();
