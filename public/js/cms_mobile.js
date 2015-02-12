@@ -37,7 +37,8 @@
              showErrorModal("Please fill up the required fields");    
         }
         else {
-            loader.showPleaseWait();   
+            loader.showPleaseWait(); 
+            $("#sectionNav_"+index).html(name);
             setSectionHead(url,data);          
         }
 

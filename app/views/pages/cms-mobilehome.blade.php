@@ -25,7 +25,7 @@
                     <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
                         <span style="display:none;">{{$index=0}}</span>
                         @foreach($sectionContent as $section)
-                            <li><a href="#page_{{$index}}" tabindex="-1" role="tab" data-toggle="tab">{{{$section->name}}}</a></li>
+                            <li><a href="#page_{{$index}}" tabindex="-1" role="tab" id="sectionNav_{{$index}}" data-toggle="tab">{{{$section->name}}}</a></li>
 
                             <span style="display:none;">{{$index++}}</span>
                         @endforeach
