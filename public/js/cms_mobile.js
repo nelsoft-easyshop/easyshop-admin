@@ -90,7 +90,7 @@
         data = { index: index, nodename:nodename, userid: userid, hash:hash, callback:'?'};         
         loader.showPleaseWait();
             $.ajax({
-                type: 'GET',
+                type: 'post',
                 url: url,
                 data:data,
                 async: false,
@@ -166,7 +166,7 @@
 
     function setSectionHead(url,data) {
         $.ajax({
-            type: 'GET',
+            type: 'post',
             url: url,
             data:data,
             async: false,
@@ -174,7 +174,7 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                loader.hidePleaseWait();            
+                loader.hidePleaseWait();
             },
             error: function(e) {
                 loader.hidePleaseWait();
@@ -184,7 +184,7 @@
 
     function setPositionMainSlide(data,order,url) {
         $.ajax({
-            type: 'GET',
+            type: 'post',
             url: url,
             data:data,
             async: false,
@@ -207,7 +207,7 @@
         loader.showPleaseWait();
         $(mainSlideForm).ajaxForm({
             url: url,
-            type: 'GET', 
+            type: 'post', 
             dataType: 'jsonp',
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -229,7 +229,7 @@
         loader.hidePleaseWait();
         $('#mainSlideForm').ajaxForm({
             url: url,
-            type: 'GET', 
+            type: 'post', 
             dataType: 'jsonp',
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -310,7 +310,7 @@
         data = { index:index, subIndex:subIndex, nodename:nodename, userid:userid, userid:userid, hash:hash};
         loader.showPleaseWait();
         $.ajax({
-            type: 'GET',
+            type: 'post',
             url: url,
             data:data,
             async: false,
@@ -318,6 +318,7 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
+        console.log("here");                
                 loader.hidePleaseWait();   
                 var reloadUrl = "/cms/mobile/getBoxContent/"+index;
                 var tableSelector = "#tableIndex_"+index;
@@ -334,7 +335,7 @@
     {
   
         $.ajax({
-            type: 'GET',
+            type: 'post',
             url: url,
             data:data,
             async: false,
@@ -362,10 +363,9 @@
 
     function setBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType, tableIndex) 
     {
-
-        loader.showPleaseWait();        
+        loader.showPleaseWait();
         $.ajax({
-            type: 'GET',
+            type: 'post',
             url: url,
             data:data,
             async: false,
