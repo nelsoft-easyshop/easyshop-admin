@@ -19,8 +19,8 @@
                                         <label for="userId" class="col-sm-2 control-label">Product Slug</label>
                                         <div class="col-sm-10">
                                             {{ Form::text('promoItem', "" ,array('id' => 'promoItem','class' => 'form-control')) }}
-                                            {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}
-                                            {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}
+                                            {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}
+                                            {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }}
                                             {{ Form::hidden('hash', "", array('id' => 'hash')) }}
                                         </div>
                                     </div>
@@ -54,11 +54,11 @@
                                             <a \ id="moveDownPromoItems"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
-                                                data-userid="{{$userId}}" 
+                                                data-userid="{{$adminObject->id_admin_member}}" 
                                                 data-value="{{$products->slug}}" 
                                                 data-order="{{$indexForEach}}" 
                                                 data-count="{{$promoItemsCount}}" 
-                                                data-password="{{$adminPassword}}"
+                                                data-password="{{$adminObject->password}}"
                                                 data-url = "{{ $contentCmsLink }}/setfeedPromoItems"
                                             >
                                                 <span class="glyphicon glyphicon-chevron-right pull-right" style='font-size:16px;'></span>
@@ -67,11 +67,11 @@
                                             <a  id="moveUpPromoItems"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
-                                                data-userid="{{$userId}}" 
+                                                data-userid="{{$adminObject->id_admin_member}}" 
                                                 data-value="{{$products->slug}}" 
                                                 data-order="{{$indexForEach}}" 
                                                 data-count="{{$promoItemsCount}}" 
-                                                data-password="{{$adminPassword}}"
+                                                data-password="{{$adminObject->password}}"
                                                 data-url = "{{ $contentCmsLink }}/setfeedPromoItems"
                                             >
                                                 <span class="glyphicon glyphicon-chevron-left pull-left" style='font-size:16px;'></span>
@@ -86,8 +86,8 @@
                                                     id="productslide" 
                                                     data-index="{{$indexForEach}}"  
                                                     data-nodename="//feedPromoItems" 
-                                                    data-userid="{{$userId}}"                                                
-                                                    data-password="{{$adminPassword}}"
+                                                    data-userid="{{$adminObject->id_admin_member}}"                                                
+                                                    data-password="{{$adminObject->password}}"
                                                     data-url = "{{ $contentCmsLink }}/removeContent"
                                                  >
                                                     <span class="glyphicon glyphicon-remove" style='font-size:16px;'></span>
@@ -111,8 +111,8 @@
                                                                 <label for="userId" class="col-sm-2 control-label">Product Slug</label>
                                                                 <div class="col-sm-10">
                                                                     {{ Form::text('promoItem', "$products->slug" ,array('id' => 'promoItem','class' => 'form-control')) }}
-                                                                    {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}
-                                                                    {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}
+                                                                    {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}
+                                                                    {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }}
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">

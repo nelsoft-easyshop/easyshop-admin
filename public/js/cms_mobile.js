@@ -55,9 +55,15 @@
         var hash = hex_sha1(myvalue + value + mainSlideCoordinate + mainSlideTarget + useridMainSlide + passwordMainSlide);
         $("#hashMainSlide").val(hash);
 
-        if( myvalue == "" || myvalue == "undefined" || value == ""){
+        var ext = myvalue.split('.').pop().toLowerCase();
+
+        if( ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) 
+            || myvalue == "" 
+            || myvalue == "undefined" 
+            || value == ""){
             showErrorModal("Please upload an image");         
         }
+
         else {
             loader.showPleaseWait();    
             addMainSlide(url);
@@ -103,7 +109,7 @@
         data = { index: index, nodename:nodename, userid: userid, hash:hash, callback:'?'};         
         loader.showPleaseWait();
             $.ajax({
-                type: 'GET',
+                type: 'get',
                 url: url,
                 data:data,
                 async: false,
@@ -163,8 +169,14 @@
         $(this).closest("form").find("#hashEditMainSlide").val(hash);
         data = { index: index, value: value, coordinate:coordinate,  target:target,  password:password, hash:hash, callback:'?'};
 
+
+        var ext = value.split('.').pop().toLowerCase();
+
         if(coordinate == "") {
             showErrorModal("Please supply a coordinate");
+        }
+        else if( ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) ) {
+            shwoErrorModal("Please upload an image");
         }
         else {
             setDataMainSlide(url, data,order,mainSlideForm);
@@ -173,7 +185,7 @@
 
     function setSectionHead(url,data) {
         $.ajax({
-            type: 'GET',
+            type: 'get',
             url: url,
             data:data,
             async: false,
@@ -181,7 +193,7 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-                loader.hidePleaseWait();            
+                loader.hidePleaseWait();
             },
             error: function(e) {
                 loader.hidePleaseWait();
@@ -191,7 +203,7 @@
 
     function setPositionMainSlide(data,order,url) {
         $.ajax({
-            type: 'GET',
+            type: 'get',
             url: url,
             data:data,
             async: false,
@@ -214,7 +226,7 @@
         loader.showPleaseWait();
         $(mainSlideForm).ajaxForm({
             url: url,
-            type: 'GET', 
+            type: 'get', 
             dataType: 'jsonp',
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -236,7 +248,7 @@
         loader.hidePleaseWait();
         $('#mainSlideForm').ajaxForm({
             url: url,
-            type: 'GET', 
+            type: 'get', 
             dataType: 'jsonp',
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -259,6 +271,7 @@
         var dataNode = $(this).attr("data");
         var data = $.parseJSON(dataNode);
         $("#edit_value").val(data.value);
+        $("#edittable_index").val(data.tableindex);
         $("#edit_type").val(data.type);
         $("#edit_target").val(data.target);
         $("#edit_url").val(data.url);
@@ -268,6 +281,7 @@
     });  
 
     $("#myModal").on('click','#mdl_save',function (e) { 
+        var tableIndex = $("#edittable_index").val();
         var value = $("#edit_value").val();
         var type = $("#edit_type").val();
         var target = $("#edit_target").val();
@@ -278,10 +292,11 @@
         var order = "";
         var hash = hex_sha1(order + sectionIndex + value + type +  boxIndex + target + actionType  +userid +  password);
         data = {order:order, sectionIndex:sectionIndex, value:value, type:type, boxIndex:boxIndex, target:target,  actionType:actionType, userid:userid , password:password,hash:hash};
-        setBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType);
+        setBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType, tableIndex);
     });
 
     $(document.body).on('click','#addBoxContent',function (e) { 
+        var tableIndex = $(this).closest("form").find("#index").val();
         var value = $(this).closest("form").find("#value").val();
         var type = $(this).closest("form").find("#type").val();
         var target = $(this).closest("form").find("#target").val();
@@ -298,16 +313,48 @@
         }
         else {
             loader.showPleaseWait();
-            addBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType);
+            addBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType, tableIndex);
         }
 
     });    
 
-    function addBoxContent(data, url, boxIndex,sectionIndex, value, type, target, actionType)
+    $(document.body).on('click','.removeButton',function (e) { 
+
+        var index = $(this).data("index").toString();
+        var subIndex = $(this).data("subindex").toString();
+        var nodename = $(this).data("nodename").toString();
+        var url = $(this).data("url");
+
+        var hash = hex_sha1(index + subIndex + nodename + userid +  password);
+        data = { index:index, subIndex:subIndex, nodename:nodename, userid:userid, userid:userid, hash:hash};
+        loader.showPleaseWait();
+        $.ajax({
+            type: 'get',
+            url: url,
+            data:data,
+            async: false,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+        console.log("here");                
+                loader.hidePleaseWait();   
+                var reloadUrl = "/cms/mobile/getBoxContent/"+index;
+                var tableSelector = "#tableIndex_"+index;
+                $(tableSelector).load(reloadUrl);        
+            },
+            error: function(e) {
+                loader.hidePleaseWait();   
+            }
+        });
+
+    });    
+
+    function addBoxContent(data, url, boxIndex,sectionIndex, value, type, target, actionType, tableIndex)
     {
   
         $.ajax({
-            type: 'GET',
+            type: 'get',
             url: url,
             data:data,
             async: false,
@@ -321,48 +368,23 @@
                 }
                 else {
                     loader.hidePleaseWait();   
-                    appendDataContainer(url, boxIndex, sectionIndex, value, type, target, actionType);           
+                    var reloadUrl = "/cms/mobile/getBoxContent/"+tableIndex;
+                    var tableSelector = "#tableIndex_"+tableIndex;
+                    $(tableSelector).load(reloadUrl);        
                 }
             },
             error: function(e) {
                 loader.hidePleaseWait();   
-                console.log("error");          
             }
         });
                
     } 
 
-    function appendDataContainer(url, boxIndex, sectionIndex, value, type, target, actionType)
+    function setBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType, tableIndex) 
     {
-        var obj = '{"url":"' + url + '","sectionIndex":"' +  sectionIndex +
-            '","boxIndex":"' + boxIndex +
-            '","value":"' +value +
-            '","type":"' + type +
-            '","target":"' + target +
-            '","actionType":"' + actionType +'"}';
-        var newBoxIndex = boxIndex + 1;
-        var valueData = "value_"+sectionIndex+"_"+boxIndex;
-        var typeData = "type_"+sectionIndex+"_"+boxIndex;
-        var targetData = "target_"+sectionIndex+"_"+boxIndex;
-        var actionTypeData = "actionType_" + sectionIndex + "_"+ boxIndex;
-
-        var dataToAppend = '<tr id="tr_"'+sectionIndex+ '"><td><div class="btn-toolbar" role="toolbar"><button type="button" class="btn btn-danger edit_btn" id="'+"data_"+sectionIndex+"_"+boxIndex+'"'+
-                                                                    'data="" data-toggle="modal" data-target="#myModal"><span class="glyphicon-center glyphicon glyphicon-cog"></span</button></div></td>'+
-                                '<td id="'+valueData+'">'+value+'</td>' +
-                                '<td id="'+typeData+'">'+type+'</td>' +
-                                '<td id="'+targetData+'">'+target+'</td>' +
-                                '<td id="'+actionTypeData+'">'+actionType+'<span style="display:none;"></span>'+
-                                '<input type="hidden" class="boxContentCount_'+sectionIndex+'" value="'+newBoxIndex+'"/>'
-                                +'</td>'+'</tr>'; 
-        $("#tableme_"+sectionIndex+" tr").last().after(dataToAppend);
-        $("#data_"+ sectionIndex + "_" + boxIndex).attr('data', obj);                                        
-    }       
-
-    function setBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType) 
-    {
-        loader.showPleaseWait();        
+        loader.showPleaseWait();
         $.ajax({
-            type: 'GET',
+            type: 'get',
             url: url,
             data:data,
             async: false,
@@ -375,34 +397,18 @@
                     showErrorModal("Slug Does Not Exist");
                 }
                 else {
-                    loader.hidePleaseWait();   
-                    updateDataContainer(url, boxIndex, sectionIndex, value, type, target, actionType);             
+                    loader.hidePleaseWait();  
+                    var reloadUrl = "/cms/mobile/getBoxContent/"+tableIndex;
+                    var tableSelector = "#tableIndex_"+tableIndex;
+                    $(tableSelector).load(reloadUrl);                      
                 }
 
 
             },
             error: function(e) {
                 loader.hidePleaseWait();   
-                console.log("error");          
             }
         });
-    }
-
-    function updateDataContainer(url, boxIndex, sectionIndex, value, type, target, actionType)
-    {
-        $("#value_" + sectionIndex + "_" + boxIndex).html(value);
-        $("#type_" + sectionIndex + "_" + boxIndex).html(type);
-        $("#target_" + sectionIndex + "_" + boxIndex).html(target);
-        $("#actionType_" + sectionIndex + "_" + boxIndex).html(actionType);
-        var obj = '{"url":"' + url +
-            '","sectionIndex":"' +  sectionIndex +
-            '","boxIndex":"' + boxIndex +
-            '","value":"' +value +
-            '","type":"' + type +
-            '","target":"' + target +
-            '","actionType":"' + actionType +'"}';
-
-        $("#data_"+ sectionIndex + "_" + boxIndex).attr('data', obj);
     }
 
     function showErrorModal(messages) {

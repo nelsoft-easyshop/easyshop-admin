@@ -34,8 +34,8 @@
             </ul>
         </section>
 
-        {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                        
-        {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}    
+        {{ Form::hidden('userid', $adminObject->id_admin_member, array('id' => 'userid','class' => 'form-control')) }}                        
+        {{ Form::hidden('password', $adminObject->password, array('id' => 'password','class' => 'form-control')) }}    
 
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade active in" id="manageMainSlide">
@@ -68,13 +68,13 @@
                                             <input type="text" id="mainSlideTarget" class="form-control" name='target' value="target" placeholder="Value" >
                                         </div>
                                     </div>
-                                    <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$userid}}'  placeholder="Value" >
+                                    <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="Value" >
                                     <input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
                         
 
                                     <div class="form-group">
                                         <div class="col-xs-offset-2 col-xs-10">
-                                            <a1 href="#"  class="btn btn-default text-center" data-password="{{$password}}" data-url = "{{ $mobileCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
+                                            <a1 href="#"  class="btn btn-default text-center" data-password="{{$adminObject->password}}" data-url = "{{ $mobileCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
                                         </div>
                                     </div>
                                  </form>
@@ -97,12 +97,12 @@
                                     <div class="col-lg-15" style='text-align:center;'>
                                          @foreach ($mainSlides as $mainSlide)
                                             <div style="position:relative;display:inline-block;">
-                                            <div class='well' style="height:210px;">
-                                            <p>
-                                                <img src="{{$easyShopLink}}/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
-                                            </p>
+                                            <div class='well' style="height:auto;">
+                                            <div  style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
+                                                <img src="{{$easyShopLink}}/{{ $mainSlide->value }}" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;" class='img-responsive'/>
+                                            </div>
 
-                                            <a href="#myMain{{ $mainSlideId }}" data-toggle="modal" style="position:absolute;top:180px;left:135px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                            <a href="#myMain{{ $mainSlideId }}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                             <a class="btn btn-default" 
                                                 id="deleteMainSlide" 
                                                 data-index="{{$mainSlideId}}"  
@@ -119,7 +119,7 @@
                                                  data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
                                                  data-target="{{$mainSlide->imagemap->target}}" 
                                                  data-order="{{$mainSlideId}}" 
-                                                 style="position:absolute;top:180px;left:5px;"
+                                                 style="position:absolute;top:235px;left:5px;"
                                                  data-url = "{{ $mobileCmsLink }}/setmainslide"
                                              ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
 
@@ -133,7 +133,7 @@
                                                 data-target="{{$mainSlide->imagemap->target}}" 
                                                 data-order="{{$mainSlideId}}" 
                                                 data-count="{{$mainSlideCount}}" 
-                                                style="position:absolute;top:180px;right:5px;"
+                                                style="position:absolute;top:235px;right:5px;"
                                                 data-url = "{{ $mobileCmsLink }}/setmainslide"
                                              ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                              </div>
@@ -166,7 +166,7 @@
                                                                     </div>
                                                                 </div>
                                                                 {{ Form::hidden('hash', $mainSlide->imagemap->target, array('id' => 'hashEditMainSlide','class' => 'form-control')) }}
-                                                                <input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$userid}}'  placeholder="Value" >                    
+                                                                <input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="Value" >                    
 
 
                                                                 <div class="form-group">
@@ -285,7 +285,7 @@
                             Manage Box Content
                         </h4>
                     </legend>                                            
-                        <table class="table table-striped table-hover tbl-my-style"  id="tableme_{{$index}}">
+                        <table class="table table-striped table-hover tbl-my-style"  id="tableIndex_{{$index}}">
                             <thead>
                             <tr>
                                 <th></th>
@@ -304,11 +304,16 @@
                                         <div class="btn-toolbar" role="toolbar">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-danger edit_btn" id="data_{{$index}}_{{$boxContentIndex}}" 
-                                                    data='{"url":"{{{ $mobileCmsLink }}}/setBoxContent","sectionIndex":"{{{ $index }}}","boxIndex":"{{{ $boxContentIndex}}}","value":"{{{ $content->value }}}","type":"{{{ $content->type }}}","target":"{{{ $content->target }}}","actionType":"{{{ $content->actionType }}}" } '
+                                                    data='{"tableindex":"{{{ $index }}}","url":"{{{ $mobileCmsLink }}}/setBoxContent","sectionIndex":"{{{ $index }}}","boxIndex":"{{{ $boxContentIndex}}}","value":"{{{ $content->value }}}","type":"{{{ $content->type }}}","target":"{{{ $content->target }}}","actionType":"{{{ $content->actionType }}}" } '
                                                     data-toggle="modal" data-target="#myModal" data="">
                                                     <span class="glyphicon-center glyphicon glyphicon-cog"></span>
                                                 </button>
                                             </div>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn edit_btn removeButton" data-url="{{{ $mobileCmsLink }}}/removeContent" data-nodename="boxContent" data-index="{{{ $index }}}" data-subindex= "{{{ $boxContentIndex }}}" >
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                </button>
+                                            </div>                                            
                                         </div>
                                     </td>
                                     <td id="value_{{$index}}_{{$boxContentIndex}}">{{{$content->value}}}</td>
@@ -317,7 +322,7 @@
                                     <td id="actionType_{{$index}}_{{$boxContentIndex}}">{{{$content->actionType}}}</td>
                                     <span style="display:none;">{{$boxContentIndex++}}</span>                            
                                     <input type="hidden" class="boxContentCount_{{$index}}" value="{{$boxContentIndex}}">
-
+                                </tr>
                             @endforeach
                             </tbody>
                         </table>
@@ -362,6 +367,7 @@
                         </div>                        
                         <div class="form-group">
                             <label>Value</label>
+                            <input type="hidden" class="form-control" id="edittable_index" value="" placeholder="Enter fullname">
                             <input type="text" class="form-control" id="edit_value" placeholder="Enter fullname">
                         </div>
                         <div class="form-group">
