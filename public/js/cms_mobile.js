@@ -3,10 +3,29 @@
     var userid = $("#userid").val();
     var password = $("#password").val();
 
+    $('.bgcolor').each( function() {
+        $(this).minicolors({
+            control: $(this).attr('data-control') || 'hue',
+            defaultValue: $(this).attr('data-defaultValue') || '',
+            inline: $(this).attr('data-inline') === 'true',
+            letterCase: $(this).attr('data-letterCase') || 'lowercase',
+            opacity: $(this).attr('data-opacity'),
+            position: $(this).attr('data-position') || 'bottom left',
+            change: function(hex, opacity) {
+                if( !hex ) return;
+                if( opacity ) hex += ', ' + opacity;
+                if( typeof console === 'object' ) {
+                }
+            },
+            theme: 'bootstrap'
+        });
+
+    });
+
     $(document.body).on('click','#setSectionHead',function () {    
         var index = $(this).closest("form").find("#index").val();
         var name = $(this).closest("form").find("#name").val();
-        var bgcolor = $(this).closest("form").find('#bgcolor').val();
+        var bgcolor = $(this).closest("form").find('.bgcolor').val();
         var type = $(this).closest("form").find('#type').val();
         var userid = $("#userid").val();
         var password = $("#password").val();
