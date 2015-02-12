@@ -51,7 +51,7 @@ class MobileContentManagerController extends BaseController
         }        
 
         return View::make('pages.cms-mobilehome')
-                    ->with('adminObject', $this->adminRepository->getAdminMemberById(Auth::id()))
+                    ->with('adminObject', $adminEntity->getAdminMemberById(Auth::id()))
                     ->with('sectionContent', $section)
                     ->with('categoryLists', $categoryLists)
                     ->with('mainSlides',  $mainSlides)
@@ -76,8 +76,7 @@ class MobileContentManagerController extends BaseController
             $mainSlides[] =  $slides;
         }     
         return View::make('partials.mainslides')
-            ->with('adminPassword', $adminEntity->getAdminMemberById(Auth::id()))
-            ->with('userId', Auth::id())
+            ->with('adminObject',$adminEntity->getAdminMemberById(Auth::id()))
             ->with('mainSlides',$mainSlides)
             ->with('mainSlideId',0)
             ->with('mainSlideCount',  count($mainSlides))
@@ -85,6 +84,24 @@ class MobileContentManagerController extends BaseController
             ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
     }    
 
+    /**
+     * Retrieves box contents
+     * @param int $index
+     * @return View
+     */
+    public function getBoxContent($index)
+    {
+        $section = [];
+        $sectionContent = $this->map->section[(int)$index]->boxContent;
+        foreach($sectionContent as $map) 
+        {
+             $section[] = $map;
+        }
+        return View::make('partials.boxcontent')        
+                     ->with("index",$index)
+                     ->with("boxContent",$section)
+                     ->with("mobileCmsLink", $this->XMLService->getMobileCmsLink());
+    }
 
 }
 
