@@ -109,7 +109,7 @@
         data = { index: index, nodename:nodename, userid: userid, hash:hash, callback:'?'};         
         loader.showPleaseWait();
             $.ajax({
-                type: 'post',
+                type: 'get',
                 url: url,
                 data:data,
                 async: false,
@@ -185,7 +185,7 @@
 
     function setSectionHead(url,data) {
         $.ajax({
-            type: 'post',
+            type: 'get',
             url: url,
             data:data,
             async: false,
@@ -203,7 +203,7 @@
 
     function setPositionMainSlide(data,order,url) {
         $.ajax({
-            type: 'post',
+            type: 'get',
             url: url,
             data:data,
             async: false,
@@ -226,7 +226,7 @@
         loader.showPleaseWait();
         $(mainSlideForm).ajaxForm({
             url: url,
-            type: 'post', 
+            type: 'get', 
             dataType: 'jsonp',
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -248,7 +248,7 @@
         loader.hidePleaseWait();
         $('#mainSlideForm').ajaxForm({
             url: url,
-            type: 'post', 
+            type: 'get', 
             dataType: 'jsonp',
             async: false,
             jsonpCallback: 'jsonCallback',
@@ -329,7 +329,7 @@
         data = { index:index, subIndex:subIndex, nodename:nodename, userid:userid, userid:userid, hash:hash};
         loader.showPleaseWait();
         $.ajax({
-            type: 'post',
+            type: 'get',
             url: url,
             data:data,
             async: false,
@@ -354,7 +354,7 @@
     {
   
         $.ajax({
-            type: 'post',
+            type: 'get',
             url: url,
             data:data,
             async: false,
@@ -384,7 +384,7 @@
     {
         loader.showPleaseWait();
         $.ajax({
-            type: 'post',
+            type: 'get',
             url: url,
             data:data,
             async: false,
