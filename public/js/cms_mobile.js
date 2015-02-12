@@ -22,11 +22,12 @@
 
     });
 
-    $(document.body).on('click','#setSectionHead',function () {    
-        var index = $(this).closest("form").find("#index").val();
-        var name = $(this).closest("form").find("#categoryName option:selected").val();
-        var bgcolor = $(this).closest("form").find('.bgcolor').val();
-        var type = $(this).closest("form").find("#themeName option:selected").val();
+    $(document.body).on('click','#setSectionHead',function () {
+        var form = $(this).closest("form");
+        var index = form.find("#index").val();
+        var name = form.find("#categoryName option:selected").val();
+        var bgcolor = form.find('.bgcolor').val();
+        var type = form.find("#themeName option:selected").val();
         var userid = $("#userid").val();
         var password = $("#password").val();
         var url = $(this).data('url');
