@@ -25,7 +25,7 @@
                     <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
                         <span style="display:none;">{{$index=0}}</span>
                         @foreach($sectionContent as $section)
-                            <li><a href="#page_{{$index}}" tabindex="-1" role="tab" data-toggle="tab">{{{$section->name}}}</a></li>
+                            <li><a href="#page_{{$index}}" tabindex="-1" role="tab" id="sectionNav_{{$index}}" data-toggle="tab">{{{$section->name}}}</a></li>
 
                             <span style="display:none;">{{$index++}}</span>
                         @endforeach
@@ -56,12 +56,6 @@
                                         </div>
                                     </div>
                                         <input type="text" id="valueMainSlide" class="form-control" readonly='readonly' value='Image' name='value'  placeholder="Value" style="display:none;">
-                                    <div class="form-group">
-                                        <label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
-                                        <div class="col-xs-10">
-                                            <input type="text" id="mainSlideCoordinate" class="form-control" name='coordinate' value="0,0,589,352" placeholder="0,0,0,0" >
-                                        </div>
-                                    </div>
                                     <div class="form-group">
                                         <label for="inputPassword" class="control-label col-xs-2">Target</label>
                                         <div class="col-xs-10">
@@ -116,7 +110,6 @@
                                                  data-action="up" 
                                                  data-index="{{$mainSlideId}}" 
                                                  data-value="{{$mainSlide->value}}" 
-                                                 data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
                                                  data-target="{{$mainSlide->imagemap->target}}" 
                                                  data-order="{{$mainSlideId}}" 
                                                  style="position:absolute;top:235px;left:5px;"
@@ -129,7 +122,6 @@
                                                 data-index="{{$mainSlideId}}" 
 
                                                 data-value="{{$mainSlide->value}}" 
-                                                data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
                                                 data-target="{{$mainSlide->imagemap->target}}" 
                                                 data-order="{{$mainSlideId}}" 
                                                 data-count="{{$mainSlideCount}}" 
@@ -154,12 +146,6 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
-                                                                    <div class="col-xs-10">
-                                                                        {{ Form::text('coordinate', $mainSlide->imagemap->coordinate, array('id' => 'editMainSlideCoordinate','class' => 'form-control')) }}
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
                                                                     <label for="inputPassword" class="control-label col-xs-2">Target</label>
                                                                     <div class="col-xs-10">
                                                                         {{ Form::text('target', $mainSlide->imagemap->target, array('id' => 'editMainSlideTarget','class' => 'form-control')) }}
@@ -173,7 +159,6 @@
                                                                     <div class="col-xs-offset-2 col-xs-10">
                                                                         <a href="" class="btn btn-primary"
                                                                          data-index="{{$mainSlideId}}" 
-                                                                         data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
                                                                          data-target="{{$mainSlide->imagemap->target}}" 
                                                                          data-order="{{$mainSlideId}}" 
                                                                          data-count="{{$mainSlideCount}}"
@@ -212,8 +197,18 @@
                         <div class="form-group">
                             <label for="userId" class="col-sm-2 control-label">Name</label>
                             <div class="col-sm-10">
-                                {{ Form::hidden('index', $index, array('id' => 'index','class' => 'form-control')) }}                        
-                                {{ Form::text('target', $section->name, array('id' => 'name','class' => 'form-control')) }}                        
+                                {{ Form::hidden('index', $index, array('id' => 'index','class' => 'form-control')) }}                                 
+                                <select name="c_stateregion" id="categoryName"  class="form-control" data-status="">
+                                    @foreach($categoryLists as $categories)
+                                        @if($categories["name"] !== "PARENT")
+                                            @if((string)$categories["slug"] === (string)$section->name)
+                                                <option value="{{{$categories['slug']}}}" data-catname="{{{$categories['name']}}}" selected>{{{$categories["name"]}}} - ({{{$categories['slug']}}})</option>
+                                            @else$categories["slug"]
+                                                <option value="{{{$categories['slug']}}}" data-catname="{{{$categories['name']}}}">{{{$categories["name"]}}} - ({{{$categories['slug']}}})</option>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                </select>                  
                             </div>
                         </div>
                         <div class="form-group">
@@ -225,7 +220,15 @@
                         <div class="form-group">
                             <label for="userId" class="col-sm-2 control-label">Type</label>
                             <div class="col-sm-10">
-                                {{ Form::text('target', $section->type, array('id' => 'type','class' => 'form-control')) }}                        
+                                 <select name="c_stateregion" id="themeName"  class="form-control" data-status="">
+                                    @foreach($themeLists as $theme)
+                                        @if((string)$theme === (string)$section->type)
+                                            <option value="{{{$theme}}}"  selected>{{{$theme}}}</option>
+                                        @else
+                                            <option value="{{{$theme}}}" >{{{$theme}}}</option>
+                                        @endif
+                                    @endforeach                                
+                                </select>                    
                             </div>
                         </div>                                       
                         <div class="form-group">

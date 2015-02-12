@@ -29,12 +29,7 @@
                   </div>
                 </div>
                     <input type="text" id="valueMainSlide" class="form-control" readonly='readonly' value='Image' name='value'  placeholder="Value" style="display:none;"/>
-                <div class="form-group">
-                  <label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
-                  <div class="col-xs-10">
-                    <input type="text" id="mainSlideCoordinate" class="form-control" name='coordinate' value="0,0,589,352" placeholder="0,0,0,0" >
-                  </div>
-                </div>
+
                 <div class="form-group">
                   <label for="inputPassword" class="control-label col-xs-2">Target</label>
                   <div class="col-xs-10">
@@ -91,7 +86,6 @@
                          data-action="up" 
                          data-index="{{$mainSlideId}}" 
                          data-value="{{$mainSlide->value}}" 
-                         data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
                          data-target="{{$mainSlide->imagemap->target}}" 
                          data-order="{{$mainSlideId}}" 
                          style="position:absolute;top:235px;left:5px;"
@@ -103,7 +97,6 @@
                         data-action="up" 
                         data-index="{{$mainSlideId}}" 
                         data-value="{{$mainSlide->value}}" 
-                        data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
                         data-target="{{$mainSlide->imagemap->target}}" 
                         data-order="{{$mainSlideId}}" 
                         data-count="{{$mainSlideCount}}" 
@@ -128,12 +121,6 @@
                                   </div>
                                 </div>
                                 <div class="form-group">
-                                  <label for="inputPassword" class="control-label col-xs-2">Coordinate</label>
-                                  <div class="col-xs-10">
-                                    {{ Form::text('coordinate', $mainSlide->imagemap->coordinate, array('id' => 'editMainSlideCoordinate','class' => 'form-control')) }}
-                                  </div>
-                                </div>
-                                <div class="form-group">
                                   <label for="inputPassword" class="control-label col-xs-2">Target</label>
                                   <div class="col-xs-10">
                                     {{ Form::text('target', $mainSlide->imagemap->target, array('id' => 'editMainSlideTarget','class' => 'form-control')) }}
@@ -147,7 +134,6 @@
                                   <div class="col-xs-offset-2 col-xs-10">
                                                   <a href="" class="btn btn-primary"
                                                    data-index="{{$mainSlideId}}" 
-                                                   data-coordinate="{{$mainSlide->imagemap->coordinate}}" 
                                                    data-target="{{$mainSlide->imagemap->target}}" 
                                                    data-order="{{$mainSlideId}}" 
                                                    data-count="{{$mainSlideCount}}"
