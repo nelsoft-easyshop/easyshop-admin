@@ -211,7 +211,17 @@
                             <label for="userId" class="col-sm-2 control-label">Name</label>
                             <div class="col-sm-10">
                                 {{ Form::hidden('index', $index, array('id' => 'index','class' => 'form-control')) }}                        
-                                {{ Form::text('target', $section->name, array('id' => 'name','class' => 'form-control')) }}                        
+                                <select name="c_stateregion" id="categoryName"  class="form-control" data-status="">
+                                    @foreach($categoryLists as $categories)
+                                        @if($categories["name"] !== "PARENT")
+                                            @if($categories["slug"] == $section->name)
+                                                <option value="{{{$categories['slug']}}}" data-catname="{{{$categories['name']}}}" selected>{{{$categories["name"]}}} - ({{{$categories['slug']}}})</option>
+                                            @else$categories["slug"]
+                                                <option value="{{{$categories['slug']}}}" data-catname="{{{$categories['name']}}}">{{{$categories["name"]}}} - ({{{$categories['slug']}}})</option>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                </select>                                
                             </div>
                         </div>
                         <div class="form-group">
