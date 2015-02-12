@@ -197,6 +197,7 @@
                         <div class="form-group">
                             <label for="userId" class="col-sm-2 control-label">Name</label>
                             <div class="col-sm-10">
+                                {{ Form::hidden('index', $index, array('id' => 'index','class' => 'form-control')) }}                                 
                                 <select name="c_stateregion" id="categoryName"  class="form-control" data-status="">
                                     @foreach($categoryLists as $categories)
                                         @if($categories["name"] !== "PARENT")
