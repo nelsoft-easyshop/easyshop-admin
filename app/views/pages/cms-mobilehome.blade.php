@@ -207,7 +207,7 @@
                                             @endif
                                         @endif
                                     @endforeach
-                                </select                   
+                                </select>                  
                             </div>
                         </div>
                         <div class="form-group">
