@@ -12,9 +12,11 @@
 @section('content')
 
     <link type="text/css" href="{{{ asset('css/dashboard.css') }}}" rel="stylesheet"  media="screen"/>
+    <link type="text/css" href="{{{ asset('css/src/jquery.minicolors.css') }}}" rel="stylesheet"  media="screen"/>
 
 
    <div class="row">
+
         <section id="tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
                 <li class="active"><a href="#manageMainSlide" role="tab" data-toggle="tab">Manage Main Slides</a></li>
@@ -216,8 +218,8 @@
                         </div>
                         <div class="form-group">
                             <label for="userId" class="col-sm-2 control-label">BGColor</label>
-                            <div class="col-sm-10">
-                                {{ Form::text('target', $section->bgcolor, array('id' => 'bgcolor','class' => 'form-control')) }}                        
+                            <div class="col-sm-10">    
+                                <input type="text" id="text-field" class="form-control bgcolor" value="{{{ $section->bgcolor }}}">
                             </div>
                         </div> 
                         <div class="form-group">
@@ -417,8 +419,9 @@
 @stop
 @section('page_js') 
 {{ HTML::script('js/src/sha1.js') }}
-{{ HTML::script('js/cms_mobile.js') }}
 {{ HTML::script('js/src/jquery.form.js') }}
+{{ HTML::script('js/src/jquery.minicolors.js') }}
+{{ HTML::script('js/cms_mobile.js') }}
 
 @stop
 
