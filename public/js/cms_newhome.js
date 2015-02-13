@@ -107,13 +107,14 @@
         var value = $(this).closest("form").find("#value").val().toString();
         var index = $(this).closest("form").find("#index").val().toString();
         var subindex = $(this).closest("form").find("#subindex").val().toString();
+        var subPanelIndex = $(this).closest("form").find("#subPanelIndex").val().toString();
         var url = $(this).data("url");
 
-        var hash =  hex_sha1(index + value + subindex + userid + password);
-        data = { index: index, value:value, subindex:subindex, userid:userid, password:password, hash:hash, callback:'?'};
+        var hash =  hex_sha1(index + value + subindex + subPanelIndex + userid + password);
+        data = { index: index, value:value, subindex:subindex, subPanelIndex:subPanelIndex, userid:userid, password:password, hash:hash, callback:'?'};
 
-        var tableSelector = "#categorySectionProductPanel_" + index;
-        var reloadurl = "getCategoriesProductPanel/" + index;
+        var tableSelector = "#categorySectionProductPanel_" + index + "_" +subindex;
+        var reloadurl = "getCategoriesProductPanel/" + index + "/" +subindex + "/" +subPanelIndex;
 
         if(value.trim() == "") {
             showErrorModal("Please supply a slug");

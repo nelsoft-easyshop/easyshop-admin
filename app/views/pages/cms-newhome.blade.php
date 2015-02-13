@@ -548,6 +548,7 @@
                                             <!-- here -->
 
                                             <span style="display:none;">{{{ $subCategorySection = 0 }}}</span>
+                                            <span style="display:none;">{{$subCategorySectionIndex = 0}}</span>                                              
                                             <div class="panel-group" id="accordion1">
                                                 @foreach($categoryPanel->sub as $subCategoriesSection)
                                                     <div class="panel panel-default">
@@ -600,8 +601,7 @@
                                                                     </div>
                                                                 </form>
                                                                 <div class="col-lg-15" style='text-align:center;' id="categorySectionProductPanel_{{$categorySectionIndex}}_{{$subCategorySection}}">
-
-                                                                    <span style="display:none;">{{$subCategorySectionIndex = 0}}</span>                                                
+                                                                    <span style="display:none;">{{{ $subPanelIndex = 0 }}}</span>
                                                                     <span style="display:none;">{{$categoryProductPanelCount = 1}}</span>                                                
                                                                     @foreach($categoryProductPanelList[$newCategorySection] as $categorySectionProducts)
                                                                         <div style="position:relative;display:inline-block;">
@@ -609,7 +609,7 @@
                                                                                 <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
                                                                                     <img src="{{$easyShopLink}}{{ltrim($categorySectionProducts->product_image_path, '.')}}"class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                                                 </div>
-                                                                                <a href="#categoryProductPanel_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
+                                                                                <a href="#categoryProductPanel_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}_{{$subPanelIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                                                 <a class="btn btn-default" 
                                                                                     id="removeCategoryProductPanel" 
                                                                                     data-index="{{$categorySectionIndex}}" 
@@ -641,7 +641,7 @@
                                                                                 <span class="categoryProductPanelCount" style="display:none;">{{$categoryProductPanelCount}}</span>
 
                                                                             <!--Start Edit Slide Modal -->
-                                                                                <div class="modal fade user_modal" id="categoryProductPanel_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                                <div class="modal fade user_modal" id="categoryProductPanel_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}_{{$subPanelIndex}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                                     <div class="modal-dialog">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
@@ -659,6 +659,7 @@
                                                                                                   
                                                                                                     {{ Form::hidden('index', $categorySectionIndex, array('id' => 'index','class' => 'form-control')) }}                                                                                              
                                                                                                     {{ Form::hidden('subindex', $subCategorySectionIndex, array('id' => 'subindex','class' => 'form-control')) }}                                                                                              
+                                                                                                    {{ Form::hidden('productSlugIndex', $subPanelIndex, array('id' => 'subPanelIndex','class' => 'form-control')) }}                                                                                              
 
                                                                                                     <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setCategoryProductPanel" id="editCategoryProductPanel">Edit Product Panel</button>
                                                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -675,14 +676,16 @@
                                                                             </div>
                                                                         </div>
                                                                     <span style="display:none;" class="categoryProductPanelCount_{{$categorySectionIndex}}">{{$categoryProductPanelCount++}}</span>                                                                                                    
-                                                                    <span style="display:none;">{{$subCategorySectionIndex++}}</span>                                                
+                                                                    
+                                                                    <span style="display:none;">{{$subPanelIndex++}}</span>                                                  
                                                                     @endforeach
                                                                 </div>
 
                                                             </div>
                                                         </div>
                                                     <span style="display:none;" class="subCategorySectionCount_{{$categorySectionIndex}}">{{{ $subCategorySection++ }}}</span>
-                                                    <span style="display:none;">{{$newCategorySection++}}</span>   
+                                                    <span style="display:none;">{{$newCategorySection++}}</span>
+                                                    <span style="display:none;">{{$subCategorySectionIndex++}}</span>  
                                                     </div>
                                             @endforeach
                                             </div>
