@@ -91,13 +91,12 @@ class NewHomeContentManagerController extends BaseController
                         $categoryProductPanel[] = $productObj;
                     }                    
                 }
-                $categorySection[] = $categoryPanel;   
                 $categoryProductPanelList[] = array_flatten([
                     $index => $categoryProductPanel 
                 ]);
                 $index++;                
             }
-
+            $categorySection[] = $categoryPanel;
             $categoryProductPanel = [];
         }
 
