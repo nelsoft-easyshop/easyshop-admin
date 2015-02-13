@@ -295,13 +295,21 @@
         loader.showPleaseWait();          
         var value = $(this).closest("form").find("#value").val().toString();
         var index = $(this).data("index");
+        var subindex = $(this).data("subindex").toString();
+        var subpanelindex = $(this).data("subpanelindex").toString();
         var url = $(this).data("url");
 
-        var hash =  hex_sha1(index + value  + userid + password);
-        data = { index: index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        var hash =  hex_sha1(index + value + subindex + subpanelindex + userid + password);
+        data = { index:index, 
+                 value:value, 
+                 subindex:subindex, 
+                 subpanelindex:subpanelindex, 
+                 userid:userid, password:password, 
+                 hash:hash, 
+                 callback:'?'};
 
-        var tableSelector = "#categorySectionProductPanel_" + index;
-        var reloadurl = "getCategoriesProductPanel/" + index;
+        var tableSelector = "#categorySectionProductPanel_" + index + "_" +subindex;
+        var reloadurl = "getCategoriesProductPanel/" + index + "/" +subindex + "/" +subpanelindex;
         if(value.trim() == "") {
             showErrorModal("Please supply a slug");
         }
