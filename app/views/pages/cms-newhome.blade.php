@@ -507,7 +507,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_category_{{$categorySectionIndex}}" style='cursor:pointer;'>{{ucwords(str_replace("-"," ",$categoryPanel->categorySlug))}}</a>
+                                            <a data-toggle="collapse" data-parent="#accordion" id="collapseAccordion_{{$categorySectionIndex}}" href="#collapse_category_{{$categorySectionIndex}}" style='cursor:pointer;'>{{ucwords(str_replace("-"," ",$categoryPanel->categorySlug))}}</a>
                                             <span class="glyphicon glyphicon-remove pull-right" id="removeCategorySection" data-nodename="categorySectionPanel" style='cursor:pointer;' data-index="{{$categorySectionIndex}}" data-url="{{$newHomeCmsLink}}/removeContent"></span>
                                         </h4>
                                     </div>
@@ -549,7 +549,7 @@
 
                                             <span style="display:none;">{{{ $subCategorySection = 0 }}}</span>
                                             <span style="display:none;">{{$subCategorySectionIndex = 0}}</span>                                              
-                                            <div class="panel-group" id="accordion1">
+                                            <div class="panel-group" id="accordion_{{{ $categorySectionIndex }}}">
                                                 @foreach($categoryPanel->sub as $subCategoriesSection)
                                                     <div class="panel panel-default">
                                                         <div class="panel-heading">
