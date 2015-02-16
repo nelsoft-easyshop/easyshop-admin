@@ -30,9 +30,6 @@
         var hash =  hex_sha1(index + subCategoryText + subCategorySectionTarget + userid + password);
         data = { index: index, subCategoryText:subCategoryText, subCategorySectionTarget:subCategorySectionTarget, userid:userid,  password:password, hash:hash, callback:'?'};
 
-        var tableSelector = "#subCategoriesSection_" + index;
-        var reloadurl = "getSubCategoriesSection/" + index;
-
         if(subCategoryText.trim() == "" || subCategorySectionTarget.trim() == "") {
             showErrorModal("Please enter values to the required fields");
         }
@@ -46,8 +43,14 @@
                 contentType: "application/json",
                 dataType: 'jsonp',
                 success: function(json) {
-                    $(tableSelector).load(reloadurl);
-                    loader.hidePleaseWait();  
+                    $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
+                        var accordionId = "#collapseAccordion_" + index;
+                        $(accordionId).trigger("click");
+                        var aTag = $("a[href='#collapse_category_"+ index +"']");
+                        $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
+
+                        loader.hidePleaseWait();  
+                    });
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
