@@ -527,23 +527,28 @@ class NewHomeContentManagerController extends BaseController
         $categoryProductPanelList = [];        
         $categorySection = [];
         $index = 0;
+
         foreach($this->map->categorySection as $categoryPanel)
         {
-
-            foreach($categoryPanel->productPanel as $productPanel)
+            foreach($categoryPanel->sub as $productPanel)
             {
-                $productObj = $productEntity->getProductBySlug($productPanel->slug);   
-                if(count($productObj) > 0) {
-                    $categoryProductPanel[] = $productObj;
-                }                 
-            }
-            $categorySection[] = $categoryPanel;   
-            $categoryProductPanelList[] = array_flatten([
-                    $index => $categoryProductPanel
+                foreach ($productPanel->productSlugs as $slug) {
+                    $productObj = $this->productRepository->getProductBySlug($slug);
+                    if(count($productObj) > 0) {
+                        $categoryProductPanel[] = $productObj;
+                    }                    
+                }
+                $categoryProductPanelList[] = array_flatten([
+                    $index => $categoryProductPanel 
                 ]);
-            $index++;
-            $categoryProductPanel = [];
-        }  
+                $index++;
+                $categoryProductPanel = [];                
+            }
+            $categorySection[] = $categoryPanel;
+        }
+
+
+
         foreach ($categoryRepository->getParentCategories() as $value) {
             $categoryLists[] = [
                 "slug" => $value->slug, 
