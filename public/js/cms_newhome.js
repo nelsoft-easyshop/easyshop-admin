@@ -18,7 +18,7 @@
     var userid = $("#userid").val();
     var password = $("#password").val();
     var newHomeCmsLink = $("#newHomeCmsLink").text();
-    var minimumCategoryProductPanel = 2;
+    var minimumCategoryProductPanel = 1;
     var minimumCategorySectionProductPanel = 3;
 
     $("#myTabContent").on('click','#addSubCategorySection',function (e) { 
@@ -200,13 +200,24 @@
     $("#myTabContent").on('click','#removeCategoryProductPanel',function (e) { 
         var index = $(this).data("index").toString();
         var subindex = $(this).data("subindex").toString();
+        var subpanelindex = $(this).data("subpanelindex").toString();
+        var newcategorysection = $(this).data("newcategorysection").toString();
         var nodename = $(this).data("nodename");
         var url = $(this).data("url");
-        var hash = hex_sha1(index + subindex  + nodename + userid + password);
-        data = { index: index, subIndex:subindex,nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};  
-        var count = parseInt($(".categoryProductPanelCount_"+index).last().text());        
-        var tableSelector = "#categorySectionProductPanel_" + index;
-        var reloadurl = "getCategoriesProductPanel/" + index;
+        var hash = hex_sha1(index + subindex + subpanelindex + nodename + userid + password);
+        data = { 
+            index: index, 
+            subIndex:subindex,
+            subpanelindex:subpanelindex,
+            nodename:nodename,
+            userid:userid,
+            password:password, 
+            hash:hash, 
+            callback:'?'
+        };  
+        var count = parseInt($(".categoryProductPanelCount_"+index).last().text());      
+        var tableSelector = "#categorySectionProductPanel_" + index + "_" +subindex;
+        var reloadurl = "getCategoriesProductPanel/" + index + "/" + subindex + "/" + newcategorysection;
         if(count > minimumCategoryProductPanel ) {
             loader.showPleaseWait();                    
             $.ajax({
