@@ -615,6 +615,8 @@
                                                                                     data-index="{{$categorySectionIndex}}" 
                                                                                     data-subindex="{{$subCategorySectionIndex}}" 
                                                                                     data-nodename="categoryProductPanel" 
+                                                                                    data-subpanelindex="{{$subPanelIndex}}" 
+                                                                                    data-newcategorysection="{{$newCategorySection}}" 
                                                                                     style="position:absolute;top:2px;left:5px;"
                                                                                     data-url = "{{{$newHomeCmsLink}}}/removeContent"
                                                                                  ><font color='red'><b>X</b></font></a>
@@ -623,21 +625,25 @@
                                                                                     id="moveupCategoryProductPanel" 
                                                                                     data-action="up" 
                                                                                     data-index="{{$categorySectionIndex}}" 
-                                                                                    data-order="{{$subCategorySectionIndex}}" 
-                                                                                    data-subindex="{{$subCategorySectionIndex}}" 
+                                                                                    data-subindex="{{$subCategorySectionIndex}}"
+                                                                                    data-order="{{$subPanelIndex}}" 
+                                                                                    data-subpanelindex="{{$subPanelIndex}}"
+                                                                                    data-newcategorysection="{{$newCategorySection}}"                                                                                     
                                                                                     style="position:absolute;top:235px;left:5px;"
                                                                                     data-url = "{{{$newHomeCmsLink}}}/setPositionCategoryProductPanel"
                                                                                  ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
 
-                                                                                 <a  
+                                                                                <a  
                                                                                     id="movedownCategoryProductPanel" 
                                                                                     data-action="down" 
                                                                                     data-index="{{$categorySectionIndex}}" 
-                                                                                    data-order="{{$subCategorySectionIndex}}" 
-                                                                                    data-subindex="{{$subCategorySectionIndex}}" 
+                                                                                    data-subindex="{{$subCategorySectionIndex}}"
+                                                                                    data-order="{{$subPanelIndex}}" 
+                                                                                    data-subpanelindex="{{$subPanelIndex}}" 
+                                                                                    data-newcategorysection="{{$newCategorySection}}"                                                                                     
                                                                                     style="position:absolute;top:235px;right:5px;"
                                                                                     data-url = "{{{$newHomeCmsLink}}}/setPositionCategoryProductPanel"
-                                                                                 ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
+                                                                                ><span class="glyphicon glyphicon-chevron-right pull-right" style="font-size:16px;"></span></a>
                                                                                 <span class="categoryProductPanelCount" style="display:none;">{{$categoryProductPanelCount}}</span>
 
                                                                             <!--Start Edit Slide Modal -->
@@ -690,50 +696,6 @@
                                                     </div>
                                             @endforeach
                                             </div>
-
-                                             <table class="table table-striped table-hover tbl-my-style subCategoriesSectionTable"  id="subCategoriesSection_{{{$categorySectionIndex}}}">
-                                                <thead>
-                                                <tr>
-                                                    <th>/</th>
-                                                    <th>Text</th>
-                                                    <th>Target</th>
-
-                                                </tr>
-                                                </thead>
-                                                <tbody id="tbody_boxContent">
-                                                    <span style="display:none;">{{{ $subCategorySection = 0 }}}</span>
-                                                    @foreach($categoryPanel->sub as $subCategoriesSection)                                                    
-                                                        <tr id="row_{{$categorySectionIndex}}_{{$subCategorySection}}">
-                                                            <td>
-                                                                <div class="btn-toolbar" role="toolbar">
-                                                                    <div class="btn-group">
-                                                                        <button type="button" class="btn btn-danger editCategorySection" id="data_{{$categorySectionIndex}}_{{$subCategorySection}}" 
-                                                                            data-toggle="modal" data-target="#modalForCategorySection"
-                                                                            data='{"url":"{{{$newHomeCmsLink}}}/setSubCategoriesSection","categorySectionIndex":"{{{  $categorySectionIndex }}}","subCategorySectionIndex":"{{{ $subCategorySection }}}","value":"{{{ $subCategoriesSection->text }}}", "target":"{{{ $subCategoriesSection->target }}}" } '
-                                                                            >
-                                                                            <span class="glyphicon-center glyphicon glyphicon-cog"></span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="btn-group">
-                                                                        <button type="button" class="btn edit_btn removeCategorySection" id="data_{{$categorySectionIndex}}_{{$subCategorySection}}" 
-                                                                                data-nodename="categorySection" data-url="{{$newHomeCmsLink}}/removeContent" data-index = "{{{  $categorySectionIndex }}}" data-subindex = "{{{ $subCategorySection }}}"
-                                                                            >
-                                                                            <span class="glyphicon glyphicon-remove"></span>
-                                                                        </button>
-                                                                    </div>                                                    
-                                                                </div>
-                                                            </td>
-                                                            <td id="value_{{$categorySectionIndex}}_{{$subCategorySection}}" class="subCategoryTD">{{{ $subCategoriesSection->text }}}</td>
-                                                            <td id="value_{{$categorySectionIndex}}_{{$subCategorySection}}" class="subCategoryTD">{{{ $subCategoriesSection->target }}}</td>
-                                                            <span style="display:none;"></span>                            
-                                                            <input type="hidden" class="boxContentCount_" value="">
-                                                        </tr>
-                                                        <span style="display:none;" class="subCategorySectionCount_{{$categorySectionIndex}}">{{{ $subCategorySection++ }}}</span>
-                                                    @endforeach
-
-                                                </tbody> 
-                                            </table>
-
                                         </div>
                                     </div>
                                     <span style="display:none;">{{$categorySectionIndex++}}</span>      
