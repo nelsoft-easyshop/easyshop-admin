@@ -471,7 +471,7 @@
                   <!--End Edit New Arrival Modal -->
             </div> 
 
-            <div class="tab-pane fade" id="manageCategorySection">
+            <div class="tab-pane fade active in" id="manageCategorySection">
                     <form id='changeProductPanel' target="test" action="{{ $newHomeCmsLink}}/setSellerHead" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
                         <legend>        
                             <h4 class="tbl-title">
@@ -557,10 +557,10 @@
                                                                 <a class="panel-toggle" data-toggle="collapse" data-parent="#accordion1" href="#subAccordion_{{$categorySectionIndex}}_{{$subCategorySection}}">
                                                                     {{{ $subCategoriesSection->text }}}
                                                                 </a>                                                                
-                                                                <span class="glyphicon glyphicon-remove pull-right removeCategorySection" 
+                                                                <span class="glyphicon glyphicon-remove pull-right removeSubCategorySection" 
                                                                       id="data_{{$categorySectionIndex}}_{{$subCategorySection}}" 
                                                                       style="cursor:pointer;" 
-                                                                      data-nodename="categorySection" 
+                                                                      data-nodename="subCategorySection" 
                                                                       data-url="{{$newHomeCmsLink}}/removeContent" 
                                                                       data-index = "{{{  $categorySectionIndex }}}" 
                                                                       data-subindex = "{{{ $subCategorySection }}}"
@@ -1204,7 +1204,7 @@
             </div> 
 
             <span id="clonedSliderCountConstant" style="display:none;"></span>   
-            <div class="tab-pane fade active in" id="manageSliderSection">
+            <div class="tab-pane fade" id="manageSliderSection">
                 <div class="row">
                     <div class='col-md-12'>
                         <center>

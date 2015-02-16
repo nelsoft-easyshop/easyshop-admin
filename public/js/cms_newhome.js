@@ -857,7 +857,45 @@
         }        
           
       
-    });  
+    }); 
+
+
+    $(document).on('click','.removeSubCategorySection',function (e) { 
+        loader.showPleaseWait();
+        var index = $(this).data("index").toString();
+        var subindex = $(this).data("subindex").toString();
+        var nodename = $(this).data("nodename");
+        var url = $(this).data("url");
+        var hash =  hex_sha1(index + subindex + nodename + userid + password);
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:{index:index, subindex:subindex, nodename:nodename, userid:userid, hash:hash},
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
+                    var accordionId = "#collapseAccordion_" + index;
+                    $(accordionId).trigger("click");
+                    var aTag = $("a[href='#collapse_category_"+ index +"']");
+                    $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
+                    loader.hidePleaseWait();  
+                });
+                getSliderPreview();
+                loader.hidePleaseWait();
+                console.log("success");
+                   
+            },
+            error: function(e) {
+                console.log("error");
+                loader.hidePleaseWait();
+                getSliderPreview();                    
+                showErrorModal("Please try again");
+            }
+        });        
+
+    });
 
     $("#manageSliderSection").on('click','#removeSubSlide',function (e) { 
         formSubmitted = 1;        

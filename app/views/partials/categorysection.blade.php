@@ -84,10 +84,10 @@
                                                                 <a class="panel-toggle" data-toggle="collapse" data-parent="#accordion1" href="#subAccordion_{{$categorySectionIndex}}_{{$subCategorySection}}">
                                                                     {{{ $subCategoriesSection->text }}}
                                                                 </a>                                                                
-                                                                <span class="glyphicon glyphicon-remove pull-right removeCategorySection" 
-                                                                      id="data_{{$categorySectionIndex}}_{{$subCategorySection}}" 
+                                                                <span class="glyphicon glyphicon-remove pull-right removeSubCategorySection" 
+                                                                      id="data_{{$categorySectionIndex}}_{{$subCategorySection}} " 
                                                                       style="cursor:pointer;" 
-                                                                      data-nodename="categorySection" 
+                                                                      data-nodename="subCategorySection" 
                                                                       data-url="{{$newHomeCmsLink}}/removeContent" 
                                                                       data-index = "{{{  $categorySectionIndex }}}" 
                                                                       data-subindex = "{{{ $subCategorySection }}}"
