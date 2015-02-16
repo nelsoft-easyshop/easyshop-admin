@@ -471,7 +471,7 @@
                   <!--End Edit New Arrival Modal -->
             </div> 
 
-            <div class="tab-pane fade active in" id="manageCategorySection">
+            <div class="tab-pane fade" id="manageCategorySection">
                     <form id='changeProductPanel' target="test" action="{{ $newHomeCmsLink}}/setSellerHead" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
                         <legend>        
                             <h4 class="tbl-title">
@@ -1204,7 +1204,7 @@
             </div> 
 
             <span id="clonedSliderCountConstant" style="display:none;"></span>   
-            <div class="tab-pane fade" id="manageSliderSection">
+            <div class="tab-pane fade active in" id="manageSliderSection">
                 <div class="row">
                     <div class='col-md-12'>
                         <center>
