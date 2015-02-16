@@ -277,29 +277,6 @@ class NewHomeContentManagerController extends BaseController
     }
 
     /**
-     *  Reloads sub categories
-     */ 
-    public function getSubCategoriesSection($index)
-    {
-        $index = (int) $index;
-        $categorySection = [];    
-
-        $xmlString = $this->XMLService->getNewHomeXml();
-        $this->map = simplexml_load_string(trim($xmlString));
-
-        foreach($this->map->categorySection[$index]->sub as $subCategories)
-        {
-            $categorySection[] = $subCategories;   
-        }
-        return View::make('partials.subcategoriessection')        
-                    ->with('categoryPanel', $categorySection)
-                    ->with('categorySectionIndex', $index)
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
-                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                      
-             
-    }
-
-    /**
      *  Reloads contents of productPanel
      */ 
     public function getProductPanel()
