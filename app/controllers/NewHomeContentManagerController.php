@@ -245,7 +245,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.categorysectionproductpanel')        
                     ->with('categoryPanel', $categorySection)
                     ->with('categorySectionIndex', $index)
-                    ->with('subPanelIndex', $subPanelIndex)
+                    ->with('subIndex', $subPanelIndex)
                     ->with('subCategorySection', $subIndex)
                     ->with('categoryProductPanelList', $categoryProductPanelList)                    
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    

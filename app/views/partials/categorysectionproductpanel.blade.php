@@ -1,7 +1,7 @@
-                                                                <div class="col-lg-15" style='text-align:center;' id="categorySectionProductPanel_{{$categorySectionIndex}}_{{$subCategorySection}}_{{$subPanelIndex}}">
+                                                                <div class="col-lg-15" style='text-align:center;' id="categorySectionProductPanel_{{$categorySectionIndex}}_{{$subCategorySection}}">
                                                                     <span style="display:none;">{{{ $subPanelIndex = 0 }}}</span>
                                                                     <span style="display:none;">{{$categoryProductPanelCount = 1}}</span>                                                
-                                                                    @foreach($categoryProductPanelList[$subPanelIndex] as $categorySectionProducts)
+                                                                    @foreach($categoryProductPanelList[$subIndex] as $categorySectionProducts)
                                                                         <div style="position:relative;display:inline-block;">
                                                                             <div class='well' style="height:auto;">
                                                                                 <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
