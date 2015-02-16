@@ -154,12 +154,14 @@
         var action = $(this).data('action').toString();
         var subindex = $(this).data('subindex').toString();
         var index = $(this).data('index').toString();
+        var subpanelindex = $(this).data('subpanelindex').toString();
+        var newcategorysection = $(this).data('newcategorysection').toString();
         var order = parseInt($(this).data('order'));
         var url = $(this).data('url').toString();
         var count = parseInt($(".categoryProductPanelCount").last().text());
 
-        var tableSelector = "#categorySectionProductPanel_" + index;
-        var reloadurl = "getCategoriesProductPanel/" + index;
+        var tableSelector = "#categorySectionProductPanel_" + index + "_" +subindex;
+        var reloadurl = "getCategoriesProductPanel/" + index + "/" + subindex + "/" + newcategorysection;        
         if(action == "down") {
             if(order == (count - 1)) {
                 order = order;
@@ -175,9 +177,22 @@
             }
     
         }
+        console.log(index);
+        console.log(subindex);
+        console.log(subpanelindex);
+        console.log(order);
         order = order.toString();
-        var hash =  hex_sha1(index + subindex  + order + userid + password);        
-        data = { index: index, subIndex:subindex, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
+        var hash =  hex_sha1(index + subindex + subpanelindex + order + userid + password);        
+        data = { 
+            index: index, 
+            subIndex:subindex, 
+            subpanelindex:subpanelindex, 
+            order:order, 
+            userid:userid, 
+            password:password, 
+            hash:hash, 
+            callback:'?'
+        };
         setCategoryProductPosition(url,data, tableSelector, reloadurl);
     
     }); 
