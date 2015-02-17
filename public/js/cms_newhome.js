@@ -520,7 +520,7 @@
         var image_w = $(this).closest("form").find("#image_w").val().toString();
         var image_h = $(this).closest("form").find("#image_h").val().toString();
 
-        var url = newHomeCmsLink + "/addAdds";
+        var url = newHomeCmsLink + "/addAdSection";
         var target = $(this).closest("form").find("#target").val().toString();
         var userid = $(this).closest("form").find("#userid").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();   
@@ -860,7 +860,78 @@
     }); 
 
 
-    $(document).on('click','.removeSubCategorySection',function (e) { 
+    $(document.body).on('click','#editSubCategorySection',function (e) { 
+        loader.showPleaseWait();
+        var index = $(this).data("index").toString();
+        var url = $(this).data("url").toString();
+        var subIndex = $(this).data("subindex").toString();
+        var text = $(this).closest("form").find("#subCategoryText").val().trim();        
+        var target = $(this).closest("form").find("#subCategorySectionTarget").val().trim();        
+        var url = $(this).data("url");
+        var hash =  hex_sha1(index + subIndex + text + target + userid + password);
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:{index:index, subIndex:subIndex, value:text, target:target, userid:userid, hash:hash},
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
+                    var accordionId = "#collapseAccordion_" + index;
+                    $(accordionId).trigger("click");
+                    var aTag = $("a[href='#collapse_category_"+ index +"']");
+                    $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
+                    loader.hidePleaseWait();  
+                });
+                getSliderPreview();
+                loader.hidePleaseWait();
+                   
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+                getSliderPreview();                    
+                showErrorModal("Please try again");
+            }
+        });        
+    });
+
+
+
+    $(document.body).on('click','#setCategorySection',function (e) { 
+        loader.showPleaseWait();
+        var index = $(this).data("index").toString();
+        var categoryName = $(this).closest("form").find("#setCategorySectionDropDown option:selected").val();        
+        var url = $(this).data("url");
+        var hash =  hex_sha1(index + categoryName + userid + password);
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:{index:index, value:categoryName, userid:userid, hash:hash},
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
+                    var accordionId = "#collapseAccordion_" + index;
+                    $(accordionId).trigger("click");
+                    var aTag = $("a[href='#collapse_category_"+ index +"']");
+                    $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
+                    loader.hidePleaseWait();  
+                });
+                getSliderPreview();
+                loader.hidePleaseWait();
+                   
+            },
+            error: function(e) {
+                loader.hidePleaseWait();
+                getSliderPreview();                    
+                showErrorModal("Please try again");
+            }
+        });        
+    });
+
+    $(document.body).on('click','.removeSubCategorySection',function (e) { 
         loader.showPleaseWait();
         var index = $(this).data("index").toString();
         var subindex = $(this).data("subindex").toString();
@@ -883,12 +954,9 @@
                     loader.hidePleaseWait();  
                 });
                 getSliderPreview();
-                loader.hidePleaseWait();
-                console.log("success");
-                   
+                loader.hidePleaseWait();                   
             },
             error: function(e) {
-                console.log("error");
                 loader.hidePleaseWait();
                 getSliderPreview();                    
                 showErrorModal("Please try again");
@@ -2071,7 +2139,7 @@
             var clone = $("#cloneForm_addAds").html();
             $("#contentPreview").html(clone);
             setImagesCropSizes(0, null, null, "adsImage");               
-            var actionLink = newHomeCmsLink + "/addAdds";
+            var actionLink = newHomeCmsLink + "/addAdSection";
             $(".cropFormButton").attr("id","addAdSection");            
             $(".cropFormButton").attr("data-url",actionLink);             
             $("#previewImage").find("form").attr("action",actionLink);    
