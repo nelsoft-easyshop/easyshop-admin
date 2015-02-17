@@ -42,6 +42,42 @@
                                     <div id="collapse_category_{{$categorySectionIndex}}" class="panel-collapse collapse">
                                         <div class="panel-body" id="productPanelDivsss">
 
+                                            <form id='left' target="test"  class="form-horizontal">            
+                                                <legend>        
+                                                    <h4 class="tbl-title">
+                                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                                        Edit Sub Category
+                                                    </h4>
+                                                </legend>     
+
+                                                {{ Form::hidden('index', "$categorySectionIndex", array('id' => 'index','class' => 'form-control')) }}                                                        
+                                                <div class="form-group">
+                                                    <label for="inputPassword" class="control-label col-xs-2">Enter Slug</label>
+                                                    <div class="col-xs-10">
+                                                        <select name="c_stateregion" id="setCategorySectionDropDown"  class="form-control">
+                                                            @foreach($categoryLists as $categories)
+                                                                @if($categories["name"] !== "PARENT")
+                                                                    @if(strtolower(trim($categories['slug'])) == strtolower(trim($categoryPanel->categorySlug)))
+                                                                        <option value="{{{$categories['slug']}}}" selected>{{{$categories["name"]}}}</option>
+                                                                    @else
+                                                                    <option value="{{{$categories['slug']}}}">{{{$categories["name"]}}}</option>
+                                                                    @endif
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>                                                                                                           
+                                                <div class="form-group">
+                                                    <div class="col-xs-offset-2 col-xs-10">
+                                                        <a1 href="#"
+                                                         class="btn btn-primary text-center" 
+                                                         data-url = "{{{$newHomeCmsLink}}}/setCategorySection" 
+                                                         id="setCategorySection"
+                                                         data-index="{{{$categorySectionIndex}}}">Edit Sub Category</a>
+                                                    </div>
+                                                </div>                                      
+                                            </form>      
+
                                             <!-- Start Add Sub Category Section -->
 
                                             <form id='left' target="test"  class="form-horizontal">            
@@ -99,6 +135,43 @@
                                                         <!-- edit here -->
                                                         <div id="subAccordion_{{$categorySectionIndex}}_{{$subCategorySection}}" class="panel-body collapse">
                                                             <div class="panel-inner">
+
+                                                                <form id='left' target="test"  class="form-horizontal">            
+                                                                    <legend>        
+                                                                        <h4 class="tbl-title">
+                                                                            <span class="glyphicon glyphicon-list-alt"></span>
+                                                                            Edit Sub Category
+                                                                        </h4>
+                                                                    </legend>     
+
+                                                                    <div class="form-group">
+                                                                        <label for="inputPassword" class="control-label col-xs-2">Sub Category Text</label>
+                                                                        <div class="col-xs-10">
+                                                                            <input type="text" id="subCategoryText" name='subCategoryText' value="{{{ $subCategoriesSection->text }}}" class='form-control'> 
+                                                                        </div>
+                                                                    </div>  
+                                                                    <div class="form-group">
+                                                                        <label for="inputPassword" class="control-label col-xs-2">Sub Category Target</label>
+                                                                        <div class="col-xs-10">
+                                                                            <input type="text" id="subCategorySectionTarget" name='subCategorySectionTarget' value="{{{ $subCategoriesSection->target }}}" class='form-control'> 
+                                                                        </div>
+                                                                    </div>                                                                                                        
+                                                                    <div class="form-group">
+                                                                        <div class="col-xs-offset-2 col-xs-10">
+                                                                            <a1 
+                                                                                id="editSubCategorySection"
+                                                                                href="#"  
+                                                                                data-index="{{$categorySectionIndex}}" 
+                                                                                data-subindex="{{$subCategorySection}}" 
+                                                                                class="btn btn-primary text-center" 
+                                                                                data-url = "{{{$newHomeCmsLink}}}/setSubCategorySection" 
+                                                                            >Edit Sub Category</a>
+                                                                        </div>
+                                                                    </div>                                      
+                                                                </form> 
+
+
+
 
                                                                 <form id='changeProductPanel' target="test" action="{{ $newHomeCmsLink}}/setSellerHead" class="form-horizontal submit-test" method="post" enctype="multipart/form-data">                                        
                                                                     <legend>        
