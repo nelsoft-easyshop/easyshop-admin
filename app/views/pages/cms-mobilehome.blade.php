@@ -166,7 +166,7 @@
                                                                     <div class="col-xs-10">
                                                                         <select name="actionType" id="dropActionTypes"  class="form-control" data-status="">
                                                                             @foreach($actionTypes as $types)
-                                                                                @if($mainSlide->actionType === $types)
+                                                                                @if((string)$mainSlide->actionType === (string)$types)
                                                                                     <option value="{{{ $types }}}" selected>{{{ $types }}}</option>
                                                                                 @else
                                                                                     <option value="{{{ $types }}}">{{{ $types }}}</option>                                                                            
