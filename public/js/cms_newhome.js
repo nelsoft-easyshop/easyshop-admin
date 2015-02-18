@@ -25,12 +25,11 @@
         loader.showPleaseWait();          
         var index = $(this).closest("form").find("#index").val();
         var subCategoryText = $(this).closest("form").find("#subCategoryText").val();
-        var subCategorySectionTarget = $(this).closest("form").find("#subCategorySectionTarget").val();
         var url = $(this).data('url');
-        var hash =  hex_sha1(index + subCategoryText + subCategorySectionTarget + userid + password);
-        data = { index: index, subCategoryText:subCategoryText, subCategorySectionTarget:subCategorySectionTarget, userid:userid,  password:password, hash:hash, callback:'?'};
+        var hash =  hex_sha1(index + subCategoryText + userid + password);
+        data = { index: index, subCategoryText:subCategoryText, userid:userid,  password:password, hash:hash, callback:'?'};
 
-        if(subCategoryText.trim() == "" || subCategorySectionTarget.trim() == "") {
+        if(subCategoryText.trim() === "") {
             showErrorModal("Please enter values to the required fields");
         }
         else {
@@ -871,35 +870,40 @@
         var index = $(this).data("index").toString();
         var url = $(this).data("url").toString();
         var subIndex = $(this).data("subindex").toString();
-        var text = $(this).closest("form").find("#subCategoryText").val().trim();        
-        var target = $(this).closest("form").find("#subCategorySectionTarget").val().trim();        
+        var text = $(this).closest("form").find("#subCategoryText").val().trim();
         var url = $(this).data("url");
-        var hash =  hex_sha1(index + subIndex + text + target + userid + password);
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:{index:index, subIndex:subIndex, value:text, target:target, userid:userid, hash:hash},
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
-                    var accordionId = "#collapseAccordion_" + index;
-                    $(accordionId).trigger("click");
-                    var aTag = $("a[href='#collapse_category_"+ index +"']");
-                    $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
-                    loader.hidePleaseWait();  
-                });
-                getSliderPreview();
-                loader.hidePleaseWait();
-                   
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-                getSliderPreview();                    
-                showErrorModal("Please try again");
-            }
-        });        
+        var hash =  hex_sha1(index + subIndex + text + userid + password);
+
+        if(text !== "") {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:{index:index, subIndex:subIndex, value:text, userid:userid, hash:hash},
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
+                        var accordionId = "#collapseAccordion_" + index;
+                        $(accordionId).trigger("click");
+                        var aTag = $("a[href='#collapse_category_"+ index +"']");
+                        $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
+                        loader.hidePleaseWait();  
+                    });
+                    getSliderPreview();
+                    loader.hidePleaseWait();
+                       
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                    getSliderPreview();                    
+                    showErrorModal("Please try again");
+                }
+            });
+        }
+        else {
+            showErrorModal("Please supply a value");
+        }
     });
 
 
