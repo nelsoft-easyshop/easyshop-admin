@@ -57,7 +57,7 @@ class NewHomeContentManagerController extends BaseController
         foreach ($categoryRepository->getChildCategories() as $value) {
             $childCategoryLists[] = [
                 "slug" => $value->slug, 
-                "name" => $value->name
+                "name" => $value->name." (" .$value->description.")"
             ];
         }               
 
@@ -381,7 +381,7 @@ class NewHomeContentManagerController extends BaseController
         foreach ($categoryRepository->getChildCategories() as $value) {
             $childCategoryLists[] = [
                 "slug" => $value->slug, 
-                "name" => $value->name
+                "name" => $value->name." (" .$value->description.")"
             ];
         }           
 
