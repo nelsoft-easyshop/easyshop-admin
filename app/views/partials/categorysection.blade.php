@@ -94,13 +94,7 @@
                                                     <div class="col-xs-10">
                                                         <input type="text" id="subCategoryText" name='subCategoryText' class='form-control'> 
                                                     </div>
-                                                </div>  
-                                                <div class="form-group">
-                                                    <label for="inputPassword" class="control-label col-xs-2">Sub Category Target</label>
-                                                    <div class="col-xs-10">
-                                                        <input type="text" id="subCategorySectionTarget" name='subCategorySectionTarget' class='form-control'> 
-                                                    </div>
-                                                </div>                                                                                                        
+                                                </div>                                                                                                          
                                                 <div class="form-group">
                                                     <div class="col-xs-offset-2 col-xs-10">
                                                         <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addSubCategorySection" id="addSubCategorySection">Add Sub Category</a>
@@ -149,13 +143,7 @@
                                                                         <div class="col-xs-10">
                                                                             <input type="text" id="subCategoryText" name='subCategoryText' value="{{{ $subCategoriesSection->text }}}" class='form-control'> 
                                                                         </div>
-                                                                    </div>  
-                                                                    <div class="form-group">
-                                                                        <label for="inputPassword" class="control-label col-xs-2">Sub Category Target</label>
-                                                                        <div class="col-xs-10">
-                                                                            <input type="text" id="subCategorySectionTarget" name='subCategorySectionTarget' value="{{{ $subCategoriesSection->target }}}" class='form-control'> 
-                                                                        </div>
-                                                                    </div>                                                                                                        
+                                                                    </div>                                                                                                          
                                                                     <div class="form-group">
                                                                         <div class="col-xs-offset-2 col-xs-10">
                                                                             <a1 
@@ -263,10 +251,10 @@
                                                                                                         </div>
                                                                                                     </div>    
                                                                                                   
-                                                                                                    {{ Form::text('index', $categorySectionIndex, array('id' => 'index','class' => 'form-control')) }}                                                                                              
-                                                                                                    {{ Form::text('subindex', $subCategorySectionIndex, array('id' => 'subindex','class' => 'form-control')) }}                                                                                              
-                                                                                                    {{ Form::text('productSlugIndex', $subPanelIndex, array('id' => 'subPanelIndex','class' => 'form-control')) }}                                                                                              
-                                                                                                    {{ Form::text('newCategorySection', $newCategorySection, array('id' => 'newCategorySection','class' => 'form-control')) }}                                                                                              
+                                                                                                    {{ Form::hidden('index', $categorySectionIndex, array('id' => 'index','class' => 'form-control')) }}                                                                                              
+                                                                                                    {{ Form::hidden('subindex', $subCategorySectionIndex, array('id' => 'subindex','class' => 'form-control')) }}                                                                                              
+                                                                                                    {{ Form::hidden('productSlugIndex', $subPanelIndex, array('id' => 'subPanelIndex','class' => 'form-control')) }}                                                                                              
+                                                                                                    {{ Form::hidden('newCategorySection', $newCategorySection, array('id' => 'newCategorySection','class' => 'form-control')) }}                                                                                              
 
                                                                                                     <button type="button" class="btn btn-primary text-center" data-dismiss="modal" data-url = "{{{$newHomeCmsLink}}}/setCategoryProductPanel" id="editCategoryProductPanel">Edit Product Panel</button>
                                                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
