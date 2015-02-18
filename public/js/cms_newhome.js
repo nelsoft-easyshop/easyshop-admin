@@ -218,7 +218,7 @@
             hash:hash, 
             callback:'?'
         };  
-        var count = parseInt($(".categoryProductPanelCount_"+index).last().text());      
+        var count = parseInt($(".categoryProductPanelCount_"+index+"_"+subindex).last().text());      
         var tableSelector = "#categorySectionProductPanel_" + index + "_" +subindex;
         var reloadurl = "getCategoriesProductPanel/" + index + "/" + subindex + "/" + newcategorysection;
         if(count > minimumCategoryProductPanel ) {
@@ -345,30 +345,36 @@
             showErrorModal("Please supply a slug");
         }
         else {
-            $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                async: false,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    if(json.sites[0]["success"] != "success") {
-                        loader.hidePleaseWait();    
-                        showErrorModal("Slug Does Not Exist");
-                    }
-                    else {
-                        loader.hidePleaseWait();  
-                        $(tableSelector).load(reloadurl);
-                    }
+            var count = parseInt($(".categoryProductPanelCount_"+index+"_"+subindex).last().text());
+            if(count < 10) {
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:data,
+                    async: false,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        if(json.sites[0]["success"] != "success") {
+                            loader.hidePleaseWait();    
+                            showErrorModal("Slug Does Not Exist");
+                        }
+                        else {
+                            loader.hidePleaseWait();  
+                            $(tableSelector).load(reloadurl);
+                        }
 
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                    showErrorModal("Please try again");
-                }
-            }); 
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                        showErrorModal("Please try again");
+                    }
+                });
+            }
+            else {
+                showErrorModal("Sorry, but you have reached the maximum number of product");
+            }
         }      
     });  
 
