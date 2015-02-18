@@ -95,10 +95,16 @@ class MobileContentManagerController extends BaseController
         {
             $mainSlides[] =  $slides;
         }     
+        $actionTypes = [];
+        foreach($this->map->actionLists as $actions)
+        {
+            $actionTypes[] =  $actions->type;
+        }        
         return View::make('partials.mainslides')
             ->with('adminObject',$this->adminRepository->getAdminMemberById(Auth::id()))
             ->with('mainSlides',$mainSlides)
             ->with('mainSlideId',0)
+            ->with('actionTypes',  $actionTypes[0])
             ->with('mainSlideCount',  count($mainSlides))
             ->with('homeCmsLink',$this->XMLService->getMobileCmsLink())
             ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
