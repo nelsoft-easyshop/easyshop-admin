@@ -36,6 +36,16 @@
                     <input type="text" id="mainSlideTarget" class="form-control" name='target'  placeholder="Value" >
                   </div>
                 </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="control-label col-xs-2">Action Types</label>
+                    <div class="col-xs-10">
+                        <select name="actionType" id="dropActionTypes"  class="form-control" data-status="">
+                            @foreach($actionTypes as $types)
+                                <option value="{{{ $types }}}">{{{ $types }}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>                 
                 <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="Value" >
                 <input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
           
@@ -126,21 +136,35 @@
                                     {{ Form::text('target', $mainSlide->imagemap->target, array('id' => 'editMainSlideTarget','class' => 'form-control')) }}
                                   </div>
                                 </div>
-                                {{ Form::hidden('hash', $mainSlide->imagemap->target, array('id' => 'hashEditMainSlide','class' => 'form-control')) }}
-                                                <input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="Value" >                    
-
-
                                 <div class="form-group">
-                                  <div class="col-xs-offset-2 col-xs-10">
-                                                  <a href="" class="btn btn-primary"
-                                                   data-index="{{$mainSlideId}}" 
-                                                   data-target="{{$mainSlide->imagemap->target}}" 
-                                                   data-order="{{$mainSlideId}}" 
-                                                   data-count="{{$mainSlideCount}}"
-                                                   data-url = "{{ $homeCmsLink }}/setmainslide"
+                                    <label for="inputPassword" class="control-label col-xs-2">Action Type</label>
+                                    <div class="col-xs-10">
+                                        <select name="actionType" id="dropActionTypes"  class="form-control" data-status="">
+                                            @foreach($actionTypes as $types)
+                                                @if($mainSlide->actionType === $types)
+                                                    <option value="{{{ $types }}}" selected>{{{ $types }}}</option>
+                                                @else
+                                                    <option value="{{{ $types }}}">{{{ $types }}}</option>                                                                            
+                                                @endif
+                                            @endforeach
+                                        </select>   
+                                    </div>
+                                </div>                                
+                                {{ Form::hidden('hash', $mainSlide->imagemap->target, array('id' => 'hashEditMainSlide','class' => 'form-control')) }}
+                                <input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="Value" >                    
 
-                                                   data-dismiss = "modal" id='submit'>Submit</a>
-                                  </div>
+                                <div class="form-group" >
+                                    <div class="col-xs-10">
+                                        <a href="" class="btn btn-primary"
+                                         style="margin-left:100px;"
+                                         data-index="{{$mainSlideId}}" 
+                                         data-target="{{$mainSlide->imagemap->target}}" 
+                                         data-order="{{$mainSlideId}}" 
+                                         data-count="{{$mainSlideCount}}"
+                                         data-url = "{{ $homeCmsLink }}/setmainslide"
+                                         data-dismiss="modal"
+                                         id='submit'>Submit</a>
+                                    </div>
                                 </div>
                                </form>                              
 
