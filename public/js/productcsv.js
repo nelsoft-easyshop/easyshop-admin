@@ -80,6 +80,7 @@
         type: 'post', 
         dataType: 'json', 
         beforeSubmit: function(event) {
+            loader.showPleaseWait();
             var files = $('#uploadCSV').prop("files");
             if(files.length < 1) {
                 loader.hidePleaseWait();
@@ -120,7 +121,6 @@
     }); 
     
     $(document.body).delegate('#uploadData', 'submit', function(event) {
-        loader.showPleaseWait();   
         event.preventDefault();
 
     });
