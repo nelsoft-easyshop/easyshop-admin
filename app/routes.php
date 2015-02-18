@@ -38,8 +38,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('cms/getProductPanel', array('uses' => 'NewHomeContentManagerController@getProductPanel'));
     Route::get('cms/getAdsSection', array('uses' => 'NewHomeContentManagerController@getAdSection'));
     Route::get('cms/getOtherCategories', array('uses' => 'NewHomeContentManagerController@getOtherCategories'));
-    Route::get('cms/getSubCategoriesSection/{index}', array('uses' => 'NewHomeContentManagerController@getSubCategoriesSection'));
-    Route::get('cms/getCategoriesProductPanel/{index}', array('uses' => 'NewHomeContentManagerController@getCategoriesProductPanel'));
+    Route::get('cms/getCategoriesProductPanel/{index}/{subindex}/{subpanelindex}', array('uses' => 'NewHomeContentManagerController@getCategoriesProductPanel'));
     Route::post('cms/getSliderPreview', array('uses' => 'NewHomeContentManagerController@getSliderPreview'));
 
     Route::get('cms/slides', array('uses' => 'HomeContentManagerController@getMainSlides'));
@@ -50,8 +49,10 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('cms/popularItem', array('uses' => 'FeedsContentManagerController@getPopularItems'));
     Route::get('cms/promoItems', array('uses' => 'FeedsContentManagerController@getPromoItems'));
     
+
     Route::get('cms/mobile', array('uses' => 'MobileContentManagerController@showMobileCms'));
     Route::get('cms/mobileSlides', array('uses' => 'MobileContentManagerController@getMainSlides'));
+    Route::get('cms/mobile/getBoxContent/{index}', array('uses' => 'MobileContentManagerController@getBoxContent'));
 
     Route::get('register', array('uses' => 'AccountController@showRegistration'));
     Route::put('register', array('uses' => 'AccountController@doRegister'));    
