@@ -869,31 +869,36 @@
         var target = $(this).closest("form").find("#subCategorySectionTarget").val().trim();        
         var url = $(this).data("url");
         var hash =  hex_sha1(index + subIndex + text + target + userid + password);
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:{index:index, subIndex:subIndex, value:text, target:target, userid:userid, hash:hash},
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
-                    var accordionId = "#collapseAccordion_" + index;
-                    $(accordionId).trigger("click");
-                    var aTag = $("a[href='#collapse_category_"+ index +"']");
-                    $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
-                    loader.hidePleaseWait();  
-                });
-                getSliderPreview();
-                loader.hidePleaseWait();
-                   
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-                getSliderPreview();                    
-                showErrorModal("Please try again");
-            }
-        });        
+        if(text !== "" && target !== "") {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:{index:index, subIndex:subIndex, value:text, target:target, userid:userid, hash:hash},
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
+                        var accordionId = "#collapseAccordion_" + index;
+                        $(accordionId).trigger("click");
+                        var aTag = $("a[href='#collapse_category_"+ index +"']");
+                        $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
+                        loader.hidePleaseWait();  
+                    });
+                    getSliderPreview();
+                    loader.hidePleaseWait();
+                       
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                    getSliderPreview();                    
+                    showErrorModal("Please try again");
+                }
+            });    
+        } 
+        else {
+            showErrorModal("Please supply values to the required fields");
+        }   
     });
 
 
