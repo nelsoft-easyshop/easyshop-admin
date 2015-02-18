@@ -282,8 +282,7 @@
 
                                                                             </div>
                                                                         </div>
-                                                                    <span style="display:none;" class="categoryProductPanelCount_{{$categorySectionIndex}}">{{$categoryProductPanelCount++}}</span>                                                                                                    
-                                                                    
+                                                                    <span style="display:none;" class="categoryProductPanelCount_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}">{{$categoryProductPanelCount++}}</span>                                                                     
                                                                     <span style="display:none;">{{$subPanelIndex++}}</span>                                                  
                                                                     @endforeach
                                                                 </div>
