@@ -51,9 +51,10 @@
         var value = $("#valueMainSlide").val();
         var myvalue = $("#photoFile").val();
         var mainSlideTarget = $("#mainSlideTarget").val();
+        var actionTypes = $("#dropActionTypes option:selected").val();
         var useridMainSlide = userid;
         var passwordMainSlide = password;
-        var hash = hex_sha1(myvalue + value  + mainSlideTarget + useridMainSlide + passwordMainSlide);
+        var hash = hex_sha1(myvalue + value  + mainSlideTarget + actionTypes + useridMainSlide + passwordMainSlide);
         $("#hashMainSlide").val(hash);
 
         var ext = myvalue.split('.').pop().toLowerCase();
@@ -158,22 +159,24 @@
         var value = $(this).closest("form").find("#photoFile").val();
         var password = $("#password").val();
         var target = $(this).closest("form").find('#editMainSlideTarget').val();
+        var actionType = $(this).closest("form").find('#dropActionTypes option:selected').val();
         var count = $(this).data('count');
         var url = $(this).data('url');
         var order = index;
         var mainSlideForm = "#mainSlideForm" + index;
         var hashMainSlide = "#hashEditMainSlide" + index;
-        var hash =  hex_sha1(index + value  + target  + userid + password);
+        var hash =  hex_sha1(index + value  + target + actionType + userid + password);
         $(this).closest("form").find("#hashEditMainSlide").val(hash);
-        data = { index: index, value: value, target:target,  password:password, hash:hash, callback:'?'};
+        data = { index: index, value: value, target:target, actionType:actionType, password:password, hash:hash, callback:'?'};
 
 
         var ext = value.split('.').pop().toLowerCase();
 
-        if( ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) ) {
-            shwoErrorModal("Please upload an image");
+        if( value !== "" && ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) ) {
+            showErrorModal("Please upload an image");
         }
         else {
+            $(mainSlideForm).modal("hide");
             setDataMainSlide(url, data,order,mainSlideForm);
         }
     }); 
@@ -227,6 +230,9 @@
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
+            beforeSubmit: function(e) {
+                event.preventDefault();
+            },
             success: function(json) {
                 loader.hidePleaseWait();
                 $("#manageMainSlide").load('mobileSlides');                
