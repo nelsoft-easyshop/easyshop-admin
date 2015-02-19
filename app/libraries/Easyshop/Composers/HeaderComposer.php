@@ -15,7 +15,12 @@ class HeaderComposer
 
     public function compose($view)
     {
-        $view->with('username',  Auth::user()->username);   
+        $username = false;
+        if(Auth::user()){
+            $username = Auth::user()->username;
+        }
+            
+        $view->with('username',  $username);   
     }
 
 }
