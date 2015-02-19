@@ -21,11 +21,14 @@ class ProductCSVController extends BaseController
      */    
     public function showCSVupload()
     {
+        $adminRepo = App::make('AdminMemberRepository');            
+        $adminObject = $adminRepo->getAdminMemberById(Auth::id());
         $productCSVRepo = App::make('AdminImagesRepository');   
         return View::make("pages.productcsv")
                 ->with("easyShopLink",\Config::get('easyshop/webservice.easyShopLink'))
                 ->with("productCSVwebservice",\Config::get('easyshop/webservice.productCSVwebservice'))
-                ->with("adminImages",$productCSVRepo->getAllAdminImages());
+                ->with("adminImages",$productCSVRepo->getAllAdminImages())
+                ->with("adminObj",$adminObject);
     }
 
     /**

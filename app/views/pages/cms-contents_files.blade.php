@@ -17,8 +17,8 @@
     <link type="text/css" href="{{{ asset('css/homecms.css') }}}" rel="stylesheet"  media="screen"/>
 
    <div class="row">
-        <span id="userIdSpan" style="display:none;">{{ $userId }}</span>
-        <span id="adminPasswordSpan" style="display:none;">{{ $adminPassword }}</span>
+        <span id="userIdSpan" style="display:none;">{{ $adminObject->id_admin_member }}</span>
+        <span id="adminPasswordSpan" style="display:none;">{{ $adminObject->password }}</span>
     <section id="tabs">
         <ul id="myTab" class="nav nav-tabs" role="tablist">
             <li class="dropdown ">
@@ -45,8 +45,8 @@
                         <div class="col-sm-10">
                             {{ Form::text('value', trim($nodes), array('id' => 'value','class' => 'form-control')) }}
                             {{ Form::hidden('id', $nodes->attributes()->id, array('id' => 'id')) }}    
-                            {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}    
-                            {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}    
+                            {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }}    
+                            {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}    
                             {{ Form::hidden('hash', "", array('id' => 'hash')) }}
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                     <input type="file" id="photoFile" name='myfile'> 
 
                     {{ Form::hidden('choice', "left", array('id' => 'choice')) }}    
-                    {{ Form::hidden('userid', "$userId", array('id' => 'userid')) }}    
+                    {{ Form::hidden('userid', "$adminObject->id_admin_member", array('id' => 'userid')) }}    
                     {{ Form::hidden('hash', "", array('id' => 'hashleft')) }}
                 
                 </div>
@@ -81,7 +81,7 @@
                 <label for="userId" class="col-sm-2 control-label">Target</label>
                 <div class="col-sm-10">
                     {{ Form::text('target', "$leftBannerTarget", array('id' => 'target','class' => 'form-control')) }}                        
-                    {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}                        
+                    {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}                        
                 </div>
             </div>
             <div class="form-group">
@@ -100,7 +100,7 @@
                     <input type="file" id="photoFile" name='myfile'> 
 
                     {{ Form::hidden('choice', "mid", array('id' => 'choice')) }}    
-                    {{ Form::hidden('userid', "$userId", array('id' => 'userid')) }}    
+                    {{ Form::hidden('userid', "$adminObject->id_admin_member", array('id' => 'userid')) }}    
                     {{ Form::hidden('hash', "", array('id' => 'hashmid')) }}
                 
                 </div>
@@ -109,7 +109,7 @@
                 <label for="userId" class="col-sm-2 control-label">Target</label>
                 <div class="col-sm-10">
                     {{ Form::text('target', "$midBannerTarget", array('id' => 'target','class' => 'form-control')) }}                        
-                    {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}                        
+                    {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}                        
                 </div>
             </div>
             <div class="form-group">
@@ -127,7 +127,7 @@
                     <input type="file" id="photoFile" name='myfile'> 
 
                     {{ Form::hidden('choice', "right", array('id' => 'choice')) }}    
-                    {{ Form::hidden('userid', "$userId", array('id' => 'userid')) }}    
+                    {{ Form::hidden('userid', "$adminObject->id_admin_member", array('id' => 'userid')) }}    
                     {{ Form::hidden('hash', "", array('id' => 'hashright')) }}
                 
                 </div>
@@ -136,7 +136,7 @@
                 <label for="userId" class="col-sm-2 control-label">Target</label>
                 <div class="col-sm-10">
                     {{ Form::text('target', "$rightBannerTarget", array('id' => 'target','class' => 'form-control')) }}                        
-                    {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}                        
+                    {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}                        
                 </div>
             </div>
             <div class="form-group">
@@ -167,8 +167,8 @@
                                         <label for="userId" class="col-sm-2 control-label">Product Slug</label>
                                         <div class="col-sm-10">
                                             {{ Form::text('featuredProduct', "" ,array('id' => 'featuredProduct','class' => 'form-control')) }}
-                                            {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}
-                                            {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}
+                                            {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}
+                                            {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }}
                                             {{ Form::hidden('hash', "", array('id' => 'hash')) }}
                                         </div>
                                     </div>
@@ -202,11 +202,11 @@
                                             <a id="moveDownFeaturedProduct"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
-                                                data-userid="{{$userId}}" 
+                                                data-userid="{{$adminObject->id_admin_member}}" 
                                                 data-value="{{$products->slug}}" 
                                                 data-order="{{$indexForEach}}" 
                                                 data-count="{{$featuredProductCount}}" 
-                                                data-password="{{$adminPassword}}"
+                                                data-password="{{$adminObject->password}}"
                                                 data-url = "{{ $contentCmsLink }}/setfeedFeaturedProduct"
                                             >
                                                 <span class="glyphicon glyphicon-chevron-right pull-right" style='font-size:16px;'></span>
@@ -215,11 +215,11 @@
                                             <a id="moveUpFeaturedProduct"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
-                                                data-userid="{{$userId}}" 
+                                                data-userid="{{$adminObject->id_admin_member}}" 
                                                 data-value="{{$products->slug}}" 
                                                 data-order="{{$indexForEach}}" 
                                                 data-count="{{$featuredProductCount}}" 
-                                                data-password="{{$adminPassword}}"
+                                                data-password="{{$adminObject->password}}"
                                                 data-url = "{{ $contentCmsLink }}/setfeedFeaturedProduct"
                                             >
                                                 <span class="glyphicon glyphicon-chevron-left pull-left" style='font-size:16px;'></span>
@@ -234,8 +234,8 @@
                                                     id="productslide" 
                                                     data-index="{{$indexForEach}}"  
                                                     data-nodename="//feedFeaturedProduct" 
-                                                    data-userid="{{$userId}}"                                                
-                                                    data-password="{{$adminPassword}}"
+                                                    data-userid="{{$adminObject->id_admin_member}}"                                                
+                                                    data-password="{{$adminObject->password}}"
                                                     data-url = "{{ $contentCmsLink }}/removeContent"
                                                  >
                                                     <span class="glyphicon glyphicon-remove" style='font-size:16px;'></span>
@@ -259,8 +259,8 @@
                                                                 <label for="userId" class="col-sm-2 control-label">Product Slug</label>
                                                                 <div class="col-sm-10">
                                                                     {{ Form::text('featuredProduct', "$products->slug" ,array('id' => 'featuredProduct','class' => 'form-control')) }}
-                                                                    {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}
-                                                                    {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}
+                                                                    {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}
+                                                                    {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }}
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -305,8 +305,8 @@
                                         <label for="userId" class="col-sm-2 control-label">Product Slug</label>
                                         <div class="col-sm-10">
                                             {{ Form::text('popularItem', "" ,array('id' => 'popularItem','class' => 'form-control')) }}
-                                            {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}
-                                            {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}
+                                            {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}
+                                            {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }}
                                             {{ Form::hidden('hash', "", array('id' => 'hash')) }}
                                         </div>
                                     </div>
@@ -340,11 +340,11 @@
                                             <a id="moveDownPopularItems"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
-                                                data-userid="{{$userId}}" 
+                                                data-userid="{{$adminObject->id_admin_member}}" 
                                                 data-value="{{$products->slug}}" 
                                                 data-order="{{$indexForEach}}" 
                                                 data-count="{{$popularItemsCount}}" 
-                                                data-password="{{$adminPassword}}"
+                                                data-password="{{$adminObject->password}}"
                                                 data-url = "{{ $contentCmsLink }}/setfeedPopularItems"
                                             >
                                                 <span class="glyphicon glyphicon-chevron-right pull-right" style='font-size:16px;'></span>
@@ -353,11 +353,11 @@
                                             <a id="moveUpPopularItems"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
-                                                data-userid="{{$userId}}" 
+                                                data-userid="{{$adminObject->id_admin_member}}" 
                                                 data-value="{{$products->slug}}" 
                                                 data-order="{{$indexForEach}}" 
                                                 data-count="{{$popularItemsCount}}" 
-                                                data-password="{{$adminPassword}}"
+                                                data-password="{{$adminObject->password}}"
                                                 data-url = "{{ $contentCmsLink }}/setfeedPopularItems"
                                             >
                                                 <span class="glyphicon glyphicon-chevron-left pull-left" style='font-size:16px;'></span>
@@ -372,8 +372,8 @@
                                                     id="productslide" 
                                                     data-index="{{$indexForEach}}"  
                                                     data-nodename="//feedPopularItems" 
-                                                    data-userid="{{$userId}}"                                                
-                                                    data-password="{{$adminPassword}}"
+                                                    data-userid="{{$adminObject->id_admin_member}}"                                                
+                                                    data-password="{{$adminObject->password}}"
                                                     data-url = "{{ $contentCmsLink }}/removeContent"
                                                  >
                                                     <span class="glyphicon glyphicon-remove" style='font-size:16px;'></span>
@@ -397,8 +397,8 @@
                                                                 <label for="userId" class="col-sm-2 control-label">Product Slug</label>
                                                                 <div class="col-sm-10">
                                                                     {{ Form::text('popularItem', "$products->slug" ,array('id' => 'popularItem','class' => 'form-control')) }}
-                                                                    {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}
-                                                                    {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}
+                                                                    {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}
+                                                                    {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }}
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -443,8 +443,8 @@
                                         <label for="userId" class="col-sm-2 control-label">Product Slug</label>
                                         <div class="col-sm-10">
                                             {{ Form::text('promoItem', "" ,array('id' => 'promoItem','class' => 'form-control')) }}
-                                            {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}
-                                            {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}
+                                            {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}
+                                            {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }}
                                             {{ Form::hidden('hash', "", array('id' => 'hash')) }}
                                         </div>
                                     </div>
@@ -478,11 +478,11 @@
                                             <a id="moveDownPromoItems"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
-                                                data-userid="{{$userId}}" 
+                                                data-userid="{{$adminObject->id_admin_member}}" 
                                                 data-value="{{$products->slug}}" 
                                                 data-order="{{$indexForEach}}" 
                                                 data-count="{{$promoItemsCount}}" 
-                                                data-password="{{$adminPassword}}"
+                                                data-password="{{$adminObject->password}}"
                                                 data-url = "{{ $contentCmsLink }}/setfeedPromoItems"
                                             >
                                                 <span class="glyphicon glyphicon-chevron-right pull-right" style='font-size:16px;'></span>
@@ -491,11 +491,11 @@
                                             <a id="moveUpPromoItems"
                                                 data-action="up" 
                                                 data-index="{{$indexForEach}}" 
-                                                data-userid="{{$userId}}" 
+                                                data-userid="{{$adminObject->id_admin_member}}" 
                                                 data-value="{{$products->slug}}" 
                                                 data-order="{{$indexForEach}}" 
                                                 data-count="{{$promoItemsCount}}" 
-                                                data-password="{{$adminPassword}}"
+                                                data-password="{{$adminObject->password}}"
                                                 data-url = "{{ $contentCmsLink }}/setfeedPromoItems"
                                             >
                                                 <span class="glyphicon glyphicon-chevron-left pull-left" style='font-size:16px;'></span>
@@ -510,8 +510,8 @@
                                                     id="productslide" 
                                                     data-index="{{$indexForEach}}"  
                                                     data-nodename="//feedPromoItems" 
-                                                    data-userid="{{$userId}}"                                                
-                                                    data-password="{{$adminPassword}}"
+                                                    data-userid="{{$adminObject->id_admin_member}}"                                                
+                                                    data-password="{{$adminObject->password}}"
                                                     data-url = "{{ $contentCmsLink }}/removeContent"
                                                  >
                                                     <span class="glyphicon glyphicon-remove" style='font-size:16px;'></span>
@@ -535,8 +535,8 @@
                                                                 <label for="userId" class="col-sm-2 control-label">Product Slug</label>
                                                                 <div class="col-sm-10">
                                                                     {{ Form::text('promoItem', "$products->slug" ,array('id' => 'promoItem','class' => 'form-control')) }}
-                                                                    {{ Form::hidden('password', "$adminPassword", array('id' => 'adminPassword')) }}
-                                                                    {{ Form::hidden('userId', "$userId", array('id' => 'userId')) }}
+                                                                    {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}
+                                                                    {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }}
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">

@@ -85,7 +85,7 @@
         var $comment = $("#shipping-comment").val();
         var $delivery = $("#delivery-date").val();
         var $expected = $("#expected-date").val();
-        var $url = "/shippingdetails/add";
+        var $url = "/contact/shippingdetails/add";
         var $request = $.ajax({
                             type: "get",
                             url: $url,

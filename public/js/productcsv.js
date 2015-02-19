@@ -8,7 +8,11 @@
     $('#success').bind('hidden.bs.modal', function () {
 
             window.location.href = location.href;  
-    })  
+    });
+
+    var userid = $(".userid").html();
+    var password = $(".password").html();
+    var hash = hex_sha1(userid + password);
 
 
     $("button:nth-child(2)").attr('id', 'uploadPhotosSubmit');      
@@ -36,6 +40,7 @@
             }
         }
         if(proceed == 1) {
+            $("#uploadphoto").find("#hash").val(hash);            
             loader.showPleaseWait();
             submitPhotos();
         }
@@ -44,14 +49,16 @@
 
     $("#profile").on("click","#removeAdminImage", function() {
         loader.showPleaseWait();
+
         var imageId = $(this).data("imageid");
         var imageName = $(this).data("imagename");
+        var hash = hex_sha1(imageId + imageName + userid + password);
             $.ajax(
             {
                 url : urlLink + "/deleteImage",
                 type: 'GET', 
                 dataType: 'jsonp',
-                data: { "imageId": imageId, "imageName":imageName},
+                data: { "imageId" : imageId, "imageName" : imageName, "userid" : userid, "hash" : hash},
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 success:function(data, textStatus, jqXHR) 
@@ -73,6 +80,7 @@
         type: 'post', 
         dataType: 'json', 
         beforeSubmit: function(event) {
+            loader.showPleaseWait();
             var files = $('#uploadCSV').prop("files");
             if(files.length < 1) {
                 loader.hidePleaseWait();
@@ -112,10 +120,7 @@
         }
     }); 
     
-
-
     $(document.body).delegate('#uploadData', 'submit', function(event) {
-        loader.showPleaseWait();   
         event.preventDefault();
 
     });
@@ -128,7 +133,7 @@
                 async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
-                dataType: 'jsonp',
+                dataType: 'jsonp',              
                 success: function(json) {
                     loader.hidePleaseWait();             
                     $("#success").modal("show");   
@@ -143,7 +148,9 @@
 
     function submitToWebService(){
 
-       $("#sendToWebservice").submit(function(event)
+        $("#sendToWebservice").append('<input type="hidden" name="userid" id="userid" value="' + userid +'"/>');                
+        $("#sendToWebservice").append('<input type="hidden" name="hash" id="hash" value="' + hash +'"/>');                
+        $("#sendToWebservice").submit(function(event)
         {
             event.preventDefault();
             var postData = $(this).serializeArray();

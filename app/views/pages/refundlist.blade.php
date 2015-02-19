@@ -17,7 +17,7 @@
         <br/>
         <div class="payment_search_filter_container">
 
-            {{ Form::open(array('url' => 'refund', 'method' => 'get')) }}
+            {{ Form::open(array('url' => 'transaction/refund', 'method' => 'get')) }}
 
                     {{ Form::text('username', $username, array('id' => 'username', 'placeholder' => 'Storename/Username')) }}
                     

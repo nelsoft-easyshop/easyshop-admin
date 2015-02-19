@@ -51,7 +51,7 @@
             </li>
             
             <li>
-                <a href='/pay'>
+                <a href='/transaction/pay'>
                     <img src="{{{ asset('images/img_icon_business.png') }}}"/> 
                     <span >Seller Pay-out</span>
                 </a>
@@ -60,7 +60,7 @@
             </li>
             
             <li>
-                <a href='/refund'>
+                <a href='/transaction/refund'>
                     <img src="{{{ asset('images/img_icon_business.png') }}}"/> 
                     <span >Buyer Refund</span>
                 </a>
@@ -98,7 +98,7 @@
             <div class="section-title"> CONTENT MANAGEMENT</div>
             
             <li>
-                <a href='/home'>
+                <a href='/cms/home'>
                     <img src="{{{ asset('images/icon_category.png') }}}"/> 
                     <span >Manage Home Page</span>
                 </a>
@@ -117,7 +117,7 @@
             
             </li>  
             <li>
-                <a href='/mobile'>
+                <a href='/cms/mobile'>
                     <img src="{{{ asset('images/icon_category.png') }}}"/> 
                     <span >Mobile Page Manager</span>
                 </a>

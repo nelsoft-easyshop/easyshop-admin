@@ -1,6 +1,7 @@
 <?php
 
 use Easyshop\Services\XMLContentGetterService as XMLService;
+use Easyshop\ModelRepositories\ProductRepository as ProductRepository;
 
 class NewHomeContentManagerController extends BaseController 
 {
@@ -8,11 +9,14 @@ class NewHomeContentManagerController extends BaseController
      *  Constructor declaration for XMLService  
      */
     protected $XMLService;
+    protected $productRepository;
 
-    public function __construct(XMLService $XMLService) 
+    public function __construct(XMLService $XMLService,
+                                ProductRepository $productRepository) 
     {   
         exit('This page is currently unavailable. <a href="/"> Click here to return to the dashboard </a>');
         $this->XMLService = $XMLService;    
+        $this->productRepository = $productRepository;    
     }      
       
     /**
@@ -54,7 +58,7 @@ class NewHomeContentManagerController extends BaseController
         foreach ($categoryRepository->getChildCategories() as $value) {
             $childCategoryLists[] = [
                 "slug" => $value->slug, 
-                "name" => $value->name
+                "name" => $value->name." (" .$value->description.")"
             ];
         }               
 
@@ -84,19 +88,21 @@ class NewHomeContentManagerController extends BaseController
         $categorySection = [];
         foreach($this->map->categorySection as $categoryPanel)
         {
-            foreach($categoryPanel->productPanel as $productPanel)
+            foreach($categoryPanel->sub as $productPanel)
             {
-                $productObj = $productEntity->getProductBySlug($productPanel->slug);
-                if(count($productObj) > 0) {
-                    $categoryProductPanel[] = $productObj;
+                foreach ($productPanel->productSlugs as $slug) {
+                    $productObj = $productEntity->getProductBySlug($slug);
+                    if(count($productObj) > 0) {
+                        $categoryProductPanel[] = $productObj;
+                    }                    
                 }
+                $categoryProductPanelList[] = array_flatten([
+                    $index => $categoryProductPanel 
+                ]);
+                $index++;                
+                $categoryProductPanel = [];
             }
-            $categorySection[] = $categoryPanel;   
-            $categoryProductPanelList[] = array_flatten([
-                $index => $categoryProductPanel 
-            ]);
-            $index++;
-            $categoryProductPanel = [];
+            $categorySection[] = $categoryPanel;
         }
 
         $newArrivals = [];
@@ -208,39 +214,40 @@ class NewHomeContentManagerController extends BaseController
     /**
      *  Reloades categoriesPanel
      */ 
-    public function getCategoriesProductPanel($index)
+    public function getCategoriesProductPanel($index, $subIndex, $subPanelIndex)
     {
         $index = (int) $index;
-        $productEntity = App::make('ProductRepository');
-        $categoryIndex = 0;
-        $categoryProductPanel = [];        
-        $categoryProductPanelList = [];   
-        $categorySection = [];
-
+        $subIndex = (int) $subIndex;
         $xmlString = $this->XMLService->getNewHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
-
+        $categoryIndex = 0;
+        $categoryProductPanel = [];
+        $categoryProductPanelList = [];
+        $categorySection = [];
         foreach($this->map->categorySection as $categoryPanel)
         {
-
-            foreach($categoryPanel->productPanel as $productPanel)
+            foreach($categoryPanel->sub as $productPanel)
             {
-                $productObj = $productEntity->getProductBySlug($productPanel->slug);   
-                if(count($productObj) > 0) {
-                    $categoryProductPanel[] = $productObj;
-                }                      
+                foreach ($productPanel->productSlugs as $slug) {
+                    $productObj = $this->productRepository->getProductBySlug($slug);
+                    if(count($productObj) > 0) {
+                        $categoryProductPanel[] = $productObj;
+                    }                    
+                }
+                $categoryProductPanelList[] = array_flatten([
+                    $categoryIndex => $categoryProductPanel 
+                ]);
+                $categoryIndex++;
+                $categoryProductPanel = [];                
             }
-            $categorySection[] = $categoryPanel;   
-            $categoryProductPanelList[] = array_flatten([
-                $categoryIndex => $categoryProductPanel 
-            ]);
-            $categoryIndex++;
-            $categoryProductPanel = [];
+            $categorySection[] = $categoryPanel;
         }
 
         return View::make('partials.categorysectionproductpanel')        
                     ->with('categoryPanel', $categorySection)
                     ->with('categorySectionIndex', $index)
+                    ->with('subIndex', $subPanelIndex)
+                    ->with('subCategorySection', $subIndex)
                     ->with('categoryProductPanelList', $categoryProductPanelList)                    
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                      
@@ -267,29 +274,6 @@ class NewHomeContentManagerController extends BaseController
                     ->with('subCategoryNavigation', $subCategoryNavigation[0])
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                    
-             
-    }
-
-    /**
-     *  Reloads sub categories
-     */ 
-    public function getSubCategoriesSection($index)
-    {
-        $index = (int) $index;
-        $categorySection = [];    
-
-        $xmlString = $this->XMLService->getNewHomeXml();
-        $this->map = simplexml_load_string(trim($xmlString));
-
-        foreach($this->map->categorySection[$index]->sub as $subCategories)
-        {
-            $categorySection[] = $subCategories;   
-        }
-        return View::make('partials.subcategoriessection')        
-                    ->with('categoryPanel', $categorySection)
-                    ->with('categorySectionIndex', $index)
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
-                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                      
              
     }
 
@@ -398,7 +382,7 @@ class NewHomeContentManagerController extends BaseController
         foreach ($categoryRepository->getChildCategories() as $value) {
             $childCategoryLists[] = [
                 "slug" => $value->slug, 
-                "name" => $value->name
+                "name" => $value->name." (" .$value->description.")"
             ];
         }           
 
@@ -521,23 +505,28 @@ class NewHomeContentManagerController extends BaseController
         $categoryProductPanelList = [];        
         $categorySection = [];
         $index = 0;
+
         foreach($this->map->categorySection as $categoryPanel)
         {
-
-            foreach($categoryPanel->productPanel as $productPanel)
+            foreach($categoryPanel->sub as $productPanel)
             {
-                $productObj = $productEntity->getProductBySlug($productPanel->slug);   
-                if(count($productObj) > 0) {
-                    $categoryProductPanel[] = $productObj;
-                }                 
-            }
-            $categorySection[] = $categoryPanel;   
-            $categoryProductPanelList[] = array_flatten([
-                    $index => $categoryProductPanel
+                foreach ($productPanel->productSlugs as $slug) {
+                    $productObj = $this->productRepository->getProductBySlug($slug);
+                    if(count($productObj) > 0) {
+                        $categoryProductPanel[] = $productObj;
+                    }                    
+                }
+                $categoryProductPanelList[] = array_flatten([
+                    $index => $categoryProductPanel 
                 ]);
-            $index++;
-            $categoryProductPanel = [];
-        }  
+                $index++;
+                $categoryProductPanel = [];                
+            }
+            $categorySection[] = $categoryPanel;
+        }
+
+
+
         foreach ($categoryRepository->getParentCategories() as $value) {
             $categoryLists[] = [
                 "slug" => $value->slug, 
