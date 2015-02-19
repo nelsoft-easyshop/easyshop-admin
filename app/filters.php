@@ -31,8 +31,7 @@ App::before(function($request)
             $AdminMemberService = App::make("AdminMemberManagerService");
             $isAuthorized = $AdminMemberService->getPrivilege(Request::segment(1));
                 if($isAuthorized === FALSE) {
-                        // Comment out the code below to activate the page access feature
-                        //return Redirect::to("prohibited");
+                        return Redirect::to("prohibited");
                 }                
         }          
     }
