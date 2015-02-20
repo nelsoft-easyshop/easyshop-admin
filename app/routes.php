@@ -40,6 +40,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('cms/getOtherCategories', array('uses' => 'NewHomeContentManagerController@getOtherCategories'));
     Route::get('cms/getCategoriesProductPanel/{index}/{subindex}/{subpanelindex}', array('uses' => 'NewHomeContentManagerController@getCategoriesProductPanel'));
     Route::post('cms/getSliderPreview', array('uses' => 'NewHomeContentManagerController@getSliderPreview'));
+    Route::get('cms/getSellerSection', array('uses' => 'NewHomeContentManagerController@getSellerSection'));
 
     Route::get('cms/slides', array('uses' => 'HomeContentManagerController@getMainSlides'));
     Route::get('cms/productslides', array('uses' => 'HomeContentManagerController@getProductSlides'));
