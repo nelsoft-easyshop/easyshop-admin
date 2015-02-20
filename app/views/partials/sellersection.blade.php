@@ -72,7 +72,6 @@
                                 </div>
                             </div>                                                                                 
                             {{ Form::hidden('action', "logo", array('id' => 'action','class' => 'form-control')) }}                        
-                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                             {{ Form::hidden('hash', "", array('id' => "hashChangeSellerLogo",'class' => 'form-control')) }}                        
                                                                                                    
                             <div class="form-group">

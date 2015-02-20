@@ -108,7 +108,6 @@
                                                     {{ Form::text('target', "/", array('id' => 'target','class' => 'form-control')) }}                        
                                                 </div>
                                             </div>                                                                               
-                                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                                             {{ Form::hidden('hash', "", array('id' => "hashMainSlide",'class' => 'form-control')) }}                        
 
 
@@ -189,7 +188,6 @@
                                                                                         {{ Form::text('target', $subSlides->target, array('id' => 'target','class' => 'form-control')) }}                        
                                                                                     </div>
                                                                                 </div>                                                                               
-                                                                                {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                                                                                 {{ Form::hidden('hash', "", array('id' => "editHashMainSlide",'class' => 'form-control')) }}                        
                                                                             </div>
                                                                         </form>
