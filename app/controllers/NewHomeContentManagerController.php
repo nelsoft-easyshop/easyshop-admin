@@ -2,6 +2,9 @@
 
 use Easyshop\Services\XMLContentGetterService as XMLService;
 use Easyshop\ModelRepositories\ProductRepository as ProductRepository;
+use Easyshop\ModelRepositories\AdminMemberRepository as AdminMemberRepository;
+use Easyshop\ModelRepositories\CategoryRepository as CategoryRepository;
+use Easyshop\ModelRepositories\BrandRepository as BrandRepository;
 
 class NewHomeContentManagerController extends BaseController 
 {
@@ -9,22 +12,46 @@ class NewHomeContentManagerController extends BaseController
      *  Constructor declaration for XMLService  
      */
     protected $XMLService;
-    protected $productRepository;
 
+    /**
+     *  The Product Repository
+     */    
+    protected $productRepository;
 
     /**
      *  Assets link return by the easyshop application
      */
     protected $assetLink;    
 
-    public function __construct(XMLService $XMLService) 
+    /**
+     *  The Administratory Repository
+     */      
+    protected $adminMemberRepository;
+
+    /**
+     *  The Category Repository
+     */      
+    protected $categoryRepository;
+
+    /**
+     *  The Category Repository
+     */      
+    protected $brandRepository;    
+
+    public function __construct(XMLService $XMLService,
+                                ProductRepository $productRepository,
+                                AdminMemberRepository $adminMemberRepository, 
+                                CategoryRepository $categoryRepository,
+                                BrandRepository $brandRepository) 
     {   
         $this->XMLService = $XMLService;
         $this->assetLink = trim($this->XMLService->getAssetsLink()) === "/" ? $this->XMLService->GetEasyShopLink() : 
                            rtrim($this->XMLService->getAssetsLink(),"/");
         $this->XMLService = $XMLService;    
         $this->productRepository = $productRepository;    
-
+        $this->adminMemberRepository = $adminMemberRepository;    
+        $this->categoryRepository = $categoryRepository;    
+        $this->brandRepository = $brandRepository;    
     }      
       
     /**
@@ -32,9 +59,7 @@ class NewHomeContentManagerController extends BaseController
      */      
     public function getHomeContent()
     {
-
-        $adminRepo = App::make('AdminMemberRepository');   
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id()); 
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id()); 
 
         $this->XMLService->syncXMLFiles(Auth::id(), $adminObject->password);
 
@@ -54,10 +79,9 @@ class NewHomeContentManagerController extends BaseController
             $categoryNavigation[] = $map;
         }         
 
-        $categoryRepository = App::make('CategoryRepository');          
 
         $categoryLists = [];
-        foreach ($categoryRepository->getParentCategories() as $value) {
+        foreach ($this->categoryRepository->getParentCategories() as $value) {
             $categoryLists[] = [
                 "slug" => $value->slug, 
                 "name" => $value->name
@@ -65,7 +89,7 @@ class NewHomeContentManagerController extends BaseController
         }
 
         $childCategoryLists = [];
-        foreach ($categoryRepository->getChildCategories() as $value) {
+        foreach ($this->categoryRepository->getChildCategories() as $value) {
             $childCategoryLists[] = [
                 "slug" => $value->slug, 
                 "name" => $value->name." (" .$value->description.")"
@@ -83,10 +107,9 @@ class NewHomeContentManagerController extends BaseController
         }     
         
         $product = [];
-        $productEntity = App::make('ProductRepository');
         foreach($this->map->sellerSection->productPanel as $productPanel)
         {
-            $productObj = $productEntity->getProductBySlug($productPanel->slug);   
+            $productObj = $this->productRepository->getProductBySlug($productPanel->slug);   
             if(count($productObj) > 0) {
                 $product[] = $productObj;
             }            
@@ -101,7 +124,7 @@ class NewHomeContentManagerController extends BaseController
             foreach($categoryPanel->sub as $productPanel)
             {
                 foreach ($productPanel->productSlugs as $slug) {
-                    $productObj = $productEntity->getProductBySlug($slug);
+                    $productObj = $this->productRepository->getProductBySlug($slug);
                     if(count($productObj) > 0) {
                         $categoryProductPanel[] = $productObj;
                     }                    
@@ -132,20 +155,20 @@ class NewHomeContentManagerController extends BaseController
         {
             $topSellers[] = $tSellers;
         }           
-        $brandRepository = App::make("BrandRepository");
 
         $brandsLists = [];
         foreach($this->map->brandSection->brandId as $brands) 
         {
-            $brandsLists[] = $brandRepository->getBrandById($brands);                  
+            $brandsLists[] = $this->brandRepository->getBrandById($brands);                  
 
         } 
         $easyShopLink =  $this->XMLService->GetEasyShopLink();
         return View::make('pages.cms-newhome')
                     ->with('userid', Auth::id())
-                    ->with('allBrandsLists', $brandRepository->getAllBrands())
+                    ->with('allBrandsLists', $this->brandRepository->getAllBrands())
                     ->with('brandsLists', $brandsLists)
                     ->with('otherCategories', $otherCategories)
+                    ->with('sellerSection', $this->map->sellerSection)
                     ->with('categorySection', $categorySection)
                     ->with('categoryLists', $categoryLists)
                     ->with('categoryProductPanelList', $categoryProductPanelList)
@@ -165,6 +188,23 @@ class NewHomeContentManagerController extends BaseController
     }
 
     /**
+     * Retrieves Seller Section
+     * @return VIEW
+     */
+    public function getSellerSection()
+    {
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id());         
+        $xmlString = $this->XMLService->getNewHomeXml();        
+        $this->map = simplexml_load_string(trim($xmlString));
+        return View::make('partials.sellersection')
+                    ->with('sellerSection', $this->map->sellerSection)
+                    ->with('userid', $adminObject->id_admin_member)
+                    ->with('password', $adminObject->password)                    
+                    ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
+                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink());
+    }
+
+    /**
      *  Reloads contents brands nodes
      */     
     public function getBrandsSection()
@@ -178,19 +218,17 @@ class NewHomeContentManagerController extends BaseController
         {
             $topSellers[] = $tSellers;
         }           
-        $brandRepository = App::make("BrandRepository");
 
         $brandsLists = [];
         foreach($this->map->brandSection->brandId as $brands) 
         {
-            $brandsLists[] = $brandRepository->getBrandById($brands);                  
+            $brandsLists[] = $this->brandRepository->getBrandById($brands);                  
 
         }  
-        $adminRepo = App::make('AdminMemberRepository');            
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id());       
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id());       
 
         return View::make('partials.brandsection')        
-                    ->with('allBrandsLists', $brandRepository->getAllBrands())
+                    ->with('allBrandsLists', $this->brandRepository->getAllBrands())
                     ->with('brandsLists', $brandsLists)
                     ->with('userid', Auth::id())  
                     ->with('password', $adminObject->password)          
@@ -205,8 +243,7 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAdSection()
     {
-        $adminRepo = App::make('AdminMemberRepository');  
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id());  
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id());  
         $xmlString = $this->XMLService->getNewHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
@@ -295,9 +332,7 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getProductPanel()
     {
-        $adminRepo = App::make('AdminMemberRepository');
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id());                    
-        $productEntity = App::make('ProductRepository');
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id());                    
         $product = [];  
 
         $xmlString = $this->XMLService->getNewHomeXml();
@@ -305,7 +340,7 @@ class NewHomeContentManagerController extends BaseController
 
         foreach($this->map->sellerSection->productPanel as $productPanel)
         {
-            $productObj = $productEntity->getProductBySlug($productPanel->slug);   
+            $productObj = $this->productRepository->getProductBySlug($productPanel->slug);   
             if(count($productObj) > 0) {
                 $product[] = $productObj;
             }      
@@ -327,8 +362,7 @@ class NewHomeContentManagerController extends BaseController
     public function getSlideSection($index)
     {
         $index = (int)$index;
-        $adminRepo = App::make('AdminMemberRepository');
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id());          
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id());          
         $sliderXmlString = $this->XMLService->getTempHomeXml();
         $this->map = simplexml_load_string(trim($sliderXmlString));
 
@@ -356,8 +390,7 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAllSliders()
     {
-        $adminRepo = App::make('AdminMemberRepository'); 
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id());  
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id());  
         $sliderXmlString = $this->XMLService->getTempHomeXml();
         $this->map = simplexml_load_string(trim($sliderXmlString));  
 
@@ -383,9 +416,7 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getOtherCategories()
     {
-        $adminRepo = App::make('AdminMemberRepository');
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id());         
-        $categoryRepository = App::make('CategoryRepository');  
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id());         
         $otherCategories = [];       
 
         $xmlString = $this->XMLService->getNewHomeXml();
@@ -395,7 +426,7 @@ class NewHomeContentManagerController extends BaseController
             $otherCategories[] = $map;            
         }   
         $childCategoryLists = [];
-        foreach ($categoryRepository->getChildCategories() as $value) {
+        foreach ($this->categoryRepository->getChildCategories() as $value) {
             $childCategoryLists[] = [
                 "slug" => $value->slug, 
                 "name" => $value->name." (" .$value->description.")"
@@ -416,8 +447,7 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getTopSellers()
     {
-        $adminRepo = App::make('AdminMemberRepository');          
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id());  
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id());  
         $xmlString = $this->XMLService->getNewHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
@@ -440,8 +470,7 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getTopProducts()
     {
-        $adminRepo = App::make('AdminMemberRepository');
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id());          
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id());          
         $topProducts = [];   
 
         $xmlString = $this->XMLService->getNewHomeXml();
@@ -465,8 +494,7 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getNewArrivals()
     {
-        $adminRepo = App::make('AdminMemberRepository'); 
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id());           
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id());           
         $newArrivals = [];           
 
         $xmlString = $this->XMLService->getNewHomeXml();
@@ -490,8 +518,7 @@ class NewHomeContentManagerController extends BaseController
      */
     public function getSliderPreview()
     {
-        $adminRepo = App::make('AdminMemberRepository');
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id());                        
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id());                        
         $html =  View::make("partials.sliderpreview")
                     ->with("newHomeCmsLink",$this->XMLService->getNewHomeCmsLink())
                     ->with('userid', Auth::id())
@@ -508,11 +535,7 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAllCategories()
     {
-        $adminRepo = App::make('AdminMemberRepository');    
-        $adminObject = $adminRepo->getAdminMemberById(Auth::id());    
-
-        $categoryRepository = App::make('CategoryRepository');          
-        $productEntity = App::make('ProductRepository');
+        $adminObject = $this->adminMemberRepository->getAdminMemberById(Auth::id());    
 
         $xmlString = $this->XMLService->getNewHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
@@ -543,7 +566,7 @@ class NewHomeContentManagerController extends BaseController
 
 
 
-        foreach ($categoryRepository->getParentCategories() as $value) {
+        foreach ($this->categoryRepository->getParentCategories() as $value) {
             $categoryLists[] = [
                 "slug" => $value->slug, 
                 "name" => $value->name

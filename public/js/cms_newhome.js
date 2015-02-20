@@ -572,7 +572,7 @@
                         loader.hidePleaseWait();
                         if(json.sites[0]["usererror"]){
                             showErrorModal(json.sites[0]["usererror"]);
-                        }   
+                        }
                     },
                     error: function(e) {
                         loader.hidePleaseWait();
@@ -1971,13 +1971,17 @@
             success: function(json) {
                 loader.hidePleaseWait();  
                 $(form).find("#sellerFile").val("");
+                $("#setSellerHeadSection").load("getSellerSection");
+
             },
             error: function(e) {
                 loader.hidePleaseWait();   
-                $(form).find("#sellerFile").val("");                
+                $(form).find("#sellerFile").val("");
+                $("#setSellerHeadSection").load("getSellerSection");                
             }
         }); 
-        $(form).submit();        
+        $(form).submit();
+
     }
 
     function setPositionAdsSection(url,data)
