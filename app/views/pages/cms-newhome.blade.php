@@ -571,41 +571,8 @@
                                                     <div class="col-xs-offset-2 col-xs-10">
                                                         <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/addSubCategorySection" id="addSubCategorySection">Add Sub Category</a>
                                                     </div>
-
-                                                </div>
-                                            </form>
-                                            <div class="col-lg-15" style='text-align:center;' id="categorySectionProductPanel_{{$categorySectionIndex}}">
-
-                                                <span style="display:none;">{{$subCategorySectionIndex = 0}}</span>                                                
-                                                <span style="display:none;">{{$categoryProductPanelCount = 1}}</span>                                                
-                                                @foreach($categoryProductPanelList[$categorySectionIndex] as $categorySectionProducts)
-                                                    <div style="position:relative;display:inline-block;">
-                                                        <div class='well' style="height:auto;">
-                                                            <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                                <img src="{{$assetLink}}{{ltrim($categorySectionProducts->product_image_path, '.')}}"class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
-                                                            </div>
-                                                            <a href="#categoryProductPanel_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
-                                                            <a class="btn btn-default" 
-                                                                id="removeCategoryProductPanel" 
-                                                                data-index="{{$categorySectionIndex}}" 
-                                                                data-subindex="{{$subCategorySectionIndex}}" 
-                                                                data-nodename="categoryProductPanel" 
-                                                                style="position:absolute;top:2px;left:5px;"
-                                                                data-url = "{{{$newHomeCmsLink}}}/removeContent"
-                                                             ><font color='red'><b>X</b></font></a>
-
-                                                            <a 
-                                                                id="moveupCategoryProductPanel" 
-                                                                data-action="up" 
-                                                                data-index="{{$categorySectionIndex}}" 
-                                                                data-order="{{$subCategorySectionIndex}}" 
-                                                                data-subindex="{{$subCategorySectionIndex}}" 
-                                                                style="position:absolute;top:235px;left:5px;"
-                                                                data-url = "{{{$newHomeCmsLink}}}/setPositionCategoryProductPanel"
-                                                             ><span class="glyphicon glyphicon-chevron-left pull-left" style="font-size:16px;"></span></a>
-
                                                 </div>                                      
-
+                                            </form> 
 
                                             <!-- here -->
 
