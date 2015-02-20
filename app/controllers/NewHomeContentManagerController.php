@@ -192,9 +192,6 @@ class NewHomeContentManagerController extends BaseController
                     ->with('password', $adminObject->password)                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink());
-
-
-
     }
 
     /**
