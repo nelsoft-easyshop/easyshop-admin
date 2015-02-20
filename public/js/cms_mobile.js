@@ -29,10 +29,9 @@
         var bgcolor = form.find('.bgcolor').val();
         var type = form.find("#themeName option:selected").val();
         var userid = $("#userid").val();
-        var password = $("#password").val();
         var url = $(this).data('url');
         var hash =  hex_sha1(index + name + bgcolor + type  + userid + password);
-        data = { index: index, name:name, bgcolor:bgcolor, type:type, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, name:name, bgcolor:bgcolor, type:type, userid:userid, hash:hash, callback:'?'};
         
         if(name == "" || bgcolor == "" || type == "") {
              showErrorModal("Please fill up the required fields");    
@@ -53,8 +52,7 @@
         var mainSlideTarget = $("#mainSlideTarget").val();
         var actionTypes = $("#dropActionTypes option:selected").val();
         var useridMainSlide = userid;
-        var passwordMainSlide = password;
-        var hash = hex_sha1(myvalue + value  + mainSlideTarget + actionTypes + useridMainSlide + passwordMainSlide);
+        var hash = hex_sha1(myvalue + value  + mainSlideTarget + actionTypes + useridMainSlide + password);
         $("#hashMainSlide").val(hash);
 
         var ext = myvalue.split('.').pop().toLowerCase();
@@ -77,7 +75,6 @@
 
         var index = $(this).data('index');
         var userid = $("#userid").val();
-        var password = $("#password").val();
         var value = $(this).data('value');
         var target = $(this).data('target');
         var count = $(this).data('count');
@@ -102,7 +99,6 @@
         var index = $(this).data('index');
         var nodename = $(this).data('nodename');
         var userid = $("#userid").val();
-        var password = $("#password").val();
         var url = $(this).data('url');
         nodename = nodename == "mainSlide" ? "mainSlide" : "productSlide";   
         index += 1;
@@ -138,7 +134,6 @@
         var value = $(this).data('value');
         var url = $(this).data('url');
         var target = $(this).data('target');
-        var password = $("#password").val();
         var order = index;
         var nodename = "mainSlide";
 
@@ -157,7 +152,6 @@
         var index = $(this).data('index');
         var userid = $("#userid").val();
         var value = $(this).closest("form").find("#photoFile").val();
-        var password = $("#password").val();
         var target = $(this).closest("form").find('#editMainSlideTarget').val();
         var actionType = $(this).closest("form").find('#dropActionTypes option:selected').val();
         var count = $(this).data('count');
@@ -167,7 +161,7 @@
         var hashMainSlide = "#hashEditMainSlide" + index;
         var hash =  hex_sha1(index + value  + target + actionType + userid + password);
         $(this).closest("form").find("#hashEditMainSlide").val(hash);
-        data = { index: index, value: value, target:target, actionType:actionType, password:password, hash:hash, callback:'?'};
+        data = { index: index, value: value, target:target, actionType:actionType, hash:hash, callback:'?'};
 
 
         var ext = value.split('.').pop().toLowerCase();
