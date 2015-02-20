@@ -33,18 +33,30 @@ class CategoryRepository
      */
     public function getProductCountPerParentCategory($parentIds)
     {   
+        $isNestedUsable = true;
+        if((int)$this->getNestedSetCategoryCount() === 0 ) {
+            $isNestedUsable = false;
+        }
         foreach ($parentIds as $parentId) {
-            if($parentId->name === "PARENT"){
+            if($parentId->name === "PARENT") {
                 continue;
             }
+
             $categoryname[] = $parentId->name;
-            $childCategoryIds = array_keys($this->getChildrenWithNestedSet($parentId->id_cat));
+            if($isNestedUsable) {
+                $childCategoryIds = [];
+                foreach ($this->getChildrenWithNestedSet($parentId->id_cat) as $value) {
+                    $childCategoryIds[] = $value->original_category_id;
+                }
+            }
+            else {
+                $childCategoryIds = $this->getChildrenWithGetFamilyTree($parentId->id_cat);
+            }
 
             $count = DB::table("es_product")
                         ->whereIn("cat_id",$childCategoryIds)->count();
             $productCountPerCategory[] = $count;
         }
-
         return [
             "parentNames" => $categoryname,
             "productCount" => $productCountPerCategory
@@ -69,6 +81,28 @@ class CategoryRepository
                                 t1.left > t2.left
                                     AND t1.right < t2.right"),
                             ["category_id" => $categoryId]);
+    }
+
+    /**
+     * Retrieves children categories using GetFamilyTree SQL function
+     * @param  int $categoryId
+     * @return Array
+     */
+    public function getChildrenWithGetFamilyTree($categoryId)
+    {
+        $childsList = DB::select(DB::raw("select `GetFamilyTree`(:prodid) as childs"),
+                                ["prodid" => $categoryId]);
+        return explode(",",$childsList[0]->childs);
+    }
+
+    /**
+     * Retrievs es_category_nested row count
+     * @return int
+     */
+    public function getNestedSetCategoryCount()
+    {
+        $result =  DB::select(DB::raw("SELECT COUNT(*) as count FROM es_category_nested_set WHERE 1"));
+        return $result[0]->count;
     }
 
 
