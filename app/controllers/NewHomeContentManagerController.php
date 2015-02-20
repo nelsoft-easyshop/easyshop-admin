@@ -14,7 +14,6 @@ class NewHomeContentManagerController extends BaseController
     public function __construct(XMLService $XMLService,
                                 ProductRepository $productRepository) 
     {   
-        exit('This page is currently unavailable. <a href="/"> Click here to return to the dashboard </a>');
         $this->XMLService = $XMLService;    
         $this->productRepository = $productRepository;    
     }      
