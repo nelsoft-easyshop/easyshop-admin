@@ -38,13 +38,39 @@ class CategoryRepository
                 continue;
             }
             $categoryname[] = $parentId->name;
-            $childsList = DB::select(DB::raw("select `GetFamilyTree`(:prodid) as childs"),array("prodid" => $parentId->id_cat));
+            $childCategoryIds = array_keys($this->getChildrenWithNestedSet($parentId->id_cat));
+
             $count = DB::table("es_product")
-                        ->whereIn("cat_id",explode(",",$childsList[0]->childs))->count();
+                        ->whereIn("cat_id",$childCategoryIds)->count();
             $productCountPerCategory[] = $count;
         }
-        return array("parentNames" => $categoryname, "productCount" => $productCountPerCategory);
+
+        return [
+            "parentNames" => $categoryname,
+            "productCount" => $productCountPerCategory
+        ];
     }
+
+    /**
+     * Retrieves children categories using es_category_nested tabke
+     * @param  int $categoryId
+     * @return Array
+     */
+    public function getChildrenWithNestedSet($categoryId = Category::ROOT_CATEGORY_ID)
+    {
+        return DB::select(DB::raw("
+                            SELECT 
+                                t1.original_category_id AS original_category_id
+                            FROM
+                                es_category_nested_set t1
+                                    LEFT JOIN
+                                es_category_nested_set t2 ON t2.original_category_id = :category_id
+                            WHERE
+                                t1.left > t2.left
+                                    AND t1.right < t2.right"),
+                            ["category_id" => $categoryId]);
+    }
+
 
     /**
      * Create category
