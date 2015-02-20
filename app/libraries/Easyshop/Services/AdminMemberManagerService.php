@@ -86,7 +86,7 @@ class AdminMemberManagerService
             $pages = array_merge($pages, $this->urlWhiteList['accountManagement']);
         }   
     
-        $pages = array_merge($pages, ["", "prohibited"]);
+        $pages = array_merge($pages, $this->urlWhiteList['all']);
         return $pages;              
     }
 
