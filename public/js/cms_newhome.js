@@ -27,7 +27,7 @@
         var subCategoryText = $(this).closest("form").find("#subCategoryText").val();
         var url = $(this).data('url');
         var hash =  hex_sha1(index + subCategoryText + userid + password);
-        data = { index: index, subCategoryText:subCategoryText, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, subCategoryText:subCategoryText, userid:userid, hash:hash, callback:'?'};
 
         if(subCategoryText.trim() === "") {
             showErrorModal("Please enter values to the required fields");
@@ -80,7 +80,7 @@
 
 
         var hash =  hex_sha1(index + subIndex + text + target + userid + password);
-        data = { index: index, subIndex:subIndex, text:text, target:target, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, subIndex:subIndex, text:text, target:target, userid:userid, hash:hash, callback:'?'};
 
         var tableSelector = "#subCategoriesSection_" + index;
         var reloadurl = "getSubCategoriesSection/" + index;
@@ -114,7 +114,7 @@
         var url = $(this).data("url");
 
         var hash =  hex_sha1(index + value + subindex + subPanelIndex + userid + password);
-        data = { index: index, value:value, subindex:subindex, subPanelIndex:subPanelIndex, userid:userid, password:password, hash:hash, callback:'?'};
+        data = { index: index, value:value, subindex:subindex, subPanelIndex:subPanelIndex, userid:userid, hash:hash, callback:'?'};
 
         var tableSelector = "#categorySectionProductPanel_" + index + "_" +subindex;
         var reloadurl = "getCategoriesProductPanel/" + index + "/" + subindex + "/" + newCategorySection;
@@ -191,7 +191,6 @@
             subpanelindex:subpanelindex, 
             order:order, 
             userid:userid, 
-            password:password, 
             hash:hash, 
             callback:'?'
         };
@@ -213,7 +212,6 @@
             subpanelindex:subpanelindex,
             nodename:nodename,
             userid:userid,
-            password:password, 
             hash:hash, 
             callback:'?'
         };  
@@ -273,7 +271,7 @@
         var reloadurl = "getSlideSection/" + index;        
         order = order.toString();
         var hash =  hex_sha1(index + subindex  + order + userid + password);        
-        data = { index: index, subIndex:subindex, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, subIndex:subindex, order:order, userid:userid, hash:hash, callback:'?'};
 
         loader.showPleaseWait();   
         setSliderPosition(url,data, tableSelector, reloadurl);
@@ -314,7 +312,7 @@
             loader.showPleaseWait();             
             order = order.toString();
             var hash =  hex_sha1(action + nodename + index  + order + userid + password);        
-            data = { action:action, nodename:nodename, index: index, order:order, userid:userid,  password:password, hash:hash, callback:'?'};
+            data = { action:action, nodename:nodename, index: index, order:order, userid:userid, hash:hash, callback:'?'};
             setPositionParentSlider(url,data, index, action);       
         }
 
@@ -334,7 +332,7 @@
                  value:value, 
                  subindex:subindex, 
                  subpanelindex:subpanelindex, 
-                 userid:userid, password:password, 
+                 userid:userid,
                  hash:hash, 
                  callback:'?'};
 
@@ -384,7 +382,7 @@
         var url = $(this).data("url");
 
         var hash =  hex_sha1(index + subIndex + nodename + userid + password);
-        data = { index: index, subIndex:subIndex, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, subIndex:subIndex, nodename:nodename, userid:userid, hash:hash, callback:'?'};
 
         var tableSelector = "#subCategoriesSection_" + index;
         var reloadurl = "getSubCategoriesSection/" + index;
@@ -428,7 +426,7 @@
         var url = $(this).data('url');
         var prev = $(this).data('prev');
         var hash =  hex_sha1(index + categoryName + userid + password);
-        data = { index: index, value:categoryName, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, value:categoryName, userid:userid, hash:hash, callback:'?'};
         var count = $('.mainNavigation_'+categoryName).length;
         if(count > 0) {
             loader.hidePleaseWait();
@@ -471,7 +469,6 @@
         var index = $(this).closest("form").find("#editAdsIndex").val().toString();
         var url = newHomeCmsLink + "/setAdsSection";
         var userid = $(this).closest("form").find("#userid").val().toString();
-        var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
         if(target.trim() === "") {
@@ -498,7 +495,6 @@
         var subIndex = $(this).closest("form").find("#editModalSliderSubIndex").val().toString();
         var url = newHomeCmsLink + "/editSubSlider";;
         var userid = $(this).closest("form").find("#userid").val().toString();
-        var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
         target = target == "" ? "/" : target;
@@ -529,7 +525,6 @@
         var target = $(this).closest("form").find("#target").val().toString();
         var userid = $(this).closest("form").find("#userid").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();   
-        var password = $(this).closest("form").find("#password").val().toString();
 
         var hash =  hex_sha1(image_x + image_y + image_w + image_h + value + target + userid  + password);
 
@@ -550,7 +545,6 @@
         var url = $(this).data('url');
         var action = $(this).closest("form").find("#action").val().toString();
         var userid = $(this).closest("form").find("#userid").val().toString();
-        var password = $(this).closest("form").find("#password").val().toString();
         if(action == "slug") {
             var slug = $(this).closest("form").find("#slug").val().toString();
             if(slug.trim() == "") {
@@ -559,7 +553,7 @@
             }
             else {
                 var hash =  hex_sha1(slug + action + userid + password);
-                data = { slug:slug, action:action, userid:userid,  password:password, hash:hash, callback:'?'};
+                data = { slug:slug, action:action, userid:userid, hash:hash, callback:'?'};
                 $.ajax({
                     type: 'GET',
                     url: url,
@@ -612,7 +606,7 @@
         var value = $(this).closest("form").find("#value").val();   
         var index = $(this).closest("form").find("#index").val();   
         var hash =  hex_sha1(index  + value + userid + password);
-        data = { index: index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, value:value, userid:userid, hash:hash, callback:'?'};
         if(value.trim() == "") {
             showErrorModal("Please supply a slug");
         }
@@ -649,7 +643,7 @@
         var value = $(this).closest("form").find("#value").val();
         var url = $(this).data('url');
         var hash =  hex_sha1( userid + value + password);
-        data = { userid:userid, value:value,  password:password, hash:hash, callback:'?'};
+        data = { userid:userid, value:value, hash:hash, callback:'?'};
 
         if(value.trim() == "") {
             showErrorModal("Please supply a valid slug");
@@ -689,7 +683,7 @@
 
         var hash =  hex_sha1(index  + nodename + userid + password);
 
-        data = { index: index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};  
+        data = { index: index, nodename:nodename, userid:userid, hash:hash, callback:'?'};  
         var count = parseInt($(".adsCount").last().text());
         if(count > 3) {
             loader.showPleaseWait();                    
@@ -726,7 +720,6 @@
         var index = $(this).closest("form").find("#modalSliderIndex").val().toString();
         var url = $(this).data('url');
         var userid = $(this).closest("form").find("#userid").val().toString();
-        var password = $(this).closest("form").find("#password").val().toString();
         var value = $(this).closest("form").find("#photoFile").val().toString();     
         var target = $(this).closest("form").find("#target").val().toString();
         var template = $("#clonedSliderCountConstant").text();
@@ -760,7 +753,7 @@
         var template = $(this).closest("form").find("#drop_actionType").val();
         var url = $(this).data('url');
         var hash =  hex_sha1(template + userid + password);
-        data = { template:template, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { template:template, userid:userid, hash:hash, callback:'?'};
         $.ajax({
             type: 'GET',
             url: url,
@@ -798,7 +791,7 @@
         var url = data.url;
         var nodename = "categorySubSlug";
         var hash =  hex_sha1(index + subIndex + nodename + userid + password);
-        data = { index: index, subIndex:subIndex, nodename:nodename,userid:userid,  password:password, hash:hash, callback:'?'};  
+        data = { index: index, subIndex:subIndex, nodename:nodename,userid:userid, hash:hash, callback:'?'};  
         var subcategories = "#tblSubcategories_" + index;
         var count = $(subcategories + " tbody tr").length;
         var editCategoryLink = $("#editCategoryLink").val();
@@ -837,7 +830,7 @@
 
         var hash =  hex_sha1(index  + nodename + userid + password);
 
-        data = { index: index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};  
+        data = { index: index, nodename:nodename, userid:userid, hash:hash, callback:'?'};  
         var count = parseInt($(".productPanelCount").last().text());
         if(count > 1 ) {
             loader.showPleaseWait();                    
@@ -987,7 +980,7 @@
         
         var currentSliderTemplate = $("#sliderTemplate" + index).val();
 
-        data = { index: index, subIndex:subIndex, nodename:nodename,userid:userid,  password:password, hash:hash, callback:'?'};  
+        data = { index: index, subIndex:subIndex, nodename:nodename,userid:userid, hash:hash, callback:'?'};  
         var count = parseInt($(".slideCount_" + index).last().text());
         var sliderConstant = $("#template_" + currentSliderTemplate).data("count");
         if(count > sliderConstant ) {
@@ -1050,7 +1043,7 @@
         var nodename = $(this).data("nodename");
         var index = $(this).data("index").toString();
         var hash =  hex_sha1(index + nodename + userid + password);
-        data = { index:index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index:index, nodename:nodename, userid:userid,  hash:hash, callback:'?'};
         if(nodename == "categorySectionPanel") {
             var count = parseInt($(".categorySectionCount").last().text());
         }
@@ -1096,7 +1089,7 @@
         var value = $('#addCategorySectionValue option:selected').val();
         var url = $(this).data("url");
         var hash =  hex_sha1(value + userid + password);
-        data = { value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { value:value, userid:userid, hash:hash, callback:'?'};
         
         var count = parseInt($(".categorySectionCount").last().text());
         if(isNaN(count) || count < minimumCategorySectionProductPanel) {
@@ -1131,7 +1124,7 @@
         var url = $(this).data("url");
 
         var hash =  hex_sha1(index + nodename + userid + password);
-        data = { index: index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, nodename:nodename, userid:userid, hash:hash, callback:'?'};
 
         var flag = 0;
         var count = parseInt($(".newArrivalsCount").last().text());
@@ -1165,7 +1158,7 @@
 
         if(value !== "") {
             loader.showPleaseWait();           
-            data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+            data = {value:value, userid:userid, hash:hash, callback:'?'};
 
             $.ajax({
                 type: 'GET',
@@ -1198,7 +1191,7 @@
         var url = $(this).data("url");
 
         var hash =  hex_sha1(index + nodename + userid + password);
-        data = { index: index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, nodename:nodename, userid:userid, hash:hash, callback:'?'};
 
         var flag = 0;
         var count = parseInt($(".brandsCount").last().text());
@@ -1227,7 +1220,7 @@
         loader.showPleaseWait();           
         var value = $('#addBrandsDropDown option:selected').val();
         var hash =  hex_sha1(value + userid + password);
-        data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = {value:value, userid:userid, hash:hash, callback:'?'};
         var url = $(this).data("url");
         $.ajax({
             type: 'GET',
@@ -1254,7 +1247,7 @@
         var hash =  hex_sha1(value + userid + password);
 
         if(value !== ""){
-            data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+            data = {value:value, userid:userid, hash:hash, callback:'?'};
             loader.showPleaseWait();           
 
             $.ajax({
@@ -1289,7 +1282,7 @@
         var url = $(this).data("url");
 
         var hash =  hex_sha1(index + nodename + userid + password);
-        data = { index: index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, nodename:nodename, userid:userid, hash:hash, callback:'?'};
 
         var flag = 0;
         var count = parseInt($(".topProductsCount").last().text());
@@ -1321,7 +1314,7 @@
         var url = $(this).data("url");
 
         var hash =  hex_sha1(index + nodename + userid + password);
-        data = { index: index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, nodename:nodename, userid:userid, hash:hash, callback:'?'};
 
         var flag = 0;
         var count = parseInt($(".topSellersCount").last().text());
@@ -1352,7 +1345,7 @@
         var target = $(this).closest("form").find("#target").val();
         var hash =  hex_sha1(value + target + userid + password);
         if(value !==  "") {
-            data = {value:value, target:target, userid:userid,  password:password, hash:hash, callback:'?'};
+            data = {value:value, target:target, userid:userid, hash:hash, callback:'?'};
             loader.showPleaseWait();           
 
             $.ajax({
@@ -1380,7 +1373,7 @@
         var url = $(this).data("url");
         var value = $('#drop_otherCategories option:selected').val();      
         var hash =  hex_sha1(value + userid + password);
-        data = {value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = {value:value, userid:userid, hash:hash, callback:'?'};
         
         var flag = 0;
         var count = parseInt($(".otherCategoriesCount").last().text());
@@ -1424,7 +1417,7 @@
         var url = $(this).closest("form").find("#editOtherUrl").val();
         var value = $('#drop_otherCategories_edit option:selected').val();      
         var hash =  hex_sha1(index + value + userid + password);
-        data = {index:index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = {index:index, value:value, userid:userid, hash:hash, callback:'?'};
 
         $.ajax({
             type: 'GET',
@@ -1452,7 +1445,7 @@
         var url = $(this).closest("form").find("#editBrandsUrl").val();
         var value = $(this).closest("form").find("#editBrandsDropDown").val();     
         var hash =  hex_sha1(index + value + userid + password);
-        data = {index:index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = {index:index, value:value, userid:userid, hash:hash, callback:'?'};
         $.ajax({
             type: 'GET',
             url: url,
@@ -1479,7 +1472,7 @@
         var url = $(this).closest("form").find("#editTopSellersUrl").val();
         var value = $(this).closest("form").find("#editTopSellersValue").val();     
         var hash =  hex_sha1(index + value + userid + password);
-        data = {index:index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = {index:index, value:value, userid:userid, hash:hash, callback:'?'};
 
         $.ajax({
             type: 'GET',
@@ -1511,7 +1504,7 @@
         var url = $(this).closest("form").find("#editTopProductsUrl").val();
         var value = $(this).closest("form").find("#editTopProductsValue").val();     
         var hash =  hex_sha1(index + value + userid + password);
-        data = {index:index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = {index:index, value:value, userid:userid, hash:hash, callback:'?'};
 
         $.ajax({
             type: 'GET',
@@ -1545,7 +1538,7 @@
         var value = $(this).closest("form").find("#editNewArrivalValue").val();     
         var target = $(this).closest("form").find("#editNewArrivalTarget").val();     
         var hash =  hex_sha1(index + value + target + userid + password);
-        data = {index:index, value:value, target:target, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = {index:index, value:value, target:target, userid:userid, hash:hash, callback:'?'};
 
         $.ajax({
             type: 'GET',
@@ -1609,7 +1602,7 @@
         var url = $(this).data("url");
 
         var hash =  hex_sha1(index + nodename + userid + password);
-        data = { index: index, nodename:nodename, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, nodename:nodename, userid:userid, hash:hash, callback:'?'};
 
         var flag = 0;
         var count = parseInt($(".otherCategoriesCount").last().text());
@@ -1643,7 +1636,7 @@
         var subIndex = $("#edit_subIndex").val().toString();
         var value = $('#drop_actionTypeEdit option:selected').val();      
         var hash =  hex_sha1(index + subIndex + value + userid + password);
-        data = { index: index, subIndex:subIndex, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, subIndex:subIndex, value:value, userid:userid, hash:hash, callback:'?'};
         var tableSelector = "#tblSubcategories_" + index;
         var reloadurl = "getSubCategoryNavigation/" + index;
         var flag = 0;
@@ -1688,7 +1681,7 @@
         var imageCount = $(this).closest("form").find("#drop_actionType option:selected").data('count');
         var url = $(this).data("url");
         var hash = hex_sha1(index + value + userid + password);
-        data = { index: index, value:value, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, value:value, userid:userid, hash:hash, callback:'?'};
         var count = parseInt($(".slideCount_" + index).last().text());
         var currentSliderTemplate = $("#sliderTemplate" + index).val();
         if(isNaN(count) || (count >= imageCount)) {
@@ -1769,7 +1762,7 @@
         var url = $(this).data('url');
         var subcategories = $(this).data('subcategories');
         var hash =  hex_sha1(index + categoryName + userid + password);
-        data = { index: index, value:categoryName, userid:userid,  password:password, hash:hash, callback:'?'};
+        data = { index: index, value:categoryName, userid:userid, hash:hash, callback:'?'};
         var count = $(subcategories + " tbody tr").length;
         subIndex = count;
         var newSubIndex = count + 1;
@@ -2222,7 +2215,7 @@ function setImagesCropSizes(template, subSlideIndex, tempIndex, type)
     $.ajax({
         type: 'GET',
         url: newHomeCmsLink + "/getTemplateImageDimension",
-        data:{index:subSlideIndex, template: template, currentSliderCount : tempIndex, type: type, userid:userid, password:password, hash:hash},
+        data:{index:subSlideIndex, template: template, currentSliderCount : tempIndex, type: type, userid:userid, hash:hash},
         async: false,
         jsonpCallback: 'jsonCallback',
         contentType: "application/json",

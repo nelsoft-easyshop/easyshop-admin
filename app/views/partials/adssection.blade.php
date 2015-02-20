@@ -39,7 +39,6 @@
                                                                                     {{ Form::text('target', $ads->target, array('id' => 'target','class' => 'form-control')) }}                        
                                                                                 </div>
                                                                             </div>                                                                               
-                                                                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                                                                             {{ Form::hidden('hash', "", array('id' => "editAdsSectionHash",'class' => 'form-control')) }}                        
                                                                         </div>
 

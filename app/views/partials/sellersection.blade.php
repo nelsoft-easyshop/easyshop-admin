@@ -7,7 +7,6 @@
                             </legend>                         
                             {{ Form::hidden('action', "slug", array('id' => 'action','class' => 'form-control')) }}                        
                             {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                          
-                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                             <div class="form-group">
                                 <label for="inputPassword" class="control-label col-xs-2">Enter Slug</label>
                                 <div class="col-xs-10">
@@ -38,7 +37,6 @@
                                 </div>
                             </div>            
                             {{ Form::hidden('action', "banner", array('id' => 'action','class' => 'form-control')) }}                        
-                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                             {{ Form::hidden('hash', "", array('id' => "hashChangeSellerBanner",'class' => 'form-control')) }}                        
                                                                                                    
                             <div class="form-group">
@@ -72,7 +70,6 @@
                                 </div>
                             </div>                                                                                 
                             {{ Form::hidden('action', "logo", array('id' => 'action','class' => 'form-control')) }}                        
-                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                             {{ Form::hidden('hash', "", array('id' => "hashChangeSellerLogo",'class' => 'form-control')) }}                        
                                                                                                    
                             <div class="form-group">
