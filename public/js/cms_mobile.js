@@ -28,7 +28,6 @@
         var name = form.find("#categoryName option:selected").val();
         var bgcolor = form.find('.bgcolor').val();
         var type = form.find("#themeName option:selected").val();
-        var userid = $("#userid").val();
         var url = $(this).data('url');
         var hash =  hex_sha1(index + name + bgcolor + type  + userid + password);
         data = { index: index, name:name, bgcolor:bgcolor, type:type, userid:userid, hash:hash, callback:'?'};
@@ -51,8 +50,7 @@
         var myvalue = $("#photoFile").val();
         var mainSlideTarget = $("#mainSlideTarget").val();
         var actionTypes = $("#dropActionTypes option:selected").val();
-        var useridMainSlide = userid;
-        var hash = hex_sha1(myvalue + value  + mainSlideTarget + actionTypes + useridMainSlide + password);
+        var hash = hex_sha1(myvalue + value  + mainSlideTarget + actionTypes + userid + password);
         $("#hashMainSlide").val(hash);
 
         var ext = myvalue.split('.').pop().toLowerCase();
@@ -74,7 +72,6 @@
     $("#manageMainSlide").on('click','#movedown',function () {       
 
         var index = $(this).data('index');
-        var userid = $("#userid").val();
         var value = $(this).data('value');
         var target = $(this).data('target');
         var count = $(this).data('count');
@@ -98,7 +95,6 @@
         e.preventDefault();
         var index = $(this).data('index');
         var nodename = $(this).data('nodename');
-        var userid = $("#userid").val();
         var url = $(this).data('url');
         nodename = nodename == "mainSlide" ? "mainSlide" : "productSlide";   
         index += 1;
@@ -130,7 +126,6 @@
         loader.showPleaseWait();
 
         var index = $(this).data('index');
-        var userid = $("#userid").val();
         var value = $(this).data('value');
         var url = $(this).data('url');
         var target = $(this).data('target');
@@ -150,7 +145,6 @@
 
     $("#manageMainSlide").on('click','#submit',function () {    
         var index = $(this).data('index');
-        var userid = $("#userid").val();
         var value = $(this).closest("form").find("#photoFile").val();
         var target = $(this).closest("form").find('#editMainSlideTarget').val();
         var actionType = $(this).closest("form").find('#dropActionTypes option:selected').val();
