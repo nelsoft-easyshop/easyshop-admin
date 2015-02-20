@@ -24,5 +24,13 @@
         "register"
     ];
     
+        
+    $pages['all'] = [
+        "", 
+        "prohibited", 
+        "login", 
+        "logout"
+    ];
+    
     return $pages;
     
