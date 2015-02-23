@@ -3,7 +3,6 @@
 class BanType extends Eloquent
 {
     public static $TITLE = array(
-        'Not banned' => 0,
         'Paypal Dispute' => 1,
         'Inquiry Non-compliance' => 2
     );

@@ -38,7 +38,7 @@
             var $this = $(this);
             var checkedOpt = $this.filter(':checked').val()
 
-            if (parseInt(checkedOpt) === 0) {
+            if (parseInt(checkedOpt) === 1) {
                 $select_ban.show();
             }
             else {
