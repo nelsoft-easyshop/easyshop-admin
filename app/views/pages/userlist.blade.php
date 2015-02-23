@@ -200,6 +200,24 @@
                             </label>
                         </div>
                         <span class="help-block">This will set if the user can join the promo .</span>
+                        <label>Is Banned </label>
+                        <div class="checkbox">
+                            <label class="radio-inline">
+                                <input type="radio" name="mdl_ban" id="ban_chck_yes" value="1"> Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="mdl_ban" id="ban_chck_no" value="0"> No
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Ban type </label>
+                            <select id="ban_dropdown" class="form-control" data-status="">
+                                <option value="0">--- Select Ban Type ---</option>
+                                @foreach($list_of_ban_type as $key=> $data)
+                                <option class="ban-type-opt" value="{{{ $key }}}" >{{{ $data['message'] }}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group address_div">
                             <label>Address : </label>
                             <div>

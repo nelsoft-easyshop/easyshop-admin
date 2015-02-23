@@ -13,14 +13,16 @@ class MemberController extends BaseController
     {
         $locationLookUpRepository = App::make('LocationLookUpRepository');
         $MemberRepository = App::make('MemberRepository');
-        $locationService = $this->locationService;
-        $data = $locationService->location($locationLookUpRepository->getByType());
+        $banTypeRepository = App::make('BanTypeRepository');
+        $listOfLocation =  $this->locationService->location($locationLookUpRepository->getByType());
+
+        $listOfBanType = $banTypeRepository->getByType();
+
         return View::make('pages.userlist')
             ->with('member_count', $MemberRepository->getUsersCount())
             ->with('list_of_member', Member::paginate(100))
-            ->with('list_of_location', $data);
-
-
+            ->with('list_of_location', $listOfLocation)
+            ->with('list_of_ban_type', $listOfBanType);
     }
 
     public function search()

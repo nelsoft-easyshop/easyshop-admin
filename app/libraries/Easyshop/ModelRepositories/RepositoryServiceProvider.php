@@ -123,5 +123,9 @@ class RepositoryServiceProvider extends ServiceProvider
             return new OrderProductTagHistoryRepository();
         });
 
+        $this->app->bind('BanTypeRepository', function($app){
+            return new BanTypeRepository();
+        });
+
     }
 }

@@ -8,6 +8,8 @@
     var dp1 = $('[name^=c_stateregion]');
     var dp2 = $('[name^=c_city]');
     var mdl_address = $('#mdl_address');
+    var $mdl_ban = $('input:radio[name=mdl_ban]');
+    var $select_ban = $('#ban_dropdown');
     var jsonCity = $.parseJSON($('#jsonData').attr('data'));
 
     $(document).ready(function()
@@ -30,6 +32,21 @@
             },
             timepicker:false
         });
+
+        $mdl_ban.on('change', function ()
+        {
+            var $this = $(this);
+            var checkedOpt = $this.filter(':checked').val()
+
+            if (parseInt(checkedOpt) === 0) {
+                $select_ban.show();
+            }
+            else {
+
+                $select_ban.hide();
+            }
+        });
+
         $('#btn_advance_search').on('click',function()
         {
             $('#srch_container').slideDown();
