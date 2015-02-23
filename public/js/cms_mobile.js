@@ -338,7 +338,6 @@
             contentType: "application/json",
             dataType: 'jsonp',
             success: function(json) {
-        console.log("here");                
                 loader.hidePleaseWait();   
                 var reloadUrl = "/cms/mobile/getBoxContent/"+index;
                 var tableSelector = "#tableIndex_"+index;
