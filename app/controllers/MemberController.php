@@ -1,30 +1,42 @@
 <?php
 use Easyshop\Services\LocationService;
+use Easyshop\ModelRepositories\LocationLookUpRepository as LocationLookUpRepository;
+use Easyshop\ModelRepositories\BanTypeRepository as BanTypeRepository;
 class MemberController extends BaseController
 {
     private $locationService;
 
-    public function __construct(LocationService $locationService)
+    public function __construct(LocationService $locationService,
+                                LocationLookUpRepository $locationLookUpRepository,
+                                BanTypeRepository $banTypeRepository)
     {
         $this->locationService = $locationService;
+        $this->locationLookUpRepository = $locationLookUpRepository;
+        $this->banTypeRepository = $banTypeRepository;
     }
 
+    /**
+     * Retrieves the user list
+     * @return mixed
+     */
     public function showAllUsers()
     {
-        $locationLookUpRepository = App::make('LocationLookUpRepository');
         $MemberRepository = App::make('MemberRepository');
-        $banTypeRepository = App::make('BanTypeRepository');
-        $listOfLocation =  $this->locationService->location($locationLookUpRepository->getByType());
+        $listOfLocation =  $this->locationService->location($this->locationLookUpRepository->getByType());
 
-        $listOfBanType = $banTypeRepository->getByType();
+        $listOfBanType = $this->banTypeRepository->getByType();
 
         return View::make('pages.userlist')
-            ->with('member_count', $MemberRepository->getUsersCount())
-            ->with('list_of_member', Member::paginate(100))
-            ->with('list_of_location', $listOfLocation)
-            ->with('list_of_ban_type', $listOfBanType);
+                    ->with('member_count', $MemberRepository->getUsersCount())
+                    ->with('list_of_member', Member::paginate(100))
+                    ->with('list_of_location', $listOfLocation)
+                    ->with('list_of_ban_type', $listOfBanType);
     }
 
+    /**
+     * Search user and filtering
+     * @return mixed
+     */
     public function search()
     {
         $userData = [

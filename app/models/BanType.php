@@ -2,10 +2,10 @@
 
 class BanType extends Eloquent
 {
-    public static $TITLE = array(
+    public static $TITLE = [
         'Paypal Dispute' => 1,
         'Inquiry Non-compliance' => 2
-    );
+    ];
 
     /**
      * The database table used by the model.
