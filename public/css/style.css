@@ -3661,3 +3661,7 @@ top:0px !important;
 .required-span{
     color: red;
 }
+
+#ban_dropdown{
+    display: none;
+}
