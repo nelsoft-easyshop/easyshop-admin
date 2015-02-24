@@ -9,7 +9,7 @@ class Member extends Eloquent
     * @var string
     */
     protected $table = 'es_member';
-    protected $fillable = array('fullname', 'contactno', 'remarks', 'is_promo_valid');
+    protected $fillable = array('fullname', 'contactno', 'remarks', 'is_promo_valid', 'is_banned', 'ban_type');
     protected $primaryKey = 'id_member';
     public $timestamps = false;
 

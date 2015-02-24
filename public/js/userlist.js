@@ -150,6 +150,7 @@
             '","contact_number":"' + escapeHtml(data_json.contactno) +
             '","remarks":"' + escapeHtml(data_json.remarks) +
             '","is_promote":"' + escapeHtml(data_json.is_promo_valid) +
+            '","is_banned":"' + escapeHtml(data_json.is_banned) +
             '","c_stateregionID":"' + idRegion +
             '","c_cityID":"' + idCity +
             '","address":"' + address + '"}';

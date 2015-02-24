@@ -52,7 +52,9 @@ class MemberController extends BaseController
             'fullname' => Input::get('fullname'),
             'contactno' => Input::get('contact'),
             'remarks' => Input::get('remarks'),
-            'is_promo_valid' => Input::get('is_promo_valid')
+            'is_promo_valid' => Input::get('is_promo_valid'),
+            'is_banned' => (int) Input::get('banType') ? 1 : 0,
+            'ban_type' => (int) Input::get('banType')
         );
         $dataAddress = array(
             'city' => Input::get('city'),
