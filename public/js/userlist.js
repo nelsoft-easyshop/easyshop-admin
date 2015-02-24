@@ -83,13 +83,13 @@
             var user_stateID = parseInt(dp1.val());
             var user_address = mdl_address.val();
             var user_isBan = parseInt($select_ban.val());
-alert(user_isBan);
-            return false;
+
             if( user_cityID === 0 || user_stateID === 0 ){
                 alert('Invalid Address.');
 
                 return false;
             }
+
             loader.showPleaseWait();
             $.ajax({
                 url:'/users',
@@ -104,7 +104,8 @@ alert(user_isBan);
                     is_promo_valid:user_promo,
                     city:user_cityID,
                     stateregion:user_stateID,
-                    address:user_address},
+                    address:user_address,
+                    banType:user_isBan},
                 success:function(result){
                     loader.hidePleaseWait();
                     pushJsonToFields(result);
@@ -162,14 +163,28 @@ alert(user_isBan);
     function PushObjectToFields(data_obj)
     {
         var data = $.parseJSON( data_obj);
+        var isBanned = parseInt(data.is_banned);
         mdl_fullname.val(data.fullname);
         mdl_contact.val(data.contact_number);
         mdl_remarks.val(data.remarks);
         mdl_button.attr('data',data.id);
         $('#chck_no').prop("checked", true);
+
         if(parseInt(data.is_promote) === 1){
             $('#chck_yes').prop("checked", true);
         }
+
+        if (isBanned !== 0) {
+            $select_div.show();
+            $('#ban_chck_yes').prop("checked", true);
+            $select_ban.find('option[value="'+isBanned+'"]').attr("selected",true);
+        }
+        else {
+            $select_ban.val('0')
+            $select_div.hide();
+            $('#ban_chck_no').prop("checked", true);
+        }
+
         dp1.attr('data_status',data.c_stateregionID);
         dp2.attr('data_status',data.c_cityID);
         dp1.val(data.c_stateregionID);
