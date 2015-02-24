@@ -2,17 +2,20 @@
 use Easyshop\Services\LocationService;
 use Easyshop\ModelRepositories\LocationLookUpRepository as LocationLookUpRepository;
 use Easyshop\ModelRepositories\BanTypeRepository as BanTypeRepository;
+use Easyshop\ModelRepositories\MemberRepository as MemberRepository;
 class MemberController extends BaseController
 {
     private $locationService;
 
     public function __construct(LocationService $locationService,
                                 LocationLookUpRepository $locationLookUpRepository,
-                                BanTypeRepository $banTypeRepository)
+                                BanTypeRepository $banTypeRepository,
+                                MemberRepository $MemberRepository)
     {
         $this->locationService = $locationService;
         $this->locationLookUpRepository = $locationLookUpRepository;
         $this->banTypeRepository = $banTypeRepository;
+        $this->MemberRepository = $MemberRepository;
     }
 
     /**
@@ -21,13 +24,11 @@ class MemberController extends BaseController
      */
     public function showAllUsers()
     {
-        $MemberRepository = App::make('MemberRepository');
         $listOfLocation =  $this->locationService->location($this->locationLookUpRepository->getByType());
-
         $listOfBanType = $this->banTypeRepository->getByType();
 
         return View::make('pages.userlist')
-                    ->with('member_count', $MemberRepository->getUsersCount())
+                    ->with('member_count', $this->MemberRepository->getUsersCount())
                     ->with('list_of_member', Member::paginate(100))
                     ->with('list_of_location', $listOfLocation)
                     ->with('list_of_ban_type', $listOfBanType);
