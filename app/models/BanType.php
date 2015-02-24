@@ -2,11 +2,8 @@
 
 class BanType extends Eloquent
 {
-    public static $TITLE = [
-        'Paypal Dispute' => 1,
-        'Inquiry Non-compliance' => 2
-    ];
-
+    const BAN_TYPE_PAYPAL_DISPUTE = 1 ;
+    const BAN_TYPE_INQUIRY_NONCOMPLIANCE = 2 ;
     /**
      * The database table used by the model.
      *

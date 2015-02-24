@@ -11,7 +11,12 @@ class BanTypeRepository extends AbstractRepository
      */
     public function getByType()
     {
-        return BanType::whereIn('id_ban_type', BanType::$TITLE)->get();
+        $banTypes = [
+            BanType::BAN_TYPE_PAYPAL_DISPUTE,
+            BanType::BAN_TYPE_INQUIRY_NONCOMPLIANCE
+        ];
+
+        return BanType::whereIn('id_ban_type', $banTypes)->get();
     }
 
 }
