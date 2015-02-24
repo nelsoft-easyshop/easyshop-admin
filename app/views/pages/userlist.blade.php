@@ -209,12 +209,12 @@
                                 <input type="radio" name="mdl_ban" id="ban_chck_no" value="0"> No
                             </label>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="ban_dropdown" >
                             <label>Ban type </label>
-                            <select id="ban_dropdown" class="form-control" data-status="">
+                            <select id="ban_select" class="form-control" data-status="">
                                 <option value="0">--- Select Ban Type ---</option>
                                 @foreach($list_of_ban_type as $key=> $data)
-                                <option class="ban-type-opt" value="{{{ $key }}}" >{{{ $data['message'] }}}</option>
+                                <option class="ban-type-opt" value="{{{ $data['id_ban_type'] }}}" >{{{ $data['message'] }}}</option>
                                 @endforeach
                             </select>
                         </div>

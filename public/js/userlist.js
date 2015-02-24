@@ -9,7 +9,8 @@
     var dp2 = $('[name^=c_city]');
     var mdl_address = $('#mdl_address');
     var $mdl_ban = $('input:radio[name=mdl_ban]');
-    var $select_ban = $('#ban_dropdown');
+    var $select_div = $('#ban_dropdown');
+    var $select_ban = $('#ban_select');
     var jsonCity = $.parseJSON($('#jsonData').attr('data'));
 
     $(document).ready(function()
@@ -36,14 +37,14 @@
         $mdl_ban.on('change', function ()
         {
             var $this = $(this);
-            var checkedOpt = $this.filter(':checked').val()
+            var checkedOpt = $this.filter(':checked');
 
-            if (parseInt(checkedOpt) === 1) {
-                $select_ban.show();
+            if (parseInt(checkedOpt.val()) === 1) {
+                $select_div.show();
             }
             else {
-
-                $select_ban.hide();
+                $select_ban.val('0')
+                $select_div.hide();
             }
         });
 
@@ -81,6 +82,9 @@
             var user_cityID = parseInt(dp2.val());
             var user_stateID = parseInt(dp1.val());
             var user_address = mdl_address.val();
+            var user_isBan = parseInt($select_ban.val());
+alert(user_isBan);
+            return false;
             if( user_cityID === 0 || user_stateID === 0 ){
                 alert('Invalid Address.');
 
