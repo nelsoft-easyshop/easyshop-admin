@@ -17,6 +17,7 @@ App::before(function($request)
     $clientIp = $request->getClientIp();
 
     $arrayWhiteListIp = [
+        '180.232.69.52',
         '124.104.99.142',
         '124.104.99.90',
         '127.0.0.1',
