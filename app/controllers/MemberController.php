@@ -1,28 +1,43 @@
 <?php
 use Easyshop\Services\LocationService;
+use Easyshop\ModelRepositories\LocationLookUpRepository as LocationLookUpRepository;
+use Easyshop\ModelRepositories\BanTypeRepository as BanTypeRepository;
+use Easyshop\ModelRepositories\MemberRepository as MemberRepository;
 class MemberController extends BaseController
 {
     private $locationService;
 
-    public function __construct(LocationService $locationService)
+    public function __construct(LocationService $locationService,
+                                LocationLookUpRepository $locationLookUpRepository,
+                                BanTypeRepository $banTypeRepository,
+                                MemberRepository $MemberRepository)
     {
         $this->locationService = $locationService;
+        $this->locationLookUpRepository = $locationLookUpRepository;
+        $this->banTypeRepository = $banTypeRepository;
+        $this->MemberRepository = $MemberRepository;
     }
 
+    /**
+     * Retrieves the user list
+     * @return mixed
+     */
     public function showAllUsers()
     {
-        $locationLookUpRepository = App::make('LocationLookUpRepository');
-        $MemberRepository = App::make('MemberRepository');
-        $locationService = $this->locationService;
-        $data = $locationService->location($locationLookUpRepository->getByType());
+        $listOfLocation =  $this->locationService->location($this->locationLookUpRepository->getByType());
+        $listOfBanType = $this->banTypeRepository->getByType();
+
         return View::make('pages.userlist')
-            ->with('member_count', $MemberRepository->getUsersCount())
-            ->with('list_of_member', Member::paginate(100))
-            ->with('list_of_location', $data);
-
-
+                    ->with('member_count', $this->MemberRepository->getUsersCount())
+                    ->with('list_of_member', Member::paginate(100))
+                    ->with('list_of_location', $listOfLocation)
+                    ->with('list_of_ban_type', $listOfBanType);
     }
 
+    /**
+     * Search user and filtering
+     * @return mixed
+     */
     public function search()
     {
         $userData = [
@@ -50,7 +65,9 @@ class MemberController extends BaseController
             'fullname' => Input::get('fullname'),
             'contactno' => Input::get('contact'),
             'remarks' => Input::get('remarks'),
-            'is_promo_valid' => Input::get('is_promo_valid')
+            'is_promo_valid' => Input::get('is_promo_valid'),
+            'is_banned' => (int) Input::get('banType') ? 1 : 0,
+            'ban_type' => (int) Input::get('banType')
         );
         $dataAddress = array(
             'city' => Input::get('city'),

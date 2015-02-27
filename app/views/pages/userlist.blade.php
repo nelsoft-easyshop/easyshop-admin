@@ -139,30 +139,38 @@
                 </thead>
                 <tbody>
                 @foreach($list_of_member as $member)
-                <tr id="tr_{{{ $member->id_member }}}">
-                    <td>
-                        <div class="btn-toolbar" role="toolbar">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-danger edit_btn"  data-toggle="modal" data-target="#myModal" data="{{{ $member->id_member }}}">
-                                    <span class="glyphicon-center glyphicon glyphicon-cog"></span>
-                                        <span class='data_container' id='data_{{{ $member->id_member }}}'
-                                              data='{"id":"{{{ $member->id_member }}}","fullname":"{{{ $member->fullname }}}","contact_number":"{{{ $member->contactno }}}","remarks":"{{{ $member->remarks }}}","is_promote":"{{{ $member->is_promo_valid }}}","c_stateregionID":"{{{ (isset($member->Address->stateregion)) ? $member->Address->stateregion : "" }}}" , "c_cityID":"{{{ (isset($member->Address->city)) ? $member->Address->city : "" }}}" , "address":"{{{ (isset($member->Address->address)) ? $member->Address->address : "" }}}" } '>
-                                        </span>
-                                </button>
+                    <tr id="tr_{{{ $member->id_member }}}">
+                        <td>
+                            <div class="btn-toolbar" role="toolbar">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-danger edit_btn"  data-toggle="modal" data-target="#myModal" data="{{{ $member->id_member }}}">
+                                        <span class="glyphicon-center glyphicon glyphicon-cog"></span>
+                                            <span class='data_container' id='data_{{{ $member->id_member }}}'
+                                                  data='{"id":"{{{ $member->id_member }}}",
+                                                  "fullname":"{{{ $member->fullname }}}",
+                                                  "contact_number":"{{{ $member->contactno }}}",
+                                                  "remarks":"{{{ $member->remarks }}}",
+                                                  "is_promote":"{{{ $member->is_promo_valid }}}",
+                                                  "is_banned":"{{{ $member->is_banned }}}",
+                                                  "c_stateregionID":"{{{ (isset($member->Address->stateregion)) ? $member->Address->stateregion : "" }}}",
+                                                  "c_cityID":"{{{ (isset($member->Address->city)) ? $member->Address->city : "" }}}" ,
+                                                  "address":"{{{ (isset($member->Address->address)) ? $member->Address->address : "" }}}" } '>
+                                            </span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td>{{{ $member->datecreated }}}</td>
-                    <td id="{{{ $member->id_member . '_uname'}}}">{{{ $member->fullname }}}</td>
-                    <td>{{{ $member->username }}}</td>
-                    <td>{{{ $member->getStoreName() }}}</td>
-                    <td>{{{ $member->email }}}</td>
-                    <td>{{{ (intval($member->gender) === 0) ? 'Male' : 'Female' }}}</td>
-                    <td id="{{{ $member->id_member . '_remarks'}}}">{{{ $member->remarks }}}</td>
-                    <td id="{{{ $member->id_member . '_address'}}}">{{{ ($member->Address && $member->Address->City->location && $member->Address->Region->location) ? $member->Address->City->location . ' ' . $member->Address->Region->location . ' ' . $member->Address->address : '' }}}</td>
-                    <td>{{{ ($member->Product(true)) ? $member->Product(true)->count() : 0 }}}</td>
-                    <td id="{{{ $member->id_member . '_contact'}}}">{{{ $member->contactno }}}</td>
-                </tr>
+                        </td>
+                        <td>{{{ $member->datecreated }}}</td>
+                        <td id="{{{ $member->id_member . '_uname'}}}">{{{ $member->fullname }}}</td>
+                        <td>{{{ $member->username }}}</td>
+                        <td>{{{ $member->getStoreName() }}}</td>
+                        <td>{{{ $member->email }}}</td>
+                        <td>{{{ (intval($member->gender) === 0) ? 'Male' : 'Female' }}}</td>
+                        <td id="{{{ $member->id_member . '_remarks'}}}">{{{ $member->remarks }}}</td>
+                        <td id="{{{ $member->id_member . '_address'}}}">{{{ ($member->Address && $member->Address->City->location && $member->Address->Region->location) ? $member->Address->City->location . ' ' . $member->Address->Region->location . ' ' . $member->Address->address : '' }}}</td>
+                        <td>{{{ ($member->Product(true)) ? $member->Product(true)->count() : 0 }}}</td>
+                        <td id="{{{ $member->id_member . '_contact'}}}">{{{ $member->contactno }}}</td>
+                    </tr>
                 @endforeach
                 </tbody>
             </table>
@@ -200,13 +208,31 @@
                             </label>
                         </div>
                         <span class="help-block">This will set if the user can join the promo .</span>
+                        <label>Is Banned </label>
+                        <div class="checkbox">
+                            <label class="radio-inline">
+                                <input type="radio" name="mdl_ban" id="ban_chck_yes" value="1"> Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="mdl_ban" id="ban_chck_no" value="0"> No
+                            </label>
+                        </div>
+                        <div class="form-group" id="ban_dropdown" >
+                            <label>Ban type </label>
+                            <select id="ban_select" class="form-control" data-status="">
+                                <option value="0">--- Select Ban Type ---</option>
+                                @foreach($list_of_ban_type as $data)
+                                    <option class="ban-type-opt" value="{{{ $data['id_ban_type'] }}}" >{{{ $data['message'] }}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group address_div">
                             <label>Address : </label>
                             <div>
                                 <select name="c_stateregion" class="address_dropdown stateregionselect form-control" data-status="">
                                     <option value="0">--- Select State/Region ---</option>
                                     @foreach($list_of_location['stateregion_lookup'] as $srkey=>$stateregion)
-                                    <option class="echo" value="{{{ $srkey }}}" >{{{ $stateregion }}}</option>
+                                        <option class="echo" value="{{{ $srkey }}}" >{{{ $stateregion }}}</option>
                                     @endforeach
                                 </select>
                             </div>
