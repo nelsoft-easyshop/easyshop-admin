@@ -2,15 +2,15 @@
 
 return array(
 
-    'PushNotif'     => array(
+    'IOS_PushNotif'     => array(
         'environment' =>'development',
-        'certificate' => app_path().'/../ck.pem',
+        'certificate' => app_path().'/certificates/ck.pem',
         'passPhrase'  =>'pusheasyshop',
         'service'     =>'apns'
     ),
-    'appNameAndroid' => array(
+    'ANDROID_appNameAndroid' => array(
         'environment' =>'development',
-        'apiKey'      =>'yourAPIKey',
+        'apiKey'      =>'AIzaSyBxOFqbxRC5SY5zzKs5zAESfPlliiMaYc0',
         'service'     =>'gcm'
     )
 
