@@ -121,4 +121,6 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('contact/buyer/view-transaction-details', array('uses' => 'OrderProductController@getBuyerTransactionDetailsByOrderId'));
     Route::get('contact/shippingdetails/add', array('uses' => 'OrderProductController@addShippingDetails'));
 
+    Route::get('mobile/push-notification', array('uses' => 'MobileNotificationController@showPushNotificationView'));
+    Route::get('mobile/push-notification/notify', array('uses' => 'MobileNotificationController@notifyUser'));
 });
