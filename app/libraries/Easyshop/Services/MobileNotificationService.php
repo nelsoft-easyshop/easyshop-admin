@@ -24,6 +24,9 @@ class MobileNotificationService
      */
     private $pushNotification;
 
+    /**
+     * Constructor 
+     */
     public function __construct(DeviceTokenRepository $deviceTokenRepository,
                                 $pushNotification)
     {
@@ -31,6 +34,11 @@ class MobileNotificationService
         $this->pushNotification = $pushNotification;
     }
 
+    /**
+     * Function for notifying mobile application of easyshop
+     * @param  string  $message
+     * @param  integer $apiType 
+     */
     public function notifyMobileAppUser($message, $apiType)
     {
         $deviceTokens = $this->deviceTokenRepository->getActiveDeviceTokens($apiType);
