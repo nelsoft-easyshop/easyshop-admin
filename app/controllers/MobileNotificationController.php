@@ -1,5 +1,7 @@
 <?php
 
+use ApiType as ApiType;
+
 class MobileNotificationController extends BaseController
 {
     /**
@@ -8,17 +10,19 @@ class MobileNotificationController extends BaseController
      */
     public function showPushNotificationView()
     {
-        return View::make('pages.mobile-push-notification');
+        return View::make('pages.mobile-push-notification')
+                    ->with('androidType', ApiType::TYPE_ANDROID)
+                    ->with('iosType', ApiType::TYPE_IOS);
     }
 
     /**
      * route for notifying mobile application 
      */
     public function notifyUser()
-    { 
-        $message = trim(Input::has('message'));
-        $apiType = trim(Input::has('api_type'));
+    {
+        $message = trim(Input::get('message'));
+        $apiType = trim(Input::get('apiType'));
         $mobileNotificationService = App::make('MobileNotificationService');
-        $mobileNotificationService->notifyMobileAppUser($message, $apiType);
+        $mobileNotificationService->notifyMobileAppUser($message, $apiType); 
     }
 }
