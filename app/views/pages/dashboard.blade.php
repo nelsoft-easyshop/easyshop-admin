@@ -195,8 +195,19 @@
                     <span>Add Raffle</span>
                 </a>
                 <p> Add and view raffles. Upload raffle member CSV files or manually input pool of members for the raffle.</p>
-            </li>   
-      
+            </li>
+
+
+            <div class="section-title"> MOBILE MANAGEMENT</div>
+            <li>
+                <a href='/mobile/push-notification'>
+                    <img src="{{{ asset('images/icon_category.png') }}}"/> 
+                    <span >Push Notification</span>
+                </a>
+                <p>
+                    Notification for Easyshop mobile application users.
+                </p>
+            </li>
         </ul>
     </div>
     
