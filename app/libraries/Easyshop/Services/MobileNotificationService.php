@@ -6,10 +6,10 @@ use Easyshop\ModelRepositories\DeviceTokenRepository as DeviceTokenRepository;
 class MobileNotificationService
 {   
     /**
-     * message to be sending into notification
+     * app name of the notification app
      * @var string
-     */
-    private $message;
+     */ 
+    private $appName;
 
     /**
      * DeviceToken Repository
@@ -33,32 +33,22 @@ class MobileNotificationService
 
     public function notifyMobileAppUser($message, $apiType)
     {
-        $this->message = $message;
-
         $deviceTokens = $this->deviceTokenRepository->getActiveDeviceTokens($apiType);
 
-        $tokenList = [];
-        foreach ($deviceTokens as $token) {
-            $tokenList[] = $token->device_token;
-        }
-
         if( (int) $apiType === ApiType::TYPE_IOS){
-            $this->__sendIOSNotification($tokenList);
+            $this->appName = "IOS_PushNotif";
         }
         elseif( (int) $apiType === ApiType::TYPE_ANDROID){
-            $this->__sendAndroidNotification($tokenList);
+            $this->appName = "ANDROID_appNameAndroid";
         }
-    }
 
-    private function __sendIOSNotification($deviceToken = [])
-    {
-        $this->pushNotification->app('PushNotif')
-                                ->to("fa354d6f863f1577df2f955e87ee77c35b1ec6c72683d8396c66ef07eab875b5")
-                                ->send('Hello World, i`m a push message');
-    }
-
-    private function __sendAndroidNotification($deviceToken = [])
-    {
-
+        $tokenList = [];
+        foreach ($deviceTokens as $token) { 
+            $tokenList[] = $this->pushNotification->Device($token->device_token);
+        }
+        $devices = $this->pushNotification->DeviceCollection($tokenList);
+        $this->pushNotification->app($this->appName)
+                               ->to($devices)
+                               ->send($message);
     }
 }

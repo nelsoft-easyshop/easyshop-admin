@@ -14,6 +14,6 @@ class MobileNotificationController extends BaseController
     public function notifyUser()
     { 
         $mobileNotificationService = App::make('MobileNotificationService');
-        $mobileNotificationService->notifyMobileAppUser("HAHAHa", 1);
+        $mobileNotificationService->notifyMobileAppUser("HAHAHA", 1);
     }
 }
