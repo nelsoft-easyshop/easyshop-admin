@@ -2,14 +2,21 @@
 
 return array(
 
-    'IOS_PushNotif'     => array(
+    'IOS_PushNotif_dev'     => array(
         'environment' =>'development',
-        'certificate' => app_path().'/certificates/ck.pem',
+        'certificate' => app_path().'/certificates/mobile_pushnotification/ckdev.pem',
         'passPhrase'  =>'pusheasyshop',
         'service'     =>'apns'
     ),
-    'ANDROID_appNameAndroid' => array(
-        'environment' =>'development',
+    'IOS_PushNotif_prod'     => array(
+        'environment' =>'production',
+        'certificate' => app_path().'/certificates/mobile_pushnotification/ckprod.pem',
+        'passPhrase'  =>'pusheasyshop',
+        'service'     =>'apns'
+    ),
+
+    'ANDROID_PushNotif' => array(
+        'environment' =>'environment',
         'apiKey'      =>'AIzaSyBxOFqbxRC5SY5zzKs5zAESfPlliiMaYc0',
         'service'     =>'gcm'
     )
