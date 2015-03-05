@@ -38,13 +38,19 @@ class MobileNotificationService
      * Function for notifying mobile application of easyshop
      * @param  string  $message
      * @param  integer $apiType 
+     * @param  boolean $isProduction
      */
-    public function notifyMobileAppUser($message, $apiType)
+    public function notifyMobileAppUser($message, $apiType, $isProduction)
     {
         $deviceTokens = $this->deviceTokenRepository->getActiveDeviceTokens($apiType);
 
         if( (int) $apiType === ApiType::TYPE_IOS){
-            $this->appName = "IOS_PushNotif";
+            if($isProduction){
+                $this->appName = "IOS_PushNotif_prod";
+            }
+            else{ 
+                $this->appName = "IOS_PushNotif_dev";
+            }
         }
         elseif( (int) $apiType === ApiType::TYPE_ANDROID){
             $this->appName = "ANDROID_appNameAndroid";
