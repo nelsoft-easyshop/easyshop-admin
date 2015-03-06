@@ -122,5 +122,5 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('contact/shippingdetails/add', array('uses' => 'OrderProductController@addShippingDetails'));
 
     Route::get('mobile/push-notification', array('uses' => 'MobileNotificationController@showPushNotificationView'));
-    Route::get('mobile/push-notification/notify', array('uses' => 'MobileNotificationController@notifyUser'));
+    Route::post('mobile/push-notification/notify', array('uses' => 'MobileNotificationController@notifyUser'));
 });
