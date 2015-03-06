@@ -19,10 +19,11 @@ class MobileNotificationController extends BaseController
      * route for notifying mobile application 
      */
     public function notifyUser()
-    {
+    {   
         $message = trim(Input::get('message'));
         $apiType = trim(Input::get('apiType'));
         $mobileNotificationService = App::make('MobileNotificationService');
         $mobileNotificationService->notifyMobileAppUser($message, $apiType, App::environment('production')); 
     }
 }
+

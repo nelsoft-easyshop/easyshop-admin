@@ -66,3 +66,4 @@ class MobileNotificationService
                                ->send($message);
     }
 }
+

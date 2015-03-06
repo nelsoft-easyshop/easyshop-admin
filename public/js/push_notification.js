@@ -6,7 +6,7 @@
                     loader.showPleaseWait();
                     $.ajax({
                         url:'/mobile/push-notification/notify',
-                        type:'GET',
+                        type:'POST',
                         data:{ 
                             message: $("#message-txt").val(),
                             apiType: apiType

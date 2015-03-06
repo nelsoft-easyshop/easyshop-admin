@@ -1,7 +1,6 @@
 <?php
 
 return array(
-
     'IOS_PushNotif_dev'     => array(
         'environment' =>'development',
         'certificate' => app_path().'/certificates/mobile_pushnotification/ckdev.pem',
@@ -14,11 +13,10 @@ return array(
         'passPhrase'  =>'pusheasyshop',
         'service'     =>'apns'
     ),
-
     'ANDROID_PushNotif' => array(
         'environment' =>'environment',
         'apiKey'      =>'AIzaSyBxOFqbxRC5SY5zzKs5zAESfPlliiMaYc0',
         'service'     =>'gcm'
     )
-
 );
+
