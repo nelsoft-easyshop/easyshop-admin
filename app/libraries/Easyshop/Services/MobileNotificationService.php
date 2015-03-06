@@ -9,7 +9,7 @@ class MobileNotificationService
      * app name of the notification app
      * @var string
      */ 
-    private $appName;
+    private $appName; 
 
     /**
      * DeviceToken Repository
@@ -17,10 +17,9 @@ class MobileNotificationService
      */
     private $deviceTokenRepository;
 
-
     /**
      * Push Notification Class
-     * @var Davibennun\LaravelPushNotification\Facades\PushNotification
+     * @var Davibennun\LaravelPushNotification\PushNotification
      */
     private $pushNotification;
 
@@ -50,20 +49,42 @@ class MobileNotificationService
             }
             else{ 
                 $this->appName = "IOS_PushNotif_dev";
-            }
+            } 
         }
         elseif( (int) $apiType === ApiType::TYPE_ANDROID){
-            $this->appName = "ANDROID_appNameAndroid";
+            $this->appName = "ANDROID_PushNotif"; 
         }
 
         $tokenList = [];
-        foreach ($deviceTokens as $token) { 
-            $tokenList[] = $this->pushNotification->Device($token->device_token);
+        foreach ($deviceTokens as $token) {  
+            if($this->supportDeviceToken($token->device_token, $apiType)){
+                $tokenList[] = $this->pushNotification->Device($token->device_token);
+            }
+            else{
+                $token->is_active = false;
+                $token->save();
+            }
         }
+
         $devices = $this->pushNotification->DeviceCollection($tokenList);
-        $this->pushNotification->app($this->appName)
-                               ->to($devices)
-                               ->send($message);
+        $collection = $this->pushNotification->app($this->appName)
+                                             ->to($devices)
+                                             ->send($message);
+    }
+
+    /**
+     * Validate of device token is valid
+     * @param  string  $token 
+     * @param  integer $apiType
+     * @return boolean
+     */
+    private function supportDeviceToken($token, $apiType){
+        if($apiType === ApiType::TYPE_IOS){
+            return (ctype_xdigit($token) && 64 === strlen($token));
+        }
+        elseif($apiType === ApiType::TYPE_ANDROID){
+            return (bool) preg_match('/^[0-9a-zA-Z\-\_]+$/i', $token);
+        }
     }
 }
 

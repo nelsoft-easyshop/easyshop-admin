@@ -4,13 +4,13 @@ return array(
     'IOS_PushNotif_dev'     => array(
         'environment' =>'development',
         'certificate' => app_path().'/certificates/mobile_pushnotification/ckdev.pem',
-        'passPhrase'  =>'pusheasyshop',
+        'passPhrase'  =>'easyshoppush',
         'service'     =>'apns'
     ),
     'IOS_PushNotif_prod'     => array(
         'environment' =>'production',
         'certificate' => app_path().'/certificates/mobile_pushnotification/ckprod.pem',
-        'passPhrase'  =>'pusheasyshop',
+        'passPhrase'  =>'easyshoppush',
         'service'     =>'apns'
     ),
     'ANDROID_PushNotif' => array(

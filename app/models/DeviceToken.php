@@ -14,4 +14,5 @@ class DeviceToken extends Eloquent
     *
     */
     protected $primaryKey = 'id_device_token';
+    public $timestamps = false;
 }
