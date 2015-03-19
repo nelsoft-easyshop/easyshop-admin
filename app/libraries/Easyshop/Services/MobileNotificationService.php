@@ -79,10 +79,10 @@ class MobileNotificationService
      * @return boolean
      */
     private function supportDeviceToken($token, $apiType){
-        if($apiType === ApiType::TYPE_IOS){
+        if((int)$apiType === ApiType::TYPE_IOS){
             return (ctype_xdigit($token) && 64 === strlen($token));
         }
-        elseif($apiType === ApiType::TYPE_ANDROID){
+        elseif((int)$apiType === ApiType::TYPE_ANDROID){
             return (bool) preg_match('/^[0-9a-zA-Z\-\_]+$/i', $token);
         }
     }
