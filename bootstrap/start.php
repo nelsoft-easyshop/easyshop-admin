@@ -28,7 +28,7 @@ $env = $app->detectEnvironment( function()
 { 
     if(file_exists( $envpath = __DIR__.'/../.env.php')){  
         $envVars = require_once($envpath);
-        return isset($envVars['environment']) ? $envVars['environment'] : 'production';
+        return isset($envVars['app_environment']) ? $envVars['app_environment'] : 'production';
     }
     else{
         return 'production';
