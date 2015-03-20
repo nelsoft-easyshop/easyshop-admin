@@ -78,7 +78,8 @@ class MobileNotificationService
      * @param  integer $apiType
      * @return boolean
      */
-    private function supportDeviceToken($token, $apiType){
+    private function supportDeviceToken($token, $apiType)
+    {
         if((int)$apiType === ApiType::TYPE_IOS){
             return (ctype_xdigit($token) && 64 === strlen($token));
         }
