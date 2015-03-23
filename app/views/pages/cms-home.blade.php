@@ -147,7 +147,7 @@
 												<label for="inputPassword" class="control-label col-xs-2">Value</label>
 												<div class="col-xs-10">
 													<div class='well' id="imgwell{{$sectionId}}{{$panelMainId}}" style="max-width:auto;">
-														<img src="{{$easyShopLink}}/{{ $panelMain->value }}" class='img-responsive' style="max-height:200px;max-width:auto;"/>
+														<img src="{{$assetLink}}/{{ $panelMain->value }}" class='img-responsive' style="max-height:200px;max-width:auto;"/>
 													</div>
 													<input type="file" id="value" class="form-control"  name="myfile" placeholder="Value" value="{{ $panelMain->value }}">
 												</div>
@@ -244,7 +244,7 @@
 												<label for="inputPassword" class="control-label col-xs-2">Value</label>
 												<div class="col-xs-10">
 													<div class='well' id="imgwell{{$sectionId}}{{$panelMainId}}" style="max-width:auto;">
-														<img src="{{$easyShopLink}}/{{ $product_panel->value }}" class='img-responsive' style="max-height:200px;max-width:auto;"/>
+														<img src="{{$assetLink}}/{{ $product_panel->value }}" class='img-responsive' style="max-height:200px;max-width:auto;"/>
 													</div>
 													<input type="file" id="value" class="form-control"  placeholder="Value" name="myfile" value="{{ $product_panel->value }}">
 												</div>
@@ -365,7 +365,7 @@
 											<div style="position:relative;display:inline-block;">
 											<div class='well' style="height:210px;">
 											<p>
-												<img src="{{$easyShopLink}}/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
+												<img src="{{$assetLink}}/{{ $mainSlide->value }}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive'/>
 											</p>
 
 											<a href="#myMain{{ $mainSlideId }}" data-toggle="modal" style="position:absolute;top:180px;left:135px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
@@ -752,7 +752,7 @@
 		  
 											<div style="position:relative; display:inline-block;">
 											<div class='well' style="height:210px;">
-													<p><img src="{{$easyShopLink}}/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive' ></p>
+													<p><img src="{{$assetLink}}/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive' ></p>
 													<a class="btn btn-default" 
 														id="deleteMainSlide" 
 														data-index="{{$i}}"  

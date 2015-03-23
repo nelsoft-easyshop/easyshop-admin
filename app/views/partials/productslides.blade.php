@@ -54,7 +54,7 @@
       
                       <div style="position:relative; display:inline-block;">
                       <div class='well' style="height:210px;">
-                          <p><img src="{{$easyShopLink}}/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive' ></p>
+                          <p><img src="{{$assetLink}}/{{$productSlide[$i][$y]['product_image_path']}}" data-div="" style="width:250px !important;height:150px !important; border: black 1px solid;" class='img-responsive' ></p>
                           
                           <a class="btn btn-default" 
                             id="deleteMainSlide" 
