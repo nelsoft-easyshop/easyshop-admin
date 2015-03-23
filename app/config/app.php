@@ -12,7 +12,7 @@
     |
     */
 
-    'debug' => true,
+    'debug' => app()->environment('development', 'staging'),
 
     /*
     |--------------------------------------------------------------------------
@@ -126,6 +126,7 @@
         'Easyshop\Services\ServiceServiceProvider',
         'Alexdover\BladeSet\BladeSetServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
+        'Davibennun\LaravelPushNotification\LaravelPushNotificationServiceProvider',
     ),
 
     /*

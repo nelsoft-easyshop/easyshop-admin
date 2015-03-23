@@ -665,7 +665,7 @@
                                                                         <div style="position:relative;display:inline-block;">
                                                                             <div class='well' style="height:auto;">
                                                                                 <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                                                    <img src="{{$easyShopLink}}{{ltrim($categorySectionProducts->product_image_path, '.')}}"class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                                                    <img src="{{$assetLink}}{{ltrim($categorySectionProducts->product_image_path, '.')}}"class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                                                 </div>
                                                                                 <a href="#categoryProductPanel_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}_{{$subPanelIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                                                 <a class="btn btn-default" 
@@ -776,7 +776,6 @@
                                 </div>
                             </div>                             
                             {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                                    
-                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                             {{ Form::hidden('hash', "", array('id' => "hashAddAds",'class' => 'form-control')) }}                        
                         </div>
                     </form>   
@@ -799,7 +798,7 @@
                                             <div style="position:relative;display:inline-block;">
                                                 <div class='well' style="height:auto;">
                                                     <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                        <img src="{{$easyShopLink}}/{{$ads->img}}" class="img-responsive" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                        <img src="{{$assetLink}}/{{$ads->img}}" class="img-responsive" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                     </div>
 
                                                     <a href="#previewImage" id="editAdsCrop" data-index="{{$adsSectionIndex}}" data-nodename="editAds" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span  data-index="{{$adsSectionIndex}}" data-nodename="editAds" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
@@ -834,7 +833,6 @@
                                                                                     {{ Form::text('target', $ads->target, array('id' => 'target','class' => 'form-control')) }}                        
                                                                                 </div>
                                                                             </div>                                                                               
-                                                                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                                                                             {{ Form::hidden('hash', "", array('id' => "editAdsSectionHash",'class' => 'form-control')) }}                        
                                                                         </div>
 
@@ -881,7 +879,6 @@
                             </legend>                         
                             {{ Form::hidden('action', "slug", array('id' => 'action','class' => 'form-control')) }}                        
                             {{ Form::hidden('userid', $userid, array('id' => 'userid','class' => 'form-control')) }}                          
-                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                             <div class="form-group">
                                 <label for="inputPassword" class="control-label col-xs-2">Enter Slug</label>
                                 <div class="col-xs-10">
@@ -912,7 +909,6 @@
                                 </div>
                             </div>            
                             {{ Form::hidden('action', "banner", array('id' => 'action','class' => 'form-control')) }}                        
-                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                             {{ Form::hidden('hash', "", array('id' => "hashChangeSellerBanner",'class' => 'form-control')) }}                        
                                                                                                    
                             <div class="form-group">
@@ -923,7 +919,7 @@
                             <center>
                                 <div class='well' style="height:auto;max-width: 600px;">
                                     <div style=" height: 220px;max-width: 500px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                        <img src="{{$easyShopLink}}{{$sellerSection->sellerBanner}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                        <img src="{{$assetLink}}{{$sellerSection->sellerBanner}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
                                     </div>
                                 </div>
                             </center>
@@ -946,7 +942,6 @@
                                 </div>
                             </div>                                                                                 
                             {{ Form::hidden('action', "logo", array('id' => 'action','class' => 'form-control')) }}                        
-                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                             {{ Form::hidden('hash', "", array('id' => "hashChangeSellerLogo",'class' => 'form-control')) }}                        
                                                                                                    
                             <div class="form-group">
@@ -957,7 +952,7 @@
                             <center>
                                 <div class='well' style="height:auto;max-width: 600px;">
                                     <div style=" height: 220px;max-width: 500px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                        <img src="{{$easyShopLink}}{{$sellerSection->sellerLogo}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                        <img src="{{$assetLink}}{{$sellerSection->sellerLogo}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
                                     </div>
                                 </div>
                             </center>                            
@@ -1003,7 +998,7 @@
                                             <div style="position:relative;display:inline-block;">
                                                 <div class='well' style="height:auto;">
                                                     <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                        <img src="{{$easyShopLink}}{{ltrim($productPanel->product_image_path, '.')}}" class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                        <img src="{{$assetLink}}{{ltrim($productPanel->product_image_path, '.')}}" class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                     </div>
 
                                                     <a href="#productPanel{{$productPanelindex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
@@ -1392,7 +1387,6 @@
                                                     {{ Form::text('target', "/", array('id' => 'target','class' => 'form-control')) }}                        
                                                 </div>
                                             </div>                                                                               
-                                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                                             {{ Form::hidden('hash', "", array('id' => "hashMainSlide",'class' => 'form-control')) }}                        
 
 
@@ -1418,7 +1412,7 @@
                                                         <div class='well' style="height:auto;">
                                                         <center>
                                                             <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                                <img src="{{$easyShopLink}}{{$subSlides->path}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                                                <img src="{{$assetLink}}{{$subSlides->path}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
                                                             </div>
 
                                                             <a href="#previewImage" id="editSubSliderCrop" data-toggle="modal" data-index="{{$sliderIndex}}" data-subindex="{{$subSlideIndex}}" data-nodename="editMainSlider" style="position:absolute;top:235px;left:112px;"><span  href="" id="editSubSliderCrop" data-toggle="modal" data-index="{{$sliderIndex}}" data-subindex="{{$subSlideIndex}}" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
@@ -1473,7 +1467,6 @@
                                                                                         {{ Form::text('target', $subSlides->target, array('id' => 'target','class' => 'form-control')) }}                        
                                                                                     </div>
                                                                                 </div>                                                                               
-                                                                                {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                                                                                 {{ Form::hidden('hash', "", array('id' => "editHashMainSlide",'class' => 'form-control')) }}                        
                                                                             </div>
                                                                         </form>

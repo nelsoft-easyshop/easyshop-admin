@@ -6,7 +6,8 @@
     "require": {
         "laravel/framework": "4.2.*",
         "alexdover/blade-set": "1.*",
-        "maatwebsite/excel": "1.*"
+        "maatwebsite/excel": "1.*",
+        "davibennun/laravel-push-notification": "dev-master"
     },
     "autoload": {
         "classmap": [

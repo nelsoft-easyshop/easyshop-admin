@@ -200,6 +200,7 @@ class MemberRepository extends AbstractRepository
                                 DB::raw('SUM(es_order_product.net) as net'),
                                 DB::raw('GROUP_CONCAT(es_order_product.id_order_product) as order_product_ids'),
                             ]);
+
         return $completedOrders;
     }
 

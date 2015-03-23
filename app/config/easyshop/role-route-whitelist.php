@@ -8,6 +8,7 @@
     
     $pages['contentManagement'] = [
         "cms",
+        "mobile",
     ];
     
     $pages['dataManagement'] = [

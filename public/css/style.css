@@ -3025,8 +3025,7 @@ table.dataTable.hover tbody tr:hover  .brand_op_lnk, table.dataTable.hover tbody
     display:block;
 }
 
-.registration_form{
-
+.registration_form, .notification_form{
     padding-top: 50px !important;
     padding:100px;
 }
@@ -3660,4 +3659,8 @@ top:0px !important;
 
 .required-span{
     color: red;
+}
+
+#ban_dropdown{
+    display: none;
 }

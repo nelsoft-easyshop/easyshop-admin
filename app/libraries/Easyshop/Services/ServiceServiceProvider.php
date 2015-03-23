@@ -80,6 +80,12 @@ class ServiceServiceProvider extends ServiceProvider
             );
         });
 
+        $this->app->bind('MobileNotificationService', function(){
+            return new MobileNotificationService( 
+                new \Easyshop\ModelRepositories\DeviceTokenRepository,
+                new \Davibennun\LaravelPushNotification\PushNotification
+            );
+        }); 
     }
 }
 

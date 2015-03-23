@@ -5,7 +5,7 @@
                                             <div style="position:relative;display:inline-block;">
                                                 <div class='well' style="height:auto;">
                                                     <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                        <img src="{{$easyShopLink}}/{{$ads->img}}" class="img-responsive" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                        <img src="{{$assetLink}}/{{$ads->img}}" class="img-responsive" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                     </div>
 
                                                     <a href="#previewImage" id="editAdsCrop" data-index="{{$adsSectionIndex}}" data-nodename="editAds" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span  data-index="{{$adsSectionIndex}}" data-nodename="editAds" class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
@@ -39,7 +39,6 @@
                                                                                     {{ Form::text('target', $ads->target, array('id' => 'target','class' => 'form-control')) }}                        
                                                                                 </div>
                                                                             </div>                                                                               
-                                                                            {{ Form::hidden('password', $password, array('id' => 'password','class' => 'form-control')) }}                        
                                                                             {{ Form::hidden('hash', "", array('id' => "editAdsSectionHash",'class' => 'form-control')) }}                        
                                                                         </div>
 
