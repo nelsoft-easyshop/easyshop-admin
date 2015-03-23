@@ -665,7 +665,7 @@
                                                                         <div style="position:relative;display:inline-block;">
                                                                             <div class='well' style="height:auto;">
                                                                                 <div style="width: 200px; height: 220px;max-width: 200px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                                                                    <img src="{{$easyShopLink}}{{ltrim($categorySectionProducts->product_image_path, '.')}}"class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                                                    <img src="{{$assetLink}}{{ltrim($categorySectionProducts->product_image_path, '.')}}"class="img-responsive" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                                                 </div>
                                                                                 <a href="#categoryProductPanel_{{$categorySectionIndex}}_{{$subCategorySectionIndex}}_{{$subPanelIndex}}" data-toggle="modal" style="position:absolute;top:235px;left:112px;"><span class="glyphicon glyphicon-edit" style="font-size:16px;"></span></a>
                                                                                 <a class="btn btn-default" 
@@ -919,7 +919,7 @@
                             <center>
                                 <div class='well' style="height:auto;max-width: 600px;">
                                     <div style=" height: 220px;max-width: 500px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                        <img src="{{$easyShopLink}}{{$sellerSection->sellerBanner}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                        <img src="{{$assetLink}}{{$sellerSection->sellerBanner}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
                                     </div>
                                 </div>
                             </center>
@@ -952,7 +952,7 @@
                             <center>
                                 <div class='well' style="height:auto;max-width: 600px;">
                                     <div style=" height: 220px;max-width: 500px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                        <img src="{{$easyShopLink}}{{$sellerSection->sellerLogo}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                        <img src="{{$assetLink}}{{$sellerSection->sellerLogo}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
                                     </div>
                                 </div>
                             </center>                            

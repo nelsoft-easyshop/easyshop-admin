@@ -47,7 +47,7 @@
                             <center>
                                 <div class='well' style="height:auto;max-width: 600px;">
                                     <div style=" height: 220px;max-width: 500px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                        <img src="{{$easyShopLink}}{{$sellerSection->sellerBanner}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                        <img src="{{$assetLink}}{{$sellerSection->sellerBanner}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
                                     </div>
                                 </div>
                             </center>
@@ -80,7 +80,7 @@
                             <center>
                                 <div class='well' style="height:auto;max-width: 600px;">
                                     <div style=" height: 220px;max-width: 500px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                        <img src="{{$easyShopLink}}{{$sellerSection->sellerLogo}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                        <img src="{{$assetLink}}{{$sellerSection->sellerLogo}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
                                     </div>
                                 </div>
                             </center>                            
