@@ -5,6 +5,7 @@ use Easyshop\ModelRepositories\ProductRepository as ProductRepository;
 use Easyshop\ModelRepositories\AdminMemberRepository as AdminMemberRepository;
 use Easyshop\ModelRepositories\CategoryRepository as CategoryRepository;
 use Easyshop\ModelRepositories\BrandRepository as BrandRepository;
+use Easyshop\ModelRepositories\ProductImageRepository as ProductImageRepository;
 
 class NewHomeContentManagerController extends BaseController 
 {
@@ -38,11 +39,17 @@ class NewHomeContentManagerController extends BaseController
      */      
     protected $brandRepository;    
 
+    /**
+     *  The Product Image Repository
+     */ 
+    protected $productImageRepository;
+    
     public function __construct(XMLService $XMLService,
                                 ProductRepository $productRepository,
                                 AdminMemberRepository $adminMemberRepository, 
                                 CategoryRepository $categoryRepository,
-                                BrandRepository $brandRepository) 
+                                BrandRepository $brandRepository,
+                                ProductImageRepository $productImageRepository) 
     {   
         $this->XMLService = $XMLService;
         $this->assetLink = trim($this->XMLService->getAssetsLink()) === "/" ? $this->XMLService->GetEasyShopLink() : 
@@ -52,6 +59,7 @@ class NewHomeContentManagerController extends BaseController
         $this->adminMemberRepository = $adminMemberRepository;    
         $this->categoryRepository = $categoryRepository;    
         $this->brandRepository = $brandRepository;    
+        $this->productImageRepository = $productImageRepository;   
     }      
       
     /**
