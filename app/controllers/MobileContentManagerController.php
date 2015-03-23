@@ -21,6 +21,13 @@ class MobileContentManagerController extends BaseController
      */
     protected $adminRepository;
 
+    /**
+     * Asssets Link
+     *
+     * @var string
+     */
+    private $assetLink; 
+    
     public function __construct(XMLService $XMLService,
                                 CategoryRepository $categoryRepository,
                                 AdminMemberRepository $adminRepository)
@@ -30,6 +37,8 @@ class MobileContentManagerController extends BaseController
         $this->categoryRepository = $categoryRepository;
         $xmlString = $this->XMLService->getMobileHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
+        $assetsLink = trim($this->XMLService->getAssetsLink());
+        $this->assetLink = $assetsLink === "/" ? $this->XMLService->GetEasyShopLink() : rtrim($assetsLink, '/');
     }
 
     /**
@@ -81,6 +90,7 @@ class MobileContentManagerController extends BaseController
                     ->with('mainSlideCount',  count($mainSlides))
                     ->with('mobileCmsLink', $this->XMLService->getMobileCmsLink())
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
+                    ->with('assetLink', $this->assetLink)
                     ->with('themeLists',$themeLists[0]);
     }
 
@@ -107,7 +117,8 @@ class MobileContentManagerController extends BaseController
             ->with('actionTypes',  $actionTypes[0])
             ->with('mainSlideCount',  count($mainSlides))
             ->with('homeCmsLink',$this->XMLService->getMobileCmsLink())
-            ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
+            ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
+            ->with('assetLink', $this->assetLink);
     }    
 
     /**
