@@ -206,6 +206,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.sellersection')
                     ->with('sellerSection', $this->map->sellerSection)
                     ->with('userid', Auth::id())
+                    ->with('assetLink', $this->assetLink)
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink());
     }
