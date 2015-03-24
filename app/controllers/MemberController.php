@@ -51,12 +51,14 @@ class MemberController extends BaseController
         ];
         $locationLookUpRepository = App::make('LocationLookUpRepository');
         $locationService = $this->locationService;
-        $data = $locationService->location($locationLookUpRepository->getByType());
+        $listOfLocation = $locationService->location($locationLookUpRepository->getByType());
+        $listOfBanType = $this->banTypeRepository->getByType();
         $MemberRepository = App::make('MemberRepository');
         return View::make('pages.userlist')
             ->with('member_count', $MemberRepository->getUsersCount())        
             ->with('list_of_member', App::make('MemberRepository')->search($userData, 100))
-            ->with('list_of_location', $data);
+            ->with('list_of_location', $listOfLocation)
+            ->with('list_of_ban_type', $listOfBanType);
     }
 
     public function ajaxUpdateUsers()
