@@ -227,15 +227,13 @@ class OrderProductController extends BaseController
         $member = $memberRepository->getById($userId);
         $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
 
-        $errors = [];
-        #$errors = $transactionService->updateOrderProductsAsPaid($orderProducts, $accountName, $accountNumber, $bankName);
+        $errors = $transactionService->updateOrderProductsAsPaid($orderProducts, $accountName, $accountNumber, $bankName);
         $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName);
 
-        return  Response::json(
-            array('success' => count($errors) > 0,
-                  'errors' => $errors)
-        );
-        
+        return  Response::json([
+            'success' => count($errors) > 0,
+            'errors' => $errors,
+        ]);
     }
     
     /**
@@ -265,10 +263,10 @@ class OrderProductController extends BaseController
         $errors = $transactionService->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
         $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, true);
 
-        return  Response::json(
-            array('success' => count($errors) > 0,
-                  'errors' => $errors)
-        );
+        return  Response::json([
+            'success' => count($errors) > 0,
+            'errors' => $errors,
+        ]);
     }
         
     /**
