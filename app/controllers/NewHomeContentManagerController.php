@@ -119,6 +119,9 @@ class NewHomeContentManagerController extends BaseController
         {
             $productObj = $this->productRepository->getProductBySlug($productPanel->slug);   
             if(count($productObj) > 0) {
+                $defaultImage = $this->productImageRepository->getDefaultProductImage($productObj->id_product);
+                $productObj->imageDirectory = $defaultImage->directory;
+                $productObj->imageFile =  $defaultImage->filename;
                 $product[] = $productObj;
             }            
         }
@@ -134,9 +137,12 @@ class NewHomeContentManagerController extends BaseController
                 foreach ($productPanel->productSlugs as $slug) {
                     $productObj = $this->productRepository->getProductBySlug($slug);
                     if(count($productObj) > 0) {
+                        $defaultImage = $this->productImageRepository->getDefaultProductImage($productObj->id_product);
+                        $productObj->imageDirectory = $defaultImage->directory;
+                        $productObj->imageFile =  $defaultImage->filename;
                         $categoryProductPanel[] = $productObj;
                     }                    
-                }
+                }       
                 $categoryProductPanelList[] = array_flatten([
                     $index => $categoryProductPanel 
                 ]);
@@ -283,6 +289,9 @@ class NewHomeContentManagerController extends BaseController
                 foreach ($productPanel->productSlugs as $slug) {
                     $productObj = $this->productRepository->getProductBySlug($slug);
                     if(count($productObj) > 0) {
+                        $defaultImage = $this->productImageRepository->getDefaultProductImage($productObj->id_product);
+                        $productObj->imageDirectory = $defaultImage->directory;
+                        $productObj->imageFile =  $defaultImage->filename;
                         $categoryProductPanel[] = $productObj;
                     }                    
                 }
@@ -344,6 +353,9 @@ class NewHomeContentManagerController extends BaseController
         {
             $productObj = $this->productRepository->getProductBySlug($productPanel->slug);   
             if(count($productObj) > 0) {
+                $defaultImage = $this->productImageRepository->getDefaultProductImage($productObj->id_product);
+                $productObj->imageDirectory = $defaultImage->directory;
+                $productObj->imageFile =  $defaultImage->filename;
                 $product[] = $productObj;
             }      
             
@@ -537,7 +549,11 @@ class NewHomeContentManagerController extends BaseController
                 foreach ($productPanel->productSlugs as $slug) {
                     $productObj = $this->productRepository->getProductBySlug($slug);
                     if(count($productObj) > 0) {
+                        $defaultImage = $this->productImageRepository->getDefaultProductImage($productObj->id_product);
+                        $productObj->imageDirectory = $defaultImage->directory;
+                        $productObj->imageFile =  $defaultImage->filename;
                         $categoryProductPanel[] = $productObj;
+                        
                     }                    
                 }
                 $categoryProductPanelList[] = array_flatten([
