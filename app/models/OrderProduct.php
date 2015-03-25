@@ -94,6 +94,16 @@ class OrderProduct extends Eloquent
     {
         return $this->hasOne('ProductShippingComment', 'order_product_id', 'id_order_product');
     }
-
+    
+    /**
+     * Relationship with es_order_product_attr
+     *
+     * @return OrderProductAttr[]
+     */
+    public function orderProductAttributes()
+    {
+        return $this->hasMany('OrderProductAttr', 'order_product_id', 'id_order_product');
+    }
+    
 
 }
