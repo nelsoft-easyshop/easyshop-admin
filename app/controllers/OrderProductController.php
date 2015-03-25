@@ -48,7 +48,7 @@ class OrderProductController extends BaseController
      * @return View
      */
     public function getUsersToRefund()
-    {   
+    {      
         $memberRepository = App::make('MemberRepository');
 
         if(Input::has('dateFrom')){
@@ -223,15 +223,13 @@ class OrderProductController extends BaseController
         $accountNumber = Input::get('account_number');
         $bankName = Input::get('bank_name');
         $userId = Input::get('member_id');
-
-        $dateFrom = Carbon::createFromFormat('Y/m/d',  Input::get('dateFrom'));
-        $dateTo = Carbon::createFromFormat('Y/m/d',  Input::get('dateTo'));
-
+        
         $member = $memberRepository->getById($userId);
         $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
 
-        $errors = $transactionService->updateOrderProductsAsPaid($orderProducts, $accountName, $accountNumber, $bankName);
-        $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo);
+        $errors = [];
+        #$errors = $transactionService->updateOrderProductsAsPaid($orderProducts, $accountName, $accountNumber, $bankName);
+        $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName);
 
         return  Response::json(
             array('success' => count($errors) > 0,
@@ -263,9 +261,9 @@ class OrderProductController extends BaseController
 
         $member = $memberRepository->getById($userId);
         $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
-
+        
         $errors = $transactionService->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
-        $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, $dateFrom, $dateTo, true);
+        $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, true);
 
         return  Response::json(
             array('success' => count($errors) > 0,
