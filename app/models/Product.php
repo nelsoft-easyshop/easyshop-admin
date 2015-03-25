@@ -38,4 +38,10 @@ class Product extends Eloquent
     {
         return $this->hasOne('Member', 'id_member', 'member_id');
     }
+    
+    public function productImages()
+    {
+        return $this->hasMany('ProductImage', 'product_id', 'id_product');
+    }
+    
 }

@@ -41,16 +41,10 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('cms/getCategoriesProductPanel/{index}/{subindex}/{subpanelindex}', array('uses' => 'NewHomeContentManagerController@getCategoriesProductPanel'));
     Route::post('cms/getSliderPreview', array('uses' => 'NewHomeContentManagerController@getSliderPreview'));
     Route::get('cms/getSellerSection', array('uses' => 'NewHomeContentManagerController@getSellerSection'));
-
-    Route::get('cms/slides', array('uses' => 'HomeContentManagerController@getMainSlides'));
-    Route::get('cms/productslides', array('uses' => 'HomeContentManagerController@getProductSlides'));
-
     Route::get('cms/feeds', array('uses' => 'FeedsContentManagerController@getContentFiles'));
     Route::get('cms/featuredProduct', array('uses' => 'FeedsContentManagerController@getFeaturedProducts'));
     Route::get('cms/popularItem', array('uses' => 'FeedsContentManagerController@getPopularItems'));
     Route::get('cms/promoItems', array('uses' => 'FeedsContentManagerController@getPromoItems'));
-    
-
     Route::get('cms/mobile', array('uses' => 'MobileContentManagerController@showMobileCms'));
     Route::get('cms/mobileSlides', array('uses' => 'MobileContentManagerController@getMainSlides'));
     Route::get('cms/mobile/getBoxContent/{index}', array('uses' => 'MobileContentManagerController@getBoxContent'));
