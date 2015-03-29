@@ -51,7 +51,7 @@ class RESTAccessor
         $ch = curl_init($url);
         curl_setopt_array($ch, $options);
 
-        if($this->environment === 'development'){
+        if($this->environment !== 'production'){
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         }
