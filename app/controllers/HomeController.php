@@ -11,13 +11,13 @@ class HomeController extends BaseController
     {
 
         $orderRepository = App::make('OrderProductRepository'); 
-        $unTaggedSellersTransaction = $orderRepository->countUntagTransaction();
+        $unTaggedSellersTransactionCount = $orderRepository->countUntagTransaction();
         $untaggedBuyerTransactionsCount  = $orderRepository->countUntagTransaction(FALSE);
 
         return View::make('pages.dashboard')
             ->with('username', Auth::user()->username)
             ->with("untaggedBuyerTransactionsCount",$untaggedBuyerTransactionsCount )
-            ->with('unTaggedSellersTransaction',$unTaggedSellersTransaction);
+            ->with('unTaggedSellersTransactionCount',$unTaggedSellersTransactionCount);
 
     }
 
