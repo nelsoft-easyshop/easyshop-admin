@@ -50,9 +50,8 @@ class EmailService{
             $orderProducts[$key]->defaultImage = $productImage;
         }
 
-        $storename = $member->getStoreName();
         $data = [
-            'recipient' => $storename . ($member->username === $storename ? '/'.$member->username : ''),
+            'recipient' => $member->username,
             'orderProducts' => $orderProducts,
             'accountName' => $accountName,
             'accountNumber' => $accountNumber,
@@ -64,7 +63,7 @@ class EmailService{
             'twitter' => \Config::get('easyshop/social-media-links.twitter'),
         ];
 
-        $subject = $isRefund ? 'Fund transfer for Refund Request' : 'Payment for you sales';
+        $subject = $isRefund ? 'Fund transfer for Refund Request' : 'Payment for your sales';
         Mail::send('emails.payment', $data, function($message) use ($member, $subject)
         {
             $message->to($member->email, isset($member->fullname) ? $member->fullname : $member->username )

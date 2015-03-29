@@ -89,7 +89,7 @@
                                                                     Thank you for selling through Easyshop.ph! The payment for your sales has now been forwarded to your account.
                                                                 @endif
                                                                 <br/>
-                                                                Details for your transactions are include below.
+                                                                Details for your transactions are included below.
 
                                                             </td>
                                                         </tr>

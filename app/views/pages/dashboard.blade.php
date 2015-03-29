@@ -72,7 +72,7 @@
             <li>
                 <a href='/contact/seller'>
                     <img src="{{{ asset('images/icon_people.png') }}}"/> 
-                    <span>Contact Sellers</span><span class="label label-danger pull-right" style='margin-right:20px;'>{{{ $unTaggedSellersTransaction  }}}</span></span>  
+                    <span>Contact Sellers</span><span class="label label-danger pull-right" style='margin-right:20px;'>{{{ $unTaggedSellersTransactionCount  }}}</span></span>  
                 </a>
                 <p> View sellers that have to be contacted</p>
             </li>                
