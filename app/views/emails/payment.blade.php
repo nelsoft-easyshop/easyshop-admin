@@ -364,7 +364,7 @@
                                                         <table width="230" border="0" cellspacing="0" cellpadding="0" align="left">
                                                             <tr>
                                                                 <td width="70">
-                                                                    <img src="{{{ $assetsLink }}}{{{ ltrim($orderProduct->defaultImage->directory, '.') }}}categoryview/{{{ $orderProduct->defaultImage->filename }}}" width="60" height="60" style="width: 60px; height: 60px; border: solid #e2e2e2 1px; text-align: center;">
+                                                                    <img src="{{{ rtrim($assetsLink, '/') }}}{{{ ltrim($orderProduct->defaultImage->directory, '.') }}}categoryview/{{{ $orderProduct->defaultImage->filename }}}" width="60" height="60" style="width: 60px; height: 60px; border: solid #e2e2e2 1px; text-align: center;">
                                                                 </td>
                                                                 <td valign="bottom" style="padding-left: 10px;">
                                                                     <a href="{{{ rtrim($easyshopLink, '/') }}}/item/{{{ $orderProduct->product->slug }}}" style="font-size: 15px; line-height: 22px; font-family:Roboto,Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:#555555; font-weight:400; text-align:left; ">
