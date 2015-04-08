@@ -19,7 +19,6 @@ class ServiceServiceProvider extends ServiceProvider
 
         $this->app->bind('ExcelService', function($app){
             return new ExcelService();
-
         });
 
         $this->app->bind('TransactionService', function($app){
@@ -37,7 +36,10 @@ class ServiceServiceProvider extends ServiceProvider
         });
 
         $this->app->bind('EmailService', function(){
-            return new EmailService();
+            return new EmailService(
+                new \Easyshop\ModelRepositories\ProductImageRepository(),
+                new \Easyshop\Services\RestAccessor($this->app->environment())
+            );
         });
 
         $this->app->bind('XMLContentGetterService', function(){
