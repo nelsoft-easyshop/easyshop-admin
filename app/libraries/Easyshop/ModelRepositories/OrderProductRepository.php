@@ -201,7 +201,11 @@ class OrderProductRepository extends AbstractRepository
 
         $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
               ->where('es_order_product.status', '=', OrderProductStatus::STATUS_ON_GOING)
-              ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY]);
+              ->whereIn('es_order.payment_method_id', [
+                    PaymentMethod::PAYPAL,
+                    PaymentMethod::DRAGONPAY,
+                    PaymentMethod::PESOPAY,
+                ]);
 
         if($filter){
             if($userData['fullname']){
@@ -274,7 +278,11 @@ class OrderProductRepository extends AbstractRepository
         $query->leftJoin("es_order_product_tag","es_order_product_tag.order_product_id","=","es_order_product.id_order_product");
         $query->leftJoin("es_tag_type","es_tag_type.id_tag_type","=","es_order_product_tag.tag_type_id");
         $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID);
-        $query->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY]);
+        $query->whereIn('es_order.payment_method_id',[
+            PaymentMethod::PAYPAL,
+            PaymentMethod::DRAGONPAY,
+            PaymentMethod::PESOPAY,
+        ]);
         if($filter != NULL) {
             if($filter == "username") {
                 $query->where('es_member.username', 'LIKE', '%' . $filterBy . '%');
@@ -354,7 +362,11 @@ class OrderProductRepository extends AbstractRepository
 
         $query->groupBy("es_order_product.seller_id", "es_order_product.order_id");
         $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
-              ->whereIn('es_order.payment_method_id',[PaymentMethod::PAYPAL,PaymentMethod::DRAGONPAY])
+              ->whereIn('es_order.payment_method_id',[
+                    PaymentMethod::PAYPAL,
+                    PaymentMethod::DRAGONPAY,
+                    PaymentMethod::PESOPAY,
+                ])
               ->whereNull('es_order_product_tag.tag_type_id');
 
         return $query->get()->count();
