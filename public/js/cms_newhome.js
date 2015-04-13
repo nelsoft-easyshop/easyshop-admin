@@ -532,6 +532,31 @@
             addAds(form, url);
         }
     }); 
+    
+    $("#manageSellerSection").on('click','#useDefaultSellerLogoSubmit', function(e) {
+        var $this = $(this);
+        loader.showPleaseWait();  
+        var url = $this.data('url');
+        var action = 'deleteLogo';
+        var userid = $this.closest("form").find("#userid").val().toString();
+        var hash =  hex_sha1(userid + action + password);
+        var data = { userid: userid , action: action, hash: hash};
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: data,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                loader.hidePleaseWait();
+                $("#setSellerHeadSection").load("getSellerSection");
+            },
+            complete: function(){
+                loader.hidePleaseWait();
+            }
+        });    
+    });
 
     $("#manageSellerSection").on('click','#changeSellerBannerSubmit, #changeSellerLogoSubmit, #changeSellerSlug',function (e) { 
         
@@ -1924,7 +1949,7 @@
                 loader.hidePleaseWait();  
                 $(form).find("#sellerFile").val("");
                 $("#setSellerHeadSection").load("getSellerSection");
-
+                
             },
             error: function(e) {
                 loader.hidePleaseWait();   

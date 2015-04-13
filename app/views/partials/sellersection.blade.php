@@ -74,13 +74,20 @@
                                                                                                    
                             <div class="form-group">
                                 <div class="col-xs-offset-2 col-xs-10">
-                                    <a1 href="#"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/setSellerHead" id="changeSellerLogoSubmit">Change Seller Logo</a>
+                                    <a href="javascript:void(0);"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/setSellerHead" id="changeSellerLogoSubmit">Change Seller Logo</a>
+                                    <a href="javascript:void(0);"  class="btn btn-primary text-center" data-url = "{{{$newHomeCmsLink}}}/setSellerHead" id="useDefaultSellerLogoSubmit">Use Default Seller Logo</a>
                                 </div>
                             </div>
                             <center>
                                 <div class='well' style="height:auto;max-width: 600px;">
                                     <div style=" height: 220px;max-width: 500px; max-height: 250px; display: table-cell; vertical-align: middle;">
-                                        <img src="{{$assetLink}}{{$sellerSection->sellerLogo}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                        @if (trim($sellerSection->sellerLogo) === "")
+                                            <img src="{{$assetLink}}/assets/images/default-image-set.png" class="img-responsive seller-logo-default" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                            <img src="{{$assetLink}}{{$sellerSection->sellerLogo}}" class="img-responsive" style="display:none" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                        @else
+                                            <img src="{{$assetLink}}/assets/images/default-image-set.png" class="img-responsive seller-logo-actual" style="display:none" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                            <img src="{{$assetLink}}{{$sellerSection->sellerLogo}}" class="img-responsive" data-div="" style="border: black 1px solid;height: auto; max-height: 200px;"/>
+                                        @endif
                                     </div>
                                 </div>
                             </center>                            
