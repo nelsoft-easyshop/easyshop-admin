@@ -17,6 +17,7 @@
 
     var userid = $("#userid").val();
     var password = $("#password").val();
+
     var newHomeCmsLink = $("#newHomeCmsLink").text();
     var minimumCategoryProductPanel = 1;
     var minimumCategorySectionProductPanel = 3;
@@ -37,7 +38,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -89,7 +89,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -127,7 +126,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -224,7 +222,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -348,7 +345,6 @@
                     type: 'GET',
                     url: url,
                     data:data,
-                    async: false,
                     jsonpCallback: 'jsonCallback',
                     contentType: "application/json",
                     dataType: 'jsonp',
@@ -394,7 +390,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -438,7 +433,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -538,6 +532,31 @@
             addAds(form, url);
         }
     }); 
+    
+    $("#manageSellerSection").on('click','#useDefaultSellerLogoSubmit', function(e) {
+        var $this = $(this);
+        loader.showPleaseWait();  
+        var url = $this.data('url');
+        var action = 'deleteLogo';
+        var userid = $this.closest("form").find("#userid").val().toString();
+        var hash =  hex_sha1(userid + action + password);
+        var data = { userid: userid , action: action, hash: hash};
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: data,
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(json) {
+                loader.hidePleaseWait();
+                $("#setSellerHeadSection").load("getSellerSection");
+            },
+            complete: function(){
+                loader.hidePleaseWait();
+            }
+        });    
+    });
 
     $("#manageSellerSection").on('click','#changeSellerBannerSubmit, #changeSellerLogoSubmit, #changeSellerSlug',function (e) { 
         
@@ -545,6 +564,7 @@
         var url = $(this).data('url');
         var action = $(this).closest("form").find("#action").val().toString();
         var userid = $(this).closest("form").find("#userid").val().toString();
+
         if(action == "slug") {
             var slug = $(this).closest("form").find("#slug").val().toString();
             if(slug.trim() == "") {
@@ -558,7 +578,6 @@
                     type: 'GET',
                     url: url,
                     data:data,
-                    async: false,
                     jsonpCallback: 'jsonCallback',
                     contentType: "application/json",
                     dataType: 'jsonp',
@@ -615,7 +634,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -653,7 +671,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -691,7 +708,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -758,7 +774,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -806,7 +821,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -838,7 +852,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -989,7 +1002,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1058,7 +1070,6 @@
                     type: 'GET',
                     url: url,
                     data:data,
-                    async: false,
                     jsonpCallback: 'jsonCallback',
                     contentType: "application/json",
                     dataType: 'jsonp',
@@ -1098,7 +1109,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1135,7 +1145,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1164,7 +1173,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1201,7 +1209,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1226,7 +1233,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1254,7 +1260,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1292,7 +1297,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1324,7 +1328,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1352,7 +1355,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1389,7 +1391,6 @@
                     type: 'GET',
                     url: url,
                     data:data,
-                    async: false,
                     jsonpCallback: 'jsonCallback',
                     contentType: "application/json",
                     dataType: 'jsonp',
@@ -1423,7 +1424,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1450,7 +1450,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1478,7 +1477,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1510,7 +1508,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1544,7 +1541,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1613,7 +1609,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1653,7 +1648,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1689,7 +1683,6 @@
                 type: 'GET',
                 url: url,
                 data:data,
-                async: false,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1738,7 +1731,6 @@
             type: 'GET',
             url: url,
             data:{hash:hash, userid:userid},
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',            
@@ -1790,7 +1782,6 @@
                     type: 'GET',
                     url: url,
                     data:data,
-                    async: false,
                     jsonpCallback: 'jsonCallback',
                     contentType: "application/json",
                     dataType: 'jsonp',
@@ -1816,7 +1807,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1839,7 +1829,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1861,7 +1850,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1883,7 +1871,6 @@
             url: url,
             type: 'GET', 
             dataType: 'jsonp',
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1907,7 +1894,6 @@
             url: url,
             type: 'GET', 
             dataType: 'jsonp',
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1933,7 +1919,6 @@
             url: url,
             type: 'GET', 
             dataType: 'jsonp',
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1957,7 +1942,6 @@
             url: url,
             type: 'GET', 
             dataType: 'jsonp',
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -1965,7 +1949,7 @@
                 loader.hidePleaseWait();  
                 $(form).find("#sellerFile").val("");
                 $("#setSellerHeadSection").load("getSellerSection");
-
+                
             },
             error: function(e) {
                 loader.hidePleaseWait();   
@@ -1983,7 +1967,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -2004,7 +1987,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -2025,7 +2007,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -2073,7 +2054,6 @@
             url: url,
             type: 'GET', 
             dataType: 'jsonp',
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
@@ -2216,7 +2196,6 @@ function setImagesCropSizes(template, subSlideIndex, tempIndex, type)
         type: 'GET',
         url: newHomeCmsLink + "/getTemplateImageDimension",
         data:{index:subSlideIndex, template: template, currentSliderCount : tempIndex, type: type, userid:userid, hash:hash},
-        async: false,
         jsonpCallback: 'jsonCallback',
         contentType: "application/json",
         dataType: 'jsonp',

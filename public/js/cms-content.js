@@ -30,7 +30,6 @@
             type: 'GET',
             url: url,
             data:data,
-            async: false,
             jsonpCallback: 'jsonCallback',
             contentType: "application/json",
             dataType: 'jsonp',
