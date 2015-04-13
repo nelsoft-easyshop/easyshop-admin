@@ -9,19 +9,14 @@ class HomeController extends BaseController
      */
     public function index()
     {
-
-        $orderRepository = App::make('OrderProductRepository'); 
-        $unTaggedSellersTransactionCount = $orderRepository->countUntagTransaction();
-        $untaggedBuyerTransactionsCount  = $orderRepository->countUntagTransaction(FALSE);
+        $orderProductRepository = App::make('OrderProductRepository'); 
+        $unTaggedSellersTransactionCount = $orderProductRepository->getAllSellersTransaction(PHP_INT_MAX, false, [], false)->count();
+        $untaggedBuyerTransactionsCount  =  $orderProductRepository->getAllSellersTransaction(PHP_INT_MAX, false, [], true)->count();
 
         return View::make('pages.dashboard')
             ->with('username', Auth::user()->username)
             ->with("untaggedBuyerTransactionsCount",$untaggedBuyerTransactionsCount )
             ->with('unTaggedSellersTransactionCount',$unTaggedSellersTransactionCount);
-
     }
-
-
-
 
 }
