@@ -188,11 +188,15 @@ class OrderProductRepository extends AbstractRepository
         $rawSql = '(SELECT 
                         es_order_product.order_id,
                         COUNT(es_order_product.order_id) as count_tagged
-                    FROM es_order_product 
-                    LEFT JOIN es_order_product_tag on es_order_product.id_order_product = es_order_product_tag.order_product_id
-                    WHERE tag_type_id IS NOT NULL
-                    AND tag_type_id NOT IN (?,?,?)
-                    GROUP BY es_order_product.order_id
+                    FROM
+                        es_order_product 
+                    LEFT JOIN
+                        es_order_product_tag on es_order_product.id_order_product = es_order_product_tag.order_product_id
+                    WHERE
+                        tag_type_id IS NOT NULL AND
+                        tag_type_id NOT IN (?,?,?)
+                    GROUP BY 
+                        es_order_product.order_id
                     ) AS count_temp_table';
 
         $query->leftJoin(DB::raw($rawSql), function( $query ){
@@ -257,7 +261,7 @@ class OrderProductRepository extends AbstractRepository
                                             DB::raw('COUNT(es_order_product.order_id) as count'),
                                             DB::raw('COALESCE(count_temp_table.count_tagged,0) as tag_count')
                                         ]);
-        
+
         return $returnTransaction;
     }
 
@@ -334,43 +338,6 @@ class OrderProductRepository extends AbstractRepository
 
         return $returnTransaction;
     }    
-
-    /**
-     * Retrieves count of untagged transactions
-     * @param bool $isSeller
-     * @return Entity Count
-     */
-    public function countUntagTransaction($isSeller = true)
-    {
-        if($isSeller) {
-            $query = OrderProduct::join('es_member','es_order_product.seller_id', '=', 'es_member.id_member'); 
-            $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
-        }
-        else {
-            $query = OrderProduct::leftJoin('es_order','es_order_product.order_id', '=', 'es_order.id_order');
-            $query->leftjoin("es_member","es_order.buyer_id","=","es_member.id_member");
-            $query->rightJoin("es_product_shipping_comment","es_product_shipping_comment.order_product_id","=","es_order_product.id_order_product");
-        }
-
-        $query->leftJoin('es_order_product_tag',function($leftJoin){
-            $leftJoin->on('es_order_product_tag.order_product_id', '=', 'es_order_product.id_order_product');
-        });
-
-        $query->leftJoin('es_tag_type',function($leftJoin){
-            $leftJoin->on('es_order_product_tag.tag_type_id', '=', 'es_tag_type.id_tag_type');
-        });
-
-        $query->groupBy("es_order_product.seller_id", "es_order_product.order_id");
-        $query->where('es_order.order_status', '=', OrderStatus::STATUS_PAID)
-              ->whereIn('es_order.payment_method_id',[
-                    PaymentMethod::PAYPAL,
-                    PaymentMethod::DRAGONPAY,
-                    PaymentMethod::PESOPAY,
-                ])
-              ->whereNull('es_order_product_tag.tag_type_id');
-
-        return $query->get()->count();
-    }
 
     /**
      * Get order product by OrderId where status is on going
