@@ -6,7 +6,7 @@ class PaymentMethod extends Eloquent
     const PAYPAL = 1;
     const DRAGONPAY = 2;
     const COD = 3;
-    const RESERVED = 4;
+    const PESOPAY = 4;
     const DIRECTBANK = 5;
 
     /**
