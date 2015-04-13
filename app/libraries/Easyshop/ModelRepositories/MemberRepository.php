@@ -150,6 +150,7 @@ class MemberRepository extends AbstractRepository
         
         $query->where(function ($query) {
             $query->where('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::PAYPAL));
+            $query->orWhere('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::PESOPAY));
             $query->orWhere('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::DRAGONPAY));
         });
         
@@ -270,6 +271,7 @@ class MemberRepository extends AbstractRepository
 
         $query->where(function ($query) {
             $query->where('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::PAYPAL));
+            $query->orWhere('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::PESOPAY));
             $query->orWhere('es_order.payment_method_id', '=',  DB::raw(PaymentMethod::DRAGONPAY));
         });
         
