@@ -8,6 +8,7 @@ class PaymentMethod extends Eloquent
     const COD = 3;
     const PESOPAY = 4;
     const DIRECTBANK = 5;
+    const EASYPOINTS = 6;
 
     /**
      * The database table used by the model.
