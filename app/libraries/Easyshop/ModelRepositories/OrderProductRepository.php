@@ -2,7 +2,15 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory, PaymentMethod, OrderProductTag, TagType, ProductShippingComment;;
+use OrderProduct, 
+    OrderProductStatus, 
+    OrderStatus, 
+    OrderProductHistory, 
+    PaymentMethod, 
+    OrderProductTag, 
+    TagType, 
+    ProductShippingComment,
+    OrderPoint;
 
 
 class OrderProductRepository extends AbstractRepository
@@ -390,6 +398,23 @@ class OrderProductRepository extends AbstractRepository
                     DB::raw('COALESCE(es_product_shipping_comment.id_shipping_comment,0) as shipping')
                 ]);
     }
+    
+    /**
+     * Get orderProduct point
+     *
+     * @param integer $orderProductId
+     * @return string
+     */
+    public function getOrderProductPoint($orderProductId)
+    {
+        $orderPoint = OrderPoint::where('order_product_id', '=', $orderProductId)
+                                ->first();
+        $point = $orderPoint ? $orderPoint->points : "0";
+        return $point;
+    }
+    
 }
+
+
 
 

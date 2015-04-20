@@ -140,9 +140,10 @@ class OrderProductController extends BaseController
         $userdata = Input::get();
         $orderProductRepository = App::make('OrderProductRepository');
         $orderProduct = $orderProductRepository->getOrderProductById($userdata['order_product_id']);
-  
+        $points = $orderProductRepository->getOrderProductPoint($orderProduct->id_order_product);
         $html = View::make('partials.orderproducthistorylist')
                     ->with('orderproduct', $orderProduct)
+                    ->with('easypoints', $points)
                     ->render();
         return Response::json(array('html' => $html));
     }

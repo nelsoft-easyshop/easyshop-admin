@@ -12,10 +12,10 @@
             <td>Payment Method Charge</td>
             <td>Net</td>
             <td>Status</td>
+            <td>Easypoints</td>
         </tr>    
 
         <tr>
-           
             <td>{{{ $orderproduct->order->invoice_no }}}</td>
             <td>{{{ $orderproduct->order->buyer->getStorename() }}}</td>
             <td>{{{ $orderproduct->product->name }}}</td>
@@ -27,7 +27,7 @@
             <td>{{ number_format($orderproduct->payment_method_charge,2,'.',',') }}</td>
             <td>{{ number_format($orderproduct->net,2,'.',',') }}</td>
             <td>{{{ $orderproduct->orderProductStatus->name }}}</td>    
-            
+            <td>{{{ number_format($easypoints, 2,'.',',') }}}</td>
         </tr>   
        
     </table>
