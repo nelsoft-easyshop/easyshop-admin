@@ -262,7 +262,6 @@ class OrderProductController extends BaseController
         $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
         
         $errors = $transactionService->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
-        $errors = [];
         foreach($orderProducts as $orderProduct){
             $transactionService->revertOrderPoints($orderProduct);
         }

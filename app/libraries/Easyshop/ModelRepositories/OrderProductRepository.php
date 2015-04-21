@@ -37,9 +37,13 @@ class OrderProductRepository extends AbstractRepository
     {
         $questionmarks = str_repeat("?,", count($orderProductIds)-1) . "?";
         $query = OrderProduct::whereRaw("id_order_product IN (".$questionmarks.")");
+        $query->leftJoin('es_order_points', 'es_order_points.order_product_id', '=', 'es_order_product.id_order_product');
         $query->setBindings(array_merge($query->getBindings(),$orderProductIds));
         
-        return $query->get();
+        return $query->get([
+            'es_order_product.*',
+            DB::raw('COALESCE(es_order_points.points, 0) as easypoint')
+        ]);
     }
     
     /**
