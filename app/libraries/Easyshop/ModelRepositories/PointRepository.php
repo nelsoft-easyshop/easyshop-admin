@@ -19,3 +19,4 @@ class PointTypeRepoitory extends AbstractRepository
 
     
 }
+
