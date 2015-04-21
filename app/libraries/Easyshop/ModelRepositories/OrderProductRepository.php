@@ -403,14 +403,18 @@ class OrderProductRepository extends AbstractRepository
      * Get orderProduct point
      *
      * @param integer $orderProductId
-     * @return string
+     * @return mixed
      */
     public function getOrderProductPoint($orderProductId)
     {
         $orderPoint = OrderPoint::where('order_product_id', '=', $orderProductId)
                                 ->first();
         $point = $orderPoint ? $orderPoint->points : "0";
-        return $point;
+        
+        return [
+            'point' => $point,
+            'entity' => $orderPoint,
+        ];
     }
     
 }

@@ -140,10 +140,10 @@ class OrderProductController extends BaseController
         $userdata = Input::get();
         $orderProductRepository = App::make('OrderProductRepository');
         $orderProduct = $orderProductRepository->getOrderProductById($userdata['order_product_id']);
-        $points = $orderProductRepository->getOrderProductPoint($orderProduct->id_order_product);
+        $orderProductPointData = $orderProductRepository->getOrderProductPoint($orderProduct->id_order_product);
         $html = View::make('partials.orderproducthistorylist')
                     ->with('orderproduct', $orderProduct)
-                    ->with('easypoints', $points)
+                    ->with('easypoints', $orderProductPointData['point'])
                     ->render();
         return Response::json(array('html' => $html));
     }
@@ -262,6 +262,11 @@ class OrderProductController extends BaseController
         $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
         
         $errors = $transactionService->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
+        $errors = [];
+        foreach($orderProducts as $orderProduct){
+            $transactionService->revertOrderPoints($orderProduct);
+        }
+        
         $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, true);
 
         return  Response::json([
