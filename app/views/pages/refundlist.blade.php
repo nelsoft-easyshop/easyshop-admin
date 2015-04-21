@@ -54,7 +54,11 @@
                         <td class="td_accountno">{{{ $account->account_number }}} </td>
                         <td>{{{ $account->email }}}</td>
                         <td>{{{ $account->contactno }}}</td>
-                        <td><strong>PHP {{  number_format($account->net, 2, '.', ',')  }}</strong></td>
+                        @if(bccomp($account->totalEasypoints,0) === 1)
+                            <td><strong>PHP {{  number_format(bcsub($account->net,$account->totalEasypoints, 4) , 2, '.', ',')  }}</strong></td>
+                        @else
+                            <td><strong>PHP {{  number_format($account->net, 2, '.', ',')  }}</strong></td>
+                        @endif
                     </tr>
                 @endforeach
             </table>

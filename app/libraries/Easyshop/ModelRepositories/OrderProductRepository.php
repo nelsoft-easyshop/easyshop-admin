@@ -2,7 +2,15 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory, PaymentMethod, OrderProductTag, TagType, ProductShippingComment;;
+use OrderProduct, 
+    OrderProductStatus, 
+    OrderStatus, 
+    OrderProductHistory, 
+    PaymentMethod, 
+    OrderProductTag, 
+    TagType, 
+    ProductShippingComment,
+    OrderPoint;
 
 
 class OrderProductRepository extends AbstractRepository
@@ -29,9 +37,13 @@ class OrderProductRepository extends AbstractRepository
     {
         $questionmarks = str_repeat("?,", count($orderProductIds)-1) . "?";
         $query = OrderProduct::whereRaw("id_order_product IN (".$questionmarks.")");
+        $query->leftJoin('es_order_points', 'es_order_points.order_product_id', '=', 'es_order_product.id_order_product');
         $query->setBindings(array_merge($query->getBindings(),$orderProductIds));
         
-        return $query->get();
+        return $query->get([
+            'es_order_product.*',
+            DB::raw('COALESCE(es_order_points.points, 0) as easypoint')
+        ]);
     }
     
     /**
@@ -103,6 +115,10 @@ class OrderProductRepository extends AbstractRepository
         $query->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member');
         $query->join('es_order_product_status','es_order_product.status', '=', 'es_order_product_status.id_order_product_status');
         $query->join('es_product','es_order_product.product_id', '=', 'es_product.id_product');
+        $query->leftJoin('es_order_points', function($leftJoin){
+            $leftJoin->on('es_order_points.order_product_id', '=', 'es_order_product.id_order_product');
+            $leftJoin->where('es_order_points.is_revert', '!=', OrderPoint::REVERTED);
+        });
         $query->leftJoin(DB::raw('
             (SELECT 
                 * 
@@ -120,11 +136,13 @@ class OrderProductRepository extends AbstractRepository
         $returnedOrders = $query->get(['es_order_product.*', 
                                     'es_order.invoice_no', 
                                     'es_order_product.seller_id as buyer_seller_id',
-                                     DB::raw('COALESCE(NULLIF(seller.store_name, ""), seller.username) as buyer_seller_storename'),
+                                    DB::raw('COALESCE(NULLIF(seller.store_name, ""), seller.username) as buyer_seller_storename'),
                                     'seller.username as buyer_seller_username' , 
                                     'es_product.name as productname', 
-                                    'es_order_product_status.name as statusname']);
-        
+                                    'es_order_product_status.name as statusname',
+                                    DB::raw('COALESCE(es_order_points.points, 0) as easypoint')
+                                ]);
+
         return $returnedOrders;
     }
  
@@ -390,6 +408,27 @@ class OrderProductRepository extends AbstractRepository
                     DB::raw('COALESCE(es_product_shipping_comment.id_shipping_comment,0) as shipping')
                 ]);
     }
+    
+    /**
+     * Get orderProduct point
+     *
+     * @param integer $orderProductId
+     * @return mixed
+     */
+    public function getOrderProductPoint($orderProductId)
+    {
+        $orderPoint = OrderPoint::where('order_product_id', '=', $orderProductId)
+                                ->first();
+        $point = $orderPoint ? $orderPoint->points : "0";
+        
+        return [
+            'point' => $point,
+            'entity' => $orderPoint,
+        ];
+    }
+    
 }
+
+
 
 

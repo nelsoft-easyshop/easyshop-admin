@@ -3,8 +3,12 @@
 use App;
 use Config;
 use Carbon\Carbon;
+use PointType;
+use OrderStatus;
+use OrderPoint;
 use Easyshop\Services\Validation\Laravel\OrderBillingInfoUpdateValidator;
 use Easyshop\Services\Validation\Laravel\OrderBillingInfoCreateValidator;
+use Easyshop\Services\PointTracker;
 
 use Easyshop\ModelRepositories\OrderProductStatusRepository as OrderProductStatusRepository;
 use Easyshop\ModelRepositories\OrderBillingInfoRepository as OrderBillingInfoRepository;
@@ -15,6 +19,7 @@ use Easyshop\ModelRepositories\OrderStatusRepository as OrderStatusRepository;
 use Easyshop\ModelRepositories\OrderHistoryRepository as OrderHistoryRepository;
 use Easyshop\ModelRepositories\PaymentMethodRepository as PaymentMethodRepository;
 use Easyshop\ModelRepositories\BankInfoRepository as BankInfoRepository;
+
 
 /**
  * TransactionService, containing all useful methods for business logic around transactions
@@ -93,6 +98,13 @@ class TransactionService
     private $bankInfoRepository;
     
     /**
+     * Point tracker
+     *
+     * @var EasyShop/Services/PointTracker
+     */
+    private $pointTracker;
+    
+    /**
      * Inject dependecies
      *
      */
@@ -104,7 +116,8 @@ class TransactionService
                                 OrderStatusRepository $orderStatusRepository,
                                 OrderHistoryRepository $orderHistoryRepository,
                                 PaymentMethodRepository $paymentMethodRepository,
-                                BankInfoRepository $bankInfoRepository)    
+                                BankInfoRepository $bankInfoRepository,
+                                PointTracker $pointTracker)    
     {
         $this->orderProductStatusRepository = $orderProductStatusRepository;
         $this->orderBillingInfoRepository = $orderBillingInfoRepository;
@@ -115,6 +128,7 @@ class TransactionService
         $this->orderHistoryRepository = $orderHistoryRepository;
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->bankInfoRepository = $bankInfoRepository;
+        $this->pointTracker = $pointTracker;
         $this->payOutConfig = Config::get('transaction.payOut');
     }
     
@@ -352,15 +366,17 @@ class TransactionService
      */
     public function voidOrder($orderId)
     {   
-        $voidStatus = $this->orderStatusRepository->getVoidStatus();
+        $voidStatus = OrderStatus::STATUS_VOID;
         $order = $this->orderRepository->getOrderById($orderId);
-        $orderProducts = $this->orderProductRepository->getOrderProductByOrderId($orderId);
-        foreach($orderProducts as $orderProduct){
-            $this->voidOrderProduct($orderProduct->id_order_product);
+        $preVoidOrderStatus = (int) $order->order_status;
+        if($preVoidOrderStatus !== $voidStatus){
+            $orderProducts = $this->orderProductRepository->getOrderProductByOrderId($orderId);
+            foreach($orderProducts as $orderProduct){
+                $this->voidOrderProduct($orderProduct->id_order_product);
+            }
+            $this->orderRepository->updateOrderStatus($order, $voidStatus);
+            $this->orderHistoryRepository->createOrderHistory($order->id_order, $voidStatus, 'VOIDED');
         }
-        $this->orderRepository->updateOrderStatus($order, $voidStatus);
-        $this->orderHistoryRepository->createOrderHistory($order->id_order, $voidStatus, 'VOIDED');
-
         return true;
     }
 
@@ -475,7 +491,36 @@ class TransactionService
         
         return $billingInfo;
     }
-  
+    
+    /**
+     * Revert order product points
+     *
+     * @param OrderProduct $orderProduct;
+     * @return boolean
+     */
+    public function revertOrderPoints($orderProduct)
+    {   
+        $order = $orderProduct->order;
+        $buyerId = $order->buyer->id_member;
+        
+        if($orderProduct !== null){
+            $orderProductpointData = $this->orderProductRepository->getOrderProductPoint($orderProduct->id_order_product);
+            $point = $orderProductpointData['point'];
+            $orderProductPoint = $orderProductpointData['entity'];
+            if(bccomp($point, "0") === 1 && $orderProductPoint !== null){
+                $isSuccessful = $this->pointTracker->addUserPoint(
+                                    $buyerId, 
+                                    PointType::POINT_TYPE_REVERT, 
+                                    $point
+                                );
+                if($isSuccessful){
+                    $orderProductPoint->is_revert = OrderPoint::REVERTED;
+                    $orderProductPoint->save();
+                }
+            }
+        }
+    }
+
     
 }
 

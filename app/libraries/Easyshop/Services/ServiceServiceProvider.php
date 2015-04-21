@@ -31,7 +31,8 @@ class ServiceServiceProvider extends ServiceProvider
                 new \Easyshop\ModelRepositories\OrderStatusRepository,
                 new \Easyshop\ModelRepositories\OrderHistoryRepository,
                 new \Easyshop\ModelRepositories\PaymentMethodRepository,
-                new \Easyshop\ModelRepositories\BankInfoRepository
+                new \Easyshop\ModelRepositories\BankInfoRepository,
+                \App::make('PointTrackerService')
             );
         });
 
@@ -40,6 +41,10 @@ class ServiceServiceProvider extends ServiceProvider
                 new \Easyshop\ModelRepositories\ProductImageRepository(),
                 new \Easyshop\Services\RestAccessor($this->app->environment())
             );
+        });
+        
+        $this->app->bind('PointTrackerService', function(){
+            return new PointTracker();
         });
 
         $this->app->bind('XMLContentGetterService', function(){

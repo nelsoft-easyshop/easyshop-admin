@@ -17,7 +17,7 @@ class OrderController extends BaseController
             $dateFrom = Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay();
         }   
         else{
-            $dateFrom = Carbon::now()->startOfDay();
+            $dateFrom = Carbon::now()->startOfMonth()->startOfDay();
         }
 
         if(Input::has('dateTo')){
@@ -51,11 +51,14 @@ class OrderController extends BaseController
         $orderRepository = App::make('OrderRepository');
         $orderProductRepository = App::make('OrderProductRepository');
         $order = $orderRepository->getOrderById($userdata['order_id']);
+        
+        $points = $orderRepository->getOrderPoints($order->id_order);
         $orderProducts = $orderProductRepository->getOrderProductByOrderId($userdata['order_id']);
         
         $html = View::make('partials.orderdetail')
             ->with('orderproducts', $orderProducts)
             ->with('order', $order)
+            ->with('easypoints', $points)
             ->render();
         return Response::json(array('html' => $html));
     }
