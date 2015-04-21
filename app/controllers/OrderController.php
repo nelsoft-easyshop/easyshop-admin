@@ -17,7 +17,7 @@ class OrderController extends BaseController
             $dateFrom = Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay();
         }   
         else{
-            $dateFrom = Carbon::now()->startOfDay();
+            $dateFrom = Carbon::now()->startOfMonth()->startOfDay();
         }
 
         if(Input::has('dateTo')){
