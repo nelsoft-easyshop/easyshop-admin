@@ -34,6 +34,8 @@
                         <li><a class="drct_search" data="src_storename" href="javascript:void(0)">Store Name</a></li>
                         <li><a class="drct_search" data="src_number" href="javascript:void(0)">Contact Number</a></li>
                         <li><a class="drct_search" data="src_email" href="javascript:void(0)">Email</a></li>
+                        <li><a class="drct_search" data="src_invoiceno" href="javascript:void(0)">Invoice No</a></li>
+                        <li><a class="drct_search" data="src_transactionid" href="javascript:void(0)">Transaction ID</a></li>
                         <li class="divider"></li>
                         <li><a class="tag_default" href="javascript:void(0)">Default</a></li>
                         <li><a class="tag_search" data="src_tag" data-value="1" href="javascript:void(0)">Contacted</a></li>
@@ -46,6 +48,8 @@
                 <input type="hidden" id="src_storename" name="store_name" />
                 <input type="hidden" id="src_number" name="number" />
                 <input type="hidden" id="src_email" name="email" />
+                <input type="hidden" id="src_invoiceno" name="invoiceno" />
+                <input type="hidden" id="src_transactionid" name="transactionid" />
                 <input type="hidden" id="src_tag" name="tag" />
             </div>
             {{ Form::close() }}
