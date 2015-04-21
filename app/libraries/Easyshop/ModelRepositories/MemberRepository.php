@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Member, OrderStatus, OrderProductStatus, Product, PaymentMethod;
+use Member, OrderStatus, OrderProductStatus, Product, PaymentMethod, OrderPoint;
 
 class MemberRepository extends AbstractRepository
 {
@@ -236,7 +236,11 @@ class MemberRepository extends AbstractRepository
         
         $query->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=', 'es_bank_info.id_bank');
         $query->leftJoin('es_order_billing_info', 'es_order_product.buyer_billing_id', '=', 'es_order_billing_info.id_order_billing_info');        
-
+        $query->leftJoin('es_order_points', function($leftJoin){
+            $leftJoin->on('es_order_points.order_product_id', '=', 'es_order_product.id_order_product');
+            $leftJoin->where('es_order_points.is_revert', '!=', OrderPoint::REVERTED);
+        });
+        
         $query->leftJoin(DB::raw('
             (SELECT 
                 * 
@@ -307,6 +311,7 @@ class MemberRepository extends AbstractRepository
                                 DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_name, es_billing_info.bank_account_name) as account_name"), 
                                 DB::raw("IF( es_order_product.buyer_billing_id != '0', es_order_billing_info.account_number, es_billing_info.bank_account_number) as account_number"),
                                 DB::raw('SUM(es_order_product.net) as net'),
+                                DB::raw('COALESCE(SUM(es_order_points.points), 0) as totalEasypoints'),
                                 DB::raw('GROUP_CONCAT(es_order_product.id_order_product) as order_product_ids'),
                                 'paid_marker.id_order_product_history',
                             ]);

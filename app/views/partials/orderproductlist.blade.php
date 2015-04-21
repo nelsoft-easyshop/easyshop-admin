@@ -27,6 +27,7 @@
             <td>Order Quantity</td>     
             <td>Unit Price</td>
             <td>Total Amount</td>
+            <td>Easyoint</td>
             <td>NET</td>        
             <td>Status</td>
             <td>&nbsp;</td>
@@ -45,7 +46,13 @@
             <td>{{{ $orderproduct->order_quantity }}}</td>        
             <td>{{ number_format($orderproduct->price,2,'.',',') }}</td>
             <td>{{ number_format($orderproduct->total,2,'.',',') }}</td>
-            <td class="net">{{ number_format($orderproduct->net,2,'.',',') }}</td>     
+            <td>{{ number_format($orderproduct->easypoint,2,'.',',') }}</td>
+            @if(bccomp($orderproduct->easypoint,0) === 1)
+                <td class="net">{{ number_format(bcsub($orderproduct->net, $orderproduct->easypoint, 4),2,'.',',') }}</td>  
+            @else
+                <td class="net">{{ number_format($orderproduct->net,2,'.',',') }}</td>  
+            @endif
+
             <td>{{{ $orderproduct->statusname}}}</td>
             <td>
                 <span class="org_btn view"> View </span>&nbsp;

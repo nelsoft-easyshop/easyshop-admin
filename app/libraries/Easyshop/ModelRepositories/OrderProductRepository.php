@@ -111,6 +111,10 @@ class OrderProductRepository extends AbstractRepository
         $query->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member');
         $query->join('es_order_product_status','es_order_product.status', '=', 'es_order_product_status.id_order_product_status');
         $query->join('es_product','es_order_product.product_id', '=', 'es_product.id_product');
+        $query->leftJoin('es_order_points', function($leftJoin){
+            $leftJoin->on('es_order_points.order_product_id', '=', 'es_order_product.id_order_product');
+            $leftJoin->where('es_order_points.is_revert', '!=', OrderPoint::REVERTED);
+        });
         $query->leftJoin(DB::raw('
             (SELECT 
                 * 
@@ -128,11 +132,13 @@ class OrderProductRepository extends AbstractRepository
         $returnedOrders = $query->get(['es_order_product.*', 
                                     'es_order.invoice_no', 
                                     'es_order_product.seller_id as buyer_seller_id',
-                                     DB::raw('COALESCE(NULLIF(seller.store_name, ""), seller.username) as buyer_seller_storename'),
+                                    DB::raw('COALESCE(NULLIF(seller.store_name, ""), seller.username) as buyer_seller_storename'),
                                     'seller.username as buyer_seller_username' , 
                                     'es_product.name as productname', 
-                                    'es_order_product_status.name as statusname']);
-        
+                                    'es_order_product_status.name as statusname',
+                                    DB::raw('COALESCE(es_order_points.points, 0) as easypoint')
+                                ]);
+
         return $returnedOrders;
     }
  
