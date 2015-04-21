@@ -4,6 +4,18 @@ class OrderPoint extends Eloquent
 {
 
     /**
+     * Flag if the order point is reverted
+     * @var integer
+     */
+    const REVERTED = 1;
+    
+    /**
+     * Flag if the order point is not reverted
+     * @var integer
+     */
+    const NOT_REVERTED = 0;
+
+    /**
      * The database table used by the model.
      *
      * @var string
