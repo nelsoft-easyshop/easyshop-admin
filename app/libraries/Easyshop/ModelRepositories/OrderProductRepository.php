@@ -229,17 +229,23 @@ class OrderProductRepository extends AbstractRepository
                 ]);
 
         if($filter){
-            if($userData['fullname']){
+            if(isset($userData['fullname']) && $userData['fullname']){
                 $query->where('es_member.fullname', 'LIKE', '%' . $userData['fullname'] . '%');
             }
-            if($userData['store_name']){
+            if(isset($userData['store_name']) && $userData['store_name']){
                 $query->where('es_member.store_name', 'LIKE', '%' . $userData['store_name'] . '%');
             }
-            if($userData['contactno']){
+            if(isset($userData['contactno']) && $userData['contactno']){
                 $query->where('es_member.contactno', 'LIKE', '%' . $userData['contactno'] . '%');
             }
-            if($userData['email']){
+            if(isset($userData['email']) && $userData['email']){
                 $query->where('es_member.email', 'LIKE', '%' . $userData['email'] . '%');
+            }
+            if(isset($userData['transactionid']) && $userData['transactionid']){
+                $query->where('es_order.transaction_id', 'LIKE', '%' . $userData['transactionid'] . '%');
+            }
+            if(isset($userData['invoiceno']) && $userData['invoiceno']){
+                $query->where('es_order.invoice_no', 'LIKE', '%' . $userData['invoiceno'] . '%');
             }
         }
 
