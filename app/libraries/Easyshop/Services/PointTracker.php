@@ -45,7 +45,8 @@ class PointTracker
             return false;
         }
         
-        $userPoint = Point::find($userId);
+        $userPoint = Point::where('member_id', '=', $userId)
+                          ->first();
         if ($customPoints !== null) {
             $addPoints = $customPoints;
         }
