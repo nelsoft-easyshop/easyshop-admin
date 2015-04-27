@@ -98,7 +98,17 @@ class OrderProductRepository extends AbstractRepository
      */
     public function getOrderProductsToRefund($orderProductIds = [])
     {               
-        $query = OrderProduct::join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
+        $query = OrderProduct::select([
+                                    'es_order_product.*', 
+                                    'es_order.invoice_no', 
+                                    'es_order_product.seller_id as buyer_seller_id',
+                                    DB::raw('COALESCE(NULLIF(seller.store_name, ""), seller.username) as buyer_seller_storename'),
+                                    'seller.username as buyer_seller_username' , 
+                                    'es_product.name as productname', 
+                                    'es_order_product_status.name as statusname',
+                                    'es_order_product_status.id_order_product_status as order_product_status_id',
+                               ]);
+        $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
         $query->join('es_member','es_order.buyer_id', '=', 'es_member.id_member');
         $query->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member');
         $query->join('es_order_product_status','es_order_product.status', '=', 'es_order_product_status.id_order_product_status');
@@ -115,16 +125,10 @@ class OrderProductRepository extends AbstractRepository
             $leftJoin->on('es_billing_info.member_id', '=', 'es_member.id_member');
         });
         $query->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=', 'es_bank_info.id_bank');
-        $query->whereIn('es_order_product.id_order_product', $orderProductIds);
-        
-        $returnedOrders = $query->get(['es_order_product.*', 
-                                    'es_order.invoice_no', 
-                                    'es_order_product.seller_id as buyer_seller_id',
-                                     DB::raw('COALESCE(NULLIF(seller.store_name, ""), seller.username) as buyer_seller_storename'),
-                                    'seller.username as buyer_seller_username' , 
-                                    'es_product.name as productname', 
-                                    'es_order_product_status.name as statusname']);
-        
+        $query->whereIn('es_order_product.id_order_product',  $orderProductIds);
+
+        $returnedOrders = $query->get();
+
         return $returnedOrders;
     }
  
