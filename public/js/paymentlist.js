@@ -68,12 +68,21 @@
     
     
     $(document.body).on('click','.op-pay-btn',function(){
-        var url =  $(this).hasClass('seller') ? '/transaction/orderproduct-payment/refund' : '/transaction/orderproduct-payment/pay';
+        var $this = $(this);
+        var url =  $this.hasClass('seller') ? '/transaction/orderproduct-payment/refund' : '/transaction/orderproduct-payment/pay';
         var orderProductIdCollection =  [];
-        $('.order_product td.order-product-id').each(function(){
-            orderProductIdCollection.push( parseInt($(this).html().trim(), 10));
-        });
-         
+
+        if( $this.hasClass('seller') ) {
+             $('.order_product td input.refund-order-product-id:checked').each(function(){
+                 orderProductIdCollection.push( parseInt($(this).closest('tr.order_product').data('orderproductid'), 10));
+             });
+        }
+        else{
+             $('.order_product td.order-product-id').each(function(){
+                 orderProductIdCollection.push( parseInt($(this).html().trim(), 10));
+             });
+        }
+
         if(orderProductIdCollection.length == 0){
             return false;
         }
