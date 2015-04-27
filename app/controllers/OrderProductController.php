@@ -226,7 +226,6 @@ class OrderProductController extends BaseController
         
         $member = $memberRepository->getById($userId);
         $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
-
         $errors = $transactionService->updateOrderProductsAsPaid($orderProducts, $accountName, $accountNumber, $bankName);
         $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName);
 
@@ -259,7 +258,13 @@ class OrderProductController extends BaseController
 
         $member = $memberRepository->getById($userId);
         $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
-        
+
+        foreach($orderProducts as $key => $orderProduct){
+            if( (int) $orderProduct->order_product_status->id_order_product_status !== OrderProductStatus::STATUS_RETURN_BUYER){
+                unset($orderProducts[$key]);
+            }
+        }
+
         $errors = $transactionService->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
         $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, true);
 

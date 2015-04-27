@@ -35,11 +35,10 @@
 
          
         @foreach($orderproducts as $orderproduct)
-        <tr class="order_product" data-orderproductid = "{{{ $orderproduct->id_order_product }}}">
-                                                   
+        <tr class="order_product" data-orderproductid = "{{{ $orderproduct->id_order_product }}}">                       
             <td>
                 @if($orderproduct->order_product_status_id == OrderProductStatus::STATUS_RETURN_BUYER)
-                     <input type="checkbox"/>
+                     <input type="checkbox" class="refund-order-product-id" checked/>
                 @else
                      <span class="green_btn"> REFUNDED </span>
                 @endif
