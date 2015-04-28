@@ -125,6 +125,7 @@ class OrderProductController extends BaseController
                     ->with('orderproducts', $orderProducts)
                     ->with('memberTitle', 'Seller')
                     ->with('completedStatus', $completedStatus)
+                    ->with('isRefund', true)
                     ->render();
         return Response::json(array('html' => $html));
        
