@@ -18,6 +18,9 @@
 <div class="table-responsive table-payment"> 
     <table class="table table-striped table-hover">
         <tr class='head'>
+            @if(@isset($isRefund) && $isRefund)
+                <td>Refund</td>
+            @endif
             <td>Order ID</td>
             <td>Invoice No</td>
             <td>{{{ $memberTitle or 'Member' }}} ID</td>
@@ -34,8 +37,16 @@
 
          
         @foreach($orderproducts as $orderproduct)
-        <tr class="order_product" data-orderproductid = "{{{ $orderproduct->id_order_product }}}">
-            
+        <tr class="order_product" data-orderproductid = "{{{ $orderproduct->id_order_product }}}">                       
+            @if(@isset($isRefund) && $isRefund)
+            <td>
+                @if($orderproduct->order_product_status_id == OrderProductStatus::STATUS_RETURN_BUYER)
+                     <input type="checkbox" class="refund-order-product-id" checked/>
+                @else
+                     <span class="green_btn"> REFUNDED </span>
+                @endif
+            </td>
+            @endif
             <td>{{{ $orderproduct->order_id }}}</td>
             <td>{{{ $orderproduct->invoice_no }}}</td>
             <td>{{{ $orderproduct->buyer_seller_id }}}</td>

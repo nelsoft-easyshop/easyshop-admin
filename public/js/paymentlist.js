@@ -67,12 +67,21 @@
     
     
     $(document.body).on('click','.op-pay-btn',function(){
-        var url =  $(this).hasClass('seller') ? '/transaction/orderproduct-payment/refund' : '/transaction/orderproduct-payment/pay';
+        var $this = $(this);
+        var url =  $this.hasClass('seller') ? '/transaction/orderproduct-payment/refund' : '/transaction/orderproduct-payment/pay';
         var orderProductIdCollection =  [];
-        $('.order_product td.order-product-id').each(function(){
-            orderProductIdCollection.push( parseInt($(this).html().trim(), 10));
-        });
-         
+
+        if( $this.hasClass('seller') ) {
+             $('.order_product td input.refund-order-product-id:checked').each(function(){
+                 orderProductIdCollection.push( parseInt($(this).closest('tr.order_product').data('orderproductid'), 10));
+             });
+        }
+        else{
+             $('.order_product td.order-product-id').each(function(){
+                 orderProductIdCollection.push( parseInt($(this).html().trim(), 10));
+             });
+        }
+
         if(orderProductIdCollection.length == 0){
             return false;
         }
@@ -191,6 +200,7 @@
                     if(isCreate){
                         var option_html = '<option value="'+result.newBillingInfoId+'" data-bank-id="'+accnt_bank+'" data-name="'+accnt_name+'" data-number="'+accnt_number+'" data-bank-name="'+accnt_bank_name+'" selected>'+accnt_bank_name+' - '+accnt_name+'</option>';
                         $(option_html).insertBefore('#account_collection option#add-option');
+                        $('#account_collection').val(result.newBillingInfoId);
                     }
                     else{
                         selected_account.data('bank-id', accnt_bank);

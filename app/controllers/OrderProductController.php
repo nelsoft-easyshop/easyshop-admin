@@ -125,6 +125,7 @@ class OrderProductController extends BaseController
                     ->with('orderproducts', $orderProducts)
                     ->with('memberTitle', 'Seller')
                     ->with('completedStatus', $completedStatus)
+                    ->with('isRefund', true)
                     ->render();
         return Response::json(array('html' => $html));
        
@@ -226,7 +227,6 @@ class OrderProductController extends BaseController
         
         $member = $memberRepository->getById($userId);
         $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
-
         $errors = $transactionService->updateOrderProductsAsPaid($orderProducts, $accountName, $accountNumber, $bankName);
         $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName);
 
@@ -259,7 +259,13 @@ class OrderProductController extends BaseController
 
         $member = $memberRepository->getById($userId);
         $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
-        
+
+        foreach($orderProducts as $key => $orderProduct){
+            if( (int) $orderProduct->order_product_status->id_order_product_status !== OrderProductStatus::STATUS_RETURN_BUYER){
+                unset($orderProducts[$key]);
+            }
+        }
+
         $errors = $transactionService->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
         $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, true);
         
@@ -308,11 +314,13 @@ class OrderProductController extends BaseController
         $tagRepository = App::make('TagTypeRepository');
 
         $userData = [
-            'fullname' => Input::get('fullname'),
-            'store_name' => Input::get('store_name'),
-            'contactno' => Input::get('number'),
-            'email' => Input::get('email'),
-            'tag' => Input::get('tag'),
+            'fullname' => trim(Input::get('fullname')),
+            'store_name' => trim(Input::get('store_name')),
+            'contactno' => trim(Input::get('number')),
+            'email' => trim(Input::get('email')),
+            'transactionid' => trim(Input::get('transactionid')),
+            'invoiceno' => trim(Input::get('invoiceno')),
+            'tag' => trim(Input::get('tag')),
         ];
 
         $transactionRecord = $orderProductRepository->getAllSellersTransaction(100,true,$userData);
