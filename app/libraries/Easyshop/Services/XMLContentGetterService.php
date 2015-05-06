@@ -3,27 +3,6 @@
 class XMLContentGetterService
 {
     /**
-     * Returns xml content from of home_files.xml from easyshop.ph
-     * 
-     * @return $xmlString
-     */
-    public function GetXMLHomeFiles()
-    {
-        return file_get_contents(\Config::get('easyshop/webservice.getHomeXML'));
-    }
-
-    /**
-     * Returns the link home web service link
-     *
-     * @return $link
-     */
-    public function GetHomeCmsLink()
-    {
-        return \Config::get('easyshop/webservice.homeCmsLink');
-    }
-
-
-    /**
      * Returns the content CMS webservice link
      *
      * @return $link
@@ -99,7 +78,7 @@ class XMLContentGetterService
     /**
      *  Returns the contents new_home_page_temp.xml
      *
-     *  @return string $link
+     *  @return mixed
      */
     public function getTempHomeXml()
     {

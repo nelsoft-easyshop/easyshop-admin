@@ -8,12 +8,9 @@ return array(
     | Webservice Link
     |--------------------------------------------------------------------------
     |
-    | Returns the link of the homewebservice controller
+    | Returns the main webservice routes
     | 
-    | 
-    |
     */
-    'homeCmsLink' => "$baseUrl/webservice/homewebservice",
     'newHomeCmsLink' => "$baseUrl/webservice/newhomewebservice",
     'feedCmsLink' => "$baseUrl/webservice/feedwebservice",
     'mobileCmsLink' => "$baseUrl/webservice/mobilewebservice",
