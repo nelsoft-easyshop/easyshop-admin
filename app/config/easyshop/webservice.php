@@ -1,7 +1,8 @@
 <?php
 
 $baseUrl = isset($_ENV['webservice_base_url']) ? $_ENV['webservice_base_url'] :  "https://easyshop.ph.local";
-return array(
+
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -23,7 +24,4 @@ return array(
     'getTempHomeXml'=> "$baseUrl/webservice/newhomewebservice/getTempContents",
     'syncXmlFileLink'=> "$baseUrl/webservice/newhomewebservice/syncTempHomeFiles",
     'assetsLink'=> "$baseUrl/webservice/newhomewebservice/getAssetsLink",
-);
-
-
-
+];
