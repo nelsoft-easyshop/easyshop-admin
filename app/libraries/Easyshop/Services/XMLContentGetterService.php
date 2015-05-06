@@ -30,7 +30,7 @@ class XMLContentGetterService
      */
     public function getHomeCmsLink()
     {
-        return \Config::get('easyshop/webservice.newHomeCmsLink');
+        return \Config::get('easyshop/webservice.homeCmsLink');
     }       
 
     /**
@@ -70,9 +70,9 @@ class XMLContentGetterService
      *
      *  @return mixed
      */
-    public function getNewHomeXml()
+    public function getHomeXml()
     {
-        return file_get_contents(\Config::get('easyshop/webservice.getNewHomeXml'));
+        return file_get_contents(\Config::get('easyshop/webservice.getHomeXml'));
     }   
 
     /**
