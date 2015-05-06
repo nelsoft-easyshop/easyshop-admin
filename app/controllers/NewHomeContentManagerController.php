@@ -71,7 +71,7 @@ class NewHomeContentManagerController extends BaseController
 
         $this->XMLService->syncXMLFiles(Auth::id(), $adminObject->password);
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         $sliderXmlString = $this->XMLService->getTempHomeXml();
@@ -207,7 +207,7 @@ class NewHomeContentManagerController extends BaseController
      */
     public function getSellerSection()
     {
-        $xmlString = $this->XMLService->getNewHomeXml();        
+        $xmlString = $this->XMLService->getHomeXml();        
         $this->map = simplexml_load_string(trim($xmlString));
         return View::make('partials.sellersection')
                     ->with('sellerSection', $this->map->sellerSection)
@@ -224,7 +224,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $topSellers = [];  
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         foreach($this->map->menu->topSellers as $tSellers)
@@ -254,7 +254,7 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAdSection()
     {
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         $adsSection = [];                  
@@ -276,7 +276,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $index = (int) $index;
         $subIndex = (int) $subIndex;
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
         $categoryIndex = 0;
         $categoryProductPanel = [];
@@ -324,7 +324,7 @@ class NewHomeContentManagerController extends BaseController
         $index = (int) $index;
         $subCategoryNavigation = [];     
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         foreach($this->map->categoryNavigation->category[$index]->sub as $subCategories)
@@ -346,7 +346,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $product = [];
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         foreach($this->map->sellerSection->productPanel as $productPanel)
@@ -427,7 +427,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $otherCategories = [];
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         foreach($this->map->categoryNavigation->otherCategories as $map) {
@@ -454,7 +454,7 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getTopSellers()
     {
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         $topSellers = [];        
@@ -477,7 +477,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $topProducts = [];
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         foreach($this->map->menu->topProducts as $tProducts)
@@ -499,7 +499,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $newArrivals = [];
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         foreach($this->map->menu->newArrivals[0] as $arrivals)
@@ -534,7 +534,7 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAllCategories()
     {
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         $categoryProductPanel = [];        
