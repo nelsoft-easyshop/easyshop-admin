@@ -1,19 +1,17 @@
 <?php
 
 $baseUrl = isset($_ENV['webservice_base_url']) ? $_ENV['webservice_base_url'] :  "https://easyshop.ph.local";
-return array(
+
+return [
 
     /*
     |--------------------------------------------------------------------------
     | Webservice Link
     |--------------------------------------------------------------------------
     |
-    | Returns the link of the homewebservice controller found in https://easyshop.ph.feature/webservice/homewebservice
+    | Returns the main webservice routes
     | 
-    | 
-    |
     */
-    'homeCmsLink' => "$baseUrl/webservice/homewebservice",
     'newHomeCmsLink' => "$baseUrl/webservice/newhomewebservice",
     'feedCmsLink' => "$baseUrl/webservice/feedwebservice",
     'mobileCmsLink' => "$baseUrl/webservice/mobilewebservice",
@@ -26,7 +24,4 @@ return array(
     'getTempHomeXml'=> "$baseUrl/webservice/newhomewebservice/getTempContents",
     'syncXmlFileLink'=> "$baseUrl/webservice/newhomewebservice/syncTempHomeFiles",
     'assetsLink'=> "$baseUrl/webservice/newhomewebservice/getAssetsLink",
-);
-
-
-
+];

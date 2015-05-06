@@ -196,7 +196,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('topSellers', $topSellers)
                     ->with('newArrivals', $newArrivals)
                     ->with('adSection', array_flatten($adsSection))
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())                                                   
                     ->with('assetLink',$this->assetLink);
     }
@@ -214,7 +214,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('userid', Auth::id())
                     ->with('assetLink', $this->assetLink)
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink());
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink());
     }
 
     /**
@@ -243,7 +243,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('allBrandsLists', $this->brandRepository->getAllBrands())
                     ->with('brandsLists', $brandsLists)
                     ->with('userid', Auth::id())  
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());            
 
     }
@@ -264,7 +264,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.adssection')        
                     ->with('adSection', array_flatten($adsSection))
                     ->with('userid', Auth::id())  
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('assetLink',$this->assetLink);
     }
@@ -310,7 +310,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('subIndex', $subPanelIndex)
                     ->with('subCategorySection', $subIndex)
                     ->with('categoryProductPanelList', $categoryProductPanelList)                    
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('assetLink',$this->assetLink);                                     
              
@@ -334,7 +334,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.subcategorynavigation')        
                     ->with('index', $index)
                     ->with('subCategoryNavigation', $subCategoryNavigation[0])
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                    
              
     }
@@ -364,7 +364,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.productpanel')        
                     ->with('productList',array_flatten($product))
                     ->with('userid', Auth::id())  
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('assetLink',$this->assetLink);                     
     }
@@ -391,7 +391,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('slides', $sliders)
                     ->with('userid', Auth::id())  
                     ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))                    
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('assetLink',$this->assetLink);                    
     }
@@ -415,7 +415,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('sliderSection', $sliders)
                     ->with('userid', Auth::id())  
                     ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))                    
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('assetLink',$this->assetLink);                     
     }
@@ -445,7 +445,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('userid', Auth::id())
                     ->with('otherCategories', $otherCategories)
                     ->with('childCategoryLists', $childCategoryLists)
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
     }
 
@@ -466,7 +466,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.topsellers')
                     ->with('userid', Auth::id())
                     ->with('topSellers', $topSellers)
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
     } 
 
@@ -488,7 +488,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.topproducts')
                     ->with('userid', Auth::id())
                     ->with('topProducts', $topProducts)
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
     }    
 
@@ -510,7 +510,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.newarrivals')
                     ->with('userid', Auth::id())
                     ->with('newArrivals', $newArrivals)
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
     }   
 
@@ -520,7 +520,7 @@ class NewHomeContentManagerController extends BaseController
     public function getSliderPreview()
     {
         $html =  View::make("partials.sliderpreview")
-                    ->with("newHomeCmsLink",$this->XMLService->getNewHomeCmsLink())
+                    ->with("newHomeCmsLink",$this->XMLService->getHomeCmsLink())
                     ->with('userid', Auth::id())
                     ->with('hash', Input::get("hash"))
                     ->with('commit', Input::get("commit"))
@@ -579,7 +579,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('categorySection', $categorySection)
                     ->with('categoryLists', $categoryLists)
                     ->with('categoryProductPanelList', $categoryProductPanelList)
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('assetLink',$this->assetLink);
 
