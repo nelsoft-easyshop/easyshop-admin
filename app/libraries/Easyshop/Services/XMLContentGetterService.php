@@ -28,7 +28,7 @@ class XMLContentGetterService
      *
      * @return $link
      */
-    public function getNewHomeCmsLink()
+    public function getHomeCmsLink()
     {
         return \Config::get('easyshop/webservice.newHomeCmsLink');
     }       
