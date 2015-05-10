@@ -586,8 +586,7 @@ class TransactionService
             }
         }
 
-        $errors = [];
-        // $errors = $this->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
+        $errors = $this->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
         foreach($orderProducts as $orderProduct){
             $this->revertOrderPoints($orderProduct);
         }
