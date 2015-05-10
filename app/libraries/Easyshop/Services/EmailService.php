@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Mail;
 use Easyshop\ModelRepositories\ProductImageRepository as ProductImageRepository;
 use Easyshop\Services\RestAccessor as RestAccessor;
 
-class EmailService{
+class EmailService
+{
     
     /**
      * Product Image Repository
