@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use PointType;
 use OrderStatus;
 use OrderPoint;
+use OrderProductStatus;
 use Easyshop\Services\Validation\Laravel\OrderBillingInfoUpdateValidator;
 use Easyshop\Services\Validation\Laravel\OrderBillingInfoCreateValidator;
 use Easyshop\Services\PointTracker;
+use EasyShop\Services\EmailService as EmailService;
 
 use Easyshop\ModelRepositories\OrderProductStatusRepository as OrderProductStatusRepository;
 use Easyshop\ModelRepositories\OrderBillingInfoRepository as OrderBillingInfoRepository;
@@ -19,7 +21,6 @@ use Easyshop\ModelRepositories\OrderStatusRepository as OrderStatusRepository;
 use Easyshop\ModelRepositories\OrderHistoryRepository as OrderHistoryRepository;
 use Easyshop\ModelRepositories\PaymentMethodRepository as PaymentMethodRepository;
 use Easyshop\ModelRepositories\BankInfoRepository as BankInfoRepository;
-
 
 /**
  * TransactionService, containing all useful methods for business logic around transactions
@@ -103,6 +104,14 @@ class TransactionService
      * @var EasyShop/Services/PointTracker
      */
     private $pointTracker;
+
+
+    /**
+     * EmailService;
+     *
+     * @var EasyShop\Services\EmailService
+     */
+    private $emailService;
     
     /**
      * Inject dependecies
@@ -117,7 +126,8 @@ class TransactionService
                                 OrderHistoryRepository $orderHistoryRepository,
                                 PaymentMethodRepository $paymentMethodRepository,
                                 BankInfoRepository $bankInfoRepository,
-                                PointTracker $pointTracker)    
+                                PointTracker $pointTracker,
+                                EmailService $emailService)    
     {
         $this->orderProductStatusRepository = $orderProductStatusRepository;
         $this->orderBillingInfoRepository = $orderBillingInfoRepository;
@@ -129,6 +139,7 @@ class TransactionService
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->bankInfoRepository = $bankInfoRepository;
         $this->pointTracker = $pointTracker;
+        $this->emailService = $emailService;
         $this->payOutConfig = Config::get('transaction.payOut');
     }
     
@@ -521,6 +532,73 @@ class TransactionService
         }
     }
 
+    /**
+     * Payout order products as paid
+     *
+     * @param OrderProduct[] $orderProducts
+     * @param Member $member
+     * @param string $accountName
+     * @param string $accoutnNumber
+     * @param string bankName
+     * @return mixed
+     */
+    public function payoutOrderProducts($orderProducts, $member, $accountName, $accountNumber, $bankName)
+    {     
+        $payableOrderProductStatuses = [
+            OrderProductStatus::STATUS_ON_GOING,
+            OrderProductStatus::STATUS_FORWARD_SELLER,
+        ];
+
+        foreach($orderProducts as $key => $orderProduct){
+            if( in_array( (int) $orderProduct->order_product_status->id_order_product_status,$payableOrderProductStatuses) === false){
+                unset($orderProducts[$key]);
+            }
+        }
+        
+        $errors = $this->updateOrderProductsAsPaid($orderProducts, $accountName, $accountNumber, $bankName);
+        $this->emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName);
+        
+        return [
+            'errors' => $errors,
+            'isSuccessful' => count($errors) > 0,
+        ];
+    }
+
+    /**
+     * Payout order products as paid
+     *
+     * @param OrderProduct[] $orderProducts
+     * @param Member $member
+     * @param string $accountName
+     * @param string $accoutnNumber
+     * @param string bankName
+     * @return mixed
+     */
+    public function refundOrderProducts($orderProducts, $member, $accountName, $accountNumber, $bankName)
+    {
+        $refundableOrderProductStatuses = [
+            OrderProductStatus::STATUS_RETURN_BUYER,
+        ];
+
+        foreach($orderProducts as $key => $orderProduct){
+            if( in_array((int) $orderProduct->order_product_status->id_order_product_status,  $refundableOrderProductStatuses) === false ){
+                unset($orderProducts[$key]);
+            }
+        }
+
+        $errors = $this->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
+        foreach($orderProducts as $orderProduct){
+            $this->revertOrderPoints($orderProduct);
+        }
+        
+        $this->emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, true);
+        
+        return [
+            'errors' => $errors,
+            'isSuccessful' => count($errors) > 0,
+        ];
+    }
     
+
 }
 

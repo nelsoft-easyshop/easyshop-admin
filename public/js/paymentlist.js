@@ -72,16 +72,9 @@
         var url =  $this.hasClass('seller') ? '/transaction/orderproduct-payment/refund' : '/transaction/orderproduct-payment/pay';
         var orderProductIdCollection =  [];
 
-        if( $this.hasClass('seller') ) {
-             $('.order_product td input.refund-order-product-id:checked').each(function(){
-                 orderProductIdCollection.push( parseInt($(this).closest('tr.order_product').data('orderproductid'), 10));
-             });
-        }
-        else{
-             $('.order_product td.order-product-id').each(function(){
-                 orderProductIdCollection.push( parseInt($(this).html().trim(), 10));
-             });
-        }
+        $('.order_product td input.checkbox-order-product-id:checked').each(function(){
+            orderProductIdCollection.push( parseInt($(this).closest('tr.order_product').data('orderproductid'), 10));
+        });
 
         if(orderProductIdCollection.length == 0){
             return false;
