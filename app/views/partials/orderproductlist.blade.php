@@ -20,6 +20,8 @@
         <tr class='head'>
             @if(@isset($isRefund) && $isRefund)
                 <td>Refund</td>
+            @else
+                <td>Payout</td>
             @endif
             <td>Order ID</td>
             <td>Invoice No</td>
@@ -41,10 +43,18 @@
         <tr class="order_product" data-orderproductid = "{{{ $orderproduct->id_order_product }}}">                       
             @if(@isset($isRefund) && $isRefund)
             <td>
-                @if($orderproduct->order_product_status_id == OrderProductStatus::STATUS_RETURN_BUYER)
-                     <input type="checkbox" class="refund-order-product-id" checked/>
+                @if($orderproduct->order_product_status_id != OrderProductStatus::STATUS_PAID_BUYER)
+                     <input type="checkbox" class="checkbox-order-product-id" checked/>
                 @else
                      <span class="green_btn"> REFUNDED </span>
+                @endif
+            </td>
+            @else
+            <td>
+                @if($orderproduct->order_product_status_id != OrderProductStatus::STATUS_PAID_SELLER)
+                     <input type="checkbox" class="checkbox-order-product-id" checked/>
+                @else
+                     <span class="green_btn">PAID</span>
                 @endif
             </td>
             @endif
