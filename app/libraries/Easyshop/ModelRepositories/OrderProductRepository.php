@@ -93,6 +93,7 @@ class OrderProductRepository extends AbstractRepository
                             DB::raw('COALESCE(NULLIF(buyer.store_name, ""), buyer.username) as buyer_seller_storename'),
                             'es_product.name as productname', 
                             'es_order_product_status.name as statusname',
+                            'es_order_product_status.id_order_product_status as order_product_status_id',
                             'es_order.dateadded',
                             DB::raw('COALESCE(IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_bank_info.bank_name, es_order_billing_info.bank_name), "") as bank_name'), 
                             DB::raw('COALESCE(IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_name, es_order_billing_info.account_name), "") as account_name'), 

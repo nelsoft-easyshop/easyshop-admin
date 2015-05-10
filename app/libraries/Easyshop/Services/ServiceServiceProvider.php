@@ -32,7 +32,8 @@ class ServiceServiceProvider extends ServiceProvider
                 new \Easyshop\ModelRepositories\OrderHistoryRepository,
                 new \Easyshop\ModelRepositories\PaymentMethodRepository,
                 new \Easyshop\ModelRepositories\BankInfoRepository,
-                \App::make('PointTrackerService')
+                \App::make('PointTrackerService'),
+                \App::make('EmailService')
             );
         });
 

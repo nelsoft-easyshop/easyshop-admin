@@ -17,16 +17,21 @@ class OrderProductController extends BaseController
     {        
         $memberRepository = App::make('MemberRepository');
         $transactionService = App::make('TransactionService');
+
         
-        if(Input::has('year') && Input::has('month') && Input::has('day')) {
-            $dateFilter = Carbon::createFromFormat('Y-m-d', Input::get('year').'-'.Input::get('month').'-'.Input::get('day'));
-        } 
+        if(Input::has('dateFrom')){
+            $dateFrom = Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay();
+        }   
         else{
-            $dateFilter = $transactionService->getNextPayOutDate();
+            $dateFrom = Carbon::now()->startOfDay();
         }
-            
-        $dateFrom = $transactionService->getStartPayOutRange($dateFilter);
-        $dateTo = $transactionService->getEndPayOutRange($dateFilter);
+
+        if(Input::has('dateTo')){
+            $dateTo = Carbon::createFromFormat('Y/m/d', Input::get('dateTo'))->endOfDay();
+        }   
+        else{
+           $dateTo = Carbon::now()->endOfDay();
+        }
 
         if(Input::has('username')){
             $accounts = $memberRepository->getUserAccountsToPay($dateFrom, $dateTo, Input::get('username'));
@@ -218,7 +223,6 @@ class OrderProductController extends BaseController
         $memberRepository = App::make('MemberRepository');
         $orderProductRepository = App::make('OrderProductRepository');
         $transactionService = App::make('TransactionService');
-        $emailService = App::make('EmailService');
 
         $orderProductIds = json_decode(Input::get('order_product_ids'));
         $accountName = Input::get('account_name');
@@ -228,12 +232,11 @@ class OrderProductController extends BaseController
         
         $member = $memberRepository->getById($userId);
         $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
-        $errors = $transactionService->updateOrderProductsAsPaid($orderProducts, $accountName, $accountNumber, $bankName);
-        $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName);
+        $payoutResponse = $transactionService->payoutOrderProducts($orderProducts, $member, $accountName, $accountNumber, $bankName);
 
         return  Response::json([
-            'success' => count($errors) > 0,
-            'errors' => $errors,
+            'success' => $payoutResponse['isSuccessful'],
+            'errors' => $payoutResponse['errors'],
         ]);
     }
     
@@ -260,23 +263,11 @@ class OrderProductController extends BaseController
 
         $member = $memberRepository->getById($userId);
         $orderProducts = $orderProductRepository->getManyOrderProductById($orderProductIds);
-
-        foreach($orderProducts as $key => $orderProduct){
-            if( (int) $orderProduct->order_product_status->id_order_product_status !== OrderProductStatus::STATUS_RETURN_BUYER){
-                unset($orderProducts[$key]);
-            }
-        }
-
-        $errors = $transactionService->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
-        foreach($orderProducts as $orderProduct){
-            $transactionService->revertOrderPoints($orderProduct);
-        }
-        
-        $emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, true);
+        $refundResponse = $transactionService->refundOrderProducts($orderProducts, $member, $accountName, $accountNumber, $bankName);
 
         return  Response::json([
-            'success' => count($errors) > 0,
-            'errors' => $errors,
+            'success' => $refundResponse['isSuccessful'],
+            'errors' =>  $refundResponse['errors'],
         ]);
     }
         
