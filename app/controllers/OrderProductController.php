@@ -17,16 +17,21 @@ class OrderProductController extends BaseController
     {        
         $memberRepository = App::make('MemberRepository');
         $transactionService = App::make('TransactionService');
+
         
-        if(Input::has('year') && Input::has('month') && Input::has('day')) {
-            $dateFilter = Carbon::createFromFormat('Y-m-d', Input::get('year').'-'.Input::get('month').'-'.Input::get('day'));
-        } 
+        if(Input::has('dateFrom')){
+            $dateFrom = Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay();
+        }   
         else{
-            $dateFilter = $transactionService->getNextPayOutDate();
+            $dateFrom = Carbon::now()->startOfDay();
         }
-            
-        $dateFrom = $transactionService->getStartPayOutRange($dateFilter);
-        $dateTo = $transactionService->getEndPayOutRange($dateFilter);
+
+        if(Input::has('dateTo')){
+            $dateTo = Carbon::createFromFormat('Y/m/d', Input::get('dateTo'))->endOfDay();
+        }   
+        else{
+           $dateTo = Carbon::now()->endOfDay();
+        }
 
         if(Input::has('username')){
             $accounts = $memberRepository->getUserAccountsToPay($dateFrom, $dateTo, Input::get('username'));
