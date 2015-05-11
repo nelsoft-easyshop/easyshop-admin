@@ -3,8 +3,14 @@
 use App;
 use Config;
 use Carbon\Carbon;
+use PointType;
+use OrderStatus;
+use OrderPoint;
+use OrderProductStatus;
 use Easyshop\Services\Validation\Laravel\OrderBillingInfoUpdateValidator;
 use Easyshop\Services\Validation\Laravel\OrderBillingInfoCreateValidator;
+use Easyshop\Services\PointTracker;
+use EasyShop\Services\EmailService as EmailService;
 
 use Easyshop\ModelRepositories\OrderProductStatusRepository as OrderProductStatusRepository;
 use Easyshop\ModelRepositories\OrderBillingInfoRepository as OrderBillingInfoRepository;
@@ -93,6 +99,21 @@ class TransactionService
     private $bankInfoRepository;
     
     /**
+     * Point tracker
+     *
+     * @var EasyShop/Services/PointTracker
+     */
+    private $pointTracker;
+
+
+    /**
+     * EmailService;
+     *
+     * @var EasyShop\Services\EmailService
+     */
+    private $emailService;
+    
+    /**
      * Inject dependecies
      *
      */
@@ -104,7 +125,9 @@ class TransactionService
                                 OrderStatusRepository $orderStatusRepository,
                                 OrderHistoryRepository $orderHistoryRepository,
                                 PaymentMethodRepository $paymentMethodRepository,
-                                BankInfoRepository $bankInfoRepository)    
+                                BankInfoRepository $bankInfoRepository,
+                                PointTracker $pointTracker,
+                                EmailService $emailService)    
     {
         $this->orderProductStatusRepository = $orderProductStatusRepository;
         $this->orderBillingInfoRepository = $orderBillingInfoRepository;
@@ -115,6 +138,8 @@ class TransactionService
         $this->orderHistoryRepository = $orderHistoryRepository;
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->bankInfoRepository = $bankInfoRepository;
+        $this->pointTracker = $pointTracker;
+        $this->emailService = $emailService;
         $this->payOutConfig = Config::get('transaction.payOut');
     }
     
@@ -352,15 +377,17 @@ class TransactionService
      */
     public function voidOrder($orderId)
     {   
-        $voidStatus = $this->orderStatusRepository->getVoidStatus();
+        $voidStatus = OrderStatus::STATUS_VOID;
         $order = $this->orderRepository->getOrderById($orderId);
-        $orderProducts = $this->orderProductRepository->getOrderProductByOrderId($orderId);
-        foreach($orderProducts as $orderProduct){
-            $this->voidOrderProduct($orderProduct->id_order_product);
+        $preVoidOrderStatus = (int) $order->order_status;
+        if($preVoidOrderStatus !== $voidStatus){
+            $orderProducts = $this->orderProductRepository->getOrderProductByOrderId($orderId);
+            foreach($orderProducts as $orderProduct){
+                $this->voidOrderProduct($orderProduct->id_order_product);
+            }
+            $this->orderRepository->updateOrderStatus($order, $voidStatus);
+            $this->orderHistoryRepository->createOrderHistory($order->id_order, $voidStatus, 'VOIDED');
         }
-        $this->orderRepository->updateOrderStatus($order, $voidStatus);
-        $this->orderHistoryRepository->createOrderHistory($order->id_order, $voidStatus, 'VOIDED');
-
         return true;
     }
 
@@ -475,7 +502,103 @@ class TransactionService
         
         return $billingInfo;
     }
-  
     
+    /**
+     * Revert order product points
+     *
+     * @param OrderProduct $orderProduct;
+     * @return boolean
+     */
+    public function revertOrderPoints($orderProduct)
+    {   
+        $order = $orderProduct->order;
+        $buyerId = $order->buyer->id_member;
+        
+        if($orderProduct !== null){
+            $orderProductpointData = $this->orderProductRepository->getOrderProductPoint($orderProduct->id_order_product);
+            $point = $orderProductpointData['point'];
+            $orderProductPoint = $orderProductpointData['entity'];
+            if(bccomp($point, "0") === 1 && $orderProductPoint !== null){
+                $isSuccessful = $this->pointTracker->addUserPoint(
+                                    $buyerId, 
+                                    PointType::POINT_TYPE_REVERT, 
+                                    $point
+                                );
+                if($isSuccessful){
+                    $orderProductPoint->is_revert = OrderPoint::REVERTED;
+                    $orderProductPoint->save();
+                }
+            }
+        }
+    }
+
+    /**
+     * Payout order products as paid
+     *
+     * @param OrderProduct[] $orderProducts
+     * @param Member $member
+     * @param string $accountName
+     * @param string $accoutnNumber
+     * @param string bankName
+     * @return mixed
+     */
+    public function payoutOrderProducts($orderProducts, $member, $accountName, $accountNumber, $bankName)
+    {     
+        $payableOrderProductStatuses = [
+            OrderProductStatus::STATUS_ON_GOING,
+            OrderProductStatus::STATUS_FORWARD_SELLER,
+        ];
+
+        foreach($orderProducts as $key => $orderProduct){
+            if( in_array( (int) $orderProduct->order_product_status->id_order_product_status,$payableOrderProductStatuses) === false){
+                unset($orderProducts[$key]);
+            }
+        }
+        
+        $errors = $this->updateOrderProductsAsPaid($orderProducts, $accountName, $accountNumber, $bankName);
+        $this->emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName);
+        
+        return [
+            'errors' => $errors,
+            'isSuccessful' => count($errors) > 0,
+        ];
+    }
+
+    /**
+     * Payout order products as paid
+     *
+     * @param OrderProduct[] $orderProducts
+     * @param Member $member
+     * @param string $accountName
+     * @param string $accoutnNumber
+     * @param string bankName
+     * @return mixed
+     */
+    public function refundOrderProducts($orderProducts, $member, $accountName, $accountNumber, $bankName)
+    {
+        $refundableOrderProductStatuses = [
+            OrderProductStatus::STATUS_RETURN_BUYER,
+        ];
+
+        foreach($orderProducts as $key => $orderProduct){
+            if( in_array((int) $orderProduct->order_product_status->id_order_product_status,  $refundableOrderProductStatuses) === false ){
+                unset($orderProducts[$key]);
+            }
+        }
+
+        $errors = $this->updateOrderProductsAsRefunded($orderProducts, $accountName, $accountNumber, $bankName);
+        foreach($orderProducts as $orderProduct){
+            $this->revertOrderPoints($orderProduct);
+        }
+        
+        $this->emailService->sendPaymentNotice($member, $orderProducts, $accountName, $accountNumber, $bankName, true);
+        
+        return [
+            'errors' => $errors,
+            'isSuccessful' => count($errors) > 0,
+        ];
+    }
+    
+
 }
 

@@ -10,12 +10,12 @@
             <td>Total Amount</td>
             <td>Easyshop Charge</td>     
             <td>Payment Method Charge</td>
+            <td>Easypoints</td>
             <td>Net</td>
             <td>Status</td>
         </tr>    
 
         <tr>
-           
             <td>{{{ $orderproduct->order->invoice_no }}}</td>
             <td>{{{ $orderproduct->order->buyer->getStorename() }}}</td>
             <td>{{{ $orderproduct->product->name }}}</td>
@@ -25,9 +25,13 @@
             <td>{{ number_format($orderproduct->total,2,'.',',') }}</td>
             <td>{{ number_format($orderproduct->easyshop_charge,2,'.',',') }}</td>
             <td>{{ number_format($orderproduct->payment_method_charge,2,'.',',') }}</td>
-            <td>{{ number_format($orderproduct->net,2,'.',',') }}</td>
+            <td>{{{ number_format($easypoints, 2,'.',',') }}}</td>
+            @if(bccomp($easypoints, "0") === 1)
+                <td>{{ number_format(bcsub($orderproduct->net, $easypoints, 4),2,'.',',') }}</td>
+            @else
+                <td>{{ number_format($orderproduct->net,2,'.',',') }}</td>
+            @endif
             <td>{{{ $orderproduct->orderProductStatus->name }}}</td>    
-            
         </tr>   
        
     </table>

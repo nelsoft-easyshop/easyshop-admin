@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\DB;
 use Order;
 use OrderStatus;
+use PaymentGateway;
+use PaymentMethod;
 
 class OrderRepository extends AbstractRepository
 {
@@ -169,5 +171,20 @@ class OrderRepository extends AbstractRepository
         return $record->get();
     }
 
+    /**
+     * Get orderPoints
+     *
+     * @param integer $orderId
+     * @return string
+     */
+    public function getOrderPoints($orderId)
+    {
+        $easyPointGateway = PaymentGateway::where('payment_method_id', '=', PaymentMethod::EASYPOINTS)
+                                        ->where('order_id', '=', $orderId)
+                                        ->first();
+        $point = $easyPointGateway ? $easyPointGateway->amount : "0";
+        return $point;
+    }
+    
 }
 

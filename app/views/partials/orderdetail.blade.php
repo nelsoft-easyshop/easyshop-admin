@@ -39,7 +39,16 @@
                     {{{ $order->dateadded }}}
                 </span>
             </div>
-
+            
+            
+            @if ($easypoints !== '0')
+            <div>
+                <label>Easypoints:</label>
+                <span>
+                    {{ number_format($easypoints, 2, '.', ',') }}
+                </span>
+            </div>
+            @endif
             
         </div>
 

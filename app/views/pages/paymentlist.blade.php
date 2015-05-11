@@ -23,23 +23,12 @@
                 {{ Form::open(array('url' => '/transaction/pay', 'method' => 'get')) }}
 
                         {{ Form::text('username', $username, array('id' => 'username', 'placeholder' => 'Storename/Username')) }}
-                        
-                        <select id="year" name="year">                     
-                            @foreach($yearSelection as $year)
-                                <option value="{{{ $year['year']  }}}" {{ ($year['selected'])?'selected':'' }}>{{{$year['year']}}}</option> 
-                            @endforeach
-                        </select>
-                        
               
-                        
-                        
-                        {{ Form::selectMonth('month', $defaultMonth  , ['class' => 'month', 'name' => 'month']) }}
-                        <select id="day" name="day">
-                            @foreach($dateSelection as $date)
-                                <option value="{{{ $date['day'] }}}"  {{ ($date['selected'])?'selected':'' }}  >{{{ NumberFormatterHelper::addOrdinalNumberSuffix($date['day']) }}}</option>
-                            @endforeach  
-                        </select>
-                        
+                        <label class="date-label" for="datefrom"> From: </label> 
+                        {{ Form::text('dateFrom', $dateFrom->format('Y/m/d'), array('class' => 'date', 'id' => 'date-from')) }}
+
+                        <label class="date-label" for="dateto"> From: </label> 
+                        {{ Form::text('dateTo', $dateTo->format('Y/m/d'), array('class' => 'date', 'id' => 'date-to')) }}
                    
                         <button id="search" class="btn">Search</button>    
                 {{ Form::close() }}

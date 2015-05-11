@@ -511,19 +511,40 @@
                                                                                 &#8369; {{ number_format($orderProduct->payment_method_charge,2,'.',',') }}
                                                                             </td>
                                                                         </tr>
-                                                                        <tr>
-                                                                            <td valign="top" width="50%" style="color: #555555; font-weight: bold; font-family:Roboto,Open Sans, Arial,Tahoma, Helvetica, sans-serif; word-break: break-all;">
-                                                                                   @if($isRefund)  
-                                                                                        Refunded Amount
-                                                                                    @else
-                                                                                        Net
-                                                                                    @endif
+
+                                                                        @if($isRefund)  
+                                                                            @if(bccomp($orderProduct->easypoint, "0") === 1)
+                                                                                <tr>
+                                                                                    <td valign="top" width="50%" style="color: #555555; font-weight: bold; font-family:Roboto,Open Sans, Arial,Tahoma, Helvetica, sans-serif; word-break: break-all;">
+                                                                                        Reverted Easypoints
+                                                                                    </td>
+                                                                                    <td valign="top" width="50%" align="right" style="padding-right: 40px; font-size: 14px; font-weight: bold; font-family:Roboto,Open Sans, Arial,Tahoma, Helvetica, sans-serif; word-break: break-all;">
+                                                                                        &#8369; 
+                                                                                            {{ number_format($orderProduct->easypoint ,2,'.',',') }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endif
+                                                                            <tr>
+                                                                                <td valign="top" width="50%" style="color: #555555; font-weight: bold; font-family:Roboto,Open Sans, Arial,Tahoma, Helvetica, sans-serif; word-break: break-all;">
+                                                                                    Refunded Amount
                                                                                 </td>
-                                                                            <td valign="top" width="50%" align="right" style="padding-right: 40px; font-size: 14px; font-weight: bold; font-family:Roboto,Open Sans, Arial,Tahoma, Helvetica, sans-serif; word-break: break-all;">
-                                                                                &#8369; 
-                                                                                    {{ number_format($orderProduct->net,2,'.',',') }}
-                                                                            </td>
-                                                                        </tr>
+                                                                                <td valign="top" width="50%" align="right" style="padding-right: 40px; font-size: 14px; font-weight: bold; font-family:Roboto,Open Sans, Arial,Tahoma, Helvetica, sans-serif; word-break: break-all;">
+                                                                                    &#8369; 
+                                                                                        {{ number_format(bcsub($orderProduct->net, $orderProduct->easypoint, 4) ,2,'.',',') }}
+                                                                                </td>
+                                                                            </tr>
+                                                                        @else
+                                                                            <tr>
+                                                                                <td valign="top" width="50%" style="color: #555555; font-weight: bold; font-family:Roboto,Open Sans, Arial,Tahoma, Helvetica, sans-serif; word-break: break-all;">
+                                                                                    Net
+                                                                                </td>
+                                                                                <td valign="top" width="50%" align="right" style="padding-right: 40px; font-size: 14px; font-weight: bold; font-family:Roboto,Open Sans, Arial,Tahoma, Helvetica, sans-serif; word-break: break-all;">
+                                                                                    &#8369; 
+                                                                                        {{ number_format($orderProduct->net,2,'.',',') }}
+                                                                                </td>
+                                                                            </tr>
+                                                                        @endif
+ 
                                                                     </table>
                                                                 </td>
                                                             </tr>

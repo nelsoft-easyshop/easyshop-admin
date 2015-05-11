@@ -2,7 +2,15 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use OrderProduct, OrderProductStatus, OrderStatus, OrderProductHistory, PaymentMethod, OrderProductTag, TagType, ProductShippingComment;;
+use OrderProduct, 
+    OrderProductStatus, 
+    OrderStatus, 
+    OrderProductHistory, 
+    PaymentMethod, 
+    OrderProductTag, 
+    TagType, 
+    ProductShippingComment,
+    OrderPoint;
 
 
 class OrderProductRepository extends AbstractRepository
@@ -29,9 +37,13 @@ class OrderProductRepository extends AbstractRepository
     {
         $questionmarks = str_repeat("?,", count($orderProductIds)-1) . "?";
         $query = OrderProduct::whereRaw("id_order_product IN (".$questionmarks.")");
+        $query->leftJoin('es_order_points', 'es_order_points.order_product_id', '=', 'es_order_product.id_order_product');
         $query->setBindings(array_merge($query->getBindings(),$orderProductIds));
         
-        return $query->get();
+        return $query->get([
+            'es_order_product.*',
+            DB::raw('COALESCE(es_order_points.points, 0) as easypoint')
+        ]);
     }
     
     /**
@@ -81,6 +93,7 @@ class OrderProductRepository extends AbstractRepository
                             DB::raw('COALESCE(NULLIF(buyer.store_name, ""), buyer.username) as buyer_seller_storename'),
                             'es_product.name as productname', 
                             'es_order_product_status.name as statusname',
+                            'es_order_product_status.id_order_product_status as order_product_status_id',
                             'es_order.dateadded',
                             DB::raw('COALESCE(IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_bank_info.bank_name, es_order_billing_info.bank_name), "") as bank_name'), 
                             DB::raw('COALESCE(IF( es_order.dateadded < "'.$billingInfoChangeDate.'", es_billing_info.bank_account_name, es_order_billing_info.account_name), "") as account_name'), 
@@ -97,7 +110,7 @@ class OrderProductRepository extends AbstractRepository
      * @return Collection
      */
     public function getOrderProductsToRefund($orderProductIds = [])
-    {               
+    {   
         $query = OrderProduct::select([
                                     'es_order_product.*', 
                                     'es_order.invoice_no', 
@@ -107,12 +120,17 @@ class OrderProductRepository extends AbstractRepository
                                     'es_product.name as productname', 
                                     'es_order_product_status.name as statusname',
                                     'es_order_product_status.id_order_product_status as order_product_status_id',
+                                    DB::raw('COALESCE(es_order_points.points, 0) as easypoint'),
                                ]);
         $query->join('es_order','es_order_product.order_id', '=', 'es_order.id_order');
         $query->join('es_member','es_order.buyer_id', '=', 'es_member.id_member');
         $query->join('es_member as seller','es_order_product.seller_id', '=', 'seller.id_member');
         $query->join('es_order_product_status','es_order_product.status', '=', 'es_order_product_status.id_order_product_status');
         $query->join('es_product','es_order_product.product_id', '=', 'es_product.id_product');
+        $query->leftJoin('es_order_points', function($leftJoin){
+            $leftJoin->on('es_order_points.order_product_id', '=', 'es_order_product.id_order_product');
+            $leftJoin->where('es_order_points.is_revert', '!=', OrderPoint::REVERTED);
+        });
         $query->leftJoin(DB::raw('
             (SELECT 
                 * 
@@ -125,7 +143,7 @@ class OrderProductRepository extends AbstractRepository
             $leftJoin->on('es_billing_info.member_id', '=', 'es_member.id_member');
         });
         $query->leftJoin('es_bank_info', 'es_billing_info.bank_id', '=', 'es_bank_info.id_bank');
-        $query->whereIn('es_order_product.id_order_product',  $orderProductIds);
+        $query->whereIn('es_order_product.id_order_product', $orderProductIds);
 
         $returnedOrders = $query->get();
 
@@ -400,6 +418,27 @@ class OrderProductRepository extends AbstractRepository
                     DB::raw('COALESCE(es_product_shipping_comment.id_shipping_comment,0) as shipping')
                 ]);
     }
+    
+    /**
+     * Get orderProduct point
+     *
+     * @param integer $orderProductId
+     * @return mixed
+     */
+    public function getOrderProductPoint($orderProductId)
+    {
+        $orderPoint = OrderPoint::where('order_product_id', '=', $orderProductId)
+                                ->first();
+        $point = $orderPoint ? $orderPoint->points : "0";
+        
+        return [
+            'point' => $point,
+            'entity' => $orderPoint,
+        ];
+    }
+    
 }
+
+
 
 

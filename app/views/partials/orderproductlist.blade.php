@@ -20,6 +20,8 @@
         <tr class='head'>
             @if(@isset($isRefund) && $isRefund)
                 <td>Refund</td>
+            @else
+                <td>Payout</td>
             @endif
             <td>Order ID</td>
             <td>Invoice No</td>
@@ -30,6 +32,7 @@
             <td>Order Quantity</td>     
             <td>Unit Price</td>
             <td>Total Amount</td>
+            <td>Easyoint</td>
             <td>NET</td>        
             <td>Status</td>
             <td>&nbsp;</td>
@@ -40,10 +43,18 @@
         <tr class="order_product" data-orderproductid = "{{{ $orderproduct->id_order_product }}}">                       
             @if(@isset($isRefund) && $isRefund)
             <td>
-                @if($orderproduct->order_product_status_id == OrderProductStatus::STATUS_RETURN_BUYER)
-                     <input type="checkbox" class="refund-order-product-id" checked/>
+                @if($orderproduct->order_product_status_id != OrderProductStatus::STATUS_PAID_BUYER)
+                     <input type="checkbox" class="checkbox-order-product-id" checked/>
                 @else
                      <span class="green_btn"> REFUNDED </span>
+                @endif
+            </td>
+            @else
+            <td>
+                @if($orderproduct->order_product_status_id != OrderProductStatus::STATUS_PAID_SELLER)
+                     <input type="checkbox" class="checkbox-order-product-id" checked/>
+                @else
+                     <span class="green_btn">PAID</span>
                 @endif
             </td>
             @endif
@@ -56,7 +67,13 @@
             <td>{{{ $orderproduct->order_quantity }}}</td>        
             <td>{{ number_format($orderproduct->price,2,'.',',') }}</td>
             <td>{{ number_format($orderproduct->total,2,'.',',') }}</td>
-            <td class="net">{{ number_format($orderproduct->net,2,'.',',') }}</td>     
+            <td>{{ number_format($orderproduct->easypoint,2,'.',',') }}</td>
+            @if(bccomp($orderproduct->easypoint,0) === 1)
+                <td class="net">{{ number_format(bcsub($orderproduct->net, $orderproduct->easypoint, 4),2,'.',',') }}</td>  
+            @else
+                <td class="net">{{ number_format($orderproduct->net,2,'.',',') }}</td>  
+            @endif
+
             <td>{{{ $orderproduct->statusname}}}</td>
             <td>
                 <span class="org_btn view"> View </span>&nbsp;
