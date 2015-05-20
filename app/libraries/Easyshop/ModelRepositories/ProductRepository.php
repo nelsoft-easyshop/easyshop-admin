@@ -33,14 +33,24 @@ class ProductRepository
 
     /**
      * Get number of products uploaded per month
-     * @return Entity
+     * @return Product[]
      */ 
-    public function getProductsUploadedPerMonth($month, $year)
+    public function getProductsUploadedPerMonth($months, $year)
     {
-        foreach ($month as $key => $value) {
-            $dt = Carbon::create($year, ++$key, 1);
-            $products[] = Product::whereBetween("createddate",array((string)$dt->startOfMonth(),(string)$dt->endOfMonth()))->orderBy("createddate","asc")->count();
+        $products = [];
+        foreach ($months as $key => $value) {
+            $monthIndex = $key + 1;
+            $date = Carbon::create($year, $monthIndex, 1);
+
+            $startOfMonth = $date->startOfMonth()->format('Y-m-d H:i:s');
+            $endOfMonth = $date->endOfMonth()->format('Y-m-d H:i:s');
+
+            $products[] = Product::whereBetween("createddate", [ $startOfMonth, $endOfMonth])
+                                 ->where('is_delete',Product::STATUS_NOT_DELETED)
+                                 ->where('is_draft', Product::STATUS_NOT_DRAFTED)
+                                 ->orderBy("createddate","asc")->count();   
         }
+
         return $products;
     }
 

@@ -30,7 +30,20 @@ class ReportsController extends BaseController
         $this->memberRepository = App::make('MemberRepository'); 
         $this->categoryRepository = App::make('CategoryRepository'); 
         $this->productRepository = App::make('ProductRepository'); 
-        $this->listOfMonths = array("January", "February", "March", "April", "May", "June", "July", "August", "September","October","November","December");       
+        $this->listOfMonths = [
+            "January", 
+            "February", 
+            "March", 
+            "April", 
+            "May", 
+            "June", 
+            "July", 
+            "August", 
+            "September",
+            "October",
+            "November",
+            "December"
+        ];       
     }
 
     /**
@@ -39,7 +52,10 @@ class ReportsController extends BaseController
      */
     public function showReportsConsole()
     {
-        $productsPerCategory = $this->categoryRepository->getProductCountPerParentCategory($this->categoryRepository->getParentCategories());
+        $productsPerCategory = $this->categoryRepository
+                                    ->getProductCountPerParentCategory(
+                                        $this->categoryRepository->getParentCategories()
+                                    );
         $year =  Carbon::now()->year;
         while($year >= Carbon::parse( \Config::get('transaction.startOfOperation'))->year) {
             $yearsArr[] = $year;

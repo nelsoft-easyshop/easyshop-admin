@@ -28,39 +28,62 @@ class CategoryRepository
     /**
      * Get total number of items per parent category
      *
-     * @param $parentIds
-     * @return Array
+     * @param Category[] $parentCatgeories
+     * @return mixed
      */
-    public function getProductCountPerParentCategory($parentIds)
+    public function getProductCountPerParentCategory($parentCategories)
     {   
+        
         $isNestedUsable = true;
         if((int)$this->getNestedSetCategoryCount() === 0 ) {
             $isNestedUsable = false;
         }
-        foreach ($parentIds as $parentId) {
-            if($parentId->name === "PARENT") {
+
+        foreach ($parentCategories as $parentCategory) {
+            if( (int) $parentCategory->id_cat === Category::ROOT_CATEGORY){
                 continue;
             }
-
-            $categoryname[] = $parentId->name;
+            $categoryname[] = $parentCategory->name;
             if($isNestedUsable) {
-                $childCategoryIds = [];
-                foreach ($this->getChildrenWithNestedSet($parentId->id_cat) as $value) {
+                $childCategoryIds = [ $parentCategory->id_cat ];
+                foreach ($this->getChildrenWithNestedSet($parentCategory->id_cat) as $value) {
                     $childCategoryIds[] = $value->original_category_id;
                 }
+                
             }
             else {
-                $childCategoryIds = $this->getChildrenWithGetFamilyTree($parentId->id_cat);
+                $childCategoryIds = $this->getChildrenWithGetFamilyTree($parentCategory->id_cat);
             }
 
             $count = DB::table("es_product")
-                        ->whereIn("cat_id",$childCategoryIds)->count();
+                       ->whereIn("cat_id",$childCategoryIds)
+                       ->where('is_draft', Product::STATUS_NOT_DRAFTED)
+                       ->where('is_delete', Product::STATUS_NOT_DELETED)
+                       ->count();
             $productCountPerCategory[] = $count;
         }
+
         return [
             "parentNames" => $categoryname,
             "productCount" => $productCountPerCategory
         ];
+    }
+
+    /**
+     * Retrieves number of products directly uploaded to a particular category
+     * 
+     * @param integer $categoryId
+     * @return integer
+     */
+    public function getProductCountNonRecursive($categoryId)
+    {
+        $count = DB::table("es_product")
+                   ->where("cat_id", $categoryId)
+                   ->where('is_draft', Product::STATUS_NOT_DRAFTED)
+                   ->where('is_delete', Product::STATUS_NOT_DELETED)
+                   ->count();
+
+        return $count;
     }
 
     /**
