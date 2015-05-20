@@ -134,7 +134,7 @@
                 <tr>
                     <td>{{{ $item->createddate }}}</td>
                     <td>{{{ $item->name }}}</td>
-                    <td>{{{ $item->Member->store_name }}}</td>
+                    <td>{{{ $item->Member->getStoreName() }}}</td>
                     <td>{{{ $item->Category->name }}}</td>
                     <td>{{{ $item->Brand->name }}}</td>
                     <td>{{{ $item->sku }}}</td>
