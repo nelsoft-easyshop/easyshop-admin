@@ -1,8 +1,10 @@
 <?php
 
-
 class Product extends Eloquent 
 {
+
+    const STATUS_NOT_DRAFTED = 0;
+    const STATUS_NOT_DELETED = 0;
 
     /**
      * The database table used by the model.

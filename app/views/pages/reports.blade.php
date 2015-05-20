@@ -99,7 +99,7 @@
                                     <tr id="heading">
                                         <th width="45%">Month</th>
                                         <th width="10%"></th>
-                                        <th width="45%">Sign-up Count</th>
+                                        <th width="45%">Uploads per month</th>
 
                                     </tr>
                                 </thead>
@@ -122,18 +122,16 @@
                         <div class="table-responsive table-payment"> 
                             <table id="table5" class="display" style="max-width:100%;">
                                 <thead>
-                                    <tr id="heading">
-                                 
-                                        <th>CategoryNames</th>
-                                        <th>CategoryNames</th>
-
+                                    <tr id="heading">                                 
+                                        <th>Category Name</th>
+                                        <th>Number of Products</th>
                                     </tr>
                                 </thead>
                                 <tbody >
                                     @foreach($categoryNames as $key => $categories)
                                         <tr>
                                             <td>{{{ $categories }}}</td>
-                                            <td>{{$productCountPerCategory[$key]}}</td>
+                                            <td>{{ $productCountPerCategory[$key] }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
