@@ -22,7 +22,7 @@
                     <li><a href="#home" role="tab" data-toggle="tab">Monthly Sign Up Statistics</a></li>
                     <li><a href="#profile1" role="tab" data-toggle="tab">Users w/ & w/out Products</a></li>
                     <li><a href="#profile3" role="tab" data-toggle="tab">Number of uploaded items per month</a></li>
-                    <li><a href="#profile4" role="tab" data-toggle="tab">Number of items items per parent category</a></li>
+                    <li><a href="#profile4" role="tab" data-toggle="tab">Number of items per parent category</a></li>
                 </ul>
             </section>
 
