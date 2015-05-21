@@ -1,7 +1,7 @@
 (function ($){ 
         $('.notif-button ').on('click',function(){
             var apiType = $(this).data('type');
-            BootstrapDialog.confirm('Are you sure you want to update?', function(result){
+            BootstrapDialog.confirm('Proceed with sending push notification?', function(result){
                 if(result) {
                     loader.showPleaseWait();
                     $.ajax({
