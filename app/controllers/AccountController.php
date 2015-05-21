@@ -102,7 +102,6 @@ class AccountController extends BaseController
         {
             $allUsers[] = $users;
             $specificRoles[] = $adminEntity->getAdminRoleById($users->id_admin_member);
-
         }
 
         return View::make('pages.registration')
