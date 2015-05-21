@@ -8,11 +8,11 @@ class RegistrationValidator extends AbstractLaravelValidator
     *
     * @var array
     */
-    protected $rules = array(
-            'username' => 'required|unique:es_admin_member,username', 
+    protected $rules = [
+            'username' => 'required|unique:es_admin_member,username|alpha_num', 
             'password' => 'required|min:8|alpha_num', 
             'fullname' => 'required', 
-    );
+    ];
 
 
 }
