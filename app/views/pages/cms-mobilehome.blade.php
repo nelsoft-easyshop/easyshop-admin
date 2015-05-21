@@ -59,7 +59,7 @@
                                     <div class="form-group">
                                         <label for="inputPassword" class="control-label col-xs-2">Target</label>
                                         <div class="col-xs-10">
-                                            <input type="text" id="mainSlideTarget" class="form-control" name='target' value="target" placeholder="Value" >
+                                            <input type="text" id="mainSlideTarget" class="form-control" name='target' value="" placeholder="/someUrl" >
                                         </div>
                                     </div>
                                     <div class="form-group">
