@@ -67,7 +67,6 @@
         var password = $("#editPassword").val().trim();
         var id = $(this).data("id");
 
-
         if(password === "") {
             $("#editPassword").css("border-color","red");
         }
@@ -132,11 +131,9 @@
                 if(json == "success") {
                     $("#success").modal('show');  
                     $("#loading").modal('hide');
-                        
                 }
                 else {
                     if((json.errors.username) != null || (json.errors.password) != null || (json.errors.fullname) != null) {
-
                         $.each(json.errors, function (i, v) {
                             if(json.errors[i] != "undefined") {
                                 errors += "<br/><h4>" + json.errors[i] + "</h4>";
@@ -146,8 +143,6 @@
                         $("#changeTextError").html(errors);
                         $("#error").modal('show');  
                         $("#loading").modal('hide');
-
-                   
                     }
                 }
 
