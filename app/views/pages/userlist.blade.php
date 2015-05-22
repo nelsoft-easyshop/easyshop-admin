@@ -222,7 +222,7 @@
                             <select id="ban_select" class="form-control" data-status="">
                                 <option value="0">--- Select Ban Type ---</option>
                                 @foreach($list_of_ban_type as $data)
-                                    <option class="ban-type-opt" value="{{{ $data['id_ban_type'] }}}" >{{{ $data['message'] }}}</option>
+                                    <option class="ban-type-opt" value="{{{ $data['id_ban_type'] }}}" >{{{ $data['title'] }}}</option>
                                 @endforeach
                             </select>
                         </div>
