@@ -157,7 +157,6 @@
             html += '<td id="'+ id +'_name" class="redirect">'+ data_json.name +'</td>';
             html += '<td id="'+ id +'_description" class="redirect">'+ data_json.description +'</td>';
             html += '<td id="'+ id +'_keywords" class="redirect">'+ data_json.keywords +'</td>';
-            html += '<td id="'+ id +'_is_main" class="redirect">'+ data_json.is_main +'</td>';
             html += '<td class="redirect">'+ data_json.slug +'</td>';
             html += '</tr>';
             $('#tbl-cat-list tbody').append(html);
