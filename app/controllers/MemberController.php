@@ -80,6 +80,19 @@ class MemberController extends BaseController
             'enddate' => Input::get('enddate'),
             'username' => Input::get('username')
         ];
+        
+        $hasSearchString = false;
+        foreach($userData as $searchString){
+            if(empty($searchString) === false){
+                $hasSearchString = true;
+                break;
+            }
+        }
+
+        if($hasSearchString === false){
+            return Redirect::to('/users');
+        }
+
         $locationService = $this->locationService;
         $listOfLocation = $locationService->location($this->locationLookUpRepository->getByType());
         $listOfBanType = $this->banTypeRepository->getByType();
