@@ -40,8 +40,7 @@
         var id = $(this).attr('data');
         var text = $('#searchBox').val().trim();
         if(text === ""){
-            alert('Invalid Search string');
-
+            alert('Please input a word to search for.');
             return false;
         }
         $('.search-string').each(function(){
