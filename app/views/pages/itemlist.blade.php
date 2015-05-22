@@ -112,7 +112,7 @@
         </div>
         <h4 class="tbl-title">
             <span class="glyphicon glyphicon-list-alt"></span>
-            LIST OF PRODUCTS
+            LIST OF PRODUCTS ({{{ $numberOfActiveProducts }}})
         </h4>
         <div class="tbl-div">
             <table class="table table-striped table-hover tbl-my-style" id="tbl-user-list">
@@ -130,7 +130,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($list_of_items as $item)
+                @foreach($items as $item)
                 <tr>
                     <td>{{{ $item->createddate }}}</td>
                     <td>{{{ $item->name }}}</td>

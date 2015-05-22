@@ -32,12 +32,16 @@ class ProductController extends BaseController
             'startdate' => Input::get('startdate'),
             'enddate' => Input::get('enddate')
         ];
+        
+        $productRepository = App::make('ProductRepository');
 
-        $products = App::make('ProductRepository')->search($productData, 100);
+        $products = $productRepository->search($productData, 100);
+        $numberOfActiveProducts = $productRepository->getActiveProductCount();
         $pagination = $products->appends(Input::except(['page','_token']))->links();
         return View::make('pages.itemlist')
                     ->with('pagination', $pagination)
-                    ->with('list_of_items', $products)
+                    ->with('items', $products)
+                    ->with('numberOfActiveProducts', $numberOfActiveProducts)
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
     }
 
