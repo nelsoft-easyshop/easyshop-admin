@@ -120,7 +120,6 @@
                     <th>Name</th>
                     <th>Description</th>
                     <th>Keyword</th>
-                    <th>Is Main</th>
                     <th>Slug</th>
                 </tr>
                 </thead>
@@ -150,7 +149,6 @@
                     <td class="redirect" id="{{{ $category->id_cat }}}_name">{{{ $category->name }}}</td>
                     <td class="redirect" id="{{{ $category->id_cat }}}_description">{{{ $category->description }}}</td>
                     <td class="redirect" id="{{{ $category->id_cat }}}_keywords">{{{ $category->keywords }}}</td>
-                    <td class="redirect" id="{{{ $category->id_cat }}}_is_main">{{{ $category->is_main }}}</td>
                     <td class="redirect">{{{ $category->slug }}}</td>
                 </tr>
                 @endforeach
@@ -189,16 +187,6 @@
                             <label>Sort order</label>
                             <input type="text" class="form-control" id="mdl_sort" maxlength="2" onkeypress="return isNumberKey(event)" placeholder="Enter number">
                         </div>
-                        <label>Is Main </label>
-                        <div class="checkbox">
-                            <label class="radio-inline">
-                                <input type="radio" name="mdl_main" checked id="chck_yes" value="1"> Yes
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="mdl_main" id="chck_no" value="0"> No
-                            </label>
-                        </div>
-                        <span class="help-block">This will set if the category is viewable in homepage .</span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

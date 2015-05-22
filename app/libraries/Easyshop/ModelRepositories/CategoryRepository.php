@@ -98,11 +98,12 @@ class CategoryRepository
                                 t1.original_category_id AS original_category_id
                             FROM
                                 es_category_nested_set t1
-                                    LEFT JOIN
+                            LEFT JOIN
                                 es_category_nested_set t2 ON t2.original_category_id = :category_id
                             WHERE
                                 t1.left > t2.left
-                                    AND t1.right < t2.right"),
+                            AND 
+                                t1.right < t2.right"),
                             ["category_id" => $categoryId]);
     }
 
@@ -113,7 +114,7 @@ class CategoryRepository
      */
     public function getChildrenWithGetFamilyTree($categoryId)
     {
-        $childsList = DB::select(DB::raw("select `GetFamilyTree`(:prodid) as childs"),
+        $childsList = DB::select(DB::raw("SELECT `GetFamilyTree`(:prodid) as childs"),
                                 ["prodid" => $categoryId]);
         return explode(",",$childsList[0]->childs);
     }

@@ -34,7 +34,7 @@
                     <table class="table table-striped table-hover tbl-my-style" id="tbl-user-list">
                         <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Query String</th>
                             <th>Number of Hits</th>
                         </tr>
                         </thead>
