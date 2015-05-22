@@ -59,7 +59,7 @@ class ProductRepository
      *
      * @param mixed $userData
      * @param integer $row
-     * @retrun Product[]
+     * @return Product[]
      */
     public function search($userData,$row=50)
     {
