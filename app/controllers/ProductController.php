@@ -4,7 +4,12 @@ use Easyshop\Services\XMLContentGetterService as XMLService;
 
 class ProductController extends BaseController
 {
-    protected $XMLService;
+    /**
+     * XML Content Getter Service
+     *
+     * @var Easyshop\Services\XMLContentGetterService
+     */
+    private $XMLService;
 
     public function __construct(XMLService $XMLService)
     {
@@ -13,7 +18,8 @@ class ProductController extends BaseController
 
     /**
      * Get all products
-     * @return Entity
+     *
+     * @return View
      */
     public function showAllItems()
     {
@@ -26,12 +32,16 @@ class ProductController extends BaseController
             'startdate' => Input::get('startdate'),
             'enddate' => Input::get('enddate')
         ];
+        
+        $productRepository = App::make('ProductRepository');
 
-        $products = App::make('ProductRepository')->search($productData, 100);
+        $products = $productRepository->search($productData, 100);
+        $numberOfActiveProducts = $productRepository->getActiveProductCount();
         $pagination = $products->appends(Input::except(['page','_token']))->links();
         return View::make('pages.itemlist')
                     ->with('pagination', $pagination)
-                    ->with('list_of_items', $products)
+                    ->with('items', $products)
+                    ->with('numberOfActiveProducts', $numberOfActiveProducts)
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());
     }
 

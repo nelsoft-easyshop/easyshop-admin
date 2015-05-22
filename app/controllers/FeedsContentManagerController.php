@@ -12,7 +12,7 @@ class FeedsContentManagerController extends BaseController
      *
      *  
      */
-    protected $XMLService;
+    private $XMLService;
 
     public function __construct(XMLService $XMLService) 
     {   
