@@ -25,8 +25,8 @@ class ProductRepository
      */
     public function getAllViewable($row)
     {
-        return Product::where('is_delete', '=', 0)
-                      ->where('is_draft', '=', 0, 'AND')
+        return Product::where('is_delete', '=', Product::STATUS_NOT_DELETED)
+                      ->where('is_draft', '=', Product::STATUS_NOT_DRAFTED, 'AND')
                       ->paginate($row);
     }
 
