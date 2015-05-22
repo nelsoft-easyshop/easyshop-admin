@@ -49,11 +49,14 @@ class AccountController extends BaseController
             return Redirect::to('/');  
         }
 
-        $errors = new MessageBag(['login_error' => ['Username and/or password is invalid.']]); 
-            Input::flash();
-            return View::make('pages.login')
-                       ->withErrors($errors)
-                       ->withInput(Input::except('password')); 
+        $errors = new MessageBag(['login_error' => [
+            'Username and/or password is invalid.'
+        ]]); 
+
+        Input::flash();
+        return View::make('pages.login')
+                   ->withErrors($errors)
+                   ->withInput(Input::except('password')); 
     }
 
     /**
@@ -89,7 +92,10 @@ class AccountController extends BaseController
     {
         $adminRepo = App::make('AdminMemberRepository');
         $result = $adminRepo->resetPassword(Input::get("id"), Input::get("password"));
-        return Response::json(['result' => $result]);   
+        
+        return Response::json([
+            'result' => $result]
+        );   
     }
 
     /**
