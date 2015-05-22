@@ -1,5 +1,5 @@
 <?php
-use Illuminate\Support\Facades\DB;
+
 class CategoryController extends BaseController
 {
     /**
@@ -25,13 +25,16 @@ class CategoryController extends BaseController
      */
     public function ajaxUpdateCategory()
     {
-        $categoryRepository = App::make('CategoryRepository');
-        $category = $categoryRepository->update(
-            $categoryRepository->getById(Input::get('id_cat')),
-            Input::except('_method')
+        $categoryManager = App::make('CategoryManager');
+        $updateResult = $categoryManager->updateCategory(
+            Input::get('id_cat'),            
+            Input::get('name'),
+            Input::get('description'),
+            Input::get('keywords'),
+            Input::get('sort_order')
         );
 
-        echo json_encode($category);
+        echo json_encode($updateResult);
     }
     
 
@@ -42,15 +45,17 @@ class CategoryController extends BaseController
      */
     public function ajaxAddCategory()
     {
-        $categoryRepository = App::make('CategoryRepository');
-        $data = Input::except('_method');
-        $data['slug'] = $categoryRepository->generateSlug(
-            StringHelper::clean(strtolower($data['name']))
+        $categoryManager = App::make('CategoryManager');
+        
+        $insertResult = $categoryManager->addNewCategory(
+            Input::get('parent_id'),
+            Input::get('name'),
+            Input::get('description'),
+            Input::get('keywords'),
+            Input::get('sort_order')
         );
 
-        $category = $categoryRepository->insert($data);
-
-        echo json_encode($category);
+        echo json_encode($insertResult);
     }
 
     /**

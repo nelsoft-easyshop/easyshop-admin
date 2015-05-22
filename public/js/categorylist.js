@@ -195,10 +195,27 @@
                 description:cat_description,
                 keywords:cat_keyword,
                 sort_order:cat_sort,
-                is_main:cat_main},
-            success:function(result){
-                pushJsonToFields('insert', result);
-                CloseBootstrapModal();
+                is_main:cat_main
+            },
+            success:function(result){                
+                var $categoryError = $('.category-error'); 
+                if(result.errors.length === 0){                
+                    $categoryError.hide();
+                    pushJsonToFields('insert', result.newCategory);
+                    CloseBootstrapModal();
+                }
+                else{                 
+                    var displayError = '';
+                    $.each(result.errors, function(index,error){
+                        displayError = error;
+                        return false;
+                    });
+                    $categoryError.html('<strong>Error: </strong>' + displayError);
+                    $categoryError.show();
+                    setTimeout(function(){
+                        $addCategoryError.fadeOut();
+                    }, 5000);
+                }
             }
         })
     }
@@ -215,10 +232,27 @@
                 description:cat_description,
                 keywords:cat_keyword,
                 sort_order:cat_sort,
-                is_main:cat_main},
+                is_main:cat_main
+            },
             success:function(result){
-                pushJsonToFields('update', result);
-                CloseBootstrapModal();
+                var $categoryContainer = $('.category-error');
+                if(result.errors.length === 0){                
+                    $categoryContainer.hide();
+                    pushJsonToFields('update', result.category);
+                    CloseBootstrapModal();
+                }
+                else{
+                    var displayError = '';
+                    $.each(result.errors, function(index,error){
+                        displayError = error;
+                        return false;
+                    });
+                    $categoryContainer.html('<strong>Error: </strong>' + displayError);
+                    $categoryContainer.show();
+                    setTimeout(function(){
+                        $categoryContainer.fadeOut();
+                    }, 5000);
+                }
             }
         })
     }

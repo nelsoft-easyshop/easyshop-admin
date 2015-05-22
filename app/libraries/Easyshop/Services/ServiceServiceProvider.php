@@ -94,6 +94,15 @@ class ServiceServiceProvider extends ServiceProvider
                 new \Davibennun\LaravelPushNotification\PushNotification
             );
         }); 
+
+        $this->app->bind('CategoryManager', function(){
+            return new CategoryManager(
+                new Validation\Laravel\CategoryInsertValidator(\App::make('validator')),
+                new Validation\Laravel\CategoryUpdateValidator(\App::make('validator')),
+                new StringHelperService()
+            );
+        });
+
     }
 }
 
