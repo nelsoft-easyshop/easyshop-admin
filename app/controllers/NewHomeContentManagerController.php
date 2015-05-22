@@ -54,7 +54,6 @@ class NewHomeContentManagerController extends BaseController
         $this->XMLService = $XMLService;
         $assetsLink = trim($this->XMLService->getAssetsLink());
         $this->assetLink = $assetsLink === "/" ? $this->XMLService->GetEasyShopLink() : rtrim($assetsLink, '/');
-        $this->XMLService = $XMLService;    
         $this->productRepository = $productRepository;    
         $this->adminMemberRepository = $adminMemberRepository;    
         $this->categoryRepository = $categoryRepository;    
