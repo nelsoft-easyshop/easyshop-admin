@@ -82,7 +82,7 @@
             </div>            
         </div>
 
-         <div class="modal fade" id="success" >
+        <div class="modal fade" id="success" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body" style='text-align:center;'>
@@ -92,6 +92,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="modal fade" id="customerror" >
             <div class="modal-dialog">
                 <div class="modal-content">

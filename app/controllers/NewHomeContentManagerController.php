@@ -12,37 +12,37 @@ class NewHomeContentManagerController extends BaseController
     /**
      *  Constructor declaration for XMLService  
      */
-    protected $XMLService;
+    private $XMLService;
 
     /**
      *  The Product Repository
      */    
-    protected $productRepository;
+    private $productRepository;
 
     /**
      *  Assets link return by the easyshop application
      */
-    protected $assetLink;    
+    private $assetLink;    
 
     /**
      *  The Administratory Repository
      */      
-    protected $adminMemberRepository;
+    private $adminMemberRepository;
 
     /**
      *  The Category Repository
      */      
-    protected $categoryRepository;
+    private $categoryRepository;
 
     /**
      *  The Category Repository
      */      
-    protected $brandRepository;    
+    private $brandRepository;    
 
     /**
      *  The Product Image Repository
      */ 
-    protected $productImageRepository;
+    private $productImageRepository;
     
     public function __construct(XMLService $XMLService,
                                 ProductRepository $productRepository,
