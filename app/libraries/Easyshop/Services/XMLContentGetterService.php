@@ -124,11 +124,14 @@ class XMLContentGetterService
 
     /**
      * Returns assets link
-     * @return json
+     *
+     * @return string
      */
     public function getAssetsLink()       
     {
-        return file_get_contents(\Config::get('easyshop/webservice.assetsLink'));
-
+        $assetsLink = file_get_contents(\Config::get('easyshop/webservice.assetsLink'));
+        $assetsLink = $assetsLink === "/" ? $this->GetEasyShopLink() : rtrim($assetsLink, '/');
+      
+        return trim($assetsLink);
     }
 }
