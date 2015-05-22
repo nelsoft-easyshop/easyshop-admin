@@ -1,4 +1,6 @@
-<?php namespace Easyshop\Services\Validation\Laravel;
+<?php 
+
+namespace Easyshop\Services\Validation\Laravel;
  
 class BillingInfoUpdateValidator extends AbstractLaravelValidator
 {

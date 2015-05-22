@@ -125,38 +125,10 @@ class CategoryRepository
      */
     public function getNestedSetCategoryCount()
     {
-        $result =  DB::select(DB::raw("SELECT COUNT(*) as count FROM es_category_nested_set WHERE 1"));
+        $result =  DB::select(
+            DB::raw("SELECT COUNT(*) as count FROM es_category_nested_set WHERE 1")
+        );
         return $result[0]->count;
-    }
-
-
-    /**
-     * Create category
-     *
-     * @param $data
-     * @return Category Object
-     */
-    public function insert($data)
-    {
-        $category = new Category();
-        $category->fill($data);
-        $category->save();
-
-        return $category;
-    }
-
-    /**
-     *  Update a collection of category
-     *
-     *  @param $category
-     *  @param array $data
-     *  @return Category Object
-     */
-    public function update($category,$data)
-    {
-        $category->update($data);
-
-        return $category;
     }
 
     /**
@@ -245,20 +217,6 @@ class CategoryRepository
         return $member->first();
     }
 
-    /**
-     * Generate unique Slug
-     * @param $product
-     * @return string
-     */
-    public function generateSlug($product)
-    {
-        $category = new Category();
-        $count = $category->where('es_cat.slug', 'LIKE', '%' . $product . '%')->count();
-        if($count >= 1){
-            $product = $product.$count;
-        }
 
-        return $product;
-    }
 
 }

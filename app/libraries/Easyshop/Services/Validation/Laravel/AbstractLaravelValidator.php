@@ -39,6 +39,33 @@ abstract class AbstractLaravelValidator extends AbstractValidator
         }
         return true;
     }
+
+    
+    /**
+     * Set rules
+     * 
+     * @param string[] $rules
+     */
+    public function setRules(array $rules)
+    {
+        $this->rules = $rules;
+    }
+
+    
+    /**
+     * Get rules
+     * 
+     * @return string[]
+     */
+    public function getRules()
+    {
+        return $this->rules;
+    }
+
  
 }
+
+
+
+
 

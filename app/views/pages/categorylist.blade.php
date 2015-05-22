@@ -187,6 +187,9 @@
                             <label>Sort order</label>
                             <input type="text" class="form-control" id="mdl_sort" maxlength="2" onkeypress="return isNumberKey(event)" placeholder="Enter number">
                         </div>
+                        
+                        <div class="category-error alert alert-danger" role="alert" style="display:none; font-size: 14px;"></div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
