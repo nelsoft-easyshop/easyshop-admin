@@ -52,13 +52,12 @@ class NewHomeContentManagerController extends BaseController
                                 ProductImageRepository $productImageRepository) 
     {   
         $this->XMLService = $XMLService;
-        $assetsLink = trim($this->XMLService->getAssetsLink());
-        $this->assetLink = $assetsLink === "/" ? $this->XMLService->GetEasyShopLink() : rtrim($assetsLink, '/');
         $this->productRepository = $productRepository;    
         $this->adminMemberRepository = $adminMemberRepository;    
         $this->categoryRepository = $categoryRepository;    
         $this->brandRepository = $brandRepository;    
         $this->productImageRepository = $productImageRepository;   
+        $this->assetLink = $this->XMLService->getAssetsLink();
     }      
       
     /**
