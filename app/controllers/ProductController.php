@@ -4,7 +4,12 @@ use Easyshop\Services\XMLContentGetterService as XMLService;
 
 class ProductController extends BaseController
 {
-    protected $XMLService;
+    /**
+     * XML Content Getter Service
+     *
+     * @var Easyshop\Services\XMLContentGetterService
+     */
+    private $XMLService;
 
     public function __construct(XMLService $XMLService)
     {
@@ -13,7 +18,8 @@ class ProductController extends BaseController
 
     /**
      * Get all products
-     * @return Entity
+     *
+     * @return View
      */
     public function showAllItems()
     {
