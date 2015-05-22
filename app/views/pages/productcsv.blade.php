@@ -65,7 +65,7 @@
                                                     ><font color='red'><b>X</b></font>
                                                     </a>
                                                     <div style="width: 200px; height: 200px;max-width: 200px; max-height: 200px; display: table-cell; vertical-align: middle;">
-                                                        <img src="{{{$assetLink}}}/assets/admin/{{{$images->image_name}}}" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                        <img src="{{{$assetsLink}}}/assets/admin/{{{$images->image_name}}}" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                         <p>{{{$images->image_name}}}</p>
                                                     </div>
 
