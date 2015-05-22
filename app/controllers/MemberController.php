@@ -1,26 +1,56 @@
 <?php
+
 use Easyshop\Services\LocationService;
 use Easyshop\ModelRepositories\LocationLookUpRepository as LocationLookUpRepository;
 use Easyshop\ModelRepositories\BanTypeRepository as BanTypeRepository;
 use Easyshop\ModelRepositories\MemberRepository as MemberRepository;
+
 class MemberController extends BaseController
 {
+
+    /**
+     * Location Service
+     *
+     * @var EasyShop\Service\LocationService
+     */
     private $locationService;
+
+    /**
+     * Location Look-up Repository
+     *
+     * @var EasyShop\ModelRepository\LocationLookUpRepository
+     */
+    private $locationLookUpRepository;
+
+    /**
+     * BanType Repository
+     *
+     * @var EasyShop\ModelRepository\BanTypeRepository
+     */
+    private $banTypeRepository;
+
+    /**
+     * Member Repository
+     *
+     * @var EasyShop\ModelRepository\MemberRepository
+     */
+    private $memberRepository;
 
     public function __construct(LocationService $locationService,
                                 LocationLookUpRepository $locationLookUpRepository,
                                 BanTypeRepository $banTypeRepository,
-                                MemberRepository $MemberRepository)
+                                MemberRepository $memberRepository)
     {
         $this->locationService = $locationService;
         $this->locationLookUpRepository = $locationLookUpRepository;
         $this->banTypeRepository = $banTypeRepository;
-        $this->MemberRepository = $MemberRepository;
+        $this->memberRepository = $memberRepository;
     }
 
     /**
      * Retrieves the user list
-     * @return mixed
+     *
+     * @return View
      */
     public function showAllUsers()
     {
@@ -28,15 +58,16 @@ class MemberController extends BaseController
         $listOfBanType = $this->banTypeRepository->getByType();
 
         return View::make('pages.userlist')
-                    ->with('member_count', $this->MemberRepository->getUsersCount())
-                    ->with('list_of_member', Member::paginate(100))
-                    ->with('list_of_location', $listOfLocation)
-                    ->with('list_of_ban_type', $listOfBanType);
+                   ->with('member_count', $this->memberRepository->getUsersCount())
+                   ->with('list_of_member', Member::paginate(100))
+                   ->with('list_of_location', $listOfLocation)
+                   ->with('list_of_ban_type', $listOfBanType);
     }
 
     /**
      * Search user and filtering
-     * @return mixed
+     *
+     * @return View
      */
     public function search()
     {
@@ -49,41 +80,41 @@ class MemberController extends BaseController
             'enddate' => Input::get('enddate'),
             'username' => Input::get('username')
         ];
-        $locationLookUpRepository = App::make('LocationLookUpRepository');
         $locationService = $this->locationService;
-        $listOfLocation = $locationService->location($locationLookUpRepository->getByType());
+        $listOfLocation = $locationService->location($this->locationLookUpRepository->getByType());
         $listOfBanType = $this->banTypeRepository->getByType();
-        $MemberRepository = App::make('MemberRepository');
         return View::make('pages.userlist')
-            ->with('member_count', $MemberRepository->getUsersCount())        
-            ->with('list_of_member', App::make('MemberRepository')->search($userData, 100))
-            ->with('list_of_location', $listOfLocation)
-            ->with('list_of_ban_type', $listOfBanType);
+                   ->with('member_count', $this->memberRepository->getUsersCount())        
+                   ->with('list_of_member', $this->memberRepository->search($userData, 100))
+                   ->with('list_of_location', $listOfLocation)
+                   ->with('list_of_ban_type', $listOfBanType);
     }
 
+    /**
+     * Update userdetails
+     *
+     * @return JSON
+     */
     public function ajaxUpdateUsers()
     {
-        $dataMember = array(
+        $dataMember = [
             'fullname' => Input::get('fullname'),
             'contactno' => Input::get('contact'),
             'remarks' => Input::get('remarks'),
             'is_promo_valid' => Input::get('is_promo_valid'),
             'is_banned' => (int) Input::get('banType') ? 1 : 0,
             'ban_type' => (int) Input::get('banType')
-        );
-        $dataAddress = array(
+        ];
+        $dataAddress = [
             'city' => Input::get('city'),
             'stateregion' => Input::get('stateregion'),
             'address' => Input::get('address'),
             'country' => 148
-        );
-        $memberRepository = App::make('MemberRepository');
-        $memberRepository->update(
-            $memberRepository->getById(Input::get('id')),
-            $dataMember
-        );
-        $member = $memberRepository->getById(Input::get('id'));
-        if(intval($dataAddress['stateregion']) != 0){
+        ];
+        $member = $this->memberRepository->getById(Input::get('id'));
+        $this->memberRepository->update($member,$dataMember);
+
+        if(intval($dataAddress['stateregion']) !== 0){
             $addressRepository = App::make('AddressRepository');
             $addressRepository->update(Input::get('id'), $dataAddress);
             $member->Address->City;
