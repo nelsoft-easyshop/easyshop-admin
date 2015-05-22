@@ -2,18 +2,28 @@
 use Illuminate\Support\MessageBag;
 use Maatwebsite\Excel\Facades\Excel;
 use Easyshop\Services\ProductCSVService as ProductCSVService;
+use Easyshop\Services\XMLContentGetterService as XMLService;
 
 class ProductCSVController extends BaseController
 {
     /**
-     *  Constructor declaration for ProductCSVService  
+     * Constructor declaration for ProductCSVService  
      */
-    protected $ProductCSVService;
+    private $ProductCSVService;
 
-    public function __construct(ProductCSVService $ProductCSVService) 
+    /**
+     * Assets link return by the easyshop application
+     *
+     * @var string
+     */
+    private $assetsLink;    
+
+    public function __construct(ProductCSVService $ProductCSVService, XMLService $XMLService) 
     {   
         $this->ProductCSVService = $ProductCSVService;
+        $this->assetsLink = $XMLService->getAssetsLink();
     }
+
     /**
      * Render CSV Upload interface
      * @return VIEW
@@ -25,6 +35,7 @@ class ProductCSVController extends BaseController
         $productCSVRepo = App::make('AdminImagesRepository');   
         return View::make("pages.productcsv")
                 ->with("easyShopLink",\Config::get('easyshop/webservice.easyShopLink'))
+                ->with("assetsLink", $this->assetsLink)
                 ->with("productCSVwebservice",\Config::get('easyshop/webservice.productCSVwebservice'))
                 ->with("adminImages",$productCSVRepo->getAllAdminImages())
                 ->with("adminObj",$adminObject);

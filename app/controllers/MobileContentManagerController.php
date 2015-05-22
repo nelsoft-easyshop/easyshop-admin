@@ -37,8 +37,7 @@ class MobileContentManagerController extends BaseController
         $this->categoryRepository = $categoryRepository;
         $xmlString = $this->XMLService->getMobileHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
-        $assetsLink = trim($this->XMLService->getAssetsLink());
-        $this->assetLink = $assetsLink === "/" ? $this->XMLService->GetEasyShopLink() : rtrim($assetsLink, '/');
+        $this->assetLink = $this->XMLService->getAssetsLink();
     }
 
     /**
