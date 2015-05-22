@@ -7,8 +7,9 @@ class AccountController extends BaseController
 {
 
     /** 
-     *  Render Login View
+     * Render Login View
      *
+     * @return View
      */
     public function showLogin()
     {
@@ -18,29 +19,30 @@ class AccountController extends BaseController
     /**
      * Perform user authentication
      *
+     * @return View
      */
     public function doLogin()
     {
-        $rules = array(
+        $rules = [
             'username' => 'required',
             'password' => 'required', 
-        );
+        ];
 
         $validator = Validator::make(Input::all(), $rules);
 
         if ($validator->fails()) {
             Input::flash();
             return View::make('pages.login')
-                ->withErrors($validator)
-                ->withInput(Input::except('password')); 
+                       ->withErrors($validator)
+                       ->withInput(Input::except('password')); 
         }
 
         // create our user data for the authentication
-        $userdata = array(
+        $userdata = [
             'username'  => Input::get('username'),
             'password'  => Input::get('password'),
             'is_active' => '1'
-        );
+        ];
 
 
         if (Auth::attempt($userdata)) {
@@ -50,13 +52,12 @@ class AccountController extends BaseController
         $errors = new MessageBag(['login_error' => ['Username and/or password is invalid.']]); 
             Input::flash();
             return View::make('pages.login')
-            ->withErrors($errors)
-            ->withInput(Input::except('password')); 
+                       ->withErrors($errors)
+                       ->withInput(Input::except('password')); 
     }
 
     /**
      * Logout user
-     *
      */
     public function doLogout()
     {
@@ -66,6 +67,7 @@ class AccountController extends BaseController
 
     /**
      * Retrieves account details
+     *
      * @return JSON
      */
     public function getAdminAccount()
