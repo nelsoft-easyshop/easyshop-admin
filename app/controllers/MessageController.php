@@ -8,7 +8,7 @@ class MessageController extends BaseController
     /**
      *  Constructor declaration for XMLService
      */
-    protected $XMLService;
+    private $XMLService;
 
     public function __construct(XMLService $XMLService) 
     {   

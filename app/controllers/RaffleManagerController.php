@@ -13,7 +13,7 @@ class RaffleManagerController extends BaseController
      *
      *  
      */
-    protected $RaffleManagerService;
+    private $RaffleManagerService;
 
     public function __construct(RaffleManagerService $RaffleManagerService) 
     {   

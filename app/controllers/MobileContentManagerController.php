@@ -9,17 +9,17 @@ class MobileContentManagerController extends BaseController
     /**
      *  Constructor declaration for XMLService
      */
-    protected $XMLService;
+    private $XMLService;
 
     /*
      * The Category Repository
      */    
-    protected $categoryRepository;
+    private $categoryRepository;
 
     /*
      * The Administrator Repository
      */
-    protected $adminRepository;
+    private $adminRepository;
 
     /**
      * Asssets Link
