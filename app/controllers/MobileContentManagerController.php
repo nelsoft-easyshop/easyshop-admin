@@ -84,7 +84,7 @@ class MobileContentManagerController extends BaseController
 
        $categoryLists = [];
        foreach ($this->categoryRepository->getParentCategories() as $value) {
-            $categoryLists[$value->slug] = [
+            $categoryLists[] = [
                 "slug" => $value->slug,
                 "name" => $value->name
             ];
