@@ -58,7 +58,7 @@
                                             <input type="file" id="photoFile" name='myfile'> 
                                         </div>
                                     </div>
-                                        <input type="text" id="valueMainSlide" class="form-control" readonly='readonly' value='Image' name='value'  placeholder="Value" style="display:none;">
+                                        <input type="text" id="valueMainSlide" class="form-control" readonly='readonly' value='Image' name='value'  placeholder="value" style="display:none;">
                                     <div class="form-group">
                                         <label for="inputPassword" class="control-label col-xs-2">Target</label>
                                         <div class="col-xs-10">
@@ -75,8 +75,8 @@
                                             </select>
                                         </div>
                                     </div>                                    
-                                    <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="Value" >
-                                    <input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
+                                    <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="value" >
+                                    <input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="value" >
                         
 
                                     <div class="form-group">
@@ -179,7 +179,7 @@
                                                                     </div>
                                                                 </div>                                                                
                                                                 {{ Form::hidden('hash', $mainSlide->imagemap->target, array('id' => 'hashEditMainSlide','class' => 'form-control')) }}
-                                                                <input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="Value" >                    
+                                                                <input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="value" >                    
 
 
                                                                 <div class="form-group" >
@@ -383,22 +383,22 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <input type="hidden" class="form-control" id="edit_url" placeholder="Enter fullname">
+                            <input type="hidden" class="form-control" id="edit_url" placeholder="">
                         </div>                         
                         <div class="form-group">
-                            <input type="hidden" class="form-control" id="edit_sectionIndex" placeholder="Enter fullname">
+                            <input type="hidden" class="form-control" id="edit_sectionIndex" placeholder="">
                         </div>                          
                         <div class="form-group">
-                            <input type="hidden" class="form-control" id="edit_boxindex" placeholder="Enter fullname">
+                            <input type="hidden" class="form-control" id="edit_boxindex" placeholder="">
                         </div>                        
                         <div class="form-group">
                             <label>Value</label>
-                            <input type="hidden" class="form-control" id="edittable_index" value="" placeholder="Enter fullname">
-                            <input type="text" class="form-control" id="edit_value" placeholder="Enter fullname">
+                            <input type="hidden" class="form-control" id="edittable_index" value="" placeholder="">
+                            <input type="text" class="form-control" id="edit_value" placeholder="">
                         </div>
                         <div class="form-group">
                             <label>Type</label>
-                            <input type="text" class="form-control" id="edit_type" readonly="readonly" placeholder="Enter contact number">
+                            <input type="text" class="form-control" id="edit_type" readonly="readonly" placeholder="">
                         </div>
                         <div class="form-group">
                             <label>Target</label>
