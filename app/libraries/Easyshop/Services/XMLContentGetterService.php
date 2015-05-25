@@ -3,6 +3,27 @@
 class XMLContentGetterService
 {
     /**
+     * Show product details action type
+     */
+    const MOBILE_CMS_ACTIONTYPE_SHOWPRODUCTDETAILS = 'show product details';
+
+    /**
+     * Go to an external site action type
+     */
+    const MOBILE_CMS_ACTIONTYPE_GOTOSITE = 'go to site';
+
+    /**
+     * Go to an internal page action type
+     */
+    const MOBILE_CMS_ACTIONTYPE_GOTOPAGE = 'go to page';
+
+    /**
+     * Go to product list action type
+     */
+    const MOBILE_CMS_ACTIONTYPE_SHOWPRODUCTLIST = 'show product list';
+
+
+    /**
      * Returns the content CMS webservice link
      *
      * @return $link

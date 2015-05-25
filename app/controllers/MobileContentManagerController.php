@@ -48,6 +48,7 @@ class MobileContentManagerController extends BaseController
 
     /**
      * Render Mobile CMS Interface
+     *
      * @return VIEW
      */
     public function showMobileCms()
@@ -82,8 +83,8 @@ class MobileContentManagerController extends BaseController
             $themeLists[] =  $themes->value;
         }
 
-       $categoryLists = [];
-       foreach ($this->categoryRepository->getParentCategories() as $value) {
+        $categoryLists = [];
+        foreach ($this->categoryRepository->getParentCategories() as $value) {
             $categoryLists[] = [
                 "slug" => $value->slug,
                 "name" => $value->name
@@ -106,6 +107,7 @@ class MobileContentManagerController extends BaseController
 
     /**
      * Reload mainSlides panel
+     *
      * @return VIEW
      */
     public function getMainSlides()
@@ -133,6 +135,7 @@ class MobileContentManagerController extends BaseController
 
     /**
      * Retrieves box contents
+     *
      * @param int $index
      * @return View
      */

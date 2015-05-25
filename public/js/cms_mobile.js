@@ -1,7 +1,45 @@
 (function () {
 
-    var userid = $("#userid").val();
-    var password = $("#password").val();
+
+    var userid;
+    var password;
+    var actionTypeShowproductdetails;
+    
+    $(document).ready(function(){
+        
+        /**
+         * Obtain important values and constants from the DOM
+         */
+        userid = $("#userid").val();
+        password = $("#password").val();
+        actionTypeShowproductdetails = $('#action-type-showproductdetails').val();
+    });
+
+
+    /**
+     * Toggle box contents section field disabled attribute
+     *
+     */
+    $('#drop_actionType, #drop_actionTypeEdit').on('change', function(){
+        var $actionSelectBox = $(this);
+        var $formContainer = $actionSelectBox.closest('.mobile-home-section-form');
+        var selectedActionType = $actionSelectBox.val().replace(/ /gi, '').toLowerCase();
+
+        $targetContainer = $formContainer.find('.target');
+        $slugContainer = $formContainer.find('.value');
+
+        if(selectedActionType === actionTypeShowproductdetails){
+            $targetContainer.prop('disabled', true);
+            $slugContainer.prop('disabled', false);
+        }
+        else{
+            $targetContainer.prop('disabled', false);
+            $slugContainer.prop('disabled', true);
+        }
+
+    });
+
+
 
     $('.bgcolor').each( function() {
         $(this).minicolors({
