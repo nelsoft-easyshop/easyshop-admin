@@ -278,7 +278,7 @@
                             </h4>
                         </legend>                                   
                         <div class="form-group">
-                            <label for="value" class="col-sm-2 control-label">Value</label>
+                            <label for="value" class="col-sm-2 control-label">Slug</label>
                             <div class="col-sm-10">
                                 {{ Form::hidden('index', "$index", array('id' => 'index','class' => 'form-control')) }}                        
                                 {{ Form::text('value', "", array('id' => 'value','class' => 'value form-control')) }}                        
@@ -324,7 +324,7 @@
                             <thead>
                             <tr>
                                 <th></th>
-                                <th>Value</th>
+                                <th>Slug</th>
                                 <th>Type</th>
                                 <th>Target</th>
                                 <th>Action Type</th>
@@ -389,7 +389,7 @@
                             <input type="hidden" class="form-control" id="edit_boxindex" placeholder="">
                         </div>                        
                         <div class="form-group">
-                            <label>Value</label>
+                            <label>Slug</label>
                             <input type="hidden" class="form-control" id="edittable_index" value="" placeholder="">
                             <input type="text" class="form-control value" id="edit_value" placeholder="">
                         </div>
