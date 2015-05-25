@@ -218,5 +218,22 @@ class CategoryRepository
     }
 
 
+    /**
+     * Retrieves multiple categories by slug
+     *
+     * @param string[] $slugs
+     * @return Category[]
+     */
+    public function getCategoryBySlug($slugs)
+    {        
+        if(is_array($slugs) === false){
+            $slugs = [$slugs];
+        }
+        $categories = DB::table('es_cat')->whereIn('slug', $slugs)
+                                         ->get();
+        
+        return $categories;
+    }
+
 
 }

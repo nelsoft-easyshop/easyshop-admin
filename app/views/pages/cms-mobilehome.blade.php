@@ -27,7 +27,7 @@
                         @foreach($sectionContent as $section)
                             <li>
                                 <a href="#page_{{$index}}" tabindex="-1" role="tab" id="sectionNav_{{$index}}" data-toggle="tab">
-                                    {{{ $categoryLists[(string)$section->name]['name'] }}}
+                                    {{{ $section->categoryName }}}
                                 </a>
                             </li>
                             <span style="display:none;">{{$index++}}</span>
