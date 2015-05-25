@@ -73,11 +73,11 @@ class MobileContentManagerController extends BaseController
 
        $categoryLists = [];
        foreach ($this->categoryRepository->getParentCategories() as $value) {
-            $categoryLists[] = [
+            $categoryLists[$value->slug] = [
                 "slug" => $value->slug,
                 "name" => $value->name
             ];
-        }        
+        }  
 
         return View::make('pages.cms-mobilehome')
                     ->with('adminObject', $this->adminRepository->getAdminMemberById(Auth::id()))
