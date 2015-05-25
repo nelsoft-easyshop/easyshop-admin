@@ -223,7 +223,7 @@
                             </h4>
                         </legend>                                   
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Name</label>
+                            <label class="col-sm-2 control-label">Name</label>
                             <div class="col-sm-10">
                                 {{ Form::hidden('index', $index, array('id' => 'index','class' => 'form-control')) }}                                 
                                 <select name="c_stateregion" id="categoryName"  class="form-control" data-status="">
@@ -270,7 +270,7 @@
                         </div>                                      
                     </form>
 
-                    <form id='left' target="test"  class="form-horizontal">            
+                    <form id='left' target="test"  class="form-horizontal mobile-home-section-form">            
                         <legend>        
                             <h4 class="tbl-title">
                                 <span class="glyphicon glyphicon-list-alt"></span>
@@ -278,26 +278,26 @@
                             </h4>
                         </legend>                                   
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Value</label>
+                            <label for="value" class="col-sm-2 control-label">Value</label>
                             <div class="col-sm-10">
                                 {{ Form::hidden('index', "$index", array('id' => 'index','class' => 'form-control')) }}                        
-                                {{ Form::text('value', "", array('id' => 'value','class' => 'form-control')) }}                        
+                                {{ Form::text('value', "", array('id' => 'value','class' => 'value form-control')) }}                        
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Type</label>
+                            <label for="type" class="col-sm-2 control-label">Type</label>
                             <div class="col-sm-10">
                                 {{ Form::text('Type', "product", array('id' => 'type','class' => 'form-control', 'readonly' => 'readonly')) }}                        
                             </div>
                         </div> 
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Target</label>
+                            <label for="target" class="col-sm-2 control-label">Target</label>
                             <div class="col-sm-10">
-                                {{ Form::text('target', "", array('id' => 'target','class' => 'form-control')) }}                        
+                                {{ Form::text('target', "", array('id' => 'target','class' => 'target form-control')) }}                        
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Action Type</label>
+                            <label for="drop_actionType" class="col-sm-2 control-label">Action Type</label>
                             <div class="col-sm-10">
                                 <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
                                     @foreach($actionTypes as $types)
@@ -363,13 +363,10 @@
                         </table>
 
                     </div>
-                </div>
-                
+                </div>                
                 <span style="display:none;">{{$index++}}</span>
             @endforeach
-
         </div>
-
 
     </div>
 
@@ -381,7 +378,7 @@
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <h4 class="modal-title white_header" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span>Edit Box Content</h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body mobile-home-section-form">
                         <div class="form-group">
                             <input type="hidden" class="form-control" id="edit_url" placeholder="">
                         </div>                         
@@ -394,7 +391,7 @@
                         <div class="form-group">
                             <label>Value</label>
                             <input type="hidden" class="form-control" id="edittable_index" value="" placeholder="">
-                            <input type="text" class="form-control" id="edit_value" placeholder="">
+                            <input type="text" class="form-control value" id="edit_value" placeholder="">
                         </div>
                         <div class="form-group">
                             <label>Type</label>
@@ -402,7 +399,7 @@
                         </div>
                         <div class="form-group">
                             <label>Target</label>
-                            <textarea class="form-control" id="edit_target" rows="3"></textarea>
+                            <textarea class="form-control target" id="edit_target" rows="3"></textarea>
                         </div>
                         <div class="form-group address_div">
                             <label>Action Type : </label>
@@ -446,9 +443,17 @@
         </div>
     </div>    
 
-
+    <input type="hidden" id="action-type-showproductdetails" 
+           value="{{  strtolower(str_replace(" ", "", \Easyshop\Services\XMLContentGetterService::MOBILE_CMS_ACTIONTYPE_SHOWPRODUCTDETAILS)) }}"/>
+    <input type="hidden" id="action-type-gotosite" 
+           value="{{  strtolower(str_replace(" ", "", \Easyshop\Services\XMLContentGetterService::MOBILE_CMS_ACTIONTYPE_GOTOSITE)) }}"/>
+    <input type="hidden" id="action-type-gotopage" 
+           value="{{  strtolower(str_replace(" ", "", \Easyshop\Services\XMLContentGetterService::MOBILE_CMS_ACTIONTYPE_GOTOPAGE)) }}"/>
+    <input type="hidden" id="action-type-showproductlist" 
+           value="{{  strtolower(str_replace(" ", "", \Easyshop\Services\XMLContentGetterService::MOBILE_CMS_ACTIONTYPE_SHOWPRODUCTLIST)) }}"/>
 
 @stop
+
 @section('page_js') 
 {{ HTML::script('js/src/sha1.js') }}
 {{ HTML::script('js/src/jquery.form.js') }}
