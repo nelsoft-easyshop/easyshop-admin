@@ -3245,7 +3245,7 @@ top:0px !important;
 /* end */
 .address_div div{
     display: inline-block;
-    width: 29%;
+    width: 100%;
 }
 .address_div input{
     margin-top: 2%;
