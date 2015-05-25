@@ -16,30 +16,34 @@
     });
 
 
+
+
     /**
      * Toggle box contents section field disabled attribute
      *
+     * @param DOM.mobile-home-section-form  $formContainer
      */
+    function toggleSectionFields($formContainer)
+    {
+         var selectedActionType = $formContainer.find('.selectbox-action-type').val()
+                                                .replace(/ /gi, '').toLowerCase();
+        $targetContainer = $formContainer.find('.target');
+        $slugContainer = $formContainer.find('.value');
+        if(selectedActionType === actionTypeShowproductdetails){
+            $targetContainer.attr('disabled', 'disabled');
+            $slugContainer.removeAttr('disabled');
+        }
+        else{
+            $targetContainer.removeAttr('disabled');
+            $slugContainer.attr('disabled', 'disabled');
+        }
+    }
+
     $('#drop_actionType, #drop_actionTypeEdit').on('change', function(){
         var $actionSelectBox = $(this);
         var $formContainer = $actionSelectBox.closest('.mobile-home-section-form');
-        var selectedActionType = $actionSelectBox.val().replace(/ /gi, '').toLowerCase();
-
-        $targetContainer = $formContainer.find('.target');
-        $slugContainer = $formContainer.find('.value');
-
-        if(selectedActionType === actionTypeShowproductdetails){
-            $targetContainer.prop('disabled', true);
-            $slugContainer.prop('disabled', false);
-        }
-        else{
-            $targetContainer.prop('disabled', false);
-            $slugContainer.prop('disabled', true);
-        }
-
+        toggleSectionFields($formContainer);
     });
-
-
 
     $('.bgcolor').each( function() {
         $(this).minicolors({
@@ -61,12 +65,13 @@
     });
 
     $(document.body).on('click','#setSectionHead',function () {
-        var form = $(this).closest("form");
+        var $this = $(this);
+        var form = $this.closest("form");
         var index = form.find("#index").val();
         var name = form.find("#categoryName option:selected").val();
         var bgcolor = form.find('.bgcolor').val();
         var type = form.find("#themeName option:selected").val();
-        var url = $(this).data('url');
+        var url = $this.data('url');
         var hash =  hex_sha1(index + name + bgcolor + type  + userid + password);
         data = { index: index, name:name, bgcolor:bgcolor, type:type, userid:userid, hash:hash, callback:'?'};
         
@@ -289,7 +294,7 @@
 
     } 
 
-    $(document.body).on('click','.btn-danger',function (e) { 
+    $(document.body).on('click','.edit_btn',function (e) { 
         var dataNode = $(this).attr("data");
         var data = $.parseJSON(dataNode);
         $("#edit_value").val(data.value);
@@ -300,7 +305,16 @@
         $("#edit_boxindex").val(data.boxIndex);
         $("#edit_sectionIndex").val(data.sectionIndex);
         $('#drop_actionTypeEdit option[value="'+data.actionType+'"]').attr("selected", "selected");
+        var $formContainer =  $("#myModal").find('.mobile-home-section-form');
+        toggleSectionFields($formContainer);       
     });  
+
+    $('.category-section-trigger').on('click', function(){        
+        setTimeout(function(){
+            var $formContainer =  $("#myTabContent").find('.add-section.mobile-home-section-form');
+            toggleSectionFields($formContainer);
+        }, 500);
+    });
 
     $("#myModal").on('click','#mdl_save',function (e) { 
         var tableIndex = $("#edittable_index").val();

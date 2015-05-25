@@ -25,7 +25,7 @@
                     <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
                         <span style="display:none;">{{$index=0}}</span>
                         @foreach($sectionContent as $section)
-                            <li>
+                            <li class="category-section-trigger" >
                                 <a href="#page_{{$index}}" tabindex="-1" role="tab" id="sectionNav_{{$index}}" data-toggle="tab">
                                     {{{ $section->categoryName }}}
                                 </a>
@@ -270,7 +270,7 @@
                         </div>                                      
                     </form>
 
-                    <form id='left' target="test"  class="form-horizontal mobile-home-section-form">            
+                    <form class="form-horizontal mobile-home-section-form add-section">            
                         <legend>        
                             <h4 class="tbl-title">
                                 <span class="glyphicon glyphicon-list-alt"></span>
@@ -299,7 +299,7 @@
                         <div class="form-group">
                             <label for="drop_actionType" class="col-sm-2 control-label">Action Type</label>
                             <div class="col-sm-10">
-                                <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
+                                <select name="c_stateregion" id="drop_actionType"  class="form-control selectbox-action-type" data-status="">
                                     @foreach($actionTypes as $types)
                                         <option value="{{{ $types }}}">{{{ $types }}}</option>
                                     @endforeach
@@ -371,7 +371,7 @@
     </div>
 
         <!--Start Modal -->
-        <div class="modal fade user_modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -404,7 +404,7 @@
                         <div class="form-group address_div">
                             <label>Action Type : </label>
                             <div>
-                                <select name="c_stateregion" id="drop_actionTypeEdit"  class="form-control" data-status="">
+                                <select name="c_stateregion" id="drop_actionTypeEdit"  class="selectbox-action-type form-control" data-status="">
                                     @foreach($actionTypes as $types)
                                         <option value="{{{ $types }}}">{{{ $types }}}</option>
                                     @endforeach
