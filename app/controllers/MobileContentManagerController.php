@@ -7,17 +7,23 @@ use Easyshop\ModelRepositories\AdminMemberRepository as AdminMemberRepository;
 class MobileContentManagerController extends BaseController
 {
     /**
-     *  Constructor declaration for XMLService
+     * Constructor declaration for XMLService
+     *
+     * @var Easyshop\Services\XMLContentGetterService
      */
     private $XMLService;
 
-    /*
+    /**
      * The Category Repository
+     *
+     * @var Easyshop\ModelRepositories\CategoryRepository
      */    
     private $categoryRepository;
 
-    /*
+    /**
      * The Administrator Repository
+     *
+     * @var Easyshop\ModelRepositories\AdminMemberRepository
      */
     private $adminRepository;
 
@@ -46,11 +52,16 @@ class MobileContentManagerController extends BaseController
      */
     public function showMobileCms()
     {
-
         $section = [];
         foreach($this->map->section as $map)
         {
-            $section[] = $map;
+            $categorySlug = (string) $map->name;                     
+            $category = $map;
+            $sectionCategory = $this->categoryRepository->getCategoryBySlug($categorySlug);
+            if($sectionCategory){
+                $category->categoryName = $sectionCategory[0]->name;
+                $section[] = $category;                
+            }
         }
 
         $mainSlides = [];
@@ -77,7 +88,7 @@ class MobileContentManagerController extends BaseController
                 "slug" => $value->slug,
                 "name" => $value->name
             ];
-        }        
+        }  
 
         return View::make('pages.cms-mobilehome')
                     ->with('adminObject', $this->adminRepository->getAdminMemberById(Auth::id()))
