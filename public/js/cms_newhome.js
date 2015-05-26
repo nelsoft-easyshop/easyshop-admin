@@ -16,7 +16,6 @@
     });    
 
     var userid = $("#userid").val();
-    var password = $("#password").val();
 
     var newHomeCmsLink = $("#newHomeCmsLink").text();
     var minimumCategoryProductPanel = 1;

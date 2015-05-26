@@ -1658,7 +1658,7 @@
 
 @stop
 @section('page_js') 
-{{ HTML::script('js/src/sha1.js') }}
+
 {{ HTML::script('js/src/jquery.form.js') }}
 {{ HTML::script('js/src/jquery.Jcrop.min.js') }}
 {{ HTML::script('js/cms_newhome.js') }}

@@ -52,7 +52,7 @@
 
                 <div class="form-group">
                   <div class="col-xs-offset-2 col-xs-10">
-                    <a1 href="#"  class="btn btn-default text-center" data-password = "{{$adminObject->password}}" data-url = "{{ $homeCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
+                    <a1 href="#"  class="btn btn-default text-center" data-url = "{{ $homeCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
                   </div>
                 </div>
                </form>
@@ -181,6 +181,6 @@
           </div>
         </div>
 
-          </div>    
+        </div>    
 
   </div>
