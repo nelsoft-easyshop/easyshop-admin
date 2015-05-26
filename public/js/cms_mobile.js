@@ -2,7 +2,6 @@
 
 
     var userid;
-    var password;
     var actionTypeShowproductdetails;
     
     $(document).ready(function(){
@@ -11,7 +10,6 @@
          * Obtain important values and constants from the DOM
          */
         userid = $("#userid").val();
-        password = $("#password").val();
         actionTypeShowproductdetails = $('#action-type-showproductdetails').val();
     });
 
@@ -66,24 +64,40 @@
 
     $(document.body).on('click','#setSectionHead',function () {
         var $this = $(this);
-        var form = $this.closest("form");
-        var index = form.find("#index").val();
-        var name = form.find("#categoryName option:selected").val();
-        var bgcolor = form.find('.bgcolor').val();
-        var type = form.find("#themeName option:selected").val();
+        var $form = $this.closest("form");
+        var index = $form.find("#index").val();
+        var name = $form.find("#categoryName option:selected").val();
+        var bgcolor = $form.find('.bgcolor').val();
+        var type = $form.find("#themeName option:selected").val();
         var url = $this.data('url');
-        var hash =  hex_sha1(index + name + bgcolor + type  + userid + password);
-        data = { index: index, name:name, bgcolor:bgcolor, type:type, userid:userid, hash:hash, callback:'?'};
-        
-        if(name == "" || bgcolor == "" || type == "") {
-             showErrorModal("Please fill up the required fields");    
-        }
-        else {
-            loader.showPleaseWait(); 
-            $("#sectionNav_"+index).html(name);
-            setSectionHead(url,data);          
-        }
 
+        var requestData = {
+            index:index, 
+            name:name, 
+            bgcolor:bgcolor, 
+            type:type, 
+            userid:userid
+        };
+
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {
+
+            requestData.hash = hash;
+            requestData.callback = '?';
+            
+            if(name == "" || bgcolor == "" || type == "") {
+                showErrorModal("Please fill up the required fields");    
+            }
+            else {
+                loader.showPleaseWait(); 
+                $("#sectionNav_"+index).html(name);
+                setSectionHead(url,requestData);          
+            }
+           
+        });
     });   
 
     $("#manageMainSlide").on('click','#submitAddMainSlide',function (e) { 
@@ -93,61 +107,104 @@
         var myvalue = $("#photoFile").val();
         var mainSlideTarget = $("#mainSlideTarget").val();
         var actionTypes = $("#dropActionTypes option:selected").val();
-        var hash = hex_sha1(myvalue + value  + mainSlideTarget + actionTypes + userid + password);
-        $("#hashMainSlide").val(hash);
 
-        var ext = myvalue.split('.').pop().toLowerCase();
+        var requestData = {
+            myvalue:myvalue, 
+            value:value, 
+            mainSlideTarget:mainSlideTarget, 
+            actionTypes:actionTypes, 
+            userid:userid
+        };
 
-        if( ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) 
-            || myvalue == "" 
-            || myvalue == "undefined" 
-            || value == ""){
-            showErrorModal("Please upload an image");         
-        }
-
-        else {
-            loader.showPleaseWait();    
-            addMainSlide(url);
-        }
-
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {            
+            $("#hashMainSlide").val(hash);
+            var ext = myvalue.split('.').pop().toLowerCase();
+            if( ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) 
+                || myvalue == "" 
+                || myvalue == "undefined" 
+                || value == ""){
+                showErrorModal("Please upload an image");         
+            }
+            else {
+                loader.showPleaseWait();    
+                addMainSlide(url);
+            }
+        });
     });
 
     $("#manageMainSlide").on('click','#movedown',function () {       
 
-        var index = $(this).data('index');
-        var value = $(this).data('value');
-        var target = $(this).data('target');
-        var count = $(this).data('count');
+        var $this = $(this);
+        var index = $this.data('index');
+        var value = $this.data('value');
+        var target = $this.data('target');
+        var count = $this.data('count');
         var order = index;
         var nodename = "mainSlide";
-        var url = $(this).data('url');
+        var url = $this.data('url');
 
         loader.showPleaseWait();
 
         if(order == (count - 1)) {
             order = order;
-        } else {
+        } 
+        else {
              order = order + 1;
         }
-        var hash = hex_sha1(index + value+ target + order + nodename + userid + password);
-        data = { index: index, value: value, target:target, order:order, nodename:nodename,  userid: userid, hash:hash, callback:'?'};
-        setPositionMainSlide(data,order, url);
+        
+        var requestData = {
+            index:index, 
+            value:value, 
+            target:target, 
+            order:order, 
+            nodename:nodename,
+            userid:userid
+        };
+
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {            
+            requestData.hash = hash;
+            requestData.callback= '?';
+            setPositionMainSlide(requestData,order, url);
+        });
     });   
 
     $("#myTabContent").on('click','#deleteMainSlide',function (e) { 
         e.preventDefault();
-        var index = $(this).data('index');
-        var nodename = $(this).data('nodename');
-        var url = $(this).data('url');
+        var $this = $(this);
+        var index = $this.data('index');
+        var nodename = $this.data('nodename');
+        var url = $this.data('url');
         nodename = nodename == "mainSlide" ? "mainSlide" : "productSlide";   
         index += 1;
-        var hash = hex_sha1(index +nodename + userid + password);
-        data = { index: index, nodename:nodename, userid: userid, hash:hash, callback:'?'};         
-        loader.showPleaseWait();
+
+        var requestData = {
+            index:index, 
+            nodename:nodename,
+            userid:userid
+        };
+
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {            
+                     
+            requestData.hash = hash;
+            requestData.callback= '?';
+            
+            loader.showPleaseWait();
             $.ajax({
                 type: 'get',
                 url: url,
-                data:data,
+                data:requestData,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -157,61 +214,95 @@
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
-                    $("#manageMainSlide").load('mobileSlides');  
-          
+                    $("#manageMainSlide").load('mobileSlides');            
                 }
             });
+
+        });
 
     });   
 
     $("#manageMainSlide").on('click','#moveup',function () { 
         loader.showPleaseWait();
-
-        var index = $(this).data('index');
-        var value = $(this).data('value');
-        var url = $(this).data('url');
-        var target = $(this).data('target');
+        
+        var $this = $(this);
+        var index = $this.data('index');
+        var value = $this.data('value');
+        var url = $this.data('url');
+        var target = $this.data('target');
         var order = index;
         var nodename = "mainSlide";
 
         if(order > 0) {
             order = order - 1;
-        } else {
+        } 
+        else {
            order = 0;
         }
-            
-        var hash = hex_sha1(index + value + target + order + nodename + userid + password);
-        data = { index: index, value: value, target:target, order:order, nodename:nodename, userid: userid, hash:hash, callback:'?'};
-        setPositionMainSlide(data,order, url);
+        
+        var requestData = {
+            index:index, 
+            value:value, 
+            target:target, 
+            order:order, 
+            nodename:nodename,
+            userid:userid
+        };
+
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {            
+            requestData.hash = hash;
+            requestData.callback= '?';
+            setPositionMainSlide(requestData, order, url);
+        });
     });     
 
     $("#manageMainSlide").on('click','#submit',function () {    
-        var index = $(this).data('index');
-        var value = $(this).closest("form").find("#photoFile").val();
-        var target = $(this).closest("form").find('#editMainSlideTarget').val();
-        var actionType = $(this).closest("form").find('#dropActionTypes option:selected').val();
-        var count = $(this).data('count');
-        var url = $(this).data('url');
+        var $this = $(this);
+        var index = $this.data('index');
+        var value = $this.closest("form").find("#photoFile").val();
+        var target = $this.closest("form").find('#editMainSlideTarget').val();
+        var actionType = $this.closest("form").find('#dropActionTypes option:selected').val();
+        var count = $this.data('count');
+        var url = $this.data('url');
         var order = index;
         var mainSlideForm = "#mainSlideForm" + index;
         var hashMainSlide = "#hashEditMainSlide" + index;
-        var hash =  hex_sha1(index + value  + target + actionType + userid + password);
-        $(this).closest("form").find("#hashEditMainSlide").val(hash);
-        data = { index: index, value: value, target:target, actionType:actionType, hash:hash, callback:'?'};
+        
+        var requestData = {
+            index:index, 
+            value:value, 
+            target:target, 
+            actionType:actionType, 
+            userid:userid
+        };
 
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {            
+            
+            $this.closest("form").find("#hashEditMainSlide").val(hash);
+            requestData.hash = hash;
+            requestData.callback = '?';
+            var ext = value.split('.').pop().toLowerCase();
+            if( value !== "" && ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) ) {
+                showErrorModal("Please upload an image");
+            }
+            else {
+                $(mainSlideForm).modal("hide");
+                setDataMainSlide(url, requestData, order, mainSlideForm);
+            }
+        });
 
-        var ext = value.split('.').pop().toLowerCase();
-
-        if( value !== "" && ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) ) {
-            showErrorModal("Please upload an image");
-        }
-        else {
-            $(mainSlideForm).modal("hide");
-            setDataMainSlide(url, data,order,mainSlideForm);
-        }
     }); 
 
-    function setSectionHead(url,data) {
+    function setSectionHead(url,data) 
+    {
         $.ajax({
             type: 'get',
             url: url,
@@ -228,7 +319,8 @@
         });
     }      
 
-    function setPositionMainSlide(data,order,url) {
+    function setPositionMainSlide(data,order,url) 
+    {
         $.ajax({
             type: 'get',
             url: url,
@@ -248,7 +340,8 @@
     }
 
 
-    function setDataMainSlide(url, data,order, mainSlideForm) {
+    function setDataMainSlide(url, data,order, mainSlideForm) 
+    {
         loader.showPleaseWait();
         $(mainSlideForm).ajaxForm({
             url: url,
@@ -272,7 +365,8 @@
         $(mainSlideForm).submit();
     }
 
-    function addMainSlide(url) {
+    function addMainSlide(url) 
+    {
         loader.hidePleaseWait();
         $('#mainSlideForm').ajaxForm({
             url: url,
@@ -326,62 +420,107 @@
         var sectionIndex = $("#edit_sectionIndex").val();
         var actionType = $('#drop_actionTypeEdit option:selected').text();
         var order = "";
-        var hash = hex_sha1(order + sectionIndex + value + type +  boxIndex + target + actionType  +userid +  password);
-        data = {order:order, sectionIndex:sectionIndex, value:value, type:type, boxIndex:boxIndex, target:target,  actionType:actionType, userid:userid , password:password,hash:hash};
-        setBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType, tableIndex);
+
+        var requestData = {
+            order:order, 
+            sectionIndex:sectionIndex, 
+            value:value, 
+            type:type, 
+            boxIndex:boxIndex,
+            target:target,
+            actionType:actionType,
+            userid: userid
+        };
+
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {            
+            requestData.hash = hash;
+            setBoxContent(requestData, url, boxIndex, sectionIndex, value, type, target, actionType, tableIndex);            
+        });
+
     });
 
-    $(document.body).on('click','#addBoxContent',function (e) { 
-        var tableIndex = $(this).closest("form").find("#index").val();
-        var value = $(this).closest("form").find("#value").val();
-        var type = $(this).closest("form").find("#type").val();
-        var target = $(this).closest("form").find("#target").val();
-        var url = $(this).data('url');
-        var sectionIndex = $(this).closest("form").find("#index").val();
-        var actionType = $(this).closest("form").find("#drop_actionType option:selected").text();
-        var hash = hex_sha1(sectionIndex + value + type + target + actionType  + userid +  password);
-        data = { sectionIndex:sectionIndex, value:value, type:type, target:target, actionType:actionType, userid:userid , password:password,hash:hash};
+    $(document.body).on('click','#addBoxContent',function (e) {         
+        var $this = $(this);
+        var $form = $this.closest("form");
+        var tableIndex = $form.find("#index").val();
+        var value = $form.find("#value").val();
+        var type = $form.find("#type").val();
+        var target = $form.find("#target").val();
+        var url = $this.data('url');
+        var sectionIndex = $form.find("#index").val();
+        var actionType = $form.find("#drop_actionType option:selected").text();
+        
+        var requestData = {
+            sectionIndex:sectionIndex, 
+            value:value, 
+            type:type, 
+            target:target,
+            actionType:actionType,
+            userid: userid
+        };
 
-        var boxIndex = $(".boxContentCount_" + sectionIndex).last().val();
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {            
+            requestData.hash = hash;
+            var boxIndex = $(".boxContentCount_" + sectionIndex).last().val();
 
-        if(value == "" || type == "") {
-            showErrorModal("Please fill up the required fields");
-        }
-        else {
-            loader.showPleaseWait();
-            addBoxContent(data, url, boxIndex, sectionIndex, value, type, target, actionType, tableIndex);
-        }
-
+            if(value == "" || type == "") {
+                showErrorModal("Please fill up the required fields");
+            }
+            else {
+                loader.showPleaseWait();
+                addBoxContent(requestData, url, boxIndex, sectionIndex, value, type, target, actionType, tableIndex);
+            }
+        });
     });    
 
     $(document.body).on('click','.removeButton',function (e) { 
 
-        var index = $(this).data("index").toString();
-        var subIndex = $(this).data("subindex").toString();
-        var nodename = $(this).data("nodename").toString();
-        var url = $(this).data("url");
+        var $this = $(this);
+        var index = $this.data("index").toString();
+        var subIndex = $this.data("subindex").toString();
+        var nodename = $this.data("nodename").toString();
+        var url = $this.data("url");
+        
+        var requestData = {
+            index:index, 
+            subIndex:subIndex, 
+            nodename:nodename, 
+            userid: userid
+        };
 
-        var hash = hex_sha1(index + subIndex + nodename + userid +  password);
-        data = { index:index, subIndex:subIndex, nodename:nodename, userid:userid, userid:userid, hash:hash};
-        loader.showPleaseWait();
         $.ajax({
-            type: 'get',
-            url: url,
-            data:data,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();   
-                var reloadUrl = "/cms/mobile/getBoxContent/"+index;
-                var tableSelector = "#tableIndex_"+index;
-                $(tableSelector).load(reloadUrl);        
-            },
-            error: function(e) {
-                loader.hidePleaseWait();   
-            }
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {            
+            requestData.hash = hash;            
+            loader.showPleaseWait();
+            $.ajax({
+                type: 'get',
+                url: url,
+                data:requestData,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();   
+                    var reloadUrl = "/cms/mobile/getBoxContent/"+index;
+                    var tableSelector = "#tableIndex_"+index;
+                    $(tableSelector).load(reloadUrl);        
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();   
+                }
+            });
         });
-
     });    
 
     function addBoxContent(data, url, boxIndex,sectionIndex, value, type, target, actionType, tableIndex)
@@ -443,7 +582,8 @@
         });
     }
 
-    function showErrorModal(messages) {
+    function showErrorModal(messages)
+    {
             loader.hidePleaseWait();
             $("#errorTexts").html(messages); 
             $("#customerror").modal('show');  
