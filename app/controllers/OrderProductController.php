@@ -7,7 +7,6 @@ use Carbon\Carbon;
 
 class OrderProductController extends BaseController 
 {
-
     /**
      *  GET method for displaying list of account to pay
      *
@@ -285,6 +284,12 @@ class OrderProductController extends BaseController
         return Response::json(array('success' => $isSuccess));
     }
         
+
+    /**
+     * GET method to retrieve transaction list as Excel
+     *
+     * @return Excel
+     */
     public function downloadTransactionRecord()
     {
         $orderRepository = App::make('OrderRepository');
@@ -296,8 +301,15 @@ class OrderProductController extends BaseController
                                             $dateTo, 
                                             Input::get('stringFilter')
                                         );
+
+        $transactionCountLimit = Easyshop\Services\ExcelService::TRANSACTIONS_DONWLOAD_LIMIT;
+        if($transactionRecord->count() > $transactionCountLimit ){            
+            return View::make('errors.export-error')
+                       ->with('transactionRecordLimit', $transactionCountLimit);
+        }
+       
         $excelService = App::make('Easyshop\Services\ExcelService');
-        $excelService->transactionRecord('EasyshopRecord', $transactionRecord);
+        $excelService->transactionRecord('EasyshopRecord', $transactionRecord);             
     }
 
     /**
