@@ -4,12 +4,13 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ExcelService
 {
+    const TRANSACTIONS_DONWLOAD_LIMIT = 450; 
 
     /**
      * Transfer record from html file to excel file
      *
-     * @param $filename string
-     * @param $transactionRecord array
+     * @param string $filename
+     * @param Order[] $transactionRecord
      * export excel file
      */
     public function transactionRecord($filename, $transactionRecord)
@@ -33,8 +34,8 @@ class ExcelService
                     $preOrderID = ($key == 0) ? 0 : $transactionRecord[$key - 1]['Order_ID'];
 
                     if($orderID == $preOrderID){
-                        $sheet->mergeCells('A' . ($key + 1) . ':' . 'A' . ($key+2));
-                        $sheet->cells('A' . ($key + 1) . ':' . 'Z' . ($key+2), function($cells) {
+                        $sheet->mergeCells('A' . ($key + 1) . ':' . 'A' . ($key + 2));
+                        $sheet->cells('A' . ($key + 1) . ':' . 'Z' . ($key + 2), function($cells) {
                             $cells->setBackground('#E4E4E4');
                         });
                     }
