@@ -86,7 +86,11 @@
 
             if( user_cityID === 0 || user_stateID === 0 ){
                 alert('Invalid Address.');
+                return false;
+            }
 
+            if ($.isNumeric(user_contact) === false) {
+                alert('Invalid Contact Number.');
                 return false;
             }
 
