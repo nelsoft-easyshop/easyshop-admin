@@ -1,18 +1,33 @@
 (function () {
 
-    var urlLink = $("#webServiceLink").val();
+    
+    var userid, hash, urlLink;
+    $(document).ready(function(){
+        userid = $(".userid").html();       
+        urlLink = $("#webServiceLink").val();
+        
+        var requestData = {
+            userid:userid
+        };
+
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(responseHash) {            
+            hash = responseHash;
+        });
+
+    });
+
     $("#uploadImageOnly").fileinput({
         previewFileType: ['image'],
         'showUpload':true,
     });
+
     $('#success').bind('hidden.bs.modal', function () {
-
-            window.location.href = location.href;  
+        window.location.href = location.href;  
     });
-
-    var userid = $(".userid").html();
-    var password = $(".password").html();
-    var hash = hex_sha1(userid + password);
 
 
     $("button:nth-child(2)").attr('id', 'uploadPhotosSubmit');      
@@ -50,15 +65,28 @@
     $("#profile").on("click","#removeAdminImage", function() {
         loader.showPleaseWait();
 
-        var imageId = $(this).data("imageid");
-        var imageName = $(this).data("imagename");
-        var hash = hex_sha1(imageId + imageName + userid + password);
-            $.ajax(
-            {
+        var $this = $(this);
+        var imageId = $this.data("imageid");
+        var imageName = $this.data("imagename");
+        
+        var requestData = {
+            imageId: imageId,
+            imageName: imageName,            
+            userid:userid
+        };
+
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {            
+            
+            requestData.hash = hash;            
+            $.ajax({
                 url : urlLink + "/deleteImage",
                 type: 'GET', 
                 dataType: 'jsonp',
-                data: { "imageId" : imageId, "imageName" : imageName, "userid" : userid, "hash" : hash},
+                data: requestData,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 success:function(data, textStatus, jqXHR) 
@@ -72,6 +100,9 @@
                     showErrorModal("Something went wrong, please try again");
                 }
             });
+
+        });
+
 
     });
 
