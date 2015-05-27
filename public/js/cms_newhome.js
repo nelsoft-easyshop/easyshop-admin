@@ -1949,35 +1949,46 @@
                     loader.hidePleaseWait();
                 }
             });          
-
         });
-        
-
     });  
 
     $("#editBrandsModal").on('click','#editBrandsSubmit',function (e) { 
         loader.showPleaseWait();           
-        var index = $(this).closest("form").find("#editBrandsIndex").val();
-        var url = $(this).closest("form").find("#editBrandsUrl").val();
-        var value = $(this).closest("form").find("#editBrandsDropDown").val();     
-        var hash =  hex_sha1(index + value + userid + password);
-        data = {index:index, value:value, userid:userid, hash:hash, callback:'?'};
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();   
-                $("#addBrandsTable").load("getBrandsSection");
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });          
+        var $form = $(this).closest("form");
+        var index = $form.find("#editBrandsIndex").val();
+        var url = $form.find("#editBrandsUrl").val();
+        var value = $form.find("#editBrandsDropDown").val();     
+
+        var requestData = {
+            index:index,
+            value:value,            
+            userid:userid
+        };
         
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {             
+            requestData.hash = hash;
+            requestData.callback = '?';
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:requestData,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();   
+                    $("#addBrandsTable").load("getBrandsSection");
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });          
+
+        });        
     }); 
 
 
