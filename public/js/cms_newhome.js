@@ -1326,53 +1326,63 @@
                     showErrorModal("Please try again");
                 }
             });        
-
         });
-
-
-
     });
 
     $("#manageSliderSection").on('click','#removeSubSlide',function (e) { 
-        formSubmitted = 1;        
-        var index = $(this).data("index").toString();
-        var subIndex = $(this).data("subindex").toString();
-        var nodename = $(this).data("nodename").toString();
-        var url = $(this).data("url");
+        formSubmitted = 1;  
+        var $this = $(this);
+        var index = $this.data("index").toString();
+        var subIndex = $this.data("subindex").toString();
+        var nodename = $this.data("nodename").toString();
+        var url = $this.data("url");
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;
-        var hash =  hex_sha1(index + subIndex + nodename + userid + password);
-        
         var currentSliderTemplate = $("#sliderTemplate" + index).val();
-
-        data = { index: index, subIndex:subIndex, nodename:nodename,userid:userid, hash:hash, callback:'?'};  
         var count = parseInt($(".slideCount_" + index).last().text());
         var sliderConstant = $("#template_" + currentSliderTemplate).data("count");
-        if(count > sliderConstant ) {
-            loader.showPleaseWait();                    
-            $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    $(tableSelector).load(reloadurl);  
-                    getSliderPreview();
-                    loader.hidePleaseWait();
-                       
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                    getSliderPreview();                    
-                    showErrorModal("Please try again");
-                }
-            });  
-        }      
-        else {
-            showErrorModal("Sorry, but you have reached the minimum number of images for this slider template")
-        }  
+        
+        var requestData = {
+            index:index,
+            subIndex:subIndex,
+            nodename:nodename,
+            userid:userid
+        };
+            
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {             
+            requestData.hash = hash;
+            requestData.callback = '?';
+            
+            if(count > sliderConstant ) {
+                loader.showPleaseWait();                    
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        $(tableSelector).load(reloadurl);  
+                        getSliderPreview();
+                        loader.hidePleaseWait();                        
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                        getSliderPreview();                    
+                        showErrorModal("Please try again");
+                    }
+                });  
+            }      
+            else {
+                showErrorModal("Sorry, but you have reached the minimum number of images for this slider template")
+            }  
+        });
+
     });  
 
     $("#addBrandsTable").on('click','.editBrands',function (e) { 
