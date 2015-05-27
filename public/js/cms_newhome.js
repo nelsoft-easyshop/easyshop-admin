@@ -1544,11 +1544,9 @@
         var url = $(this).data("url");
         var value = $(this).closest("form").find("#value").val().trim();
         var hash =  hex_sha1(value + userid + password);
-
         if(value !== ""){
             data = {value:value, userid:userid, hash:hash, callback:'?'};
             loader.showPleaseWait();           
-
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -1561,15 +1559,18 @@
                     if(json.sites[0]["success"] != "success") {
                         loader.hidePleaseWait();    
                         showErrorModal("Slug Does Not Exist");
-                    }            
+                    }
                     else {
                         $("#addTopProductsTable").load("getTopProducts");
-                    }       
+                    }
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
                 }
-            });      
+            });
+        }
+        else {
+            showErrorModal("Enter Product Slug");
         }
     }); 
 
@@ -1638,12 +1639,11 @@
     $("#manageNewArrivals").on('click','#addNewArrival',function (e) { 
         var url = $(this).data("url");
         var value = $(this).closest("form").find("#value").val().trim();
-        var target = $(this).closest("form").find("#target").val();
+        var target = $(this).closest("form").find("#target").val().trim();
         var hash =  hex_sha1(value + target + userid + password);
-        if(value !==  "") {
+        if(value !==  "" && target !== "") {
             data = {value:value, target:target, userid:userid, hash:hash, callback:'?'};
             loader.showPleaseWait();           
-
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -1658,9 +1658,12 @@
                 error: function(e) {
                     loader.hidePleaseWait();
                 }
-            });          
+            });
         }
-    });      
+        else {
+            showErrorModal("Empty Text or Empty Target Not Allowed");
+        }
+    });
 
 
     $("#navigation_others").on('click','#addOtherCategory',function (e) { 
@@ -1793,60 +1796,68 @@
         loader.showPleaseWait();           
         var index = $(this).closest("form").find("#editTopProductsIndex").val();
         var url = $(this).closest("form").find("#editTopProductsUrl").val();
-        var value = $(this).closest("form").find("#editTopProductsValue").val();     
+        var value = $(this).closest("form").find("#editTopProductsValue").val().trim();     
         var hash =  hex_sha1(index + value + userid + password);
         data = {index:index, value:value, userid:userid, hash:hash, callback:'?'};
-
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait(); 
-                if(json.sites[0]["success"] != "success") {
-                    loader.hidePleaseWait();    
-                    showErrorModal("Slug Does Not Exist");
-                } 
-                else {
-                    $("#addTopProductsTable").load("getTopProducts");
-                }                  
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });          
-        
+        if(value !== ""){
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait(); 
+                    if(json.sites[0]["success"] != "success") {
+                        loader.hidePleaseWait();    
+                        showErrorModal("Slug Does Not Exist");
+                    } 
+                    else {
+                        $("#addTopProductsTable").load("getTopProducts");
+                    }                  
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });
+        }
+        else {
+            showErrorModal("Empty Slug Not Available");
+        }
     }); 
 
     $("#editNewArrival").on('click','#editNewArrivalSubmit',function (e) { 
         loader.showPleaseWait();           
         var index = $(this).closest("form").find("#editNewArrivalIndex").val();
         var url = $(this).closest("form").find("#editNewArrivalUrl").val();
-        var value = $(this).closest("form").find("#editNewArrivalValue").val();     
-        var target = $(this).closest("form").find("#editNewArrivalTarget").val();     
+        var value = $(this).closest("form").find("#editNewArrivalValue").val().trim();
+        var target = $(this).closest("form").find("#editNewArrivalTarget").val().trim();
         var hash =  hex_sha1(index + value + target + userid + password);
         data = {index:index, value:value, target:target, userid:userid, hash:hash, callback:'?'};
 
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();   
+        if (value !== "" && target !== "") {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:data,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();
                     $("#newArrivalsTable").load("getNewArrivals");
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });          
-        
-    });  
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });
+        }
+        else {
+            showErrorModal("Empty Value or Empty Target Not Allowed");
+        }
+    });
+
     $("#addBrandsTable").on('click','#editTopSellersBtn',function (e) { 
         var dataNode = $(this).attr("data");
         var data = $.parseJSON(dataNode);
@@ -1951,14 +1962,12 @@
                 error: function(e) {
                     loader.hidePleaseWait();
                 }
-            });          
+            });
         }
         else {
             showErrorModal("Sub category already exists");
         }
-
-
-    });      
+    });
 
     $("#myTabContent").on('click','#setSliderDesignTemplate',function (e) { 
         formSubmitted = 1;        
