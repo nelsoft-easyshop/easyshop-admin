@@ -1681,33 +1681,48 @@
     });    
 
     $("#manageTopProducts").on('click','#addTopProducts',function (e) { 
-        var url = $(this).data("url");
-        var value = $(this).closest("form").find("#value").val().trim();
-        var hash =  hex_sha1(value + userid + password);
+        var $this = $(this);
+        var $form = $this.closest("form");
+        var url = $this.data("url");
+        var value = $form.find("#value").val().trim();
         if(value !== ""){
-            data = {value:value, userid:userid, hash:hash, callback:'?'};
             loader.showPleaseWait();           
+            var requestData = {
+                value:value,
+                userid:userid
+            };
+
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    loader.hidePleaseWait(); 
-                    if(json.sites[0]["success"] != "success") {
-                        loader.hidePleaseWait();    
-                        showErrorModal("Slug Does Not Exist");
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {
+                requestData.hash = hash;
+                requestData.callback = '?';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait(); 
+                        if(json.sites[0]["success"] != "success") {
+                            loader.hidePleaseWait();    
+                            showErrorModal("Slug Does Not Exist");
+                        }
+                        else {
+                            $("#addTopProductsTable").load("getTopProducts");
+                        }
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
                     }
-                    else {
-                        $("#addTopProductsTable").load("getTopProducts");
-                    }
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
+                });
+
             });
+
         }
         else {
             showErrorModal("Enter Product Slug");
