@@ -86,7 +86,11 @@
 
             if( user_cityID === 0 || user_stateID === 0 ){
                 alert('Invalid Address.');
+                return false;
+            }
 
+            if (user_contact.length > 1 && $.isNumeric(user_contact) === false) {
+                alert('Invalid Contact Number.');
                 return false;
             }
 
@@ -108,8 +112,14 @@
                     banType:user_isBan},
                 success:function(result){
                     loader.hidePleaseWait();
-                    pushJsonToFields(result);
-                    CloseBootstrapModal();
+                    if (result.isSuccess) {
+                        pushJsonToFields(result.member);
+                        CloseBootstrapModal();
+                    }
+                    else {
+                        var firstKey = Object.keys(result.errors)[0];
+                        alert(result.errors[firstKey][0]);
+                    }
                 }
             })
         });

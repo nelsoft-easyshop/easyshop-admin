@@ -38,7 +38,6 @@
         </section>
 
         {{ Form::hidden('userid', $adminObject->id_admin_member, array('id' => 'userid','class' => 'form-control')) }}                        
-        {{ Form::hidden('password', $adminObject->password, array('id' => 'password','class' => 'form-control')) }}    
 
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade active in" id="manageMainSlide">
@@ -81,7 +80,7 @@
 
                                     <div class="form-group">
                                         <div class="col-xs-offset-2 col-xs-10">
-                                            <a1 href="#"  class="btn btn-default text-center" data-password="{{$adminObject->password}}" data-url = "{{ $mobileCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
+                                            <a1 href="#"  class="btn btn-default text-center"  data-url = "{{ $mobileCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
                                         </div>
                                     </div>
                                  </form>
@@ -345,7 +344,7 @@
                                                 </button>
                                             </div>
                                             <div class="btn-group">
-                                                <button type="button" class="btn edit_btn removeButton" data-url="{{{ $mobileCmsLink }}}/removeContent" data-nodename="boxContent" data-index="{{{ $index }}}" data-subindex= "{{{ $boxContentIndex }}}" >
+                                                <button type="button" class="btn removeButton" data-url="{{{ $mobileCmsLink }}}/removeContent" data-nodename="boxContent" data-index="{{{ $index }}}" data-subindex= "{{{ $boxContentIndex }}}" >
                                                     <span class="glyphicon glyphicon-remove"></span>
                                                 </button>
                                             </div>                                            
@@ -455,7 +454,6 @@
 @stop
 
 @section('page_js') 
-{{ HTML::script('js/src/sha1.js') }}
 {{ HTML::script('js/src/jquery.form.js') }}
 {{ HTML::script('js/src/jquery.minicolors.js') }}
 {{ HTML::script('js/cms_mobile.js') }}

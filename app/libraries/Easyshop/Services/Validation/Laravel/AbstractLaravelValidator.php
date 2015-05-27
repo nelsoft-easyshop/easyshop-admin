@@ -30,7 +30,7 @@ abstract class AbstractLaravelValidator extends AbstractValidator
     */
     public function passes()
     {
-        $validator = $this->validator->make($this->data, $this->rules);
+        $validator = $this->validator->make($this->data, $this->rules, $this->messages);
 
         if( $validator->fails() )
         {
@@ -40,7 +40,6 @@ abstract class AbstractLaravelValidator extends AbstractValidator
         return true;
     }
 
-    
     /**
      * Set rules
      * 
@@ -62,7 +61,26 @@ abstract class AbstractLaravelValidator extends AbstractValidator
         return $this->rules;
     }
 
- 
+    /**
+     * Set messages
+     * 
+     * @param string[] $messages
+     */
+    public function setMessages(array $messages)
+    {
+        $this->messages = $messages;
+    }
+
+    
+    /**
+     * Get messages
+     * 
+     * @return string[]
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
 }
 
 

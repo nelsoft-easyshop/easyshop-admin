@@ -192,7 +192,7 @@
                         </div>
                         <div class="form-group">
                             <label>Contact Number</label>
-                            <input type="text" class="form-control" id="mdl_contact" placeholder="Enter contact number">
+                            <input type="text" class="form-control" onkeypress="return isNumberKey(event, false)" id="mdl_contact" placeholder="Enter contact number">
                         </div>
                         <div class="form-group">
                             <label>Remarks</label>
