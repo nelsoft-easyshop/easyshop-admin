@@ -2171,35 +2171,46 @@
 
     });     
 
-    $("#otherCategoriesTable").on('click','.removeOtherCategory',function (e) { 
-     
-        var index = $(this).data("index").toString();
-        var nodename = $(this).data("nodename");
-        var url = $(this).data("url");
-
-        var hash =  hex_sha1(index + nodename + userid + password);
-        data = { index: index, nodename:nodename, userid:userid, hash:hash, callback:'?'};
-
+    $("#otherCategoriesTable").on('click','.removeOtherCategory',function (e) {      
+        var $this = $(this);
+        var index = $this.data("index").toString();
+        var nodename = $this.data("nodename");
+        var url = $this.data("url");
         var flag = 0;
-        var count = parseInt($(".otherCategoriesCount").last().text());
- 
+        var count = parseInt($(".otherCategoriesCount").last().text()); 
         if(count > 1) {
             loader.showPleaseWait();     
+
+            var requestData = {
+                index:index,
+                nodename:nodename,            
+                userid:userid
+            };
+            
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    loader.hidePleaseWait();   
-                    $("#otherCategoriesTable").load("getOtherCategories");
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
-            });    
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {             
+                requestData.hash = hash;
+                requestData.callback = '?';                                
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();   
+                        $("#otherCategoriesTable").load("getOtherCategories");
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });    
+
+            });
         }     
 
     });  
