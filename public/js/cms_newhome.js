@@ -1423,6 +1423,7 @@
         else {
             var count = parseInt($(".parentSliderCount").last().text());
         }
+
         if(nodename === "categorySectionPanel" || count > 1) {
             var $confirm = confirm("Are you sure you want to remove?");   
             if($confirm) {
@@ -1454,8 +1455,7 @@
                             }
                             else {
                                 $("#manageSliderSection").load("getAllSliders");
-                                getSliderPreview();                 
-
+                                getSliderPreview();
                             }
                         },
                         error: function(e) {
@@ -1472,28 +1472,41 @@
     }); 
 
     $("#manageCategorySection").on('click','#addCategorySectionProductPanel',function (e) { 
+        var $this = $(this);
         var value = $('#addCategorySectionValue option:selected').val();
-        var url = $(this).data("url");
-        var hash =  hex_sha1(value + userid + password);
-        data = { value:value, userid:userid, hash:hash, callback:'?'};
-        
+        var url = $this.data("url");
+              
         var count = parseInt($(".categorySectionCount").last().text());
-        if(isNaN(count) || count < minimumCategorySectionProductPanel) {
-            loader.showPleaseWait();                       
+        if(isNaN(count) || count < minimumCategorySectionProductPanel) {            
+            
+            loader.showPleaseWait();                                   
+            var requestData = {
+                value:value,
+                userid:userid
+            };
+            
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    loader.hidePleaseWait();   
-                    $("#manageCategorySection").load("getCategoriesPanel");
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {             
+                requestData.hash = hash;
+                requestData.callback = '?';                
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();   
+                        $("#manageCategorySection").load("getCategoriesPanel");
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });
             });    
         }
         else {
