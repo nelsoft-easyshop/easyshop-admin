@@ -9,6 +9,7 @@
     $pages['contentManagement'] = [
         "cms",
         "mobile",
+        "hasher",
     ];
     
     $pages['dataManagement'] = [

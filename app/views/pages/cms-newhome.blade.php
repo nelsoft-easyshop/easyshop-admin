@@ -192,7 +192,7 @@
                         <thead>
                         <tr>
                             <th>/</th>
-                            <th>Product Slug</th>
+                            <th>User Slug</th>
                         </tr>
                         </thead>
                         <tbody id="tbody_boxContent">
@@ -1658,7 +1658,7 @@
 
 @stop
 @section('page_js') 
-{{ HTML::script('js/src/sha1.js') }}
+
 {{ HTML::script('js/src/jquery.form.js') }}
 {{ HTML::script('js/src/jquery.Jcrop.min.js') }}
 {{ HTML::script('js/cms_newhome.js') }}

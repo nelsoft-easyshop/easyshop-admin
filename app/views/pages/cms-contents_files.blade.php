@@ -18,7 +18,6 @@
 
    <div class="row">
         <span id="userIdSpan" style="display:none;">{{ $adminObject->id_admin_member }}</span>
-        <span id="adminPasswordSpan" style="display:none;">{{ $adminObject->password }}</span>
     <section id="tabs">
         <ul id="myTab" class="nav nav-tabs" role="tablist">
             <li class="active"><a href="#manageSelectDiv" role="tab" data-toggle="tab">Manage Select Node</a></li>
@@ -35,8 +34,7 @@
                         <div class="col-sm-10">
                             {{ Form::text('value', trim($nodes), array('id' => 'value','class' => 'form-control')) }}
                             {{ Form::hidden('id', $nodes->attributes()->id, array('id' => 'id')) }}    
-                            {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }}    
-                            {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}    
+                            {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }} 
                             {{ Form::hidden('hash', "", array('id' => 'hash')) }}
                         </div>
                     </div>
@@ -99,7 +97,6 @@
 
 @stop
 @section('page_js') 
-{{ HTML::script('js/src/sha1.js') }}
 {{ HTML::script('js/cms-content.js') }}
 {{ HTML::script('js/src/jquery.form.js') }}
 
