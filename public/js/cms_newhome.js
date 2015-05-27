@@ -1175,21 +1175,87 @@
 
     }); 
 
-
     $(document.body).on('click','#editSubCategorySection',function (e) { 
+        var $this = $(this);
+        var $form = $this.closest("form");
         loader.showPleaseWait();
-        var index = $(this).data("index").toString();
-        var url = $(this).data("url").toString();
-        var subIndex = $(this).data("subindex").toString();
-        var text = $(this).closest("form").find("#subCategoryText").val().trim();
-        var url = $(this).data("url");
-        var hash =  hex_sha1(index + subIndex + text + userid + password);
+        var index = $this.data("index").toString();
+        var url = $this.data("url").toString();
+        var subIndex = $this.data("subindex").toString();
+        var text = $form.find("#subCategoryText").val().trim();
+        var url = $this.data("url");
 
         if(text !== "") {
+            var requestData = {
+                index:index,
+                subIndex: subIndex,
+                value:text,
+                userid: userid
+            };
+            
+            $.ajax({
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {             
+                requestData.hash = hash;                
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
+                            var accordionId = "#collapseAccordion_" + index;
+                            $(accordionId).trigger("click");
+                            var aTag = $("a[href='#collapse_category_"+ index +"']");
+                            $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
+                            loader.hidePleaseWait();  
+                        });
+                        getSliderPreview();
+                        loader.hidePleaseWait();
+                        
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                        getSliderPreview();                    
+                        showErrorModal("Please try again");
+                    }
+                });
+            });
+        }
+        else {
+            showErrorModal("Please supply a value");
+        }
+    });
+
+
+    $(document.body).on('click','#setCategorySection',function (e) { 
+        loader.showPleaseWait();
+        var $this = $(this);
+        var $form = $this.closest("form");
+        var index = $this.data("index").toString();
+        var categoryName = $form.find("#setCategorySectionDropDown option:selected").val();        
+        var url = $this.data("url");
+
+        var requestData = {
+            index:index,
+            value: categoryName,
+            userid: userid
+        };
+            
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {             
+            requestData.hash = hash;
             $.ajax({
                 type: 'GET',
                 url: url,
-                data:{index:index, subIndex:subIndex, value:text, userid:userid, hash:hash},
+                data: requestData,
                 jsonpCallback: 'jsonCallback',
                 contentType: "application/json",
                 dataType: 'jsonp',
@@ -1203,86 +1269,67 @@
                     });
                     getSliderPreview();
                     loader.hidePleaseWait();
-                       
+                    
                 },
                 error: function(e) {
                     loader.hidePleaseWait();
                     getSliderPreview();                    
                     showErrorModal("Please try again");
                 }
-            });
-        }
-        else {
-            showErrorModal("Please supply a value");
-        }
-    });
+            });        
+        });
 
-
-
-    $(document.body).on('click','#setCategorySection',function (e) { 
-        loader.showPleaseWait();
-        var index = $(this).data("index").toString();
-        var categoryName = $(this).closest("form").find("#setCategorySectionDropDown option:selected").val();        
-        var url = $(this).data("url");
-        var hash =  hex_sha1(index + categoryName + userid + password);
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:{index:index, value:categoryName, userid:userid, hash:hash},
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
-                    var accordionId = "#collapseAccordion_" + index;
-                    $(accordionId).trigger("click");
-                    var aTag = $("a[href='#collapse_category_"+ index +"']");
-                    $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
-                    loader.hidePleaseWait();  
-                });
-                getSliderPreview();
-                loader.hidePleaseWait();
-                   
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-                getSliderPreview();                    
-                showErrorModal("Please try again");
-            }
-        });        
     });
 
     $(document.body).on('click','.removeSubCategorySection',function (e) { 
+        var $this = $(this);
         loader.showPleaseWait();
-        var index = $(this).data("index").toString();
-        var subindex = $(this).data("subindex").toString();
-        var nodename = $(this).data("nodename");
-        var url = $(this).data("url");
-        var hash =  hex_sha1(index + subindex + nodename + userid + password);
+        var index = $this.data("index").toString();
+        var subindex = $this.data("subindex").toString();
+        var nodename = $this.data("nodename");
+        var url = $this.data("url");
+
+        var requestData = {
+            index:index,
+            subindex:subindex,
+            nodename:nodename,
+            userid:userid
+        };
+            
         $.ajax({
-            type: 'GET',
-            url: url,
-            data:{index:index, subindex:subindex, nodename:nodename, userid:userid, hash:hash},
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
-                    var accordionId = "#collapseAccordion_" + index;
-                    $(accordionId).trigger("click");
-                    var aTag = $("a[href='#collapse_category_"+ index +"']");
-                    $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
-                    loader.hidePleaseWait();  
-                });
-                getSliderPreview();
-                loader.hidePleaseWait();                   
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-                getSliderPreview();                    
-                showErrorModal("Please try again");
-            }
-        });        
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {             
+            requestData.hash = hash;
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: requestData,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
+                        var accordionId = "#collapseAccordion_" + index;
+                        $(accordionId).trigger("click");
+                        var aTag = $("a[href='#collapse_category_"+ index +"']");
+                        $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
+                        loader.hidePleaseWait();  
+                    });
+                    getSliderPreview();
+                    loader.hidePleaseWait();                   
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                    getSliderPreview();                    
+                    showErrorModal("Please try again");
+                }
+            });        
+
+        });
+
+
 
     });
 
