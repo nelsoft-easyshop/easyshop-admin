@@ -2212,12 +2212,8 @@
 
             });
         }     
-
     });  
 
-    /**
-     * UNTESTED !!!!!!!!!!!!
-     */
     $("#myModal").on('click','#mdl_save',function (e) { 
         loader.showPleaseWait();           
         var url = $("#edit_url").val();
@@ -2271,6 +2267,8 @@
             showErrorModal("Sub category already exists");
         }
     });
+
+
 
     $("#myTabContent").on('click','#setSliderDesignTemplate',function (e) { 
         formSubmitted = 1;        
