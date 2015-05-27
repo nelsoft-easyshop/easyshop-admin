@@ -39,9 +39,9 @@ class MemberController extends BaseController
     /**
      * Member Service
      *
-     * @var EasyShop\Service\MemberService
+     * @var EasyShop\Service\MemberManager
      */
-    private $memberService;
+    private $memberManager;
 
     public function __construct(LocationService $locationService,
                                 LocationLookUpRepository $locationLookUpRepository,
@@ -52,7 +52,7 @@ class MemberController extends BaseController
         $this->locationLookUpRepository = $locationLookUpRepository;
         $this->banTypeRepository = $banTypeRepository;
         $this->memberRepository = $memberRepository;
-        $this->memberService = App::make('MemberService');;
+        $this->memberManager = App::make('MemberManager');;
     }
 
     /**
@@ -133,7 +133,7 @@ class MemberController extends BaseController
             'country' => 148
         ];
         $member = $this->memberRepository->getById(Input::get('id'));
-        $memberUpdate = $this->memberService->updateMember($member, $dataMember);
+        $memberUpdate = $this->memberManager->updateMember($member, $dataMember);
         if (intval($dataAddress['stateregion']) !== 0 && $memberUpdate['isSuccess']) {
             $addressRepository = App::make('AddressRepository');
             $addressRepository->update(Input::get('id'), $dataAddress);

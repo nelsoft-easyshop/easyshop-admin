@@ -4,7 +4,7 @@ namespace Easyshop\Services;
 
 use Easyshop\ModelRepositories\MemberRepository as MemberRepository;
 
-class MemberService
+class MemberManager
 {
     /**
      * Member Repository
