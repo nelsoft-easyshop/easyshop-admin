@@ -330,8 +330,7 @@ class OrderProductController extends BaseController
             'invoiceno' => trim(Input::get('invoiceno')),
             'tag' => trim(Input::get('tag')),
         ];
-
-        $transactionRecord = $orderProductRepository->getAllSellersTransaction(100,true,$userData);
+        $transactionRecord = $orderProductRepository->getAllSellersTransaction(100, true, $userData);
         $pagination = $transactionRecord->appends(Input::except(['page','_token']))->links();
 
         $constantArray['confirmed'] = $tagRepository->getConfirmed();
