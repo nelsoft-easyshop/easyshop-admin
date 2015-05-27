@@ -1,6 +1,10 @@
 (function () {
 
     var formSubmitted = 0;
+    var userid = $("#userid").val();
+    var newHomeCmsLink = $("#newHomeCmsLink").text();
+    var minimumCategoryProductPanel = 1;
+    var minimumCategorySectionProductPanel = 3;
 
     $(window).on('beforeunload', function(){
         if(formSubmitted === 1) {
@@ -15,46 +19,57 @@
         }
     });    
 
-    var userid = $("#userid").val();
-
-    var newHomeCmsLink = $("#newHomeCmsLink").text();
-    var minimumCategoryProductPanel = 1;
-    var minimumCategorySectionProductPanel = 3;
-
     $("#myTabContent").on('click','#addSubCategorySection',function (e) { 
         loader.showPleaseWait();          
-        var index = $(this).closest("form").find("#index").val();
-        var subCategoryText = $(this).closest("form").find("#subCategoryText").val();
-        var url = $(this).data('url');
-        var hash =  hex_sha1(index + subCategoryText + userid + password);
-        data = { index: index, subCategoryText:subCategoryText, userid:userid, hash:hash, callback:'?'};
+        var $this = $(this);
+        var $form = $this.closest("form");
+        var index = $form.find("#index").val();
+        var subCategoryText = $form.find("#subCategoryText").val();
+        var url = $this.data('url');
+        
+        var requestData = {
+            index:index, 
+            subCategoryText:subCategoryText, 
+            userid:userid
+        };
 
-        if(subCategoryText.trim() === "") {
-            showErrorModal("Please enter values to the required fields");
-        }
-        else {
-            $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
-                        var accordionId = "#collapseAccordion_" + index;
-                        $(accordionId).trigger("click");
-                        var aTag = $("a[href='#collapse_category_"+ index +"']");
-                        $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {
+            requestData.hash = hash;
+            requestData.callback = '?';
+            
+            if(subCategoryText.trim() === "") {
+                showErrorModal("Please enter values to the required fields");
+            }
+            else {
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        $( "#manageCategorySection" ).load("getCategoriesPanel", function( response, status, xhr ) {
+                            var accordionId = "#collapseAccordion_" + index;
+                            $(accordionId).trigger("click");
+                            var aTag = $("a[href='#collapse_category_"+ index +"']");
+                            $('html,body').animate({scrollTop: aTag.offset().top},'slow');    
 
-                        loader.hidePleaseWait();  
-                    });
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
-            });  
-        }     
+                            loader.hidePleaseWait();  
+                        });
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });  
+            }     
+
+        });
+
     });  
 
     $("#myTabContent").on('click','.editCategorySection',function (e) { 
@@ -69,6 +84,9 @@
 
     });  
 
+    /**
+     * UNTESTED!!!!!!!!!!
+     */
     $("#modalForCategorySection").on('click','#setSubCategoriesSectionBtn',function (e) { 
         loader.showPleaseWait();          
         var index = $("#edit_categoryText_index").val().toString();
@@ -76,87 +94,117 @@
         var url = $("#edit_categoryText_url").val().toString();
         var text = $("#edit_categoryText").val().toString();
         var target = $("#edit_categoryTarget").val().toString();
-
-
-        var hash =  hex_sha1(index + subIndex + text + target + userid + password);
-        data = { index: index, subIndex:subIndex, text:text, target:target, userid:userid, hash:hash, callback:'?'};
-
         var tableSelector = "#subCategoriesSection_" + index;
         var reloadurl = "getSubCategoriesSection/" + index;
+        
+        var requestData = {
+            index:index, 
+            subIndex:subIndex,
+            text:text,
+            target:target,
+            userid:userid
+        };
 
         $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $(tableSelector).load(reloadurl);
-                loader.hidePleaseWait();  
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });       
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {
+            requestData.hash = hash;
+            requestData.callback = '?';            
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:requestData,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    $(tableSelector).load(reloadurl);
+                    loader.hidePleaseWait();  
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });       
+
+        });
 
     });      
 
     $("#myTabContent").on('click','#editCategoryProductPanel',function (e) { 
         loader.showPleaseWait();          
-        var value = $(this).closest("form").find("#value").val().toString();
-        var index = $(this).closest("form").find("#index").val().toString();
-        var subindex = $(this).closest("form").find("#subindex").val().toString();
-        var subPanelIndex = $(this).closest("form").find("#subPanelIndex").val().toString();
-        var newCategorySection = $(this).closest("form").find("#newCategorySection").val().toString();
-        var url = $(this).data("url");
+        var $this = $(this);
+        var $form = $this.closest("form");
 
-        var hash =  hex_sha1(index + value + subindex + subPanelIndex + userid + password);
-        data = { index: index, value:value, subindex:subindex, subPanelIndex:subPanelIndex, userid:userid, hash:hash, callback:'?'};
-
-        var tableSelector = "#categorySectionProductPanel_" + index + "_" +subindex;
-        var reloadurl = "getCategoriesProductPanel/" + index + "/" + subindex + "/" + newCategorySection;
+        var value = $form.find("#value").val().toString();
+        var index = $form.find("#index").val().toString();
+        var subindex = $form.find("#subindex").val().toString();
+        var subPanelIndex = $form.find("#subPanelIndex").val().toString();
+        var newCategorySection = $form.find("#newCategorySection").val().toString();
+        var url = $this.data("url");
 
         if(value.trim() == "") {
             showErrorModal("Please supply a slug");
         }
-        else {
-            $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    if(json.sites[0]["success"] != "success") {
-                        loader.hidePleaseWait();    
-                        showErrorModal("Slug Does Not Exist");
-                    }   
-                    else {
-                        $(tableSelector).load(reloadurl);
-                        loader.hidePleaseWait();  
-                    }                 
+        else{
 
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                    showErrorModal("Please try again");
-                }
-            });  
+            var requestData = {
+                index:index, 
+                value:value,
+                subindex:subindex,
+                subPanelIndex:subPanelIndex,
+                userid:userid
+            };
+
+            $.ajax({
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {
+                requestData.hash = hash;
+                requestData.callback = '?';            
+
+                var tableSelector = "#categorySectionProductPanel_" + index + "_" +subindex;
+                var reloadurl = "getCategoriesProductPanel/" + index + "/" + subindex + "/" + newCategorySection;
+                
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        if(json.sites[0]["success"] != "success") {
+                            loader.hidePleaseWait();    
+                            showErrorModal("Slug Does Not Exist");
+                        }   
+                        else {
+                            $(tableSelector).load(reloadurl);
+                            loader.hidePleaseWait();  
+                        }                 
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                        showErrorModal("Please try again");
+                    }
+                });              
+            });
         }
-    
     });     
 
     $("#myTabContent").on('click','#moveupCategoryProductPanel, #movedownCategoryProductPanel',function (e) { 
         loader.showPleaseWait();          
-        var action = $(this).data('action').toString();
-        var subindex = $(this).data('subindex').toString();
-        var index = $(this).data('index').toString();
-        var subpanelindex = $(this).data('subpanelindex').toString();
-        var newcategorysection = $(this).data('newcategorysection').toString();
-        var order = parseInt($(this).data('order'));
-        var url = $(this).data('url').toString();
+        
+        var $this = $(this);
+        var action = $this.data('action').toString();
+        var subindex = $this.data('subindex').toString();
+        var index = $this.data('index').toString();
+        var subpanelindex = $this.data('subpanelindex').toString();
+        var newcategorysection = $this.data('newcategorysection').toString();
+        var order = parseInt($this.data('order'));
+        var url = $this.data('url').toString();
         var count = parseInt($(".categoryProductPanelCount").last().text());
 
         var tableSelector = "#categorySectionProductPanel_" + index + "_" +subindex;
@@ -164,130 +212,158 @@
         if(action == "down") {
             if(order == (count - 1)) {
                 order = order;
-            } else {
+            } 
+            else {
                  order = order + 1;
             }           
         }
         else {
             if(order > 0) {
                 order = order - 1;
-            } else {
+            } 
+            else {
                order = 0;
-            }
-    
+            }    
         }
-        console.log(index);
-        console.log(subindex);
-        console.log(subpanelindex);
-        console.log(order);
         order = order.toString();
-        var hash =  hex_sha1(index + subindex + subpanelindex + order + userid + password);        
-        data = { 
-            index: index, 
-            subIndex:subindex, 
-            subpanelindex:subpanelindex, 
-            order:order, 
-            userid:userid, 
-            hash:hash, 
-            callback:'?'
+
+        var requestData = {
+            index:index, 
+            subIndex:subindex,
+            subpanelindex:subpanelindex,
+            order:order,
+            userid:userid
         };
-        setCategoryProductPosition(url,data, tableSelector, reloadurl);
-    
+
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {
+            requestData.hash = hash;
+            requestData.callback = '?';            
+            setCategoryProductPosition(url, requestData, tableSelector, reloadurl);    
+        });
     }); 
 
     $("#myTabContent").on('click','#removeCategoryProductPanel',function (e) { 
-        var index = $(this).data("index").toString();
-        var subindex = $(this).data("subindex").toString();
-        var subpanelindex = $(this).data("subpanelindex").toString();
-        var newcategorysection = $(this).data("newcategorysection").toString();
-        var nodename = $(this).data("nodename");
-        var url = $(this).data("url");
-        var hash = hex_sha1(index + subindex + subpanelindex + nodename + userid + password);
-        data = { 
-            index: index, 
+       
+        var $this = $(this);        
+        var index = $this.data("index").toString();
+        var subindex = $this.data("subindex").toString();
+        var subpanelindex = $this.data("subpanelindex").toString();
+        var newcategorysection = $this.data("newcategorysection").toString();
+        var nodename = $this.data("nodename");
+        var url = $this.data("url");
+        
+        var requestData = {
+            index:index, 
             subIndex:subindex,
             subpanelindex:subpanelindex,
             nodename:nodename,
-            userid:userid,
-            hash:hash, 
-            callback:'?'
-        };  
-        var count = parseInt($(".categoryProductPanelCount_"+index+"_"+subindex).last().text());      
-        var tableSelector = "#categorySectionProductPanel_" + index + "_" +subindex;
-        var reloadurl = "getCategoriesProductPanel/" + index + "/" + subindex + "/" + newcategorysection;
-        if(count > minimumCategoryProductPanel ) {
-            loader.showPleaseWait();                    
-            $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    $(tableSelector).load(reloadurl);                  
-                    loader.hidePleaseWait();
-                       
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                    showErrorModal("Please try again");
-                }
-            });    
-        }          
+            userid:userid
+        };
+
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {
+            requestData.hash = hash;
+            requestData.callback = '?';            
+
+            var count = parseInt($(".categoryProductPanelCount_"+index+"_"+subindex).last().text());      
+            var tableSelector = "#categorySectionProductPanel_" + index + "_" +subindex;
+            var reloadurl = "getCategoriesProductPanel/" + index + "/" + subindex + "/" + newcategorysection;
+            if(count > minimumCategoryProductPanel ) {
+                loader.showPleaseWait();                    
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        $(tableSelector).load(reloadurl);                  
+                        loader.hidePleaseWait();                        
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                        showErrorModal("Please try again");
+                    }
+                });    
+            }          
+        });
+
     });  
 
 
     $("#manageSliderSection").on('click','#moveup, #movedown',function (e) { 
+        var $this = $(this);
         formSubmitted = 1;
-        var action = $(this).data('action').toString();
-        var subindex = $(this).data('subindex').toString();
-        var index = $(this).data('index').toString();
-        var order = parseInt($(this).data('order'));
-        var url = $(this).data('url').toString();
+        var action = $this.data('action').toString();
+        var subindex = $this.data('subindex').toString();
+        var index = $this.data('index').toString();
+        var order = parseInt($this.data('order'));
+        var url = $this.data('url').toString();
         var count = parseInt($(".slideCount_" + index).last().text());
         if(action == "down") {
             if(order == (count - 1)) {
                 order = order;
-            } else {
+            } 
+            else {
                  order = order + 1;
             }           
         }
         else {
             if(order > 0) {
                 order = order - 1;
-            } else {
+            } 
+            else {
                order = 0;
-            }
-    
+            }    
         }
         var flag = parseInt(index) + 1;
 
         var tableSelector = "#sliderReload_" + index;
         var reloadurl = "getSlideSection/" + index;        
         order = order.toString();
-        var hash =  hex_sha1(index + subindex  + order + userid + password);        
-        data = { index: index, subIndex:subindex, order:order, userid:userid, hash:hash, callback:'?'};
 
-        loader.showPleaseWait();   
-        setSliderPosition(url,data, tableSelector, reloadurl);
+        var requestData = {
+            index:index, 
+            subIndex:subindex,
+            order:order,
+            userid:userid
+        };
 
-    
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {
+            requestData.hash = hash;
+            requestData.callback = '?';            
+            loader.showPleaseWait();   
+            setSliderPosition(url, requestData, tableSelector, reloadurl);
+        });    
     }); 
 
     $("#manageSliderSection").on('click','#moveParentSlider',function (e) { 
-        var flag = 0;      
-        var action = $(this).data('action').toString();
-        var index = parseInt($(this).data('index').toString());
-        var nodename = $(this).data('nodename').toString();
+        var flag = 0;              
+        var $this = $(this);
+        var action = $this.data('action').toString();
+        var index = parseInt($this.data('index').toString());
+        var nodename = $this.data('nodename').toString();
         var order = index;
-        var url = $(this).data('url').toString();
+        var url = $this.data('url').toString();
         var count = parseInt($(".parentSliderCount").last().text());
         if(action == "down") {
             if(index + 1 != count) {
                 if(order == (count - 1)) {
                     order = order;
-                } else {
+                } 
+                else {
                      order = order + 1;
                 } 
                 flag = 1;    
@@ -298,7 +374,8 @@
             if(index != 0) {
                 if(order > 0) {
                     order = order - 1;
-                } else {
+                } 
+                else {
                    order = 0;
                 }    
                 flag = 1;                  
@@ -307,31 +384,37 @@
         if(flag == 1) {
             loader.showPleaseWait();             
             order = order.toString();
-            var hash =  hex_sha1(action + nodename + index  + order + userid + password);        
-            data = { action:action, nodename:nodename, index: index, order:order, userid:userid, hash:hash, callback:'?'};
-            setPositionParentSlider(url,data, index, action);       
-        }
+            
+            var requestData = {
+                action:action, 
+                nodename:nodename,
+                index:index,
+                order:order,
+                userid:userid
+            };
 
-    
+            $.ajax({
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {
+                requestData.hash = hash;
+                requestData.callback = '?';            
+                setPositionParentSlider(url, requestData, index, action);       
+            });    
+        }    
     });
 
     $("#manageCategorySection").on('click','#addCategoryProductPanel',function (e) { 
         loader.showPleaseWait();          
-        var value = $(this).closest("form").find("#value").val().toString();
-        var index = $(this).data("index");
-        var subindex = $(this).data("subindex").toString();
-        var subpanelindex = $(this).data("subpanelindex").toString();
-        var url = $(this).data("url");
-
-        var hash =  hex_sha1(index + value + subindex + subpanelindex + userid + password);
-        data = { index:index, 
-                 value:value, 
-                 subindex:subindex, 
-                 subpanelindex:subpanelindex, 
-                 userid:userid,
-                 hash:hash, 
-                 callback:'?'};
-
+       
+        var $this = $(this);
+        var value = $this.closest("form").find("#value").val().toString();
+        var index = $this.data("index");
+        var subindex = $this.data("subindex").toString();
+        var subpanelindex = $this.data("subpanelindex").toString();
+        var url = $this.data("url");
+        
         var tableSelector = "#categorySectionProductPanel_" + index + "_" +subindex;
         var reloadurl = "getCategoriesProductPanel/" + index + "/" +subindex + "/" +subpanelindex;
         if(value.trim() == "") {
@@ -340,67 +423,99 @@
         else {
             var count = parseInt($(".categoryProductPanelCount_"+index+"_"+subindex).last().text());
             if(count < 10) {
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    data:data,
-                    jsonpCallback: 'jsonCallback',
-                    contentType: "application/json",
-                    dataType: 'jsonp',
-                    success: function(json) {
-                        if(json.sites[0]["success"] != "success") {
-                            loader.hidePleaseWait();    
-                            showErrorModal("Slug Does Not Exist");
-                        }
-                        else {
-                            loader.hidePleaseWait();  
-                            $(tableSelector).load(reloadurl);
-                        }
+                  
+                var requestData = {
+                    index:index, 
+                    value:value,
+                    subindex:subindex,
+                    subpanelindex:subpanelindex,
+                    userid:userid
+                };
 
-                    },
-                    error: function(e) {
-                        loader.hidePleaseWait();
-                        showErrorModal("Please try again");
-                    }
+                $.ajax({
+                    url: "/hasher",
+                    data: requestData,
+                    dataType:"JSON",
+                }).success(function(hash) {
+                    requestData.hash = hash;
+                    requestData.callback = '?';
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        data:requestData,
+                        jsonpCallback: 'jsonCallback',
+                        contentType: "application/json",
+                        dataType: 'jsonp',
+                        success: function(json) {
+                            if(json.sites[0]["success"] != "success") {
+                                loader.hidePleaseWait();    
+                                showErrorModal("Slug Does Not Exist");
+                            }
+                            else {
+                                loader.hidePleaseWait();  
+                                $(tableSelector).load(reloadurl);
+                            }
+
+                        },
+                        error: function(e) {
+                            loader.hidePleaseWait();
+                            showErrorModal("Please try again");
+                        }
+                    });
                 });
             }
             else {
                 showErrorModal("Sorry, but you have reached the maximum number of product");
             }
         }      
-    });  
+    });
 
-    $(".subCategoriesSectionTable").on('click','.removeCategorySection',function (e) { 
-        var index = $(this).data("index").toString();
-        var subIndex = $(this).data("subindex").toString();
-        var nodename = $(this).data("nodename");
-        var url = $(this).data("url");
 
-        var hash =  hex_sha1(index + subIndex + nodename + userid + password);
-        data = { index: index, subIndex:subIndex, nodename:nodename, userid:userid, hash:hash, callback:'?'};
-
+    $(".subCategoriesSectionTable").on('click','.removeCategorySection',function (e) {
+        var $this = $(this);        
+        var index = $this.data("index").toString();
+        var subIndex = $this.data("subindex").toString();
+        var nodename = $this.data("nodename");
+        var url = $this.data("url");
+        
         var tableSelector = "#subCategoriesSection_" + index;
         var reloadurl = "getSubCategoriesSection/" + index;
         var categoryCount = ".subCategorySectionCount_"+index;
         var count = $(categoryCount).last().text();
         if(count >= minimumCategoryProductPanel) {
             loader.showPleaseWait();                      
+                                   
+            var requestData = {
+                index:index, 
+                subIndex:subIndex,
+                nodename:nodename,
+                userid:userid
+            };
+
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    $(tableSelector).load(reloadurl);
-                    loader.hidePleaseWait();  
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                    showErrorModal("Please try again");
-                }
-            });            
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {
+                requestData.hash = hash;
+                requestData.callback = '?';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        $(tableSelector).load(reloadurl);
+                        loader.hidePleaseWait();  
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                        showErrorModal("Please try again");
+                    }
+                });            
+            });
         }
         else {
             showErrorModal("Sorry, but you have reached the minimum number of sub category section");
@@ -412,124 +527,186 @@
 
     $("#myTabContent").on('click','#setMainNavigation',function (e) { 
         loader.showPleaseWait();          
-        var index = $(this).closest("form").find("#index").val();
-        var categoryName = $(this).closest("form").find("#drop_actionType").val();
-        var catName = $(this).closest("form").find("#drop_actionType option:selected").data("catname");    
 
-
-        var url = $(this).data('url');
-        var prev = $(this).data('prev');
-        var hash =  hex_sha1(index + categoryName + userid + password);
-        data = { index: index, value:categoryName, userid:userid, hash:hash, callback:'?'};
+        var $this = $(this);
+        var $form = $this.closest("form");
+      
+        var index = $form.find("#index").val();
+        var categoryName = $form.find("#drop_actionType").val();
+        var catName = $form.find("#drop_actionType option:selected").data("catname");    
+        var url = $this.data('url');
+        var prev = $this.data('prev');
         var count = $('.mainNavigation_'+categoryName).length;
+
         if(count > 0) {
             loader.hidePleaseWait();
             showErrorModal("Main category already exists");
         }
         else {
-            $(this).closest("form").closest("div").attr("id","navigation_" + categoryName); 
+                                   
+            var requestData = {
+                index:index, 
+                value:categoryName,
+                userid:userid
+            };
+
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    loader.hidePleaseWait();   
-                    $("#mainNavigation_"+index).html(catName);
-                    $("#mainNavigation_"+index).attr("href","#navigation_" + categoryName);
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
-            });        
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {
+                requestData.hash = hash;
+                requestData.callback = '?';
+                $form.closest("div").attr("id","navigation_" + categoryName); 
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();   
+                        $("#mainNavigation_"+index).html(catName);
+                        $("#mainNavigation_"+index).attr("href","#navigation_" + categoryName);
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });                        
+            });
         }
-
     });  
-
-
-
+    
     $("#previewImage").on('click','#editAdsSection',function (e) { 
 
         loader.showPleaseWait();
+        var $this = $(this);
+        var $form = $this.closest("form");
 
-        var image_x = $(this).closest("form").find("#image_x").val().toString();
-        var image_y = $(this).closest("form").find("#image_y").val().toString();
-        var image_w = $(this).closest("form").find("#image_w").val().toString();
-        var image_h = $(this).closest("form").find("#image_h").val().toString();
+        var image_x = $form.find("#image_x").val().toString();
+        var image_y = $form.find("#image_y").val().toString();
+        var image_w = $form.find("#image_w").val().toString();
+        var image_h = $form.find("#image_h").val().toString();
 
-        var index = $(this).closest("form").find("#editAdsIndex").val().toString();
+        var index = $form.find("#editAdsIndex").val().toString();
         var url = newHomeCmsLink + "/setAdsSection";
-        var userid = $(this).closest("form").find("#userid").val().toString();
-        var value = $(this).closest("form").find("#photoFile").val().toString();     
-        var target = $(this).closest("form").find("#target").val().toString();
+        var userid = $form.find("#userid").val().toString();
+        var value = $form.find("#photoFile").val().toString();     
+        var target = $form.find("#target").val().toString();
         if(target.trim() === "") {
             target = "/";
-            $(this).closest("form").find("#target").val("/");            
+            $form.find("#target").val("/");            
         }
-        var hash = hex_sha1(image_x + image_y + image_w + image_h + value + index + userid + target + password);
-        var form = "#cropForm";
-        $(this).closest("form").find("#editAdsSectionHash").val(hash);
-        editAdsSectionForm(form, url);
+
+        var requestData = {
+            image_x:image_x, 
+            image_y:image_y,
+            image_w:image_w,
+            image_h:image_h,
+            value:value,
+            index:index,
+            userid:userid,
+            target:target
+        };
+        
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {            
+            var cropFormSelector = "#cropForm";
+            $form.find("#editAdsSectionHash").val(hash);
+            editAdsSectionForm(cropFormSelector, url);
+        });
 
     }); 
-
-
 
     $("#previewImage").on('click','#editSubSlider',function (e) { 
         formSubmitted = 1;
-        var image_x = $(this).closest("form").find("#image_x").val().toString();
-        var image_y = $(this).closest("form").find("#image_y").val().toString();
-        var image_w = $(this).closest("form").find("#image_w").val().toString();
-        var image_h = $(this).closest("form").find("#image_h").val().toString();
+        var $this = $(this);
+        var $form = $this.closest("form");
 
-        var index = $(this).closest("form").find("#editModalSliderIndex").val().toString();
-        var subIndex = $(this).closest("form").find("#editModalSliderSubIndex").val().toString();
+        var image_x = $form.find("#image_x").val().toString();
+        var image_y = $form.find("#image_y").val().toString();
+        var image_w = $form.find("#image_w").val().toString();
+        var image_h = $form.find("#image_h").val().toString();
+
+        var index = $form.find("#editModalSliderIndex").val().toString();
+        var subIndex = $form.find("#editModalSliderSubIndex").val().toString();
         var url = newHomeCmsLink + "/editSubSlider";;
-        var userid = $(this).closest("form").find("#userid").val().toString();
-        var value = $(this).closest("form").find("#photoFile").val().toString();     
-        var target = $(this).closest("form").find("#target").val().toString();
+        var userid = $form.find("#userid").val().toString();
+        var value = $form.find("#photoFile").val().toString();     
+        var target = $form.find("#target").val().toString();
         target = target == "" ? "/" : target;
-        var hash =  hex_sha1(image_x + image_y + image_w + image_h + value + index + subIndex + userid + target  + password);                
-        $(this).closest("form").find("#editHashMainSlide").val(hash);
 
-        var editSlideForm_ = "#cropForm";
-
-        var tableSelector = "#sliderReload_" + index;
-        var reloadurl = "getSlideSection/" + index;
-
-        editSubSlider(editSlideForm_, url, tableSelector, reloadurl);
-
+        var requestData = {
+            image_x:image_x, 
+            image_y:image_y,
+            image_w:image_w,
+            image_h:image_h,
+            value:value,
+            index:index,
+            subIndex: subIndex,
+            userid:userid,
+            target:target
+        };
+        
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {                        
+            $form.find("#editHashMainSlide").val(hash);
+            var editSlideForm_ = "#cropForm";
+            var tableSelector = "#sliderReload_" + index;
+            var reloadurl = "getSlideSection/" + index;
+            editSubSlider(editSlideForm_, url, tableSelector, reloadurl);
+        });
     }); 
-
-
 
     $("#previewImage").on('click', '#addAdSection',function (e) { 
         
         loader.showPleaseWait();     
 
-        var image_x = $(this).closest("form").find("#image_x").val().toString();
-        var image_y = $(this).closest("form").find("#image_y").val().toString();
-        var image_w = $(this).closest("form").find("#image_w").val().toString();
-        var image_h = $(this).closest("form").find("#image_h").val().toString();
+        var $this = $(this);
+        var $form = $this.closest("form");
+
+        var image_x = $form.find("#image_x").val().toString();
+        var image_y = $form.find("#image_y").val().toString();
+        var image_w = $form.find("#image_w").val().toString();
+        var image_h = $form.find("#image_h").val().toString();
 
         var url = newHomeCmsLink + "/addAdSection";
-        var target = $(this).closest("form").find("#target").val().toString();
-        var userid = $(this).closest("form").find("#userid").val().toString();
-        var value = $(this).closest("form").find("#photoFile").val().toString();   
+        var target = $form.find("#target").val().toString();
+        var userid = $form.find("#userid").val().toString();
+        var value = $form.find("#photoFile").val().toString();   
 
-        var hash =  hex_sha1(image_x + image_y + image_w + image_h + value + target + userid  + password);
-
-        $(this).closest("form").find("#hashAddAds").val(hash);
-        var form = "#cropForm";
-        if(value == "") {
-            showErrorModal("Please upload an image");
-        }
-        else {
-            loader.showPleaseWait();                 
-            addAds(form, url);
-        }
+        var requestData = {
+            image_x:image_x, 
+            image_y:image_y,
+            image_w:image_w,
+            image_h:image_h,
+            value:value,
+            target:target,
+            userid:userid,
+        };
+        
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {                                    
+            $form.find("#hashAddAds").val(hash);
+            var cropFormSelector = "#cropForm";
+            if(value == "") {
+                showErrorModal("Please upload an image");
+            }
+            else {
+                loader.showPleaseWait();                 
+                addAds(cropFormSelector, url);
+            }
+        });
     }); 
     
     $("#manageSellerSection").on('click','#useDefaultSellerLogoSubmit', function(e) {
@@ -538,91 +715,127 @@
         var url = $this.data('url');
         var action = 'deleteLogo';
         var userid = $this.closest("form").find("#userid").val().toString();
-        var hash =  hex_sha1(userid + action + password);
-        var data = { userid: userid , action: action, hash: hash};
+        
+        var requestData = {
+            userid:userid,
+            action:action
+        };
+        
         $.ajax({
-            type: 'GET',
-            url: url,
-            data: data,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();
-                $("#setSellerHeadSection").load("getSellerSection");
-            },
-            complete: function(){
-                loader.hidePleaseWait();
-            }
-        });    
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {                                    
+            requestData.hash = hash;
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: requestData,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();
+                    $("#setSellerHeadSection").load("getSellerSection");
+                },
+                complete: function(){
+                    loader.hidePleaseWait();
+                }
+            });    
+        });
     });
 
     $("#manageSellerSection").on('click','#changeSellerBannerSubmit, #changeSellerLogoSubmit, #changeSellerSlug',function (e) { 
-        
         loader.showPleaseWait();     
-        var url = $(this).data('url');
-        var action = $(this).closest("form").find("#action").val().toString();
-        var userid = $(this).closest("form").find("#userid").val().toString();
+        var $this = $(this);
+        var $form = $this.closest("form");
+        var url = $this.data('url');
+        var action = $form.find("#action").val().toString();
+        var userid = $form.find("#userid").val().toString();
 
         if(action == "slug") {
-            var slug = $(this).closest("form").find("#slug").val().toString();
+            var slug = $form.find("#slug").val().toString();
             if(slug.trim() == "") {
                 loader.hidePleaseWait();                  
                 showErrorModal("Please enter a valid slug");
             }
-            else {
-                var hash =  hex_sha1(slug + action + userid + password);
-                data = { slug:slug, action:action, userid:userid, hash:hash, callback:'?'};
+            else {                               
+                var requestData = {
+                    slug: slug,
+                    action: action,
+                    userid:userid,
+                };
+                
                 $.ajax({
-                    type: 'GET',
-                    url: url,
-                    data:data,
-                    jsonpCallback: 'jsonCallback',
-                    contentType: "application/json",
-                    dataType: 'jsonp',
-                    success: function(json) {
-                        loader.hidePleaseWait();
-                        if(json.sites[0]["usererror"]){
-                            showErrorModal(json.sites[0]["usererror"]);
+                    url: "/hasher",
+                    data: requestData,
+                    dataType:"JSON",
+                }).success(function(hash) {                                   
+                    requestData.hash = hash;
+                    requestData.callback = '?';
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        data:requestData,
+                        jsonpCallback: 'jsonCallback',
+                        contentType: "application/json",
+                        dataType: 'jsonp',
+                        success: function(json) {
+                            loader.hidePleaseWait();
+                            if(json.sites[0]["usererror"]){
+                                showErrorModal(json.sites[0]["usererror"]);
+                            }
+                        },
+                        error: function(e) {
+                            loader.hidePleaseWait();
                         }
-                    },
-                    error: function(e) {
-                        loader.hidePleaseWait();
-                    }
-                });    
+                    });    
+                });
             }
         }
         else {
-
-            var value = $(this).closest("form").find("#sellerFile").val().toString();     
-            var hash =  hex_sha1(userid +  value + action + password);
-            var form = "";
-            if(action == "banner") {
-                $(this).closest("form").find("#hashChangeSellerBanner").val(hash);
-                var form = "#changeSellerBannerForm";
-            }
-            else if(action == "logo"){
-                $(this).closest("form").find("#hashChangeSellerLogo").val(hash);
-                var form = "#changeSellerLogoForm";            
-            }
-            var ext = value.split('.').pop().toLowerCase();
-            if(value === "" || ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1)) {
-                showErrorModal("Please upload an image");
-            }
-            else {
-                changeSellerBanner(form,url);
-            }
+            var value = $form.find("#sellerFile").val().toString();                  
+            var requestData = {
+                userid:userid,
+                value: value,
+                action: action
+            };
+                
+            $.ajax({
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) { 
+                var form = "";
+                if(action == "banner") {
+                    $form.find("#hashChangeSellerBanner").val(hash);
+                    var formSelector = "#changeSellerBannerForm";
+                }
+                else if(action == "logo"){
+                    $form.find("#hashChangeSellerLogo").val(hash);
+                    var formSelector = "#changeSellerLogoForm";            
+                }
+                var ext = value.split('.').pop().toLowerCase();
+                if(value === "" || ($.inArray(ext, ['gif','png','jpg','jpeg']) === -1)) {
+                    showErrorModal("Please upload an image");
+                }
+                else {
+                    changeSellerBanner(formSelector,url);
+                }
+            });
         }
-
-
     }); 
 
 
     $("#productPanelDiv").on('click','#editProductPanel',function (e) { 
         loader.showPleaseWait();           
-        var url = $(this).data("url");
-        var value = $(this).closest("form").find("#value").val();   
-        var index = $(this).closest("form").find("#index").val();   
+        var $this = $(this);
+        var $form = $this.closest("form");
+        
+        var url = $this.data("url");
+        var value = $form.find("#value").val();   
+        var index = $form.find("#index").val();   
+
         var hash =  hex_sha1(index  + value + userid + password);
         data = { index: index, value:value, userid:userid, hash:hash, callback:'?'};
         if(value.trim() == "") {
@@ -2031,18 +2244,29 @@
     function getSliderPreview()
     {
         var commit = 0;
-        var hash = hex_sha1(userid + password);
+                
+        var requestData = {
+            userid:userid
+        };
+
         $.ajax({
-            type: 'post',
-            data: {hash:hash, commit:commit},
-            url: "getSliderPreview",
-            dataType: 'json',
-            success: function(json) {
-                $("#sliderPreview").html(json.html);  
-                loader.hidePleaseWait();
-                   
-            },
-        });         
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {
+            $.ajax({
+                type: 'POST',
+                data: {hash:hash, commit:commit},
+                url: "getSliderPreview",
+                dataType: 'json',
+                success: function(json) {
+                    $("#sliderPreview").html(json.html);  
+                    loader.hidePleaseWait();                    
+                },
+            });         
+            
+        });
+
     }
 
 
@@ -2153,6 +2377,7 @@
             return false;
         }
     });
+
     $("#photoFile").on("change", function(){
         var jcrop;
         var currValue  = $(this).val();
@@ -2187,112 +2412,126 @@
         $("#scaleAndCrop").css("display","none");        
     });  
 
-function setImagesCropSizes(template, subSlideIndex, tempIndex, type)
-{
+    function setImagesCropSizes(template, subSlideIndex, tempIndex, type)
+    {
+        var requestData = {
+            index:subSlideIndex, 
+            template:template, 
+            currentSliderCount:tempIndex,
+            type:type,
+            userid:userid
+        };
 
-    var hash =  hex_sha1(subSlideIndex + template + tempIndex+ type + userid + password);
-    $.ajax({
-        type: 'GET',
-        url: newHomeCmsLink + "/getTemplateImageDimension",
-        data:{index:subSlideIndex, template: template, currentSliderCount : tempIndex, type: type, userid:userid, hash:hash},
-        jsonpCallback: 'jsonCallback',
-        contentType: "application/json",
-        dataType: 'jsonp',
-        success: function(json) {
-            var array = json.sites[0].success.split(',');       
-            $(".templateWidth").text(array[0]);  
-            $(".templateHeight").text(array[1]);
-        },
-        error: function(e) {
-            loader.hidePleaseWait();
-        }
-    });  
-} 
-
-/***************    Image preview for cropping  ************************/
-function imageprev(input) {
-
-    var jcrop_api, width, height;
-    
-    if (input.files && input.files[0] && input.files[0].type.match(/(gif|png|jpeg|jpg)/g) && input.files[0].size <= 5000000) {
-        var reader = new FileReader();
-
-        reader.onload = function(e){
-            var image = new Image();
-            image.src = e.target.result;
-            image.onload = function(){
-                width = this.width;
-                height = this.height;
-
-                $('#user_image_prev').attr('src', this.src);
-                var customWidth = $(".templateWidth").html();
-                var customHeight = $(".templateHeight").html();
-                if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
-
-                    if(width < customWidth || height < customHeight) {
-                        $(".cropFormButton").hide();
-                        showErrorModal("Sorry, but the dimensions of the image must be at least "+customWidth+"px x "+customHeight+"px.");
-                        $("#previewImage").modal("hide");
-                    }
-                    jcrop_api = $.Jcrop($('#user_image_prev'),{
-                        aspectRatio: customWidth/customHeight,
-                        allowSelect: false,
-                        setSelect:[0,0,width*0.5,height*0.5],
-                        boxWidth: 500,
-                        boxHeight: 500,
-                        minSize: [customWidth,customHeight],
-                        onChange: showCoords,
-                        onSelect: showCoords,
-                        onRelease: resetCoords
-                    });    
-   
-
-                    $(' #previewImage').bind('hidden.bs.modal', function () {
-                        $(".cropFormButton").show();
-                        $("#cropError").html("");
-                        $('#user_image_prev').attr('src', '');
-                        resetCoords();
-                        jcrop_api.destroy(); 
-                        var img = $('<img id="user_image_prev">');
-                        img.attr('src', "");
-                        img.appendTo("#imgContainer");
-                    });                                        
-                  
-
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {
+            requestData.hash = hash;
+            $.ajax({
+                type: 'GET',
+                url: newHomeCmsLink + "/getTemplateImageDimension",
+                data:requestData,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    var array = json.sites[0].success.split(',');       
+                    $(".templateWidth").text(array[0]);  
+                    $(".templateHeight").text(array[1]);
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
                 }
-                else if(width > 5000 || height > 5000) {
-                    showErrorModal("Failed to upload image. Max image dimensions: 5000px x 5000px");
-                }                    
-                else {
-                    $('#div_user_image_prev span:first').html('Preview');
-                }                    
+            });  
+        });   
+
+    } 
+
+    /***************    Image preview for cropping  ************************/
+    function imageprev(input) {
+
+        var jcrop_api, width, height;
+        
+        if (input.files && input.files[0] && input.files[0].type.match(/(gif|png|jpeg|jpg)/g) && input.files[0].size <= 5000000) {
+            var reader = new FileReader();
+
+            reader.onload = function(e){
+                var image = new Image();
+                image.src = e.target.result;
+                image.onload = function(){
+                    width = this.width;
+                    height = this.height;
+
+                    $('#user_image_prev').attr('src', this.src);
+                    var customWidth = $(".templateWidth").html();
+                    var customHeight = $(".templateHeight").html();
+                    if(width >10 && height > 10 && width <= 5000 && height <= 5000) {
+
+                        if(width < customWidth || height < customHeight) {
+                            $(".cropFormButton").hide();
+                            showErrorModal("Sorry, but the dimensions of the image must be at least "+customWidth+"px x "+customHeight+"px.");
+                            $("#previewImage").modal("hide");
+                        }
+                        jcrop_api = $.Jcrop($('#user_image_prev'),{
+                            aspectRatio: customWidth/customHeight,
+                            allowSelect: false,
+                            setSelect:[0,0,width*0.5,height*0.5],
+                            boxWidth: 500,
+                            boxHeight: 500,
+                            minSize: [customWidth,customHeight],
+                            onChange: showCoords,
+                            onSelect: showCoords,
+                            onRelease: resetCoords
+                        });    
+                        
+
+                        $(' #previewImage').bind('hidden.bs.modal', function () {
+                            $(".cropFormButton").show();
+                            $("#cropError").html("");
+                            $('#user_image_prev').attr('src', '');
+                            resetCoords();
+                            jcrop_api.destroy(); 
+                            var img = $('<img id="user_image_prev">');
+                            img.attr('src', "");
+                            img.appendTo("#imgContainer");
+                        });                                        
+                        
+
+                    }
+                    else if(width > 5000 || height > 5000) {
+                        showErrorModal("Failed to upload image. Max image dimensions: 5000px x 5000px");
+                    }                    
+                    else {
+                        $('#div_user_image_prev span:first').html('Preview');
+                    }                    
+                }
             }
+            reader.readAsDataURL(input.files[0]);
         }
-        reader.readAsDataURL(input.files[0]);
-    }
-    else {
-        $("#cropForm").modal("hide");
-        showErrorModal("You can only upload gif|png|jpeg|jpg files at a max size of 5MB!");
+        else {
+            $("#cropForm").modal("hide");
+            showErrorModal("You can only upload gif|png|jpeg|jpg files at a max size of 5MB!");
+        }
+
+        
     }
 
+    function showCoords(c){
+        $('.cropFormButton').prop('disabled', false);    
+        $('#image_x').val(c.x);
+        $('#image_y').val(c.y);
+        $('#image_w').val(c.w);
+        $('#image_h').val(c.h);
+    }
+
+    function resetCoords(){
+        $('#image_x').val(0);
+        $('#image_y').val(0);
+        $('#image_w').val(0);
+        $('#image_h').val(0);
+    }
     
-}
-
-function showCoords(c){
-    $('.cropFormButton').prop('disabled', false);    
-    $('#image_x').val(c.x);
-    $('#image_y').val(c.y);
-    $('#image_w').val(c.w);
-    $('#image_h').val(c.h);
-}
-
-function resetCoords(){
-    $('#image_x').val(0);
-    $('#image_y').val(0);
-    $('#image_w').val(0);
-    $('#image_h').val(0);
-}
-                                   
 
 })(jQuery);    
 

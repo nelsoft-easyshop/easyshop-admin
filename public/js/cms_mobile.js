@@ -13,9 +13,6 @@
         actionTypeShowproductdetails = $('#action-type-showproductdetails').val();
     });
 
-
-
-
     /**
      * Toggle box contents section field disabled attribute
      *
