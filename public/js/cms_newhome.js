@@ -836,34 +836,46 @@
         var value = $form.find("#value").val();   
         var index = $form.find("#index").val();   
 
-        var hash =  hex_sha1(index  + value + userid + password);
-        data = { index: index, value:value, userid:userid, hash:hash, callback:'?'};
         if(value.trim() == "") {
             showErrorModal("Please supply a slug");
         }
         else {
+            
+            var requestData = {
+                index:index,
+                value: value,
+                userid: userid
+            };
+                
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    if(json.sites[0]["success"] != "success") {
-                        loader.hidePleaseWait();    
-                        showErrorModal("Slug Does Not Exist");
-                    }     
-                    else {
-                        $("#productPanelDiv").load("getProductPanel");                         
-                        loader.hidePleaseWait();   
-                    }               
-
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
-            });
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) { 
+                requestData.hash = hash;
+                requestData.callback = '?';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        if(json.sites[0]["success"] != "success") {
+                            loader.hidePleaseWait();    
+                            showErrorModal("Slug Does Not Exist");
+                        }     
+                        else {
+                            $("#productPanelDiv").load("getProductPanel");                         
+                            loader.hidePleaseWait();   
+                        }                                       
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });
+            });          
         }
     }); 
 
