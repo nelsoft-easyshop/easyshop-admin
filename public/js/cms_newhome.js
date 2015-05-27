@@ -2036,33 +2036,49 @@
     }); 
 
     $("#editTopProducts").on('click','#editTopProductsSubmit',function (e) { 
-        loader.showPleaseWait();           
-        var index = $(this).closest("form").find("#editTopProductsIndex").val();
-        var url = $(this).closest("form").find("#editTopProductsUrl").val();
-        var value = $(this).closest("form").find("#editTopProductsValue").val().trim();     
-        var hash =  hex_sha1(index + value + userid + password);
-        data = {index:index, value:value, userid:userid, hash:hash, callback:'?'};
+        loader.showPleaseWait();     
+        var $form = $(this).closest("form");
+
+        var index = $form.find("#editTopProductsIndex").val();
+        var url = $form.find("#editTopProductsUrl").val();
+        var value = $form.find("#editTopProductsValue").val().trim();     
+
         if(value !== ""){
+            
+            var requestData = {
+                index:index,
+                value:value,            
+                userid:userid
+            };
+            
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    loader.hidePleaseWait(); 
-                    if(json.sites[0]["success"] != "success") {
-                        loader.hidePleaseWait();    
-                        showErrorModal("Slug Does Not Exist");
-                    } 
-                    else {
-                        $("#addTopProductsTable").load("getTopProducts");
-                    }                  
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {             
+                requestData.hash = hash;
+                requestData.callback = '?';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait(); 
+                        if(json.sites[0]["success"] != "success") {
+                            loader.hidePleaseWait();    
+                            showErrorModal("Slug Does Not Exist");
+                        } 
+                        else {
+                            $("#addTopProductsTable").load("getTopProducts");
+                        }                  
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });
             });
         }
         else {
