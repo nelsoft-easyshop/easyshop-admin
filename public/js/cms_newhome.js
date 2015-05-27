@@ -2088,28 +2088,45 @@
 
     $("#editNewArrival").on('click','#editNewArrivalSubmit',function (e) { 
         loader.showPleaseWait();           
-        var index = $(this).closest("form").find("#editNewArrivalIndex").val();
-        var url = $(this).closest("form").find("#editNewArrivalUrl").val();
-        var value = $(this).closest("form").find("#editNewArrivalValue").val().trim();
-        var target = $(this).closest("form").find("#editNewArrivalTarget").val().trim();
-        var hash =  hex_sha1(index + value + target + userid + password);
-        data = {index:index, value:value, target:target, userid:userid, hash:hash, callback:'?'};
+        
+        var $form = $(this).closest("form");
 
+        var index = $form.find("#editNewArrivalIndex").val();
+        var url = $form.find("#editNewArrivalUrl").val();
+        var value = $form.find("#editNewArrivalValue").val().trim();
+        var target = $form.find("#editNewArrivalTarget").val().trim();
+          
         if (value !== "" && target !== "") {
+
+            var requestData = {
+                index:index,
+                value:value,            
+                target:target,
+                userid:userid
+            };
+            
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    loader.hidePleaseWait();
-                    $("#newArrivalsTable").load("getNewArrivals");
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {             
+                requestData.hash = hash;
+                requestData.callback = '?';                                
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();
+                        $("#newArrivalsTable").load("getNewArrivals");
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });
             });
         }
         else {
