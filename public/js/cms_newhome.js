@@ -1512,9 +1512,6 @@
   
     });   
 
-    /**
-     * UNTESTED !!!
-     */
     $("#manageNewArrivals").on('click','.removeNewArrival',function (e) { 
         var $this = $(this);
      
@@ -1556,37 +1553,49 @@
                 });    
             });
         }     
-    });  
+    }); 
 
     $("#manageTopSellers").on('click','#addTopSellers',function (e) { 
-        var url = $(this).data("url");
-        var value = $(this).closest("form").find("#value").val().trim();
-        var hash =  hex_sha1(value + userid + password);
+        var $this = $(this);
+        var url = $this.data("url");
+        var value = $this.closest("form").find("#value").val().trim();
 
         if(value !== "") {
             loader.showPleaseWait();           
-            data = {value:value, userid:userid, hash:hash, callback:'?'};
+            
+            var requestData = {
+                value:value,
+                userid:userid                
+            };
 
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    loader.hidePleaseWait();  
-                    if(json.sites[0]["usererror"]){
-                        showErrorModal(json.sites[0]["usererror"]);
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {
+                requestData.hash = hash;
+                requestData.callback = '?';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();  
+                        if(json.sites[0]["usererror"]){
+                            showErrorModal(json.sites[0]["usererror"]);
+                        }
+                        else {
+                            $("#addTopSellersTable").load("getTopSellers");
+                        }         
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
                     }
-                    else {
-                        $("#addTopSellersTable").load("getTopSellers");
-                    }         
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
-            });     
+                });     
+            });
         }     
     }); 
 
