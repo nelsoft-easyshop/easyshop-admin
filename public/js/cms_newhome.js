@@ -2327,52 +2327,74 @@
         formSubmitted = 0;
         loader.showPleaseWait();
         var commit = 1;
-        var hash = hex_sha1(userid + password);
+
+        var requestData = {            
+            userid:userid
+        };
+            
         $.ajax({
-            type: 'post',
-            data: {hash:hash, commit:commit},
-            url: "getSliderPreview",
-            dataType: 'json',
-            success: function(json) {
-                $("#sliderPreview").html(json.html);  
-                loader.hidePleaseWait();
-                   
-            },
-        });   
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {             
+            requestData.hash = hash;
+            requestData.commit = commit;            
+            $.ajax({
+                type: 'post',
+                data: requestData,
+                url: "/cms/getSliderPreview",
+                dataType: 'json',
+                success: function(json) {
+                    $("#sliderPreview").html(json.html);  
+                    loader.hidePleaseWait();                    
+                },
+            });   
+        });
     }); 
 
     $("#manageSliderSection").on('click','#discardChanges',function (e) { 
         var url = $(this).data("url");
         loader.showPleaseWait();
-        var hash = hex_sha1(userid + password);
+ 
+        var requestData = {            
+            userid:userid
+        };
+            
         $.ajax({
-            type: 'GET',
-            url: url,
-            data:{hash:hash, userid:userid},
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',            
-            success: function(json) {
-                $("#manageSliderSection").load("getAllSliders"); 
-                loader.hidePleaseWait();
-                   
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-                showErrorModal("Please try again");
-            }            
-        });   
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {             
+            requestData.hash = hash;            
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: requestData,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',            
+                success: function(json) {
+                    $("#manageSliderSection").load("getAllSliders"); 
+                    loader.hidePleaseWait();
+                    
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                    showErrorModal("Please try again");
+                }            
+            });   
+        });
     });     
 
     $("#myTabContent").on('click','#addSubCategoryNavigation',function (e) { 
-        loader.showPleaseWait();          
-        var index = $(this).closest("form").find("#index").val();
-        var categoryName = $(this).closest("form").find("#drop_actionType option:selected").val();
+        loader.showPleaseWait();
+        var $this = $(this);
+        var $form = $this.closest("form");
+        var index = $form.find("#index").val();
+        var categoryName = $form.find("#drop_actionType option:selected").val();
 
-        var url = $(this).data('url');
-        var subcategories = $(this).data('subcategories');
-        var hash =  hex_sha1(index + categoryName + userid + password);
-        data = { index: index, value:categoryName, userid:userid, hash:hash, callback:'?'};
+        var url = $this.data('url');
+        var subcategories = $this.data('subcategories');
         var count = $(subcategories + " tbody tr").length;
         subIndex = count;
         var newSubIndex = count + 1;
@@ -2382,7 +2404,7 @@
         var reloadurl = "getSubCategoryNavigation/" + index;
 
         $("#tblSubcategories_" + " tbody tr").each(function(){
-            var valueRow = $(this).find(".subCategoryTD").text();
+            var valueRow = $this.find(".subCategoryTD").text();
             if(valueRow == categoryName) {
                 flag = 1;
             }
@@ -2396,31 +2418,43 @@
                 showErrorModal("Sub category already exists");
             }
             else {
+                
+                var requestData = {            
+                    index:index,
+                    value:categoryName,
+                    userid:userid
+                };
+                
                 $.ajax({
-                    type: 'GET',
-                    url: url,
-                    data:data,
-                    jsonpCallback: 'jsonCallback',
-                    contentType: "application/json",
-                    dataType: 'jsonp',
-                    success: function(json) {
-                        $(tableSelector).load(reloadurl);                  
-                        loader.hidePleaseWait();  
+                    url: "/hasher",
+                    data: requestData,
+                    dataType:"JSON",
+                }).success(function(hash) {             
+                    requestData.hash = hash;  
+                    requestData.callback = '?';
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        data: requestData,
+                        jsonpCallback: 'jsonCallback',
+                        contentType: "application/json",
+                        dataType: 'jsonp',
+                        success: function(json) {
+                            $(tableSelector).load(reloadurl);                  
+                            loader.hidePleaseWait();  
 
-                    },
-                    error: function(e) {
-                        loader.hidePleaseWait();
-                    }
-                });       
+                        },
+                        error: function(e) {
+                            loader.hidePleaseWait();
+                        }
+                    });       
+                });
             }
         }
-
     });  
-
 
     function setCategoryProductPosition(url,data, tableSelector, reloadurl)
     {
-
         $.ajax({
             type: 'GET',
             url: url,
