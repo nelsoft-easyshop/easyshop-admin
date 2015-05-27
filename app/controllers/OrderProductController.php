@@ -331,7 +331,6 @@ class OrderProductController extends BaseController
             'tag' => trim(Input::get('tag')),
             'search_query' => trim(Input::get('search_query')),
         ];
-
         $transactionRecord = $orderProductRepository->getAllSellersTransaction(100, true, $userData);
         $pagination = $transactionRecord->appends(Input::except(['page','_token']))->links();
 
