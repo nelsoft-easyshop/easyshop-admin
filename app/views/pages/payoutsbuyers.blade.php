@@ -20,7 +20,7 @@
             <div class="input-group srch_div" style="padding:12px">
                 <div class="inner-addon left-addon">
                     <i class="glyphicon glyphicon-search"></i>
-                    <input type="text" id="searchBox"  class="form-control" placeholder="Search transaction" />
+                    <input type="text" id="searchBox" name="search_query" class="form-control" placeholder="Search transaction" />
                 </div>
                 <div class="input-group-btn">
                     &nbsp;
