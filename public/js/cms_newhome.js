@@ -84,9 +84,6 @@
 
     });  
 
-    /**
-     * UNTESTED!!!!!!!!!!
-     */
     $("#modalForCategorySection").on('click','#setSubCategoriesSectionBtn',function (e) { 
         loader.showPleaseWait();          
         var index = $("#edit_categoryText_index").val().toString();
@@ -1515,38 +1512,51 @@
   
     });   
 
+    /**
+     * UNTESTED !!!
+     */
     $("#manageNewArrivals").on('click','.removeNewArrival',function (e) { 
+        var $this = $(this);
      
-        var index = $(this).data("index").toString();
-        var nodename = $(this).data("nodename");
-        var url = $(this).data("url");
-
-        var hash =  hex_sha1(index + nodename + userid + password);
-        data = { index: index, nodename:nodename, userid:userid, hash:hash, callback:'?'};
+        var index = $this.data("index").toString();
+        var nodename = $this.data("nodename");
+        var url = $this.data("url");
+        var requestData = {
+            index:index,
+            nodename:nodename,
+            userid:userid
+        };
 
         var flag = 0;
         var count = parseInt($(".newArrivalsCount").last().text());
  
         if(count > 1) {
-            loader.showPleaseWait();     
+            loader.showPleaseWait();                             
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    loader.hidePleaseWait();   
-                    $("#newArrivalsTable").load("getNewArrivals");
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
-            });    
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {             
+                requestData.hash = hash;
+                requestData.callback = '?';                
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();   
+                        $("#newArrivalsTable").load("getNewArrivals");
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });    
+            });
         }     
     });  
-
 
     $("#manageTopSellers").on('click','#addTopSellers',function (e) { 
         var url = $(this).data("url");
@@ -1732,27 +1742,41 @@
     });    
 
     $("#manageNewArrivals").on('click','#addNewArrival',function (e) { 
-        var url = $(this).data("url");
-        var value = $(this).closest("form").find("#value").val().trim();
-        var target = $(this).closest("form").find("#target").val().trim();
-        var hash =  hex_sha1(value + target + userid + password);
+        var $this = $(this);
+        var $form = $this.closest("form");
+        var url = $this.data("url");
+        var value = $form.find("#value").val().trim();
+        var target = $form.find("#target").val().trim();
+
+        var requestData = {
+            value:value,
+            target:target,
+            userid:userid           
+        };
+
         if(value !==  "" && target !== "") {
-            data = {value:value, target:target, userid:userid, hash:hash, callback:'?'};
-            loader.showPleaseWait();           
+            loader.showPleaseWait();                       
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    loader.hidePleaseWait();  
-                    $("#newArrivalsTable").load("getNewArrivals");
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {             
+                requestData.hash = hash;                
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();  
+                        $("#newArrivalsTable").load("getNewArrivals");
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });
             });
         }
         else {
