@@ -89,7 +89,7 @@
                 return false;
             }
 
-            if ($.isNumeric(user_contact) === false) {
+            if (user_contact.length > 1 && $.isNumeric(user_contact) === false) {
                 alert('Invalid Contact Number.');
                 return false;
             }
