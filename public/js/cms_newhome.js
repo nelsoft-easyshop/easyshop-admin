@@ -1994,33 +1994,45 @@
 
     $("#editTopSellers").on('click','#editTopSellersSubmit',function (e) { 
         loader.showPleaseWait();           
-        var index = $(this).closest("form").find("#editTopSellersIndex").val();
-        var url = $(this).closest("form").find("#editTopSellersUrl").val();
-        var value = $(this).closest("form").find("#editTopSellersValue").val();     
-        var hash =  hex_sha1(index + value + userid + password);
-        data = {index:index, value:value, userid:userid, hash:hash, callback:'?'};
-
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();   
-                if(json.sites[0]["usererror"]){
-                    showErrorModal(json.sites[0]["usererror"]);
-                }
-                else {
-                    $("#addTopSellersTable").load("getTopSellers");
-                }                
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });          
+        var $form = $(this).closest("form");
+        var index = $form.find("#editTopSellersIndex").val();
+        var url = $form.find("#editTopSellersUrl").val();
+        var value = $form.find("#editTopSellersValue").val();     
         
+        var requestData = {
+            index:index,
+            value:value,            
+            userid:userid
+        };
+        
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {             
+            requestData.hash = hash;
+            requestData.callback = '?';            
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:requestData,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();   
+                    if(json.sites[0]["usererror"]){
+                        showErrorModal(json.sites[0]["usererror"]);
+                    }
+                    else {
+                        $("#addTopSellersTable").load("getTopSellers");
+                    }                
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });                      
+        });       
     }); 
 
     $("#editTopProducts").on('click','#editTopProductsSubmit',function (e) { 
