@@ -1644,26 +1644,39 @@
     }); 
 
     $("#manageBrands").on('click','#addBrandsBtn',function (e) { 
-        loader.showPleaseWait();           
+        loader.showPleaseWait();
+        var $this = $(this);
         var value = $('#addBrandsDropDown option:selected').val();
-        var hash =  hex_sha1(value + userid + password);
-        data = {value:value, userid:userid, hash:hash, callback:'?'};
-        var url = $(this).data("url");
+        var url = $this.data("url");
+        
+        var requestData = {
+            value:value,
+            userid:userid
+        };
+
         $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                loader.hidePleaseWait();  
-                $("#addBrandsTable").load("getBrandsSection");
-            },
-            error: function(e) {
-                loader.hidePleaseWait();
-            }
-        });           
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {
+            requestData.hash = hash;
+            requestData.callback = '?';
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: requestData,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    loader.hidePleaseWait();  
+                    $("#addBrandsTable").load("getBrandsSection");
+                },
+                error: function(e) {
+                    loader.hidePleaseWait();
+                }
+            });           
+        });
 
     });    
 
