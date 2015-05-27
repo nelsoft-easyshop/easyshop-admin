@@ -192,7 +192,7 @@
                         <thead>
                         <tr>
                             <th>/</th>
-                            <th>Product Slug</th>
+                            <th>User Slug</th>
                         </tr>
                         </thead>
                         <tbody id="tbody_boxContent">
