@@ -881,37 +881,51 @@
 
     $("#manageSellerSection").on('click','#addProductPanel',function (e) { 
         
-        loader.showPleaseWait();          
-        var value = $(this).closest("form").find("#value").val();
-        var url = $(this).data('url');
-        var hash =  hex_sha1( userid + value + password);
-        data = { userid:userid, value:value, hash:hash, callback:'?'};
+        loader.showPleaseWait();
+        var $this = $(this);
+        var $form =  $this.closest("form");
+        var value = $form.find("#value").val();
+        var url = $this.data('url');
 
         if(value.trim() == "") {
             showErrorModal("Please supply a valid slug");
         }
         else {
+            
+            var requestData = {
+                userid: userid,
+                value: value            
+            };
+        
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    if(json.sites[0]["success"] != "success") {
-                        loader.hidePleaseWait();    
-                        showErrorModal("Slug Does Not Exist");
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) { 
+                requestData.hash = hash;
+                requestData.callback = '?';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        if(json.sites[0]["success"] != "success") {
+                            loader.hidePleaseWait();    
+                            showErrorModal("Slug Does Not Exist");
+                        }
+                        else {
+                            $("#productPanelDiv").load("getProductPanel");                     
+                            loader.hidePleaseWait();    
+                        }
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
                     }
-                    else {
-                        $("#productPanelDiv").load("getProductPanel");                     
-                        loader.hidePleaseWait();    
-                    }
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
-            });  
+                });              
+            });      
         }
     });  
 
