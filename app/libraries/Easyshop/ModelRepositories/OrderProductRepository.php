@@ -236,20 +236,30 @@ class OrderProductRepository extends AbstractRepository
             if(isset($userData['fullname']) && $userData['fullname']){
                 $query->where('es_member.fullname', 'LIKE', '%' . $userData['fullname'] . '%');
             }
-            if(isset($userData['store_name']) && $userData['store_name']){
+            if (isset($userData['store_name']) && $userData['store_name']) {
                 $query->where('es_member.store_name', 'LIKE', '%' . $userData['store_name'] . '%');
             }
-            if(isset($userData['contactno']) && $userData['contactno']){
+            if (isset($userData['contactno']) && $userData['contactno']) {
                 $query->where('es_member.contactno', 'LIKE', '%' . $userData['contactno'] . '%');
             }
-            if(isset($userData['email']) && $userData['email']){
+            if (isset($userData['email']) && $userData['email']) {
                 $query->where('es_member.email', 'LIKE', '%' . $userData['email'] . '%');
             }
-            if(isset($userData['transactionid']) && $userData['transactionid']){
+            if (isset($userData['transactionid']) && $userData['transactionid']) {
                 $query->where('es_order.transaction_id', 'LIKE', '%' . $userData['transactionid'] . '%');
             }
-            if(isset($userData['invoiceno']) && $userData['invoiceno']){
+            if (isset($userData['invoiceno']) && $userData['invoiceno']) {
                 $query->where('es_order.invoice_no', 'LIKE', '%' . $userData['invoiceno'] . '%');
+            }
+            if (isset($userData['search_query']) && $userData['search_query']) {
+                $query->where(function($query) use($userData) {
+                    $query->orWhere('es_order.invoice_no', 'LIKE', '%' . $userData['search_query'] . '%');
+                    $query->orWhere('es_order.transaction_id', 'LIKE', '%' . $userData['search_query'] . '%');
+                    $query->orWhere('es_member.email', 'LIKE', '%' . $userData['search_query'] . '%');
+                    $query->orWhere('es_member.contactno', 'LIKE', '%' . $userData['search_query'] . '%');
+                    $query->orWhere('es_member.store_name', 'LIKE', '%' . $userData['search_query'] . '%');
+                    $query->orWhere('es_member.fullname', 'LIKE', '%' . $userData['search_query'] . '%');
+                });
             }
         }
 
