@@ -112,8 +112,14 @@
                     banType:user_isBan},
                 success:function(result){
                     loader.hidePleaseWait();
-                    pushJsonToFields(result);
-                    CloseBootstrapModal();
+                    if (result.isSuccess) {
+                        pushJsonToFields(result.member);
+                        CloseBootstrapModal();
+                    }
+                    else {
+                        var firstKey = Object.keys(result.errors)[0];
+                        alert(result.errors[firstKey][0]);
+                    }
                 }
             })
         });
