@@ -973,17 +973,19 @@
     });
 
     $("#previewImage").on('click','#addSubSlider',function (e) { 
+        var $this = $(this);
+        var $form = $this.closest("form");
         formSubmitted = 1;        
         loader.showPleaseWait();          
-        var image_x = $(this).closest("form").find("#image_x").val().toString();
-        var image_y = $(this).closest("form").find("#image_y").val().toString();
-        var image_w = $(this).closest("form").find("#image_w").val().toString();
-        var image_h = $(this).closest("form").find("#image_h").val().toString();
-        var index = $(this).closest("form").find("#modalSliderIndex").val().toString();
-        var url = $(this).data('url');
-        var userid = $(this).closest("form").find("#userid").val().toString();
-        var value = $(this).closest("form").find("#photoFile").val().toString();     
-        var target = $(this).closest("form").find("#target").val().toString();
+        var image_x = $form.find("#image_x").val().toString();
+        var image_y = $form.find("#image_y").val().toString();
+        var image_w = $form.find("#image_w").val().toString();
+        var image_h = $form.find("#image_h").val().toString();
+        var index = $form.find("#modalSliderIndex").val().toString();
+        var url = $this.data('url');
+        var userid = $form.find("#userid").val().toString();
+        var value = $form.find("#photoFile").val().toString();     
+        var target = $form.find("#target").val().toString();
         var template = $("#clonedSliderCountConstant").text();
         var sliderConstant = $("#template_" + template).data("count");
         var count = parseInt($(".subSlide_"+index).last().text());
@@ -992,55 +994,86 @@
             target = "/";
             $("#target").val("/");            
         }
-        var hash =  hex_sha1(image_x + image_y + image_w + image_h + value +index + userid + target  + password);
 
-        $(this).closest("form").find("#hashMainSlide").val(hash);
-        var mainSlideForm = "#cropForm";
-
-        var tableSelector = "#sliderReload_" + index;
-        var reloadurl = "getSlideSection/" + index;
-        if(value == "") {
-            $("#previewImage").modal("hide");
-            showErrorModal("Please upload an image")
-        }
-        else {
-            addSubSlider(mainSlideForm, url, tableSelector, reloadurl, count, index);
-        }
+        var requestData = {
+            image_x: image_x, 
+            image_y: image_y, 
+            image_w: image_w, 
+            image_h: image_h,
+            value: value,
+            index: index,
+            userid: userid,
+            target: target
+        };
+            
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {             
+            $form.find("#hashMainSlide").val(hash);
+            var mainSlideForm = "#cropForm";            
+            var tableSelector = "#sliderReload_" + index;
+            var reloadurl = "getSlideSection/" + index;
+            if(value == "") {
+                $("#previewImage").modal("hide");
+                showErrorModal("Please upload an image")
+            }
+            else {
+                addSubSlider(mainSlideForm, url, tableSelector, reloadurl, count, index);
+            }           
+        });
 
     });  
 
     $("#manageSliderSection").on('click','#addMainSlider',function (e) { 
         formSubmitted = 1;
         loader.showPleaseWait();          
-        var template = $(this).closest("form").find("#drop_actionType").val();
-        var url = $(this).data('url');
-        var hash =  hex_sha1(template + userid + password);
-        data = { template:template, userid:userid, hash:hash, callback:'?'};
+        var $this = $(this);
+        var $form = $this.closest("form");
+        var template = $form.find("#drop_actionType").val();
+        var url = $this.data('url');
+
+        
+        var requestData = {
+            template:template,
+            userid: userid
+        };
+            
         $.ajax({
-            type: 'GET',
-            url: url,
-            data:data,
-            jsonpCallback: 'jsonCallback',
-            contentType: "application/json",
-            dataType: 'jsonp',
-            success: function(json) {
-                $( "#manageSliderSection" ).load("getAllSliders", function( response, status, xhr ) {
-                    var accordionId = "#collapse_" + (parseInt($(".parentSliderCount").last().text())-1);
-                    if ( status !== "error" ) {
-                        var aTag = $("a[href='"+ accordionId +"']");
-                        $('html,body').animate({scrollTop: aTag.offset().top},'slow');                        
-                    }
-                    $(accordionId).addClass("in");
-                });                
-                getSliderPreview();
-                loader.hidePleaseWait();   
-              
-            },
-            error: function(e) {
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {             
+            requestData.hash = hash;
+            requestData.callback = '?';            
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data:requestData,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    $( "#manageSliderSection" ).load("getAllSliders", function( response, status, xhr ) {
+                        var accordionId = "#collapse_" + (parseInt($(".parentSliderCount").last().text())-1);
+                        if ( status !== "error" ) {
+                            var aTag = $("a[href='"+ accordionId +"']");
+                            $('html,body').animate({scrollTop: aTag.offset().top},'slow');                        
+                        }
+                        $(accordionId).addClass("in");
+                    });                
+                    getSliderPreview();
+                    loader.hidePleaseWait();   
+                    
+                },
+                error: function(e) {
                 showErrorModal("Something went wrong, please try again later");
-                loader.hidePleaseWait();
-            }
-        });        
+                    loader.hidePleaseWait();
+                }
+            });        
+
+        });
 
 
     });  
