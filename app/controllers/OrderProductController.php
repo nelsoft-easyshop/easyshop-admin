@@ -329,14 +329,15 @@ class OrderProductController extends BaseController
             'transactionid' => trim(Input::get('transactionid')),
             'invoiceno' => trim(Input::get('invoiceno')),
             'tag' => trim(Input::get('tag')),
+            'search_query' => trim(Input::get('search_query')),
         ];
 
-        $transactionRecord = $orderProductRepository->getAllSellersTransaction(100,true,$userData);
+        $transactionRecord = $orderProductRepository->getAllSellersTransaction(100, true, $userData);
         $pagination = $transactionRecord->appends(Input::except(['page','_token']))->links();
 
         $constantArray['confirmed'] = $tagRepository->getConfirmed();
         $constantArray['refund'] = $tagRepository->getRefund();
-        $constantArray['contacted'] = $tagRepository->getContacted(); 
+        $constantArray['contacted'] = $tagRepository->getContacted();
 
         $defaultStatus = $tagRepository->getSellerTags();
         $nonDefaultStatus = $tagRepository->getSellerTags(true);
@@ -365,6 +366,7 @@ class OrderProductController extends BaseController
             'contactno' => Input::get('number'),
             'email' => Input::get('email'),
             'tag' => Input::get('tag'),
+            'search_query' => trim(Input::get('search_query'))
         ];
 
         $transactionRecord = $orderProductRepository->getAllSellersTransaction(100,true,$userData, true);
