@@ -1033,7 +1033,6 @@
         var $form = $this.closest("form");
         var template = $form.find("#drop_actionType").val();
         var url = $this.data('url');
-
         
         var requestData = {
             template:template,
@@ -1072,20 +1071,18 @@
                     loader.hidePleaseWait();
                 }
             });        
-
         });
-
-
     });  
+
+
     $("#myTabContent").on('click','.removeButton',function (e) { 
-        var dataNode = $(this).attr("data");
+        var $this = $(this);
+        var dataNode = $this.attr("data");
         var data = $.parseJSON(dataNode);
         var index = data.index.toString();
         var subIndex = data.subIndex.toString();
         var url = data.url;
         var nodename = "categorySubSlug";
-        var hash =  hex_sha1(index + subIndex + nodename + userid + password);
-        data = { index: index, subIndex:subIndex, nodename:nodename,userid:userid, hash:hash, callback:'?'};  
         var subcategories = "#tblSubcategories_" + index;
         var count = $(subcategories + " tbody tr").length;
         var editCategoryLink = $("#editCategoryLink").val();
@@ -1095,23 +1092,40 @@
         var reloadurl = "getSubCategoryNavigation/" + index;
 
         if(count > 1 ) {
-            loader.showPleaseWait();            
+            
+            var requestData = {
+                index:index,
+                subIndex:subIndex,
+                nodename: nodename,                
+                userid: userid
+            };
+            
             $.ajax({
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {             
+                requestData.hash = hash;
+                requestData.callback = '?';                
+                loader.showPleaseWait();            
+                $.ajax({
                 type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    loader.hidePleaseWait();
-                    $(tableSelector).load(reloadurl);                  
-                    loader.hidePleaseWait();                 
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
-            });    
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();
+                        $(tableSelector).load(reloadurl);                  
+                        loader.hidePleaseWait();                 
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });    
+
+            });
         }        
     }); 
 
