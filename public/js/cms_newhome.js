@@ -1412,12 +1412,11 @@
     });  
 
     $("#myTabContent").on('click','#removeCategorySection, #removeMainSlider',function (e) { 
-         
-        var url = $(this).data("url");
-        var nodename = $(this).data("nodename");
-        var index = $(this).data("index").toString();
-        var hash =  hex_sha1(index + nodename + userid + password);
-        data = { index:index, nodename:nodename, userid:userid,  hash:hash, callback:'?'};
+        var $this = $(this);
+        var url = $this.data("url");
+        var nodename = $this.data("nodename");
+        var index = $this.data("index").toString();
+
         if(nodename == "categorySectionPanel") {
             var count = parseInt($(".categorySectionCount").last().text());
         }
@@ -1428,29 +1427,43 @@
             var $confirm = confirm("Are you sure you want to remove?");   
             if($confirm) {
                 loader.showPleaseWait();              
+                var requestData = {
+                    index:index,
+                    nodename:nodename,
+                    userid:userid
+                };
+                
                 $.ajax({
-                    type: 'GET',
-                    url: url,
-                    data:data,
-                    jsonpCallback: 'jsonCallback',
-                    contentType: "application/json",
-                    dataType: 'jsonp',
-                    success: function(json) {
-                        loader.hidePleaseWait();   
-                        if(nodename == "categorySectionPanel") {
-                            $("#manageCategorySection").load("getCategoriesPanel");
-                        }
-                        else {
-                            $("#manageSliderSection").load("getAllSliders");
-                            getSliderPreview();                 
+                    url: "/hasher",
+                    data: requestData,
+                    dataType:"JSON",
+                }).success(function(hash) {             
+                    requestData.hash = hash;
+                    requestData.callback = '?';                    
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        data:requestData,
+                        jsonpCallback: 'jsonCallback',
+                        contentType: "application/json",
+                        dataType: 'jsonp',
+                        success: function(json) {
+                            loader.hidePleaseWait();   
+                            if(nodename == "categorySectionPanel") {
+                                $("#manageCategorySection").load("getCategoriesPanel");
+                            }
+                            else {
+                                $("#manageSliderSection").load("getAllSliders");
+                                getSliderPreview();                 
 
+                            }
+                        },
+                        error: function(e) {
+                            getSliderPreview();                                         
+                            loader.hidePleaseWait();
                         }
-                    },
-                    error: function(e) {
-                        getSliderPreview();                                         
-                        loader.hidePleaseWait();
-                    }
-                });             
+                    });             
+                });
             }            
         }
         else {
