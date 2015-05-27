@@ -233,7 +233,7 @@ class OrderProductRepository extends AbstractRepository
                 ]);
 
         if($filter){
-            if (isset($userData['fullname']) && $userData['fullname']) {
+            if(isset($userData['fullname']) && $userData['fullname']){
                 $query->where('es_member.fullname', 'LIKE', '%' . $userData['fullname'] . '%');
             }
             if (isset($userData['store_name']) && $userData['store_name']) {
