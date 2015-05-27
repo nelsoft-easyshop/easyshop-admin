@@ -36,6 +36,13 @@ class MemberController extends BaseController
      */
     private $memberRepository;
 
+    /**
+     * Member Service
+     *
+     * @var EasyShop\Service\MemberService
+     */
+    private $memberService;
+
     public function __construct(LocationService $locationService,
                                 LocationLookUpRepository $locationLookUpRepository,
                                 BanTypeRepository $banTypeRepository,
@@ -45,6 +52,7 @@ class MemberController extends BaseController
         $this->locationLookUpRepository = $locationLookUpRepository;
         $this->banTypeRepository = $banTypeRepository;
         $this->memberRepository = $memberRepository;
+        $this->memberService = App::make('MemberService');;
     }
 
     /**
@@ -115,7 +123,7 @@ class MemberController extends BaseController
             'contactno' => Input::get('contact'),
             'remarks' => Input::get('remarks'),
             'is_promo_valid' => Input::get('is_promo_valid'),
-            'is_banned' => (int) Input::get('banType') ? 1 : 0,
+            'is_banned' => (int) Input::get('banType') ? true : false,
             'ban_type' => (int) Input::get('banType')
         ];
         $dataAddress = [
@@ -125,15 +133,14 @@ class MemberController extends BaseController
             'country' => 148
         ];
         $member = $this->memberRepository->getById(Input::get('id'));
-        $this->memberRepository->update($member,$dataMember);
-
-        if(intval($dataAddress['stateregion']) !== 0){
+        $memberUpdate = $this->memberService->updateMember($member, $dataMember);
+        if (intval($dataAddress['stateregion']) !== 0 && $memberUpdate['isSuccess']) {
             $addressRepository = App::make('AddressRepository');
             $addressRepository->update(Input::get('id'), $dataAddress);
             $member->Address->City;
             $member->Address->Region;
         }
 
-        echo json_encode($member);
+        echo json_encode($memberUpdate);
     }
 }
