@@ -29,16 +29,15 @@
             <td>User</td>
             <td>Product ID</td>
             <td>Product Name</td>
-            <td>Order Quantity</td>     
+            <td>Order Quantity</td>
             <td>Unit Price</td>
             <td>Total Amount</td>
-            <td>Easyoint</td>
-            <td>NET</td>        
+            <td>EasyPoint</td>
+            <td>NET</td>
             <td>Status</td>
             <td>&nbsp;</td>
-        </tr>    
+        </tr>
 
-         
         @foreach($orderproducts as $orderproduct)
         <tr class="order_product" data-orderproductid = "{{{ $orderproduct->id_order_product }}}">                       
             @if(@isset($isRefund) && $isRefund)
