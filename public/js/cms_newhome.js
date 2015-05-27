@@ -1860,37 +1860,48 @@
 
 
     $("#navigation_others").on('click','#addOtherCategory',function (e) { 
-        loader.showPleaseWait();           
-        var url = $(this).data("url");
-        var value = $('#drop_otherCategories option:selected').val();      
-        var hash =  hex_sha1(value + userid + password);
-        data = {value:value, userid:userid, hash:hash, callback:'?'};
-        
+        loader.showPleaseWait();     
+        var $this = $(this);
+        var url = $this.data("url");
+        var value = $('#drop_otherCategories option:selected').val();              
         var flag = 0;
         var count = parseInt($(".otherCategoriesCount").last().text());
         if(count <= 5) {
             $("#otherCategoriesTable" + " tbody tr").each(function(){
-                var valueRow = $(this).find(".otherCategoriesTD").text();
+                var valueRow = $this.find(".otherCategoriesTD").text();
                 if(valueRow == value) {
                     flag = 1;
                 }
             }); 
             if(flag == 0) {
-                  $.ajax({
-                    type: 'GET',
-                    url: url,
-                    data:data,
-                    jsonpCallback: 'jsonCallback',
-                    contentType: "application/json",
-                    dataType: 'jsonp',
-                    success: function(json) {
-                        loader.hidePleaseWait();   
-                        $("#otherCategoriesTable").load("getOtherCategories");
-                    },
-                    error: function(e) {
-                        loader.hidePleaseWait();
-                    }
-                });          
+                var requestData = {
+                    value:value, 
+                    userid:userid
+                };
+                
+                $.ajax({
+                    url: "/hasher",
+                    data: requestData,
+                    dataType:"JSON",
+                }).success(function(hash) {             
+                    requestData.hash = hash;                
+                    requestData.callback = '?';
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        data: requestData,
+                        jsonpCallback: 'jsonCallback',
+                        contentType: "application/json",
+                        dataType: 'jsonp',
+                        success: function(json) {
+                            loader.hidePleaseWait();   
+                            $("#otherCategoriesTable").load("getOtherCategories");
+                        },
+                        error: function(e) {
+                            loader.hidePleaseWait();
+                        }
+                    });          
+                });
             }
             else {
                 showErrorModal("Category already exists");
