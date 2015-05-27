@@ -2215,14 +2215,15 @@
 
     });  
 
+    /**
+     * UNTESTED !!!!!!!!!!!!
+     */
     $("#myModal").on('click','#mdl_save',function (e) { 
         loader.showPleaseWait();           
         var url = $("#edit_url").val();
         var index = $("#edit_index").val().toString();
         var subIndex = $("#edit_subIndex").val().toString();
         var value = $('#drop_actionTypeEdit option:selected').val();      
-        var hash =  hex_sha1(index + subIndex + value + userid + password);
-        data = { index: index, subIndex:subIndex, value:value, userid:userid, hash:hash, callback:'?'};
         var tableSelector = "#tblSubcategories_" + index;
         var reloadurl = "getSubCategoryNavigation/" + index;
         var flag = 0;
@@ -2235,21 +2236,36 @@
         }); 
 
         if(flag == 0) {
-              $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    $(tableSelector).load(reloadurl);         
-                    loader.hidePleaseWait();   
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
-            });
+            var requestData = {
+                index:index,
+                subIndex:subIndex,            
+                value: value,
+                userid:userid
+            };
+            
+            $.ajax({
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {             
+                requestData.hash = hash;
+                requestData.callback = '?';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        $(tableSelector).load(reloadurl);         
+                        loader.hidePleaseWait();   
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });
+            });           
         }
         else {
             showErrorModal("Sub category already exists");
@@ -2258,40 +2274,53 @@
 
     $("#myTabContent").on('click','#setSliderDesignTemplate',function (e) { 
         formSubmitted = 1;        
-        loader.showPleaseWait();          
-        var index = $(this).closest("form").find("#index").val();
-        var value = $(this).closest("form").find("#drop_actionType option:selected").val();
-        var imageCount = $(this).closest("form").find("#drop_actionType option:selected").data('count');
-        var url = $(this).data("url");
-        var hash = hex_sha1(index + value + userid + password);
-        data = { index: index, value:value, userid:userid, hash:hash, callback:'?'};
+        loader.showPleaseWait();
+        var $this = $(this);
+        var $form = $this.closest("form");          
+        var index = $form.find("#index").val();
+        var value = $form.find("#drop_actionType option:selected").val();
+        var imageCount = $form.find("#drop_actionType option:selected").data('count');
+        var url = $this.data("url");
+
         var count = parseInt($(".slideCount_" + index).last().text());
         var currentSliderTemplate = $("#sliderTemplate" + index).val();
-        if(isNaN(count) || (count >= imageCount)) {
+        if(isNaN(count) || (count >= imageCount)) {                    
+            var requestData = {
+                index:index,
+                value: value,
+                userid:userid
+            };
+            
             $.ajax({
-                type: 'GET',
-                url: url,
-                data:data,
-                jsonpCallback: 'jsonCallback',
-                contentType: "application/json",
-                dataType: 'jsonp',
-                success: function(json) {
-                    loader.hidePleaseWait();        
-                    $("#sliderTemplate" + index).val(value); 
-                    $(".templateSlider_" + index).text(value);                                   
-                },
-                error: function(e) {
-                    loader.hidePleaseWait();
-                }
-            });    
-            getSliderPreview();                        
+                url: "/hasher",
+                data: requestData,
+                dataType:"JSON",
+            }).success(function(hash) {             
+                requestData.hash = hash;
+                requestData.callback = '?';
+                getSliderPreview();                        
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data:requestData,
+                    jsonpCallback: 'jsonCallback',
+                    contentType: "application/json",
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        loader.hidePleaseWait();        
+                        $("#sliderTemplate" + index).val(value); 
+                        $(".templateSlider_" + index).text(value);                                   
+                    },
+                    error: function(e) {
+                        loader.hidePleaseWait();
+                    }
+                });    
+            });
         }
         else {
-            $(this).closest("form").find('#drop_actionType option[value="'+ currentSliderTemplate +'"]').attr("selected", "selected");
+            $form.find('#drop_actionType option[value="'+ currentSliderTemplate +'"]').attr("selected", "selected");
             showErrorModal("Sorry, but the minimum number of images for this slide design template is " + imageCount + " images");
         }
- 
-   
     });  
 
     $("#manageSliderSection").on('click','#commitSliderChanges',function (e) { 
