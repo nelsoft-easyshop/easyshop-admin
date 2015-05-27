@@ -103,6 +103,11 @@ class ServiceServiceProvider extends ServiceProvider
             );
         });
 
+        $this->app->bind('MemberService', function(){
+            return new MemberService(
+                new \Easyshop\ModelRepositories\MemberRepository,
+                new Validation\Laravel\MemberUpdateValidator(\App::make('validator'))
+            );
+        });
     }
 }
-
