@@ -6,41 +6,63 @@ use Easyshop\ModelRepositories\AdminMemberRepository as AdminMemberRepository;
 use Easyshop\ModelRepositories\CategoryRepository as CategoryRepository;
 use Easyshop\ModelRepositories\BrandRepository as BrandRepository;
 use Easyshop\ModelRepositories\ProductImageRepository as ProductImageRepository;
+use Easyshop\ModelRepositories\MemberRepository as MemberRepository;
 
 class NewHomeContentManagerController extends BaseController 
 {
     /**
-     *  Constructor declaration for XMLService  
+     * XMLService Dependency  
+     *
+     * @var \Easyshop\Services\XMLService
      */
     private $XMLService;
 
     /**
-     *  The Product Repository
-     */    
+     * The Product Repository
+     *   
+     * @var \Easyshop\ModelRepositories\ProductRepository
+     */
     private $productRepository;
 
     /**
-     *  Assets link return by the easyshop application
+     * Assets link return by the easyshop application
+     *
+     * @var string
      */
     private $assetLink;    
 
     /**
-     *  The Administratory Repository
+     * The Administratory Repository
+     *
+     * @var \Easyshop\ModelRepositories\AdminMemberRepository
      */      
     private $adminMemberRepository;
 
     /**
-     *  The Category Repository
+     * The Category Repository
+     *
+     * @var \Easyshop\ModelRepositories\CategoryRepository
      */      
     private $categoryRepository;
 
     /**
-     *  The Category Repository
+     * The Brand Repository
+     *
+     * @var \Easyshop\ModelRepositories\BrandRepository
      */      
     private $brandRepository;    
 
     /**
-     *  The Product Image Repository
+     * Member Repository
+     *
+     * @var \Easyshop\ModelRepositories\MemberRepository
+     */
+    private $memberRepository;
+    
+    /**
+     * The Product Image Repository
+     *
+     * @var \Easyshop\ModelRepositories\ProductImageRepository  
      */ 
     private $productImageRepository;
     
@@ -49,6 +71,7 @@ class NewHomeContentManagerController extends BaseController
                                 AdminMemberRepository $adminMemberRepository, 
                                 CategoryRepository $categoryRepository,
                                 BrandRepository $brandRepository,
+                                MemberRepository $memberRepository,
                                 ProductImageRepository $productImageRepository) 
     {   
         $this->XMLService = $XMLService;
@@ -56,6 +79,7 @@ class NewHomeContentManagerController extends BaseController
         $this->adminMemberRepository = $adminMemberRepository;    
         $this->categoryRepository = $categoryRepository;    
         $this->brandRepository = $brandRepository;    
+        $this->memberRepository = $memberRepository;
         $this->productImageRepository = $productImageRepository;   
         $this->assetLink = $this->XMLService->getAssetsLink();
     }      
@@ -113,6 +137,11 @@ class NewHomeContentManagerController extends BaseController
         }     
         
         $product = [];
+      
+        $sellerSlug = (string)$this->map->sellerSection->sellerSlug;
+        $seller = $this->memberRepository->getBySlug($sellerSlug);
+        $this->map->sellerSection->sellerId = $seller->id_member;
+
         foreach($this->map->sellerSection->productPanel as $productPanel)
         {
             $productObj = $this->productRepository->getProductBySlug($productPanel->slug);   
