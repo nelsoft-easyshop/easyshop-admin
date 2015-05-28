@@ -883,6 +883,7 @@
         var $form =  $this.closest("form");
         var value = $form.find("#value").val();
         var url = $this.data('url');
+        var sellerId = $('#seller-section-seller-id').val();
 
         if(value.trim() == "") {
             showErrorModal("Please supply a valid slug");
@@ -891,7 +892,8 @@
             
             var requestData = {
                 userid: userid,
-                value: value            
+                value: value,       
+                sellerId: sellerId
             };
         
             $.ajax({
@@ -910,8 +912,15 @@
                     dataType: 'jsonp',
                     success: function(json) {
                         if(json.sites[0]["success"] != "success") {
-                            loader.hidePleaseWait();    
-                            showErrorModal("Slug Does Not Exist");
+                            loader.hidePleaseWait();                                
+                            var errorMessage = "Action cannot be completed";
+                            if(typeof json.sites[0]['productusererror'] !== 'undefined'){
+                                errorMessage = json.sites[0]['productusererror'];
+                            }
+                            else if(typeof json.sites[0]['slugerror'] !== 'undefined'){
+                                errorMessage = json.sites[0]['slugerror'];
+                            }
+                            showErrorModal(errorMessage);
                         }
                         else {
                             $("#productPanelDiv").load("getProductPanel");                     
