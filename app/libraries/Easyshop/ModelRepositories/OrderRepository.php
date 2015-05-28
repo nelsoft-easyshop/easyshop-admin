@@ -27,13 +27,14 @@ class OrderRepository extends AbstractRepository
      * @param Carbon dateFrom
      * @param Carbon dateTo
      * @param integer numberOfRows
+     * @param integer orderStatus
+     * @param integer paymentMethod
      * @return Paginator
      */
-    public function getAllValidOrders($dateFrom = null, $dateTo = null,  $stringFilter = null, $numberOfRows = 25)
+    public function getAllValidOrders($dateFrom = null, $dateTo = null, $stringFilter = null, $orderStatus = null, $paymentMethod = null, $numberOfRows = 25)
     {
         $statusDraft = OrderStatus::STATUS_DRAFT;
-        $query = Order::where('order_status', '!=', $statusDraft);
-        $query->leftJoin('es_payment_method','es_order.payment_method_id','=','es_payment_method.id_payment_method');
+        $query = Order::leftJoin('es_payment_method','es_order.payment_method_id','=','es_payment_method.id_payment_method');
         $query->leftJoin('es_member as buyer','es_order.buyer_id','=','buyer.id_member');
         $query->leftJoin('es_order_product','es_order.id_order','=','es_order_product.order_id');
         $query->leftJoin('es_member as seller', 'es_order_product.seller_id', '=', 'seller.id_member');
@@ -54,6 +55,17 @@ class OrderRepository extends AbstractRepository
                 $query->orWhereRaw('COALESCE(buyer.store_name, buyer.username) = ?', [$stringFilter]);
                 $query->orWhereRaw('COALESCE(seller.store_name, seller.username) = ?', [$stringFilter]);
             });
+        }
+
+        if ($orderStatus !== null) {
+            $query->where('es_order.order_status', '=', $orderStatus);
+        }
+        else {
+            $query->where('es_order.order_status', '!=', OrderStatus::STATUS_DRAFT);
+        }
+
+        if ($paymentMethod !== null) {
+            $query->where('es_order.payment_method_id', '=', $paymentMethod);
         }
         $query->groupBy('es_order.id_order');
         $query->orderBy('es_order.dateadded', 'DESC');
