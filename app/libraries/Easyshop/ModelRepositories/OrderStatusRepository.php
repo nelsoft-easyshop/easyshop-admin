@@ -26,6 +26,14 @@ class OrderStatusRepository extends AbstractRepository
         return OrderStatus::STATUS_DRAFT;
     }
 
+    /**
+     * Get all order status
+     * @return OrderStatus[]
+     */
+    public function getAllStatus()
+    {
+        return OrderStatus::all();
+    }
 }
 
 
