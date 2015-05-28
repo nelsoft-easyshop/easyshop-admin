@@ -40,10 +40,10 @@
                                         $rowStatus.children('.total-tagged').html($currentCount -= 1);
                                         $rowStatus.children('.count-tag').html($newCurrentCountTotal -= 1);
                                     });
-                                    if(parseInt($rowStatus.children('.total-tagged').html()) <= 0){
+                                    if(parseInt($rowStatus.children('.total-tagged').html()) <= 0 || $(".check-box-order-product").length <= 0){
                                         $rowStatus.closest('tr').remove();
                                         dialogRef.close();
-                                        window.location = '/contact/seller';
+                                        window.location = '/contact/buyer';
                                     }
                                 }
                                 else{
@@ -136,7 +136,7 @@
 
         loader.showPleaseWait();
         var $this = $(this);
-        var $url = '/contact/seller/view-transactions-details/'; 
+        var $url = '/contact/seller/view-transactions-details'; 
         var $orderId = $this.find('.td_order_id').html(); 
         var $memberId = $this.find('.td_username').data('member-id'); 
         var $rowStatus = $this.find('.td_status');
