@@ -141,5 +141,17 @@
         $('#order-status-value').val($value);
         $('#order-status-title').html($anchor.html());
     });
+
+    var $orderStatusValue = $('#order-status-value').val().trim();
+    if ($orderStatusValue !== "") {
+        var $currentSelected = $("#order-status-list").find("[data-value='"+parseInt($orderStatusValue)+"']");
+        $('#order-status-title').html($currentSelected.html());
+    }
+
+    var $paymentMethodSelected = $('#payment-method-value').val().trim();
+    if ($paymentMethodSelected !== "") {
+        var $currentSelected = $("#payment-method-list").find("[data-value='"+parseInt($paymentMethodSelected)+"']");
+        $('#payment-method-title').html($currentSelected.html());
+    }
 })(jQuery);
 

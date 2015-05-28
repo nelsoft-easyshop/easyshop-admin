@@ -29,8 +29,8 @@
                     </div>
                                 
                     <div class='filter-content pull-left'>
-                        {{ Form::hidden('orderStatus', '', array('id' => 'order-status-value')) }}
-                        {{ Form::hidden('paymentMethod', '', array('id' => 'payment-method-value')) }}
+                        {{ Form::hidden('orderStatus', $selectedOrderStatus, array('id' => 'order-status-value')) }}
+                        {{ Form::hidden('paymentMethod', $selectedPaymentMethod, array('id' => 'payment-method-value')) }}
                         <div class="btn-group">
                             <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
                                 <span id="order-status-title">Order Status</span>
