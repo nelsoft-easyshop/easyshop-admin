@@ -50,7 +50,7 @@
                             </a>
                             <ul id="payment-method-list" class="dropdown-menu" role="menu">
                                 <li role="presentation" class="dropdown-header">Filter by :</li>
-                                @foreach($pamyentMethods as $method)
+                                @foreach($paymentMethods as $method)
                                     <li><a data-value="{{{ $method->id_payment_method }}}" href="javascript:void(0)">{{{ $method->name }}}</a></li>
                                 @endforeach
                             </ul>

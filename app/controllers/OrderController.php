@@ -49,7 +49,7 @@ class OrderController extends BaseController
         return View::make('pages.transactionlist')
                     ->with('orders', $orders)
                     ->with('orderStatus', $orderStatusRepository->getAllStatus())
-                    ->with('pamyentMethods', $paymentMethodRepository->getAllPaymentMethod())
+                    ->with('paymentMethods', $paymentMethodRepository->getAllPaymentMethod())
                     ->with('input', Input::all());
     }
 
