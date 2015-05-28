@@ -126,5 +126,20 @@
         
     });
 
+    $(document.body).on('click', '#payment-method-list > li', function(){
+        var $this = $(this);
+        var $anchor = $this.find('a');
+        var $value = $anchor.data('value');
+        $('#payment-method-value').val($value);
+        $('#payment-method-title').html($anchor.html());
+    });
+
+    $(document.body).on('click', '#order-status-list > li', function(){
+        var $this = $(this);
+        var $anchor = $this.find('a');
+        var $value = $anchor.data('value');
+        $('#order-status-value').val($value);
+        $('#order-status-title').html($anchor.html());
+    });
 })(jQuery);
 

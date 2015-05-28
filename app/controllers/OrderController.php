@@ -10,33 +10,46 @@ class OrderController extends BaseController
      */
     public function getAllValidOrders()
     {
-        
         $orderRepository = App::make('OrderRepository');
+        $paymentMethodRepository = App::make('PaymentMethodRepository');
+        $orderStatusRepository = App::make('OrderStatusRepository');
         
-        if(Input::has('dateFrom')){
+        if (Input::has('dateFrom')) {
             $dateFrom = Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay();
-        }   
-        else{
+        }
+        else {
             $dateFrom = Carbon::now()->startOfMonth()->startOfDay();
         }
 
-        if(Input::has('dateTo')){
+        if (Input::has('dateTo')) {
             $dateTo = Carbon::createFromFormat('Y/m/d', Input::get('dateTo'))->endOfDay();
-        }   
-        else{
-           $dateTo = Carbon::now()->endOfDay();
         }
-        
-        if(Input::has('stringFilter') && trim(Input::get('stringFilter')) !== '' ){
-            $orders = $orderRepository->getAllValidOrders($dateFrom, $dateTo, Input::get('stringFilter'));
-        }
-        else{
-            $orders = $orderRepository->getAllValidOrders($dateFrom, $dateTo);
+        else {
+            $dateTo = Carbon::now()->endOfDay();
         }
 
+        $orderStatus = null;
+        if (Input::has('orderStatus') && trim(Input::get('orderStatus')) !== '') {
+            $orderStatus = (int) Input::get('orderStatus');
+
+        }
+
+        $paymentMethod = null;
+        if (Input::has('paymentMethod') && trim(Input::get('paymentMethod')) !== '') {
+            $paymentMethod = (int) Input::get('paymentMethod');
+        }
+
+        if (Input::has('stringFilter') && trim(Input::get('stringFilter')) !== '') {
+            $orders = $orderRepository->getAllValidOrders($dateFrom, $dateTo, Input::get('stringFilter'), $orderStatus, $paymentMethod);
+        }
+        else {
+            $orders = $orderRepository->getAllValidOrders($dateFrom, $dateTo, '', $orderStatus, $paymentMethod);
+        }
 
         return View::make('pages.transactionlist')
                     ->with('orders', $orders)
+                    ->with('orderStatus', $orderStatusRepository->getAllStatus())
+                    ->with('paymentMethods', $paymentMethodRepository->getAllPaymentMethod())
                     ->with('input', Input::all());
     }
 
