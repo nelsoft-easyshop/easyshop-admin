@@ -519,13 +519,13 @@
                                                 <legend>        
                                                     <h4 class="tbl-title">
                                                         <span class="glyphicon glyphicon-list-alt"></span>
-                                                        Edit Sub Category
+                                                        Change Category
                                                     </h4>
-                                                </legend>     
+                                                </legend>
 
                                                 {{ Form::hidden('index', "$categorySectionIndex", array('id' => 'index','class' => 'form-control')) }}                                                        
                                                 <div class="form-group">
-                                                    <label for="inputPassword" class="control-label col-xs-2">Enter Slug</label>
+                                                    <label for="inputPassword" class="control-label col-xs-2">Choose Category</label>
                                                     <div class="col-xs-10">
                                                         <select name="c_stateregion" id="setCategorySectionDropDown"  class="form-control">
                                                             @foreach($categoryLists as $categories)
