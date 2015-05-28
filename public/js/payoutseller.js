@@ -65,7 +65,7 @@
                             else{
                                 var $message = result.message;
                                 BootstrapDialog.show({
-                                    type: BootstrapDialog.TYPE_DANGER,
+                                    type: BootstrapDialog.TYPE_WARNING,
                                     message:$message
                                 });
                             }
@@ -104,7 +104,7 @@
                                 else{
                                     var $message = data.message;
                                     BootstrapDialog.show({
-                                        type: BootstrapDialog.TYPE_DANGER,
+                                        type: BootstrapDialog.TYPE_WARNING,
                                         message:$message
                                     });
                                 }
