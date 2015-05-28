@@ -883,6 +883,7 @@
                                 <label for="inputPassword" class="control-label col-xs-2">Enter Slug</label>
                                 <div class="col-xs-10">
                                     <input type="text" id="slug" name='slug' class='form-control' value="{{{$sellerSection->sellerSlug}}}"> 
+                                    <input type="hidden" id="seller-section-seller-id" value="{{{ $sellerSection->sellerId }}}"/>
                                 </div>
                             </div>                                                                                 
                                                                                                    
