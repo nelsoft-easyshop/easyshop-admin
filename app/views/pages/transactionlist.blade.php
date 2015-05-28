@@ -28,6 +28,35 @@
                         </span>                    
                     </div>
                                 
+                    <div class='filter-content pull-left'>
+                        {{ Form::hidden('orderStatus', '', array('id' => 'order-status-value')) }}
+                        {{ Form::hidden('paymentMethod', '', array('id' => 'payment-method-value')) }}
+                        <div class="btn-group">
+                            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                                <span id="order-status-title">Order Status</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul id="order-status-list" class="dropdown-menu" role="menu">
+                                <li role="presentation" class="dropdown-header">Filter by :</li>
+                                @foreach($orderStatus as $status)
+                                    <li><a data-value="{{{ $status->order_status }}}" href="javascript:void(0)">{{{ $status->name }}}</a></li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                                <span id="payment-method-title">Payment Method</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul id="payment-method-list" class="dropdown-menu" role="menu">
+                                <li role="presentation" class="dropdown-header">Filter by :</li>
+                                @foreach($pamyentMethods as $method)
+                                    <li><a data-value="{{{ $method->id_payment_method }}}" href="javascript:void(0)">{{{ $method->name }}}</a></li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                                
                     <div class='date-cont pull-right'>
                             {{ Form::text('dateFrom', $dateFrom, array('class' => 'date form-control pull-left','placeholder' => 'Start Date', 'id' => 'date-from')) }}
                             {{ Form::text('dateTo', $dateTo, array('class' => 'date form-control pull-right', 'placeholder' => 'End Date', 'id' => 'date-to')) }}
