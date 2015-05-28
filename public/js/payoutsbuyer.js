@@ -136,7 +136,7 @@
 
         loader.showPleaseWait();
         var $this = $(this);
-        var $url = '/contact/seller/view-transactions-details/'; 
+        var $url = '/contact/seller/view-transactions-details'; 
         var $orderId = $this.find('.td_order_id').html(); 
         var $memberId = $this.find('.td_username').data('member-id'); 
         var $rowStatus = $this.find('.td_status');
