@@ -92,8 +92,8 @@
                     <table class="table table-striped table-hover tbl-my-style" id="addBrandsTable">
                         <thead>
                         <tr>
-                            <th>/</th>
-                            <th>Product Slug</th>
+                            <th>Actions</th>
+                            <th>Brand name</th>
                         </tr>
                         </thead>
                         <tbody id="tbody_boxContent">
