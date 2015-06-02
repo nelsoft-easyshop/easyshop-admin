@@ -13,16 +13,17 @@ class BillingInfoController extends BaseController
      */
     public function updateOrderProductPaymentAccount()
     {
-
         $billingInfoRepository = App::make('BillingInfoRepository');
         $validator = new BillingInfoUpdateValidator( App::make('validator') );
 
         if($validator->with(Input::get())->passes()){
-            $billingInfoRepository->updateBillingAccount(Input::get('billing_info_id'),
-                                                        Input::get('account_name'), 
-                                                        Input::get('account_number'),
-                                                        Input::get('bank_id'),  
-                                                        Input::get('member_id') );
+            $billingInfoRepository->updateBillingAccount(
+                Input::get('billing_info_id'),
+                Input::get('account_name'), 
+                Input::get('account_number'),
+                Input::get('bank_id'),  
+                Input::get('member_id')
+            );
         }
         
         return Response::json(array('errors' => $validator->errors()));
