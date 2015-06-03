@@ -30,6 +30,13 @@ abstract class AbstractValidator
     */
     protected $errors = array();
     
+    /**
+     * Custom validation messages
+     *
+     * @var string[]
+     */
+    protected $messages = array();
+
    /**
     * Pass the data and the rules to the validator
     *
