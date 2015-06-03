@@ -199,22 +199,18 @@ class CategoryRepository
      */
     public function search($userData)
     {
-        $member = Category::where('es_cat.id_cat', '>', 1);
+        $category = Category::where('es_cat.id_cat', '>', 1);
         if($userData['category']){
-            $member->where('es_cat.name', 'LIKE', '%' . $userData['category'] . '%');
+            $category->where('es_cat.name', 'LIKE', '%' . $userData['category'] . '%');
         }
         if($userData['description']){
-            $member->where('es_cat.description', 'LIKE', '%' . $userData['description'] . '%');
+            $category->where('es_cat.description', 'LIKE', '%' . $userData['description'] . '%');
         }
         if($userData['keywords']){
-            $member->where('es_cat.keywords', 'LIKE', '%' . $userData['keywords'] . '%');
-        }
-        if(($userData['startdate']) && ($userData['enddate'])){
-            $member->where('es_member.datecreated', '>=', str_replace('/', '-', $userData['startdate']) . ' 00:00:00' )
-                ->where('es_member.datecreated', '<=', str_replace('/', '-', $userData['enddate']) . ' 23:59:59', 'AND');
+            $category->where('es_cat.keywords', 'LIKE', '%' . $userData['keywords'] . '%');
         }
 
-        return $member->first();
+        return $category->first();
     }
 
 
