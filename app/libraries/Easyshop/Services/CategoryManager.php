@@ -71,6 +71,7 @@ class CategoryManager
             $newCategory->keywords = $categoryData['keywords'];
             $newCategory->sort_order = $categoryData['sortOrder'];
             $newCategory->slug = $categoryData['slug'];
+            $newCategory->is_main = 0;
             $newCategory->save();
         }
 
