@@ -13,7 +13,9 @@ class OrderController extends BaseController
         $orderRepository = App::make('OrderRepository');
         $paymentMethodRepository = App::make('PaymentMethodRepository');
         $orderStatusRepository = App::make('OrderStatusRepository');
-        
+        $userId = Auth::id();
+        $webserviceUrl = App::make('XMLContentGetterService')->GetEasyShopLink();                                                 
+
         if (Input::has('dateFrom')) {
             $dateFrom = Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay();
         }
@@ -51,6 +53,8 @@ class OrderController extends BaseController
                     ->with('selectedOrderStatus', $orderStatus)
                     ->with('orderStatus', $orderStatusRepository->getAllStatus())
                     ->with('paymentMethods', $paymentMethodRepository->getAllPaymentMethod())
+                    ->with('userid', $userId)
+                    ->with('webserviceUrl', $webserviceUrl)
                     ->with('input', Input::all());
     }
 

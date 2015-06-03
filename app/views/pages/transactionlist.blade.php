@@ -104,8 +104,9 @@
 
         </div>
       </div>
-    
-    
+      
+      <input type="hidden" value="{{{ $userid }}}" id="userid"/>
+      <input type="hidden" value="{{{ $webserviceUrl }}}" id="webserviceUrl"/>
     
 @stop
 

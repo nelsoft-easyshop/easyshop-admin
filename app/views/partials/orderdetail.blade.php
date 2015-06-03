@@ -49,7 +49,7 @@
                 </span>
             </div>
             @endif
-            
+           
         </div>
 
  
@@ -131,6 +131,22 @@
             @endforeach
         </table>
     </div>
+
+    
+    @if ($order->is_flag)
+        <div class="text-center alert alert-danger transaction-flag-message">
+            <strong>This transaction has been flagged for further review.</strong>
+        </div>
+               
+        <div class="text-center alert alert-success unflag-success-message" style="display:none;">
+            <strong>Transaction successfully unflagged</strong>
+        </div>
+                       
+        <div class="text-center alert alert-warning unflag-fail-message" style="display:none;">
+
+        </div>
+
+    @endif
     
     <div class='text-center'>
         @if($isOrderVoidable)
@@ -138,11 +154,18 @@
                 <span class="glyphicon glyphicon-tag"></span> Void Transaction
             </button>
         @endif
+
+        @if ($order->is_flag)
+            <button class="order-unflag-button btn btn-info">
+                 <span class="glyphicon glyphicon-check"></span> Unflag Transaction
+            </button>            
+        @endif
     </div>
     
     <br/>
     <div class='void-message'>
     
     </div>
+
     
 </div>
