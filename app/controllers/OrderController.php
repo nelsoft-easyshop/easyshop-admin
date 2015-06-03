@@ -29,13 +29,12 @@ class OrderController extends BaseController
         }
 
         $orderStatus = null;
-        if (Input::has('orderStatus') && trim(Input::get('orderStatus')) !== '') {
+        if (Input::has('orderStatus') && trim(Input::get('orderStatus')) !== '' && strtolower(Input::get('orderStatus')) !== 'all') {
             $orderStatus = (int) Input::get('orderStatus');
-
         }
 
         $paymentMethod = null;
-        if (Input::has('paymentMethod') && trim(Input::get('paymentMethod')) !== '') {
+        if (Input::has('paymentMethod') && trim(Input::get('paymentMethod')) !== '' && strtolower(Input::get('paymentMethod')) !== 'all') {
             $paymentMethod = (int) Input::get('paymentMethod');
         }
 
@@ -71,10 +70,11 @@ class OrderController extends BaseController
         $orderProducts = $orderProductRepository->getOrderProductByOrderId($userdata['order_id']);
         
         $html = View::make('partials.orderdetail')
-            ->with('orderproducts', $orderProducts)
-            ->with('order', $order)
-            ->with('easypoints', $points)
-            ->render();
+                    ->with('orderproducts', $orderProducts)
+                    ->with('order', $order)
+                    ->with('easypoints', $points)
+                    ->render();
+
         return Response::json(array('html' => $html));
     }
     

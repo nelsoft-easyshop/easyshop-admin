@@ -38,6 +38,7 @@
                             </a>
                             <ul id="order-status-list" class="dropdown-menu" role="menu">
                                 <li role="presentation" class="dropdown-header">Filter by :</li>
+                                <li><a data-value="all" href="javascript:void(0)">ALL</a></li>
                                 @foreach($orderStatus as $status)
                                     <li><a data-value="{{{ $status->order_status }}}" href="javascript:void(0)">{{{ $status->name }}}</a></li>
                                 @endforeach
@@ -50,6 +51,7 @@
                             </a>
                             <ul id="payment-method-list" class="dropdown-menu" role="menu">
                                 <li role="presentation" class="dropdown-header">Filter by :</li>
+                                <li><a data-value="all" href="javascript:void(0)">ALL</a></li>
                                 @foreach($paymentMethods as $method)
                                     <li><a data-value="{{{ $method->id_payment_method }}}" href="javascript:void(0)">{{{ $method->name }}}</a></li>
                                 @endforeach
