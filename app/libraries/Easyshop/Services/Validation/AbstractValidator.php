@@ -37,11 +37,11 @@ abstract class AbstractValidator
      */
     protected $messages = array();
 
-    /**
-     * Pass the data and the rules to the validator
-     *
-     * @return boolean
-     */
+   /**
+    * Pass the data and the rules to the validator
+    *
+    * @return boolean
+    */
     abstract function passes();
     
     /**
