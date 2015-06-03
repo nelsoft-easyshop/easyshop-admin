@@ -24,38 +24,30 @@
                         {{ Form::text('category', Input::old('category'), array('id' => 'src_category', 'class' => 'form-control', 'placeholder' => 'Enter Category' ) ) }}
                     </div>
                 </div>
-                <div class="col-md-4 ">
-                    <div class="form-group">
-                        <label for="date_timepicker_start">Start Date</label>
-                        <div class="inner-addon left-addon">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                            {{ Form::text('startdate', Input::old('startdate'), array('id' => 'date_timepicker_start', 'class' => 'form-control' ) ) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="date_timepicker_end">End Date</label>
-                        <div class="inner-addon left-addon">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                            {{ Form::text('enddate', Input::old('enddate'), array('id' => 'date_timepicker_end', 'class' => 'form-control' ) ) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
+
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="src_category">Description</label>
                         {{ Form::text('description', Input::old('description'), array('id' => 'src_description', 'class' => 'form-control', 'placeholder' => 'Enter description' ) ) }}
                     </div>
                 </div>
+                                
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="src_condition">Keywords</label>
                         {{ Form::text('keywords', Input::old('keywords'), array('id' => 'src_keywords', 'class' => 'form-control', 'placeholder' => 'Enter keywords' ) ) }}
                     </div>
                 </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                </div>
+
+                <div class="col-md-4">
+                </div>
+
                 <div class="col-md-1 col-md-offset-2">
                     <div class="form-group">
                         <label for="btn_close_search">&nbsp</label>
@@ -68,6 +60,7 @@
                         {{ Form::submit(' Search ', array('id' => 'btn_search', 'class' => 'btn btn-primary')) }}
                     </div>
                 </div>
+                
             </div>
             {{ Form::close() }}
         </div>
