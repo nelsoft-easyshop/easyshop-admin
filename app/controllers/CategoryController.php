@@ -1,4 +1,4 @@
-<?php
+s<?php
 
 class CategoryController extends BaseController
 {
@@ -66,11 +66,18 @@ class CategoryController extends BaseController
     public function doSearchCategory()
     {
         $categoryRepository = App::make('CategoryRepository');
-        $category = $categoryRepository->search(Input::except('_token'));
+        $category = $categoryRepository->search(Input::except('_token'));       
+        $children = [];
+        $parent = [];
+        if($category){
+            $categoryId = $category->id_cat;
+            $children = $categoryRepository->getChildById($categoryId);
+            $parent = $categoryRepository->getParentById($categoryId);
+        }
 
         return View::make('pages.categorylist')
-                   ->with('list_of_category',$categoryRepository->getChildById($category->id_cat))
-                   ->with('breadcrumbs', $categoryRepository->getParentById($category->id_cat));
+                   ->with('list_of_category', $children)
+                   ->with('breadcrumbs', $parent);
     }
 
 }
