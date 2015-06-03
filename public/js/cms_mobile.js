@@ -309,6 +309,7 @@
             dataType: 'jsonp',
             success: function(json) {
                 loader.hidePleaseWait();
+                $('.category-head-title').html(escapeHtml(data.name));
             },
             error: function(e) {
                 loader.hidePleaseWait();
