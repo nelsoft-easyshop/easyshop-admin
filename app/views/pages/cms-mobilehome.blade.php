@@ -218,7 +218,7 @@
                         <legend>        
                             <h4 class="tbl-title">
                                 <span class="glyphicon glyphicon-list-alt"></span>
-                                Manage {{{$section->name}}} Head
+                                Manage <span class="category-head-title">{{$section->name}}</span> Category Header
                             </h4>
                         </legend>                                   
                         <div class="form-group">
