@@ -156,8 +156,11 @@
         @endif
 
         @if ($order->is_flag)
-            <button class="order-unflag-button btn btn-info">
-                 <span class="glyphicon glyphicon-check"></span> Unflag Transaction
+            <button class="order-unflag-button btn btn-info ladda-button" data-style="slide-left">                
+                <span class="ladda-label">
+                    <span class="glyphicon glyphicon-check"></span> 
+                    Unflag Transaction
+                </span>
             </button>            
         @endif
     </div>

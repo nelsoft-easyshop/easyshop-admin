@@ -8,6 +8,7 @@
 
 @section('page_header')
     @include('includes.header')
+    <link type="text/css" href="{{{ asset('css/src/ladda/ladda-themeless.min.css')  }}}" rel="stylesheet"  media="screen"/>
 @stop
 
 
@@ -113,8 +114,10 @@
 
 @section('page_js') 
 
-  {{ HTML::script('js/src/jquery.datetimepicker.js') }}
-  {{ HTML::script('js/transactionlist.js') }}
+    {{ HTML::script('js/src/jquery.datetimepicker.js') }}
+    {{ HTML::script('js/src/ladda/spin.js') }}
+    {{ HTML::script('js/src/ladda/ladda.js') }}
+    {{ HTML::script('js/transactionlist.js') }}
 
 @stop
 
