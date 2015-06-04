@@ -16,7 +16,6 @@
 
 <div id="mainsection">
         <span class='userid' style="display:none;">{{{ $adminObj->id_admin_member }}}</span>
-        <span class='password' style="display:none;">{{{ $adminObj->password }}}</span>
         <div class='registration_form' id="registration_form">
             {{ Form::input('hidden', 'productCSVwebservice', $productCSVwebservice, array("id" => "webServiceLink")) }}
             <div class="bs-example bs-example-tabs">
@@ -48,7 +47,6 @@
                                     {{ Form::file('image[]', ['multiple' => true, 'class' => 'file file-loading', 'id' => 'uploadImageOnly','data-preview-file-type' => 'any','accept' => "image/*"]) }}
                                 </div>
                                     {{ Form::hidden('userid', $adminObj->id_admin_member, ['id' => 'userid']) }}
-                                    {{ Form::hidden('password', $adminObj->password, ['id' => 'password']) }}                                    
                                     {{ Form::hidden('hash', '', ['id' => 'hash'])}}
                             {{ Form::close() }}
                                 <legend>Images uploaded by the administrator</legend>
@@ -65,7 +63,7 @@
                                                     ><font color='red'><b>X</b></font>
                                                     </a>
                                                     <div style="width: 200px; height: 200px;max-width: 200px; max-height: 200px; display: table-cell; vertical-align: middle;">
-                                                        <img src="{{{$assetLink}}}/assets/admin/{{{$images->image_name}}}" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
+                                                        <img src="{{{ $easyShopLink }}}/assets/admin/{{{$images->image_name}}}" data-div="" style="border: black 1px solid; width: 100%; height: auto; max-height: 200px;"/>
                                                         <p>{{{$images->image_name}}}</p>
                                                     </div>
 
@@ -82,7 +80,7 @@
             </div>            
         </div>
 
-         <div class="modal fade" id="success" >
+        <div class="modal fade" id="success" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body" style='text-align:center;'>
@@ -92,6 +90,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="modal fade" id="customerror" >
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -107,7 +106,7 @@
 @stop
 
 @section('page_js')
-{{ HTML::script('js/src/sha1.js') }}
+
 {{ HTML::script('js/src/fileinput.js') }}
 {{ HTML::script('js/src/jquery.form.js') }}
 {{ HTML::script('js/productcsv.js') }}

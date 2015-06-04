@@ -10,33 +10,51 @@ class OrderController extends BaseController
      */
     public function getAllValidOrders()
     {
-        
         $orderRepository = App::make('OrderRepository');
-        
-        if(Input::has('dateFrom')){
+        $paymentMethodRepository = App::make('PaymentMethodRepository');
+        $orderStatusRepository = App::make('OrderStatusRepository');
+        $userId = Auth::id();
+        $webserviceUrl = App::make('XMLContentGetterService')->GetEasyShopLink();                                                 
+
+        if (Input::has('dateFrom')) {
             $dateFrom = Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay();
-        }   
-        else{
+        }
+        else {
             $dateFrom = Carbon::now()->startOfMonth()->startOfDay();
         }
 
-        if(Input::has('dateTo')){
+        if (Input::has('dateTo')) {
             $dateTo = Carbon::createFromFormat('Y/m/d', Input::get('dateTo'))->endOfDay();
-        }   
-        else{
-           $dateTo = Carbon::now()->endOfDay();
         }
-        
-        if(Input::has('stringFilter') && trim(Input::get('stringFilter')) !== '' ){
-            $orders = $orderRepository->getAllValidOrders($dateFrom, $dateTo, Input::get('stringFilter'));
-        }
-        else{
-            $orders = $orderRepository->getAllValidOrders($dateFrom, $dateTo);
+        else {
+            $dateTo = Carbon::now()->endOfDay();
         }
 
+        $orderStatus = null;
+        if (Input::has('orderStatus') && trim(Input::get('orderStatus')) !== '' && strtolower(Input::get('orderStatus')) !== 'all') {
+            $orderStatus = (int) Input::get('orderStatus');
+        }
+
+        $paymentMethod = null;
+        if (Input::has('paymentMethod') && trim(Input::get('paymentMethod')) !== '' && strtolower(Input::get('paymentMethod')) !== 'all') {
+            $paymentMethod = (int) Input::get('paymentMethod');
+        }
+
+        if (Input::has('stringFilter') && trim(Input::get('stringFilter')) !== '') {
+            $orders = $orderRepository->getAllValidOrders($dateFrom, $dateTo, Input::get('stringFilter'), $orderStatus, $paymentMethod);
+        }
+        else {
+            $orders = $orderRepository->getAllValidOrders($dateFrom, $dateTo, '', $orderStatus, $paymentMethod);
+        }
 
         return View::make('pages.transactionlist')
                     ->with('orders', $orders)
+                    ->with('selectedPaymentMethod', $paymentMethod)
+                    ->with('selectedOrderStatus', $orderStatus)
+                    ->with('orderStatus', $orderStatusRepository->getAllStatus())
+                    ->with('paymentMethods', $paymentMethodRepository->getAllPaymentMethod())
+                    ->with('userid', $userId)
+                    ->with('webserviceUrl', $webserviceUrl)
                     ->with('input', Input::all());
     }
 
@@ -56,10 +74,11 @@ class OrderController extends BaseController
         $orderProducts = $orderProductRepository->getOrderProductByOrderId($userdata['order_id']);
         
         $html = View::make('partials.orderdetail')
-            ->with('orderproducts', $orderProducts)
-            ->with('order', $order)
-            ->with('easypoints', $points)
-            ->render();
+                    ->with('orderproducts', $orderProducts)
+                    ->with('order', $order)
+                    ->with('easypoints', $points)
+                    ->render();
+
         return Response::json(array('html' => $html));
     }
     

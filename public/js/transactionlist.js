@@ -126,5 +126,85 @@
         
     });
 
+    $(document.body).on('click', '#payment-method-list > li', function(){
+        var $this = $(this);
+        var $anchor = $this.find('a');
+        var $value = $anchor.data('value');
+        $('#payment-method-value').val($value);
+        $('#payment-method-title').html($anchor.html());
+    });
+
+    $(document.body).on('click', '#order-status-list > li', function(){
+        var $this = $(this);
+        var $anchor = $this.find('a');
+        var $value = $anchor.data('value');
+        $('#order-status-value').val($value);
+        $('#order-status-title').html($anchor.html());
+    });
+
+    var $orderStatusValue = $('#order-status-value').val().trim();
+    if ($orderStatusValue !== "") {
+        var $currentSelected = $("#order-status-list").find("[data-value='"+parseInt($orderStatusValue)+"']");
+        $('#order-status-title').html($currentSelected.html());
+    }
+
+    var $paymentMethodSelected = $('#payment-method-value').val().trim();
+    if ($paymentMethodSelected !== "") {
+        var $currentSelected = $("#payment-method-list").find("[data-value='"+parseInt($paymentMethodSelected)+"']");
+        $('#payment-method-title').html($currentSelected.html());
+    }
+
+    $(document.body).on('click', '.order-unflag-button', function(){       
+        var orderId = $('#order-id').val();
+        var userId = $('#userid').val();
+        var webserviceBaseUrl = $('#webserviceUrl').val();
+
+        var requestData = {
+            orderId:orderId,
+            userid:userId
+        };
+
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {
+            requestData.hash = hash;
+            $.ajax({
+                url: webserviceBaseUrl + '/payment/unFlagOrder',
+                data:requestData,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(jsonResponse) {
+                    if(jsonResponse.isSuccessful){
+                        $('.order-unflag-button').fadeOut();
+                        $('.transaction-flag-message').fadeOut();
+                        var $unflagSuccessMessage = $('.unflag-success-message');
+                        $unflagSuccessMessage.show();
+                        setTimeout(function(){
+                            $unflagSuccessMessage.fadeOut();
+                        }, 2500);
+                    }
+                    else{
+                        var $unflagFailMessage = $('.unflag-fail-message');
+                        $unflagFailMessage.html('Error: ' + escapeHtml(jsonResponse.message));
+                        $unflagFailMessage.show();
+                        setTimeout(function(){
+                            $unflagFailMessage.fadeOut();                            
+                        }, 2500);
+                    }
+                },
+                error: function(e) {
+                    alert('An error occured while contacting the server. Please try again later.');
+                }
+            });  
+
+        });
+
+    });
+    
+
+
 })(jQuery);
 

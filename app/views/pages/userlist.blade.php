@@ -167,7 +167,7 @@
                         <td>{{{ $member->email }}}</td>
                         <td>{{{ (intval($member->gender) === 0) ? 'Male' : 'Female' }}}</td>
                         <td id="{{{ $member->id_member . '_remarks'}}}">{{{ $member->remarks }}}</td>
-                        <td id="{{{ $member->id_member . '_address'}}}">{{{ ($member->Address && $member->Address->City->location && $member->Address->Region->location) ? $member->Address->City->location . ' ' . $member->Address->Region->location . ' ' . $member->Address->address : '' }}}</td>
+                        <td id="{{{ $member->id_member . '_address'}}}">{{{ ($member->Address && $member->Address->City && $member->Address->Region) ? $member->Address->City->location . ' ' . $member->Address->Region->location . ' ' . $member->Address->address : '' }}}</td>
                         <td>{{{ ($member->Product(true)) ? $member->Product(true)->count() : 0 }}}</td>
                         <td id="{{{ $member->id_member . '_contact'}}}">{{{ $member->contactno }}}</td>
                     </tr>
@@ -192,7 +192,7 @@
                         </div>
                         <div class="form-group">
                             <label>Contact Number</label>
-                            <input type="text" class="form-control" id="mdl_contact" placeholder="Enter contact number">
+                            <input type="text" class="form-control" onkeypress="return isNumberKey(event, false)" id="mdl_contact" placeholder="Enter contact number">
                         </div>
                         <div class="form-group">
                             <label>Remarks</label>
@@ -222,7 +222,7 @@
                             <select id="ban_select" class="form-control" data-status="">
                                 <option value="0">--- Select Ban Type ---</option>
                                 @foreach($list_of_ban_type as $data)
-                                    <option class="ban-type-opt" value="{{{ $data['id_ban_type'] }}}" >{{{ $data['message'] }}}</option>
+                                    <option class="ban-type-opt" value="{{{ $data['id_ban_type'] }}}" >{{{ $data['title'] }}}</option>
                                 @endforeach
                             </select>
                         </div>

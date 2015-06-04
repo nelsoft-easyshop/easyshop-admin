@@ -25,8 +25,11 @@
                     <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
                         <span style="display:none;">{{$index=0}}</span>
                         @foreach($sectionContent as $section)
-                            <li><a href="#page_{{$index}}" tabindex="-1" role="tab" id="sectionNav_{{$index}}" data-toggle="tab">{{{$section->name}}}</a></li>
-
+                            <li class="category-section-trigger" >
+                                <a href="#page_{{$index}}" tabindex="-1" role="tab" id="sectionNav_{{$index}}" data-toggle="tab">
+                                    {{{ $section->categoryName }}}
+                                </a>
+                            </li>
                             <span style="display:none;">{{$index++}}</span>
                         @endforeach
                     </ul>
@@ -35,7 +38,6 @@
         </section>
 
         {{ Form::hidden('userid', $adminObject->id_admin_member, array('id' => 'userid','class' => 'form-control')) }}                        
-        {{ Form::hidden('password', $adminObject->password, array('id' => 'password','class' => 'form-control')) }}    
 
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade active in" id="manageMainSlide">
@@ -55,11 +57,11 @@
                                             <input type="file" id="photoFile" name='myfile'> 
                                         </div>
                                     </div>
-                                        <input type="text" id="valueMainSlide" class="form-control" readonly='readonly' value='Image' name='value'  placeholder="Value" style="display:none;">
+                                        <input type="text" id="valueMainSlide" class="form-control" readonly='readonly' value='Image' name='value'  placeholder="value" style="display:none;">
                                     <div class="form-group">
                                         <label for="inputPassword" class="control-label col-xs-2">Target</label>
                                         <div class="col-xs-10">
-                                            <input type="text" id="mainSlideTarget" class="form-control" name='target' value="target" placeholder="Value" >
+                                            <input type="text" id="mainSlideTarget" class="form-control" name='target' value="" placeholder="/someUrl" >
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -72,13 +74,13 @@
                                             </select>
                                         </div>
                                     </div>                                    
-                                    <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="Value" >
-                                    <input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="Value" >
+                                    <input type="hidden" id="userIdMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="value" >
+                                    <input type="hidden" id="hashMainSlide" class="form-control" name = 'hash' value=''  placeholder="value" >
                         
 
                                     <div class="form-group">
                                         <div class="col-xs-offset-2 col-xs-10">
-                                            <a1 href="#"  class="btn btn-default text-center" data-password="{{$adminObject->password}}" data-url = "{{ $mobileCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
+                                            <a1 href="#"  class="btn btn-default text-center"  data-url = "{{ $mobileCmsLink }}/addmainslide" id="submitAddMainSlide">Submit</a>
                                         </div>
                                     </div>
                                  </form>
@@ -166,7 +168,7 @@
                                                                     <div class="col-xs-10">
                                                                         <select name="actionType" id="dropActionTypes"  class="form-control" data-status="">
                                                                             @foreach($actionTypes as $types)
-                                                                                @if((string)$mainSlide->actionType === (string)$types)
+                                                                                @if(trim((string)$mainSlide->actionType) === trim((string)$types))
                                                                                     <option value="{{{ $types }}}" selected>{{{ $types }}}</option>
                                                                                 @else
                                                                                     <option value="{{{ $types }}}">{{{ $types }}}</option>                                                                            
@@ -176,7 +178,7 @@
                                                                     </div>
                                                                 </div>                                                                
                                                                 {{ Form::hidden('hash', $mainSlide->imagemap->target, array('id' => 'hashEditMainSlide','class' => 'form-control')) }}
-                                                                <input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="Value" >                    
+                                                                <input type="hidden" id="useridMainSlide" class="form-control" name = 'userid' value='{{$adminObject->id_admin_member}}'  placeholder="value" >                    
 
 
                                                                 <div class="form-group" >
@@ -216,20 +218,24 @@
                         <legend>        
                             <h4 class="tbl-title">
                                 <span class="glyphicon glyphicon-list-alt"></span>
-                                Manage {{{$section->name}}} Head
+                                Manage <span class="category-head-title">{{$section->name}}</span> Category Header
                             </h4>
                         </legend>                                   
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Name</label>
+                            <label class="col-sm-2 control-label">Name</label>
                             <div class="col-sm-10">
                                 {{ Form::hidden('index', $index, array('id' => 'index','class' => 'form-control')) }}                                 
                                 <select name="c_stateregion" id="categoryName"  class="form-control" data-status="">
                                     @foreach($categoryLists as $categories)
                                         @if($categories["name"] !== "PARENT")
                                             @if((string)$categories["slug"] === (string)$section->name)
-                                                <option value="{{{$categories['slug']}}}" data-catname="{{{$categories['name']}}}" selected>{{{$categories["name"]}}} - ({{{$categories['slug']}}})</option>
-                                            @else$categories["slug"]
-                                                <option value="{{{$categories['slug']}}}" data-catname="{{{$categories['name']}}}">{{{$categories["name"]}}} - ({{{$categories['slug']}}})</option>
+                                                <option value="{{{$categories['slug']}}}" data-catname="{{{$categories['name']}}}" selected>
+                                                    {{{$categories["name"]}}} - ({{{$categories['slug']}}})
+                                                </option>
+                                            @else
+                                                <option value="{{{$categories['slug']}}}" data-catname="{{{$categories['name']}}}">
+                                                    {{{$categories["name"]}}} - ({{{$categories['slug']}}})
+                                                </option>
                                             @endif
                                         @endif
                                     @endforeach
@@ -239,7 +245,7 @@
                         <div class="form-group">
                             <label for="userId" class="col-sm-2 control-label">BGColor</label>
                             <div class="col-sm-10">    
-                                <input name='target' type="text" id="text-field bgcolor" class="form-control bgcolor" value="{{{  $section->bgcolor }}}">                                    
+                                <input name='target' type="text" id="text-field bgcolor" class="form-control bgcolor" value="{{{  $section->bgcolor }}}">
                             </div>
                         </div> 
                         <div class="form-group">
@@ -263,7 +269,7 @@
                         </div>                                      
                     </form>
 
-                    <form id='left' target="test"  class="form-horizontal">            
+                    <form class="form-horizontal mobile-home-section-form add-section">            
                         <legend>        
                             <h4 class="tbl-title">
                                 <span class="glyphicon glyphicon-list-alt"></span>
@@ -271,28 +277,28 @@
                             </h4>
                         </legend>                                   
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Value</label>
+                            <label for="value" class="col-sm-2 control-label">Slug</label>
                             <div class="col-sm-10">
                                 {{ Form::hidden('index', "$index", array('id' => 'index','class' => 'form-control')) }}                        
-                                {{ Form::text('value', "", array('id' => 'value','class' => 'form-control')) }}                        
+                                {{ Form::text('value', "", array('id' => 'value','class' => 'value form-control')) }}                        
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Type</label>
+                            <label for="type" class="col-sm-2 control-label">Type</label>
                             <div class="col-sm-10">
                                 {{ Form::text('Type', "product", array('id' => 'type','class' => 'form-control', 'readonly' => 'readonly')) }}                        
                             </div>
                         </div> 
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Target</label>
+                            <label for="target" class="col-sm-2 control-label">Target</label>
                             <div class="col-sm-10">
-                                {{ Form::text('target', "", array('id' => 'target','class' => 'form-control')) }}                        
+                                {{ Form::text('target', "", array('id' => 'target','class' => 'target form-control')) }}                        
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="userId" class="col-sm-2 control-label">Action Type</label>
+                            <label for="drop_actionType" class="col-sm-2 control-label">Action Type</label>
                             <div class="col-sm-10">
-                                <select name="c_stateregion" id="drop_actionType"  class="form-control" data-status="">
+                                <select name="c_stateregion" id="drop_actionType"  class="form-control selectbox-action-type" data-status="">
                                     @foreach($actionTypes as $types)
                                         <option value="{{{ $types }}}">{{{ $types }}}</option>
                                     @endforeach
@@ -317,7 +323,7 @@
                             <thead>
                             <tr>
                                 <th></th>
-                                <th>Value</th>
+                                <th>Slug</th>
                                 <th>Type</th>
                                 <th>Target</th>
                                 <th>Action Type</th>
@@ -338,7 +344,7 @@
                                                 </button>
                                             </div>
                                             <div class="btn-group">
-                                                <button type="button" class="btn edit_btn removeButton" data-url="{{{ $mobileCmsLink }}}/removeContent" data-nodename="boxContent" data-index="{{{ $index }}}" data-subindex= "{{{ $boxContentIndex }}}" >
+                                                <button type="button" class="btn removeButton" data-url="{{{ $mobileCmsLink }}}/removeContent" data-nodename="boxContent" data-index="{{{ $index }}}" data-subindex= "{{{ $boxContentIndex }}}" >
                                                     <span class="glyphicon glyphicon-remove"></span>
                                                 </button>
                                             </div>                                            
@@ -356,60 +362,48 @@
                         </table>
 
                     </div>
-                </div>
-                
+                </div>                
                 <span style="display:none;">{{$index++}}</span>
             @endforeach
-
-            <div class="tab-pane fade" id="profile">
-                <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
-            </div>
-            <div class="tab-pane fade" id="dropdown1">
-                <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
-            </div>
-            <div class="tab-pane fade" id="dropdown2">
-                <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p>
-            </div>
         </div>
-
 
     </div>
 
         <!--Start Modal -->
-        <div class="modal fade user_modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <h4 class="modal-title white_header" id="myModalLabel"><span class="glyphicon glyphicon-edit"></span>Edit Box Content</h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body mobile-home-section-form">
                         <div class="form-group">
-                            <input type="hidden" class="form-control" id="edit_url" placeholder="Enter fullname">
+                            <input type="hidden" class="form-control" id="edit_url" placeholder="">
                         </div>                         
                         <div class="form-group">
-                            <input type="hidden" class="form-control" id="edit_sectionIndex" placeholder="Enter fullname">
+                            <input type="hidden" class="form-control" id="edit_sectionIndex" placeholder="">
                         </div>                          
                         <div class="form-group">
-                            <input type="hidden" class="form-control" id="edit_boxindex" placeholder="Enter fullname">
+                            <input type="hidden" class="form-control" id="edit_boxindex" placeholder="">
                         </div>                        
                         <div class="form-group">
-                            <label>Value</label>
-                            <input type="hidden" class="form-control" id="edittable_index" value="" placeholder="Enter fullname">
-                            <input type="text" class="form-control" id="edit_value" placeholder="Enter fullname">
+                            <label>Slug</label>
+                            <input type="hidden" class="form-control" id="edittable_index" value="" placeholder="">
+                            <input type="text" class="form-control value" id="edit_value" placeholder="">
                         </div>
                         <div class="form-group">
                             <label>Type</label>
-                            <input type="text" class="form-control" id="edit_type" readonly="readonly" placeholder="Enter contact number">
+                            <input type="text" class="form-control" id="edit_type" readonly="readonly" placeholder="">
                         </div>
                         <div class="form-group">
                             <label>Target</label>
-                            <textarea class="form-control" id="edit_target" rows="3"></textarea>
+                            <textarea class="form-control target" id="edit_target" rows="3"></textarea>
                         </div>
                         <div class="form-group address_div">
                             <label>Action Type : </label>
                             <div>
-                                <select name="c_stateregion" id="drop_actionTypeEdit"  class="form-control" data-status="">
+                                <select name="c_stateregion" id="drop_actionTypeEdit"  class="selectbox-action-type form-control" data-status="">
                                     @foreach($actionTypes as $types)
                                         <option value="{{{ $types }}}">{{{ $types }}}</option>
                                     @endforeach
@@ -448,11 +442,18 @@
         </div>
     </div>    
 
-
+    <input type="hidden" id="action-type-showproductdetails" 
+           value="{{  strtolower(str_replace(" ", "", \Easyshop\Services\XMLContentGetterService::MOBILE_CMS_ACTIONTYPE_SHOWPRODUCTDETAILS)) }}"/>
+    <input type="hidden" id="action-type-gotosite" 
+           value="{{  strtolower(str_replace(" ", "", \Easyshop\Services\XMLContentGetterService::MOBILE_CMS_ACTIONTYPE_GOTOSITE)) }}"/>
+    <input type="hidden" id="action-type-gotopage" 
+           value="{{  strtolower(str_replace(" ", "", \Easyshop\Services\XMLContentGetterService::MOBILE_CMS_ACTIONTYPE_GOTOPAGE)) }}"/>
+    <input type="hidden" id="action-type-showproductlist" 
+           value="{{  strtolower(str_replace(" ", "", \Easyshop\Services\XMLContentGetterService::MOBILE_CMS_ACTIONTYPE_SHOWPRODUCTLIST)) }}"/>
 
 @stop
+
 @section('page_js') 
-{{ HTML::script('js/src/sha1.js') }}
 {{ HTML::script('js/src/jquery.form.js') }}
 {{ HTML::script('js/src/jquery.minicolors.js') }}
 {{ HTML::script('js/cms_mobile.js') }}

@@ -28,39 +28,62 @@ class CategoryRepository
     /**
      * Get total number of items per parent category
      *
-     * @param $parentIds
-     * @return Array
+     * @param Category[] $parentCatgeories
+     * @return mixed
      */
-    public function getProductCountPerParentCategory($parentIds)
+    public function getProductCountPerParentCategory($parentCategories)
     {   
+        
         $isNestedUsable = true;
         if((int)$this->getNestedSetCategoryCount() === 0 ) {
             $isNestedUsable = false;
         }
-        foreach ($parentIds as $parentId) {
-            if($parentId->name === "PARENT") {
+
+        foreach ($parentCategories as $parentCategory) {
+            if( (int) $parentCategory->id_cat === Category::ROOT_CATEGORY){
                 continue;
             }
-
-            $categoryname[] = $parentId->name;
+            $categoryname[] = $parentCategory->name;
             if($isNestedUsable) {
-                $childCategoryIds = [];
-                foreach ($this->getChildrenWithNestedSet($parentId->id_cat) as $value) {
+                $childCategoryIds = [ $parentCategory->id_cat ];
+                foreach ($this->getChildrenWithNestedSet($parentCategory->id_cat) as $value) {
                     $childCategoryIds[] = $value->original_category_id;
                 }
+                
             }
             else {
-                $childCategoryIds = $this->getChildrenWithGetFamilyTree($parentId->id_cat);
+                $childCategoryIds = $this->getChildrenWithGetFamilyTree($parentCategory->id_cat);
             }
 
             $count = DB::table("es_product")
-                        ->whereIn("cat_id",$childCategoryIds)->count();
+                       ->whereIn("cat_id",$childCategoryIds)
+                       ->where('is_draft', Product::STATUS_NOT_DRAFTED)
+                       ->where('is_delete', Product::STATUS_NOT_DELETED)
+                       ->count();
             $productCountPerCategory[] = $count;
         }
+
         return [
             "parentNames" => $categoryname,
             "productCount" => $productCountPerCategory
         ];
+    }
+
+    /**
+     * Retrieves number of products directly uploaded to a particular category
+     * 
+     * @param integer $categoryId
+     * @return integer
+     */
+    public function getProductCountNonRecursive($categoryId)
+    {
+        $count = DB::table("es_product")
+                   ->where("cat_id", $categoryId)
+                   ->where('is_draft', Product::STATUS_NOT_DRAFTED)
+                   ->where('is_delete', Product::STATUS_NOT_DELETED)
+                   ->count();
+
+        return $count;
     }
 
     /**
@@ -75,11 +98,12 @@ class CategoryRepository
                                 t1.original_category_id AS original_category_id
                             FROM
                                 es_category_nested_set t1
-                                    LEFT JOIN
+                            LEFT JOIN
                                 es_category_nested_set t2 ON t2.original_category_id = :category_id
                             WHERE
                                 t1.left > t2.left
-                                    AND t1.right < t2.right"),
+                            AND 
+                                t1.right < t2.right"),
                             ["category_id" => $categoryId]);
     }
 
@@ -90,7 +114,7 @@ class CategoryRepository
      */
     public function getChildrenWithGetFamilyTree($categoryId)
     {
-        $childsList = DB::select(DB::raw("select `GetFamilyTree`(:prodid) as childs"),
+        $childsList = DB::select(DB::raw("SELECT `GetFamilyTree`(:prodid) as childs"),
                                 ["prodid" => $categoryId]);
         return explode(",",$childsList[0]->childs);
     }
@@ -101,38 +125,10 @@ class CategoryRepository
      */
     public function getNestedSetCategoryCount()
     {
-        $result =  DB::select(DB::raw("SELECT COUNT(*) as count FROM es_category_nested_set WHERE 1"));
+        $result =  DB::select(
+            DB::raw("SELECT COUNT(*) as count FROM es_category_nested_set WHERE 1")
+        );
         return $result[0]->count;
-    }
-
-
-    /**
-     * Create category
-     *
-     * @param $data
-     * @return Category Object
-     */
-    public function insert($data)
-    {
-        $category = new Category();
-        $category->fill($data);
-        $category->save();
-
-        return $category;
-    }
-
-    /**
-     *  Update a collection of category
-     *
-     *  @param $category
-     *  @param array $data
-     *  @return Category Object
-     */
-    public function update($category,$data)
-    {
-        $category->update($data);
-
-        return $category;
     }
 
     /**
@@ -203,38 +199,37 @@ class CategoryRepository
      */
     public function search($userData)
     {
-        $member = Category::where('es_cat.id_cat', '>', 1);
+        $category = Category::where('es_cat.id_cat', '>', 1);
         if($userData['category']){
-            $member->where('es_cat.name', 'LIKE', '%' . $userData['category'] . '%');
+            $category->where('es_cat.name', 'LIKE', '%' . $userData['category'] . '%');
         }
         if($userData['description']){
-            $member->where('es_cat.description', 'LIKE', '%' . $userData['description'] . '%');
+            $category->where('es_cat.description', 'LIKE', '%' . $userData['description'] . '%');
         }
         if($userData['keywords']){
-            $member->where('es_cat.keywords', 'LIKE', '%' . $userData['keywords'] . '%');
-        }
-        if(($userData['startdate']) && ($userData['enddate'])){
-            $member->where('es_member.datecreated', '>=', str_replace('/', '-', $userData['startdate']) . ' 00:00:00' )
-                ->where('es_member.datecreated', '<=', str_replace('/', '-', $userData['enddate']) . ' 23:59:59', 'AND');
+            $category->where('es_cat.keywords', 'LIKE', '%' . $userData['keywords'] . '%');
         }
 
-        return $member->first();
+        return $category->first();
     }
+
 
     /**
-     * Generate unique Slug
-     * @param $product
-     * @return string
+     * Retrieves multiple categories by slug
+     *
+     * @param string[] $slugs
+     * @return Category[]
      */
-    public function generateSlug($product)
-    {
-        $category = new Category();
-        $count = $category->where('es_cat.slug', 'LIKE', '%' . $product . '%')->count();
-        if($count >= 1){
-            $product = $product.$count;
+    public function getCategoryBySlug($slugs)
+    {        
+        if(is_array($slugs) === false){
+            $slugs = [$slugs];
         }
-
-        return $product;
+        $categories = DB::table('es_cat')->whereIn('slug', $slugs)
+                                         ->get();
+        
+        return $categories;
     }
+
 
 }

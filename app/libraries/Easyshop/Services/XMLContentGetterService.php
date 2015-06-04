@@ -3,28 +3,28 @@
 class XMLContentGetterService
 {
     /**
-     * Returns xml content from of home_files.xml from easyshop.ph
-     * 
-     * @return $xmlString
+     * Show product details action type
      */
-    public function GetXMLHomeFiles()
-    {
-        return file_get_contents(\Config::get('easyshop/webservice.getHomeXML'));
-    }
+    const MOBILE_CMS_ACTIONTYPE_SHOWPRODUCTDETAILS = 'show product details';
 
     /**
-     * Returns the link https://easyshop.ph.local/webservice/homewebservice
-     *
-     * @return $link
+     * Go to an external site action type
      */
-    public function GetHomeCmsLink()
-    {
-        return \Config::get('easyshop/webservice.homeCmsLink');
-    }
+    const MOBILE_CMS_ACTIONTYPE_GOTOSITE = 'go to site';
+
+    /**
+     * Go to an internal page action type
+     */
+    const MOBILE_CMS_ACTIONTYPE_GOTOPAGE = 'go to page';
+
+    /**
+     * Go to product list action type
+     */
+    const MOBILE_CMS_ACTIONTYPE_SHOWPRODUCTLIST = 'show product list';
 
 
     /**
-     * Returns the link https://easyshop.ph.local/webservice/contentwebservice
+     * Returns the content CMS webservice link
      *
      * @return $link
      */
@@ -34,7 +34,7 @@ class XMLContentGetterService
     }
 
     /**
-     * Returns the link https://easyshop.ph.local/webservice/mobilewebservice
+     * Returns the mobile CMS webservice link
      *
      * @return $link
      */
@@ -45,17 +45,17 @@ class XMLContentGetterService
 
 
     /**
-     * Returns the link https://easyshop.ph.local/webservice/mobilewebservice
+     * Returns the homepage CMS webservice link
      *
      * @return $link
      */
-    public function getNewHomeCmsLink()
+    public function getHomeCmsLink()
     {
-        return \Config::get('easyshop/webservice.newHomeCmsLink');
+        return \Config::get('easyshop/webservice.homeCmsLink');
     }       
 
     /**
-     *  Returns the the link https://www.easyshop.ph
+     *  Returns the homepage of the easyshop back-end
      *
      *  @return string $link
      */
@@ -66,9 +66,9 @@ class XMLContentGetterService
     }
 
     /**
-     *  Returns the the link https://easyshop.ph.local/webservice/contentwebservice/getContents/
+     *  Returns the xml content of content_files.xml file
      *
-     *  @return string $link
+     *  @return mixed 
      */
     public function GetXmlContentFiles()
     {
@@ -76,9 +76,9 @@ class XMLContentGetterService
     }
 
     /**
-     *  Returns the the link https://easyshop.ph.local/webservice/contentwebservice/getContents/
+     *  Returns the xml content of mobile_home_files.xml file
      *
-     *  @return string $link
+     *  @return mixed
      */
     public function getMobileHomeXml()
     {
@@ -87,19 +87,19 @@ class XMLContentGetterService
     }    
 
     /**
-     *  Returns the the link https://easyshop.ph.local/webservice/newhomewebservice/getContents/
+     *  Returns the xml content of the home page xml file 
      *
-     *  @return string $link
+     *  @return mixed
      */
-    public function getNewHomeXml()
+    public function getHomeXml()
     {
-        return file_get_contents(\Config::get('easyshop/webservice.getNewHomeXml'));
+        return file_get_contents(\Config::get('easyshop/webservice.getHomeXml'));
     }   
 
     /**
      *  Returns the contents new_home_page_temp.xml
      *
-     *  @return string $link
+     *  @return mixed
      */
     public function getTempHomeXml()
     {
@@ -107,9 +107,9 @@ class XMLContentGetterService
     }    
 
     /**
-     *  Returns result of synxTempHomeFiles()
+     *  Returns result of xml homepage syncing webservice
      *
-     *  @return json
+     *  @return mixed
      */
     public function syncXMLFiles($id, $password)
     {
@@ -124,11 +124,14 @@ class XMLContentGetterService
 
     /**
      * Returns assets link
-     * @return json
+     *
+     * @return string
      */
     public function getAssetsLink()       
     {
-        return file_get_contents(\Config::get('easyshop/webservice.assetsLink'));
-
+        $assetsLink = file_get_contents(\Config::get('easyshop/webservice.assetsLink'));
+        $assetsLink = $assetsLink === "/" ? $this->GetEasyShopLink() : rtrim($assetsLink, '/');
+      
+        return trim($assetsLink);
     }
 }

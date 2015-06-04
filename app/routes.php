@@ -25,7 +25,7 @@ Route::group(array('before' => 'auth'), function(){
     Route::get('users', array('uses' => 'MemberController@showAllUsers'));
     Route::post('users', array('uses' => 'MemberController@search'));
     Route::put('users', array('uses' => 'MemberController@ajaxUpdateUsers'));
-
+    Route::get('hasher', array('uses' => 'WebserviceController@generateHash'));
     Route::get('cms/home', array('uses' => 'NewHomeContentManagerController@getHomeContent'));
     Route::get('cms/getSlideSection/{index}', array('uses' => 'NewHomeContentManagerController@getSlideSection'));
     Route::get('cms/getSubCategoryNavigation/{index}', array('uses' => 'NewHomeContentManagerController@getSubCategoryNavigation'));

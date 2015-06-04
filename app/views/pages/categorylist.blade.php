@@ -24,38 +24,30 @@
                         {{ Form::text('category', Input::old('category'), array('id' => 'src_category', 'class' => 'form-control', 'placeholder' => 'Enter Category' ) ) }}
                     </div>
                 </div>
-                <div class="col-md-4 ">
-                    <div class="form-group">
-                        <label for="date_timepicker_start">Start Date</label>
-                        <div class="inner-addon left-addon">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                            {{ Form::text('startdate', Input::old('startdate'), array('id' => 'date_timepicker_start', 'class' => 'form-control' ) ) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="date_timepicker_end">End Date</label>
-                        <div class="inner-addon left-addon">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                            {{ Form::text('enddate', Input::old('enddate'), array('id' => 'date_timepicker_end', 'class' => 'form-control' ) ) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
+
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="src_category">Description</label>
                         {{ Form::text('description', Input::old('description'), array('id' => 'src_description', 'class' => 'form-control', 'placeholder' => 'Enter description' ) ) }}
                     </div>
                 </div>
+                                
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="src_condition">Keywords</label>
                         {{ Form::text('keywords', Input::old('keywords'), array('id' => 'src_keywords', 'class' => 'form-control', 'placeholder' => 'Enter keywords' ) ) }}
                     </div>
                 </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                </div>
+
+                <div class="col-md-4">
+                </div>
+
                 <div class="col-md-1 col-md-offset-2">
                     <div class="form-group">
                         <label for="btn_close_search">&nbsp</label>
@@ -68,6 +60,7 @@
                         {{ Form::submit(' Search ', array('id' => 'btn_search', 'class' => 'btn btn-primary')) }}
                     </div>
                 </div>
+                
             </div>
             {{ Form::close() }}
         </div>
@@ -120,7 +113,6 @@
                     <th>Name</th>
                     <th>Description</th>
                     <th>Keyword</th>
-                    <th>Is Main</th>
                     <th>Slug</th>
                 </tr>
                 </thead>
@@ -150,7 +142,6 @@
                     <td class="redirect" id="{{{ $category->id_cat }}}_name">{{{ $category->name }}}</td>
                     <td class="redirect" id="{{{ $category->id_cat }}}_description">{{{ $category->description }}}</td>
                     <td class="redirect" id="{{{ $category->id_cat }}}_keywords">{{{ $category->keywords }}}</td>
-                    <td class="redirect" id="{{{ $category->id_cat }}}_is_main">{{{ $category->is_main }}}</td>
                     <td class="redirect">{{{ $category->slug }}}</td>
                 </tr>
                 @endforeach
@@ -189,16 +180,9 @@
                             <label>Sort order</label>
                             <input type="text" class="form-control" id="mdl_sort" maxlength="2" onkeypress="return isNumberKey(event)" placeholder="Enter number">
                         </div>
-                        <label>Is Main </label>
-                        <div class="checkbox">
-                            <label class="radio-inline">
-                                <input type="radio" name="mdl_main" checked id="chck_yes" value="1"> Yes
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="mdl_main" id="chck_no" value="0"> No
-                            </label>
-                        </div>
-                        <span class="help-block">This will set if the category is viewable in homepage .</span>
+                        
+                        <div class="category-error alert alert-danger" role="alert" style="display:none; font-size: 14px;"></div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

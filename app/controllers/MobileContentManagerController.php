@@ -7,19 +7,25 @@ use Easyshop\ModelRepositories\AdminMemberRepository as AdminMemberRepository;
 class MobileContentManagerController extends BaseController
 {
     /**
-     *  Constructor declaration for XMLService
+     * Constructor declaration for XMLService
+     *
+     * @var Easyshop\Services\XMLContentGetterService
      */
-    protected $XMLService;
+    private $XMLService;
 
-    /*
+    /**
      * The Category Repository
+     *
+     * @var Easyshop\ModelRepositories\CategoryRepository
      */    
-    protected $categoryRepository;
+    private $categoryRepository;
 
-    /*
+    /**
      * The Administrator Repository
+     *
+     * @var Easyshop\ModelRepositories\AdminMemberRepository
      */
-    protected $adminRepository;
+    private $adminRepository;
 
     /**
      * Asssets Link
@@ -37,21 +43,26 @@ class MobileContentManagerController extends BaseController
         $this->categoryRepository = $categoryRepository;
         $xmlString = $this->XMLService->getMobileHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
-        $assetsLink = trim($this->XMLService->getAssetsLink());
-        $this->assetLink = $assetsLink === "/" ? $this->XMLService->GetEasyShopLink() : rtrim($assetsLink, '/');
+        $this->assetLink = $this->XMLService->getAssetsLink();
     }
 
     /**
      * Render Mobile CMS Interface
+     *
      * @return VIEW
      */
     public function showMobileCms()
     {
-
         $section = [];
         foreach($this->map->section as $map)
         {
-            $section[] = $map;
+            $categorySlug = (string) $map->name;                     
+            $category = $map;
+            $sectionCategory = $this->categoryRepository->getCategoryBySlug($categorySlug);
+            if($sectionCategory){
+                $category->categoryName = $sectionCategory[0]->name;
+                $section[] = $category;                
+            }
         }
 
         $mainSlides = [];
@@ -72,13 +83,13 @@ class MobileContentManagerController extends BaseController
             $themeLists[] =  $themes->value;
         }
 
-       $categoryLists = [];
-       foreach ($this->categoryRepository->getParentCategories() as $value) {
+        $categoryLists = [];
+        foreach ($this->categoryRepository->getParentCategories() as $value) {
             $categoryLists[] = [
                 "slug" => $value->slug,
                 "name" => $value->name
             ];
-        }        
+        }  
 
         return View::make('pages.cms-mobilehome')
                     ->with('adminObject', $this->adminRepository->getAdminMemberById(Auth::id()))
@@ -96,6 +107,7 @@ class MobileContentManagerController extends BaseController
 
     /**
      * Reload mainSlides panel
+     *
      * @return VIEW
      */
     public function getMainSlides()
@@ -123,6 +135,7 @@ class MobileContentManagerController extends BaseController
 
     /**
      * Retrieves box contents
+     *
      * @param int $index
      * @return View
      */

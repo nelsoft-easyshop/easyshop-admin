@@ -6,60 +6,82 @@ use Easyshop\ModelRepositories\AdminMemberRepository as AdminMemberRepository;
 use Easyshop\ModelRepositories\CategoryRepository as CategoryRepository;
 use Easyshop\ModelRepositories\BrandRepository as BrandRepository;
 use Easyshop\ModelRepositories\ProductImageRepository as ProductImageRepository;
+use Easyshop\ModelRepositories\MemberRepository as MemberRepository;
 
 class NewHomeContentManagerController extends BaseController 
 {
     /**
-     *  Constructor declaration for XMLService  
+     * XMLService Dependency  
+     *
+     * @var \Easyshop\Services\XMLService
      */
-    protected $XMLService;
+    private $XMLService;
 
     /**
-     *  The Product Repository
-     */    
-    protected $productRepository;
-
-    /**
-     *  Assets link return by the easyshop application
+     * The Product Repository
+     *   
+     * @var \Easyshop\ModelRepositories\ProductRepository
      */
-    protected $assetLink;    
+    private $productRepository;
 
     /**
-     *  The Administratory Repository
+     * Assets link return by the easyshop application
+     *
+     * @var string
+     */
+    private $assetLink;    
+
+    /**
+     * The Administratory Repository
+     *
+     * @var \Easyshop\ModelRepositories\AdminMemberRepository
      */      
-    protected $adminMemberRepository;
+    private $adminMemberRepository;
 
     /**
-     *  The Category Repository
+     * The Category Repository
+     *
+     * @var \Easyshop\ModelRepositories\CategoryRepository
      */      
-    protected $categoryRepository;
+    private $categoryRepository;
 
     /**
-     *  The Category Repository
+     * The Brand Repository
+     *
+     * @var \Easyshop\ModelRepositories\BrandRepository
      */      
-    protected $brandRepository;    
+    private $brandRepository;    
 
     /**
-     *  The Product Image Repository
+     * Member Repository
+     *
+     * @var \Easyshop\ModelRepositories\MemberRepository
+     */
+    private $memberRepository;
+    
+    /**
+     * The Product Image Repository
+     *
+     * @var \Easyshop\ModelRepositories\ProductImageRepository  
      */ 
-    protected $productImageRepository;
+    private $productImageRepository;
     
     public function __construct(XMLService $XMLService,
                                 ProductRepository $productRepository,
                                 AdminMemberRepository $adminMemberRepository, 
                                 CategoryRepository $categoryRepository,
                                 BrandRepository $brandRepository,
+                                MemberRepository $memberRepository,
                                 ProductImageRepository $productImageRepository) 
     {   
         $this->XMLService = $XMLService;
-        $assetsLink = trim($this->XMLService->getAssetsLink());
-        $this->assetLink = $assetsLink === "/" ? $this->XMLService->GetEasyShopLink() : rtrim($assetsLink, '/');
-        $this->XMLService = $XMLService;    
         $this->productRepository = $productRepository;    
         $this->adminMemberRepository = $adminMemberRepository;    
         $this->categoryRepository = $categoryRepository;    
         $this->brandRepository = $brandRepository;    
+        $this->memberRepository = $memberRepository;
         $this->productImageRepository = $productImageRepository;   
+        $this->assetLink = $this->XMLService->getAssetsLink();
     }      
       
     /**
@@ -71,7 +93,7 @@ class NewHomeContentManagerController extends BaseController
 
         $this->XMLService->syncXMLFiles(Auth::id(), $adminObject->password);
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         $sliderXmlString = $this->XMLService->getTempHomeXml();
@@ -115,6 +137,11 @@ class NewHomeContentManagerController extends BaseController
         }     
         
         $product = [];
+      
+        $sellerSlug = (string)$this->map->sellerSection->sellerSlug;
+        $seller = $this->memberRepository->getBySlug($sellerSlug);
+        $this->map->sellerSection->sellerId = $seller->id_member;
+
         foreach($this->map->sellerSection->productPanel as $productPanel)
         {
             $productObj = $this->productRepository->getProductBySlug($productPanel->slug);   
@@ -196,7 +223,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('topSellers', $topSellers)
                     ->with('newArrivals', $newArrivals)
                     ->with('adSection', array_flatten($adsSection))
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())                                                   
                     ->with('assetLink',$this->assetLink);
     }
@@ -207,14 +234,14 @@ class NewHomeContentManagerController extends BaseController
      */
     public function getSellerSection()
     {
-        $xmlString = $this->XMLService->getNewHomeXml();        
+        $xmlString = $this->XMLService->getHomeXml();        
         $this->map = simplexml_load_string(trim($xmlString));
         return View::make('partials.sellersection')
                     ->with('sellerSection', $this->map->sellerSection)
                     ->with('userid', Auth::id())
                     ->with('assetLink', $this->assetLink)
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink());
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink());
     }
 
     /**
@@ -224,7 +251,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $topSellers = [];  
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         foreach($this->map->menu->topSellers as $tSellers)
@@ -243,7 +270,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('allBrandsLists', $this->brandRepository->getAllBrands())
                     ->with('brandsLists', $brandsLists)
                     ->with('userid', Auth::id())  
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());            
 
     }
@@ -254,7 +281,7 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAdSection()
     {
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         $adsSection = [];                  
@@ -264,7 +291,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.adssection')        
                     ->with('adSection', array_flatten($adsSection))
                     ->with('userid', Auth::id())  
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('assetLink',$this->assetLink);
     }
@@ -276,7 +303,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $index = (int) $index;
         $subIndex = (int) $subIndex;
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
         $categoryIndex = 0;
         $categoryProductPanel = [];
@@ -310,7 +337,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('subIndex', $subPanelIndex)
                     ->with('subCategorySection', $subIndex)
                     ->with('categoryProductPanelList', $categoryProductPanelList)                    
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('assetLink',$this->assetLink);                                     
              
@@ -324,7 +351,7 @@ class NewHomeContentManagerController extends BaseController
         $index = (int) $index;
         $subCategoryNavigation = [];     
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         foreach($this->map->categoryNavigation->category[$index]->sub as $subCategories)
@@ -334,7 +361,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.subcategorynavigation')        
                     ->with('index', $index)
                     ->with('subCategoryNavigation', $subCategoryNavigation[0])
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                    
              
     }
@@ -346,7 +373,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $product = [];
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         foreach($this->map->sellerSection->productPanel as $productPanel)
@@ -364,7 +391,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.productpanel')        
                     ->with('productList',array_flatten($product))
                     ->with('userid', Auth::id())  
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('assetLink',$this->assetLink);                     
     }
@@ -391,7 +418,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('slides', $sliders)
                     ->with('userid', Auth::id())  
                     ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))                    
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('assetLink',$this->assetLink);                    
     }
@@ -415,7 +442,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('sliderSection', $sliders)
                     ->with('userid', Auth::id())  
                     ->with('templateLists', array_flatten($this->getTemplates($this->temporarySliderMap->sliderTemplate)))                    
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('assetLink',$this->assetLink);                     
     }
@@ -427,7 +454,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $otherCategories = [];
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         foreach($this->map->categoryNavigation->otherCategories as $map) {
@@ -445,7 +472,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('userid', Auth::id())
                     ->with('otherCategories', $otherCategories)
                     ->with('childCategoryLists', $childCategoryLists)
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
     }
 
@@ -454,7 +481,7 @@ class NewHomeContentManagerController extends BaseController
      */     
     public function getTopSellers()
     {
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         $topSellers = [];        
@@ -466,7 +493,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.topsellers')
                     ->with('userid', Auth::id())
                     ->with('topSellers', $topSellers)
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
     } 
 
@@ -477,7 +504,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $topProducts = [];
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         foreach($this->map->menu->topProducts as $tProducts)
@@ -488,7 +515,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.topproducts')
                     ->with('userid', Auth::id())
                     ->with('topProducts', $topProducts)
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
     }    
 
@@ -499,7 +526,7 @@ class NewHomeContentManagerController extends BaseController
     {
         $newArrivals = [];
 
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         foreach($this->map->menu->newArrivals[0] as $arrivals)
@@ -510,7 +537,7 @@ class NewHomeContentManagerController extends BaseController
         return View::make('partials.newarrivals')
                     ->with('userid', Auth::id())
                     ->with('newArrivals', $newArrivals)
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())                    
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())                    
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink());                                            
     }   
 
@@ -520,7 +547,7 @@ class NewHomeContentManagerController extends BaseController
     public function getSliderPreview()
     {
         $html =  View::make("partials.sliderpreview")
-                    ->with("newHomeCmsLink",$this->XMLService->getNewHomeCmsLink())
+                    ->with("newHomeCmsLink",$this->XMLService->getHomeCmsLink())
                     ->with('userid', Auth::id())
                     ->with('hash', Input::get("hash"))
                     ->with('commit', Input::get("commit"))
@@ -534,7 +561,7 @@ class NewHomeContentManagerController extends BaseController
      */ 
     public function getAllCategories()
     {
-        $xmlString = $this->XMLService->getNewHomeXml();
+        $xmlString = $this->XMLService->getHomeXml();
         $this->map = simplexml_load_string(trim($xmlString));
 
         $categoryProductPanel = [];        
@@ -579,7 +606,7 @@ class NewHomeContentManagerController extends BaseController
                     ->with('categorySection', $categorySection)
                     ->with('categoryLists', $categoryLists)
                     ->with('categoryProductPanelList', $categoryProductPanelList)
-                    ->with('newHomeCmsLink', $this->XMLService->getNewHomeCmsLink())
+                    ->with('newHomeCmsLink', $this->XMLService->getHomeCmsLink())
                     ->with('easyShopLink',$this->XMLService->GetEasyShopLink())
                     ->with('assetLink',$this->assetLink);
 

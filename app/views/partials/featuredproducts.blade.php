@@ -18,7 +18,6 @@
                                         <label for="userId" class="col-sm-2 control-label">Product Slug</label>
                                         <div class="col-sm-10">
                                             {{ Form::text('featuredProduct', "" ,array('id' => 'featuredProduct','class' => 'form-control')) }}
-                                            {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}
                                             {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }}
                                             {{ Form::hidden('hash', "", array('id' => 'hash')) }}
                                         </div>
@@ -56,7 +55,6 @@
                                                 data-value="{{$products->slug}}" 
                                                 data-order="{{$indexForEach}}" 
                                                 data-count="{{$featuredProductCount}}" 
-                                                data-password="{{$adminObject->password}}"
                                                 data-url = "{{ $contentCmsLink }}/setfeedFeaturedProduct"
                                             >
                                                 <span class="glyphicon glyphicon-chevron-right pull-right" style='font-size:16px;'></span>
@@ -68,8 +66,7 @@
                                                 data-userid="{{$adminObject->id_admin_member}}" 
                                                 data-value="{{$products->slug}}" 
                                                 data-order="{{$indexForEach}}" 
-                                                data-count="{{$featuredProductCount}}" 
-                                                data-password="{{$adminObject->password}}"
+                                                data-count="{{$featuredProductCount}}"
                                                 data-url = "{{ $contentCmsLink }}/setfeedFeaturedProduct"
                                             >
                                                 <span class="glyphicon glyphicon-chevron-left pull-left" style='font-size:16px;'></span>
@@ -85,7 +82,6 @@
                                                     data-index="{{$indexForEach}}"  
                                                     data-nodename="//feedFeaturedProduct" 
                                                     data-userid="{{$adminObject->id_admin_member}}"                                                
-                                                    data-password="{{$adminObject->password}}"
                                                     data-url = "{{ $contentCmsLink }}/removeContent"
                                                  >
                                                     <span class="glyphicon glyphicon-remove" style='font-size:16px;'></span>
@@ -109,7 +105,6 @@
                                                                 <label for="userId" class="col-sm-2 control-label">Product Slug</label>
                                                                 <div class="col-sm-10">
                                                                     {{ Form::text('featuredProduct', "$products->slug" ,array('id' => 'featuredProduct','class' => 'form-control')) }}
-                                                                    {{ Form::hidden('password', "$adminObject->password", array('id' => 'adminPassword')) }}
                                                                     {{ Form::hidden('userId', "$adminObject->id_admin_member", array('id' => 'userId')) }}
                                                                 </div>
                                                             </div>

@@ -92,8 +92,8 @@
                     <table class="table table-striped table-hover tbl-my-style" id="addBrandsTable">
                         <thead>
                         <tr>
-                            <th>/</th>
-                            <th>Product Slug</th>
+                            <th>Actions</th>
+                            <th>Brand name</th>
                         </tr>
                         </thead>
                         <tbody id="tbody_boxContent">
@@ -192,7 +192,7 @@
                         <thead>
                         <tr>
                             <th>/</th>
-                            <th>Product Slug</th>
+                            <th>User Slug</th>
                         </tr>
                         </thead>
                         <tbody id="tbody_boxContent">
@@ -519,13 +519,13 @@
                                                 <legend>        
                                                     <h4 class="tbl-title">
                                                         <span class="glyphicon glyphicon-list-alt"></span>
-                                                        Edit Sub Category
+                                                        Change Category
                                                     </h4>
-                                                </legend>     
+                                                </legend>
 
                                                 {{ Form::hidden('index', "$categorySectionIndex", array('id' => 'index','class' => 'form-control')) }}                                                        
                                                 <div class="form-group">
-                                                    <label for="inputPassword" class="control-label col-xs-2">Enter Slug</label>
+                                                    <label for="inputPassword" class="control-label col-xs-2">Choose Category</label>
                                                     <div class="col-xs-10">
                                                         <select name="c_stateregion" id="setCategorySectionDropDown"  class="form-control">
                                                             @foreach($categoryLists as $categories)
@@ -883,6 +883,7 @@
                                 <label for="inputPassword" class="control-label col-xs-2">Enter Slug</label>
                                 <div class="col-xs-10">
                                     <input type="text" id="slug" name='slug' class='form-control' value="{{{$sellerSection->sellerSlug}}}"> 
+                                    <input type="hidden" id="seller-section-seller-id" value="{{{ $sellerSection->sellerId }}}"/>
                                 </div>
                             </div>                                                                                 
                                                                                                    
@@ -1658,7 +1659,7 @@
 
 @stop
 @section('page_js') 
-{{ HTML::script('js/src/sha1.js') }}
+
 {{ HTML::script('js/src/jquery.form.js') }}
 {{ HTML::script('js/src/jquery.Jcrop.min.js') }}
 {{ HTML::script('js/cms_newhome.js') }}

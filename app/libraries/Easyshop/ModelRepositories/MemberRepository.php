@@ -14,7 +14,7 @@ class MemberRepository extends AbstractRepository
      */  
     public function getUsersCount()
     {
-        return DB::select(DB::raw("SELECT COUNT(*) as memberCount from `easyshop`.`es_member`"));        
+        return DB::select(DB::raw("SELECT COUNT(*) as memberCount from `es_member`"));        
     }
     /**
      * Get Number of uploaded products by users
@@ -40,7 +40,7 @@ class MemberRepository extends AbstractRepository
      */  
     public function getNumberOfUsersWithUploadedProduct()
     {
-        $userCount = DB::select(DB::raw("SELECT COUNT(*) as memberCount from `easyshop`.`es_member`"));
+        $userCount = DB::select(DB::raw("SELECT COUNT(*) as memberCount from `es_member`"));
         $usersWithUpload = DB::select(DB::raw("SELECT 
                                                 COUNT(*) as userWithUpload
                                             FROM
@@ -79,11 +79,23 @@ class MemberRepository extends AbstractRepository
      * Update the member entity
      *
      * @param $member object
-     * @param $data
+     * @param Member
      */
     public function update($member, $data)
     {
         return $member->update($data);
+    }
+
+    /**
+     * Return member by slug
+     * 
+     * @param string $slugx
+     * @return Member
+     */
+    public function getBySlug($slug)
+    {
+        return Member::where('slug', '=', $slug)
+                     ->first();
     }
         
     /**
@@ -95,7 +107,7 @@ class MemberRepository extends AbstractRepository
     public function getById($memberId)
     {
         $member = Member::with('address')
-            ->find($memberId);
+                        ->find($memberId);
 
         return $member;
     }

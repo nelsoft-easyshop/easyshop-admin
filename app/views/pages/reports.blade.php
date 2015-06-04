@@ -18,11 +18,11 @@
     <div class="row">
             <section id="tabs">
                 <ul id="myTab" class="nav nav-tabs" role="tablist">
-                    <li  class="active"><a href="#profile2" role="tab" data-toggle="tab"># of uploaded products per account</a></li>
+                    <li  class="active"><a href="#profile2" role="tab" data-toggle="tab">Number of uploaded products per account</a></li>
                     <li><a href="#home" role="tab" data-toggle="tab">Monthly Sign Up Statistics</a></li>
                     <li><a href="#profile1" role="tab" data-toggle="tab">Users w/ & w/out Products</a></li>
-                    <li><a href="#profile3" role="tab" data-toggle="tab"># of uploaded items per month</a></li>
-                    <li><a href="#profile4" role="tab" data-toggle="tab"># of items items per parent category</a></li>
+                    <li><a href="#profile3" role="tab" data-toggle="tab">Number of uploaded items per month</a></li>
+                    <li><a href="#profile4" role="tab" data-toggle="tab">Number of items per parent category</a></li>
                 </ul>
             </section>
 
@@ -77,7 +77,7 @@
                                 <thead>
                                     <tr id="heading">
                                         <th width="50%">Store Name</th>
-                                        <th width="50%"># of Uploaded Products</th>
+                                        <th width="50%">Number of Uploaded Products</th>
                                     </tr>
                                 </thead>
                                 <tbody >
@@ -90,7 +90,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        {{$membersProductCounts->links()}}                         
+                        {{$membersProductCounts->links()}}
                     </div>                    
                     <div class="tab-pane fade" id="profile3">
                         <div class="table-responsive table-payment"> 
@@ -99,7 +99,7 @@
                                     <tr id="heading">
                                         <th width="45%">Month</th>
                                         <th width="10%"></th>
-                                        <th width="45%">Sign-up Count</th>
+                                        <th width="45%">Uploads per month</th>
 
                                     </tr>
                                 </thead>
@@ -122,35 +122,32 @@
                         <div class="table-responsive table-payment"> 
                             <table id="table5" class="display" style="max-width:100%;">
                                 <thead>
-                                    <tr id="heading">
-                                 
-                                        <th>CategoryNames</th>
-                                        <th>CategoryNames</th>
-
+                                    <tr id="heading">                                 
+                                        <th>Category Name</th>
+                                        <th>Number of Products</th>
                                     </tr>
                                 </thead>
                                 <tbody >
                                     @foreach($categoryNames as $key => $categories)
                                         <tr>
                                             <td>{{{ $categories }}}</td>
-                                            <td>{{$productCountPerCategory[$key]}}</td>
+                                            <td>{{ $productCountPerCategory[$key] }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
 
                             </table>
                         </div>
-                    </div>                                        
-                    <div class="tab-pane fade" id="dropdown1">
-                        <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
-                    </div>
-                    <div class="tab-pane fade" id="dropdown2">
-                        <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p>
-                    </div>
+                    </div>                   
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="footer" style="margin:35px;">
+       
+    </div>
+
 
         <!--Start Modal -->
         <div class="modal fade user_modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
