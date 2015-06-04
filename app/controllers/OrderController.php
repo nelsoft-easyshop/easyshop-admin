@@ -13,7 +13,9 @@ class OrderController extends BaseController
         $orderRepository = App::make('OrderRepository');
         $paymentMethodRepository = App::make('PaymentMethodRepository');
         $orderStatusRepository = App::make('OrderStatusRepository');
-        
+        $userId = Auth::id();
+        $webserviceUrl = App::make('XMLContentGetterService')->GetEasyShopLink();                                                 
+
         if (Input::has('dateFrom')) {
             $dateFrom = Carbon::createFromFormat('Y/m/d', Input::get('dateFrom'))->startOfDay();
         }
@@ -29,13 +31,12 @@ class OrderController extends BaseController
         }
 
         $orderStatus = null;
-        if (Input::has('orderStatus') && trim(Input::get('orderStatus')) !== '') {
+        if (Input::has('orderStatus') && trim(Input::get('orderStatus')) !== '' && strtolower(Input::get('orderStatus')) !== 'all') {
             $orderStatus = (int) Input::get('orderStatus');
-
         }
 
         $paymentMethod = null;
-        if (Input::has('paymentMethod') && trim(Input::get('paymentMethod')) !== '') {
+        if (Input::has('paymentMethod') && trim(Input::get('paymentMethod')) !== '' && strtolower(Input::get('paymentMethod')) !== 'all') {
             $paymentMethod = (int) Input::get('paymentMethod');
         }
 
@@ -52,6 +53,8 @@ class OrderController extends BaseController
                     ->with('selectedOrderStatus', $orderStatus)
                     ->with('orderStatus', $orderStatusRepository->getAllStatus())
                     ->with('paymentMethods', $paymentMethodRepository->getAllPaymentMethod())
+                    ->with('userid', $userId)
+                    ->with('webserviceUrl', $webserviceUrl)
                     ->with('input', Input::all());
     }
 
@@ -71,10 +74,11 @@ class OrderController extends BaseController
         $orderProducts = $orderProductRepository->getOrderProductByOrderId($userdata['order_id']);
         
         $html = View::make('partials.orderdetail')
-            ->with('orderproducts', $orderProducts)
-            ->with('order', $order)
-            ->with('easypoints', $points)
-            ->render();
+                    ->with('orderproducts', $orderProducts)
+                    ->with('order', $order)
+                    ->with('easypoints', $points)
+                    ->render();
+
         return Response::json(array('html' => $html));
     }
     
