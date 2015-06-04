@@ -153,5 +153,58 @@
         var $currentSelected = $("#payment-method-list").find("[data-value='"+parseInt($paymentMethodSelected)+"']");
         $('#payment-method-title').html($currentSelected.html());
     }
+
+    $(document.body).on('click', '.order-unflag-button', function(){       
+        var orderId = $('#order-id').val();
+        var userId = $('#userid').val();
+        var webserviceBaseUrl = $('#webserviceUrl').val();
+
+        var requestData = {
+            orderId:'12'+orderId,
+            userid:userId
+        };
+
+        $.ajax({
+            url: "/hasher",
+            data: requestData,
+            dataType:"JSON",
+        }).success(function(hash) {
+            requestData.hash = hash;
+            $.ajax({
+                url: webserviceBaseUrl + '/payment/unFlagOrder',
+                data:requestData,
+                jsonpCallback: 'jsonCallback',
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(jsonResponse) {
+                    if(jsonResponse.isSuccessful){
+                        $('.order-unflag-button').fadeOut();
+                        $('.transaction-flag-message').fadeOut();
+                        var $unflagSuccessMessage = $('.unflag-success-message');
+                        $unflagSuccessMessage.show();
+                        setTimeout(function(){
+                            $unflagSuccessMessage.fadeOut();
+                        }, 2500);
+                    }
+                    else{
+                        var $unflagFailMessage = $('.unflag-fail-message');
+                        $unflagFailMessage.html('Error: ' + escapeHtml(jsonResponse.message));
+                        $unflagFailMessage.show();
+                        setTimeout(function(){
+                            $unflagFailMessage.fadeOut();                            
+                        }, 2500);
+                    }
+                },
+                error: function(e) {
+                    alert('An error occured while contacting the server. Please try again later.');
+                }
+            });  
+
+        });
+
+    });
+    
+
+
 })(jQuery);
 
