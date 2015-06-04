@@ -164,6 +164,9 @@
             userid:userId
         };
 
+        var spinner = Ladda.create(this);
+        
+        spinner.start();        
         $.ajax({
             url: "/hasher",
             data: requestData,
@@ -177,6 +180,7 @@
                 contentType: "application/json",
                 dataType: 'jsonp',
                 success: function(jsonResponse) {
+                    spinner.stop();
                     if(jsonResponse.isSuccessful){
                         $('.order-unflag-button').fadeOut();
                         $('.transaction-flag-message').fadeOut();
